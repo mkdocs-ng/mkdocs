@@ -94,6 +94,7 @@ artifacts = ["/mkdocs/**/*.mo"]
 [tool.hatch.build.targets.sdist]
 include = ["/mkdocs"]
 [tool.hatch.build.targets.wheel]
+packages = ["mkdocs"]
 exclude = ["/mkdocs/tests", "*.po", "*.pot", "babel.cfg"]
 [tool.hatch.build.hooks.custom]
 dependencies = [
