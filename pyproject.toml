@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "mkdocs"
+name = "mkdocs-ng"
 description = "Project documentation with Markdown."
 readme = "README.md"
 license = "BSD-2-Clause"
