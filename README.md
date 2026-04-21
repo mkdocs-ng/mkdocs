@@ -6,9 +6,9 @@
 [![Build Status][GHAction-image]][GHAction-link]
 [![Coverage Status][codecov-image]][codecov-link]
 
-MkDocs is a **fast**, **simple** and **downright gorgeous** static site
+MkDocs is a **fast**, **simple**, and **downright gorgeous** static site
 generator that's geared towards building project documentation. Documentation
-source files are written in Markdown, and configured with a single YAML
+source files are written in Markdown and configured with a single YAML
 configuration file. It is designed to be easy to use and can be extended with
 third-party themes, plugins, and Markdown extensions.
 
@@ -19,7 +19,7 @@ user guide.
 
 - Build static HTML files from Markdown files.
 - Use Plugins and Markdown Extensions to enhance MkDocs.
-- Use the built-in themes, third party themes or create your own.
+- Use the built-in themes, third-party themes, or create your own.
 - Publish your documentation anywhere that static files can be served.
 - Much more!
 
@@ -35,7 +35,7 @@ If you need help with MkDocs, do not hesitate to get in contact with us!
 Please note that we may only provide
 support for problems/questions regarding core features of MkDocs. Any
 questions or bug reports about features of third-party themes, plugins,
-extensions or similar should be made to their respective projects.  
+extensions, or similar should be made to their respective projects.  
 But, such questions are *not* banned from the [chat room].
 
 Make sure to stick around to answer some questions as well!
@@ -48,32 +48,32 @@ Make sure to stick around to answer some questions as well!
 
 ## Contributing to MkDocs
 
-The MkDocs project welcomes, and depends on, contributions from developers and
+The MkDocs project welcomes and depends on contributions from developers and
 users in the open source community. Please see the [Contributing Guide] for
 information on how you can help.
 
 ## Code of Conduct
 
 Everyone interacting in the MkDocs project's codebases, issue trackers, and
-discussion forums is expected to follow the [PyPA Code of Conduct].
+discussion forums are expected to follow the [PyPA Code of Conduct].
 
 <!-- Badges -->
-[codecov-image]: https://codecov.io/github/mkdocs/mkdocs/coverage.svg?branch=master
-[codecov-link]: https://codecov.io/github/mkdocs/mkdocs?branch=master
-[pypi-v-image]: https://img.shields.io/pypi/v/mkdocs.svg
-[pypi-v-link]: https://pypi.org/project/mkdocs/
-[GHAction-image]: https://github.com/mkdocs/mkdocs/actions/workflows/ci.yml/badge.svg
-[GHAction-link]: https://github.com/mkdocs/mkdocs/actions/workflows/ci.yml
+[codecov-image]: https://codecov.io/github/mkdocs-ng/mkdocs/coverage.svg?branch=master
+[codecov-link]: https://codecov.io/github/mkdocs-ng/mkdocs?branch=master
+[pypi-v-image]: https://img.shields.io/pypi/v/mkdocs-ng.svg
+[pypi-v-link]: https://pypi.org/project/mkdocs-ng/
+[GHAction-image]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml/badge.svg
+[GHAction-link]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml
 <!-- Links -->
 [mkdocs]: https://www.mkdocs.org
-[Issue]: https://github.com/mkdocs/mkdocs/issues
-[Discussions]: https://github.com/mkdocs/mkdocs/discussions
-[Chat room]: https://gitter.im/mkdocs/community
-[release-notes]: https://www.mkdocs.org/about/release-notes/
-[Contributing Guide]: https://www.mkdocs.org/about/contributing/
+[Issue]: https://github.com/mkdocs-ng/mkdocs/issues
+[Discussions]: https://github.com/mkdocs-ng/mkdocs/discussions
+[Chat room]: https://gitter.im/mkdocs-ng/community
+[release-notes]: https://www.mkdocs-ng.org/about/release-notes/
+[Contributing Guide]: https://www.mkdocs-ng.org/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
-[catalog]: https://github.com/mkdocs/catalog
+[catalog]: https://github.com/mkdocs-ng/catalog
 
 ## License
 
-[BSD-2-Clause](https://github.com/mkdocs/mkdocs/blob/master/LICENSE)
+[BSD-2-Clause](https://github.com/mkdocs-ng/mkdocs/blob/master/LICENSE)
