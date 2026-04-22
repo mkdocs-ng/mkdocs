@@ -10,7 +10,14 @@ Usage:
 
 from __future__ import annotations
 
+import sys
+
 import nox
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -27,6 +34,17 @@ SOURCE_DIRS = ["mkdocs", "docs"]
 
 # Sessions that run by default when `nox` is invoked with no arguments.
 nox.options.sessions = ["tests", "lint", "typing"]
+
+
+def install_min_versions(session: nox.Session) -> None:
+    """Reinstall the pinned min-version dependency set from pyproject.toml."""
+    with open("pyproject.toml", "rb") as f:
+        data = tomllib.load(f)
+    dependencies = [
+        dep.replace(" == ", "==")
+        for dep in data["project"]["optional-dependencies"]["min-versions"]
+    ]
+    session.run("python", "-m", "pip", "install", "--force-reinstall", *dependencies)
 
 
 # ---------------------------------------------------------------------------
@@ -54,7 +72,7 @@ def tests(session: nox.Session) -> None:
 def tests_min(session: nox.Session) -> None:
     """Run the unit test suite with pinned minimum dependency versions."""
     session.install("-e", ".[i18n,testing]")
-    session.run("python", "scripts/install_min_versions.py")
+    install_min_versions(session)
     session.run(
         "python",
         "-m",
