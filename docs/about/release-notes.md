@@ -7,7 +7,7 @@
 To upgrade MkDocs to the latest version, use pip:
 
 ```bash
-pip install -U mkdocs
+pip install -U mkdocs-ng
 ```
 
 You can determine your currently installed version using `mkdocs --version`:
@@ -19,21 +19,15 @@ mkdocs, version 1.5.0 from /path/to/mkdocs (Python 3.10)
 
 ## Maintenance team
 
-The current and past members of the MkDocs team.
+The current members of the MkDocs-NG team.
 
-* [@tomchristie](https://github.com/tomchristie/)
-* [@d0ugal](https://github.com/d0ugal/)
-* [@waylan](https://github.com/waylan/)
-* [@oprypin](https://github.com/oprypin/)
-* [@ultrabug](https://github.com/ultrabug/)
+* [@shenxianpeng](https://github.com/shenxianpeng)
 
 ## Version 1.7.0 (2026-04-22)
 
 ### Fixed
 
 * Fix `--livereload` CLI option not being recognized correctly. #4
-* Fix `draft_docs` and `exclude_docs` documentation and add missing tests. #3859
-* Fix `<hr>` color variable in MkDocs theme to be light/dark mode responsive. #4046
 
 ### Added
 
