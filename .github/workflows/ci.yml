@@ -44,10 +44,10 @@ jobs:
           python -m pip install nox
       - name: Run tests
         run: |
-          nox -s coverage
+          nox -s coverage-${{ matrix.py || matrix.python-version }} tests-min-${{ matrix.py || matrix.python-version }}
       - name: Run integration tests
         run: |
-          nox -s integration-${{ matrix.py || matrix.python-version }}
+          nox -s integration-${{ matrix.py || matrix.python-version }} integration-no-babel-${{ matrix.py || matrix.python-version }}
         shell: bash
       - name: Upload Codecov Results
         if: success()

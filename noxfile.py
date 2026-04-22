@@ -19,8 +19,8 @@ import nox
 # Python version used for sessions that don't need a specific version.
 DEFAULT_PYTHON = "3.11"
 
-# All CPython versions we support.
-PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+# All Python runtimes we support in CI.
+PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "pypy3"]
 
 # Source directories checked by formatters / type-checkers.
 SOURCE_DIRS = ["mkdocs", "docs"]
@@ -66,7 +66,7 @@ def tests_min(session: nox.Session) -> None:
     )
 
 
-@nox.session
+@nox.session(python=PYTHON_VERSIONS)
 def coverage(session: nox.Session) -> None:
     """Run unit tests and produce a coverage report."""
     session.install("-e", ".[i18n,testing]")
