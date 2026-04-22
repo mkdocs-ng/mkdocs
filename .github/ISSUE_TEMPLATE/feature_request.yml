@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Thanks for suggesting an improvement to MkDocs-NG!
-        Please search [existing issues](https://github.com/mkdocs-ng/mkdocs/issues) and [discussions](https://github.com/mkdocs-ng/mkdocs/discussions) before submitting.
+        Please search [existing issues](https://github.com/mkdocs-ng/mkdocs/issues) before submitting.
 
   - type: textarea
     id: problem

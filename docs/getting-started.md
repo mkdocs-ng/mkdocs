@@ -200,13 +200,12 @@ you're done. For specific instructions on a number of common hosts, see the
 
 See the [User Guide] for more complete documentation of all of MkDocs' features.
 
-To get help with MkDocs, please use the [GitHub discussions] or [GitHub issues].
+To get help with MkDocs, please use [GitHub issues].
 
 [Installation Guide]: user-guide/installation.md
 [docs_dir]: user-guide/configuration.md#docs_dir
 [deploy]: user-guide/deploying-your-docs.md
 [nav]: user-guide/configuration.md#nav
-[GitHub discussions]: https://github.com/mkdocs-ng/mkdocs/discussions
 [GitHub issues]: https://github.com/mkdocs-ng/mkdocs/issues
 [site_name]: user-guide/configuration.md#site_name
 [theme]: user-guide/configuration.md#theme
