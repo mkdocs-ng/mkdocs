@@ -208,6 +208,10 @@ check = ["markdown", "js", "css", "spelling"]
 path = "mkdocs.yml"
 [tool.hatch.envs.docs]
 detached = false
+[tool.hatch.envs.docs.scripts]
+build = "mkdocs build"
+serve = "mkdocs serve"
+deploy = "mkdocs gh-deploy"
 
 [tool.black]
 line-length = 100

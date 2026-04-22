@@ -13,9 +13,9 @@ You can check if you already have these installed from the command line:
 
 ```console
 $ python --version
-Python 3.8.2
+Python 3.12.0
 $ pip --version
-pip 20.0.2 from /usr/local/lib/python3.8/site-packages/pip (python 3.8)
+pip 24.2 from /usr/local/lib/python3.12/site-packages/pip (python 3.12)
 ```
 
 If you already have those packages installed, you may skip down to [Installing
@@ -55,7 +55,7 @@ python get-pip.py
 Install the `mkdocs` package using pip:
 
 ```bash
-pip install mkdocs
+pip install mkdocs-ng
 ```
 
 You should now have the `mkdocs` command installed on your system. Run `mkdocs
@@ -63,7 +63,7 @@ You should now have the `mkdocs` command installed on your system. Run `mkdocs
 
 ```console
 $ mkdocs --version
-mkdocs, version 1.2.0 from /usr/local/lib/python3.8/site-packages/mkdocs (Python 3.8)
+mkdocs, version 1.7.0 from /usr/local/lib/python3.12/site-packages/mkdocs (Python 3.12)
 ```
 
 > NOTE:
@@ -86,14 +86,14 @@ mkdocs, version 1.2.0 from /usr/local/lib/python3.8/site-packages/mkdocs (Python
 > like this:
 >
 > ```bash
-> python -m pip install mkdocs
+> python -m pip install mkdocs-ng
 > python -m mkdocs
 > ```
 >
 > For a more permanent solution, you may need to edit your `PATH` environment
 > variable to include the `Scripts` directory of your Python installation.
 > Recent versions of Python include a script to do this for you. Navigate to
-> your Python installation directory (for example `C:\Python38\`), open the
+> your Python installation directory (for example `C:\Python312\`), open the
 > `Tools`, then `Scripts` folder, and run the `win_add2path.py` file by double
 > clicking on it. Alternatively, you can download the [script][a2p] and run it
 > (`python win_add2path.py`).
