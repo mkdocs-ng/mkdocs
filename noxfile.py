@@ -91,14 +91,14 @@ def coverage(session: nox.Session) -> None:
 @nox.session(python=PYTHON_VERSIONS)
 def integration(session: nox.Session) -> None:
     """Run the integration test suite (with babel / i18n support)."""
-    session.install("-e", ".[i18n]")
+    session.install("-e", ".[i18n,docs]")
     session.run("python", "-m", "mkdocs.tests.integration")
 
 
 @nox.session(name="integration-no-babel", python=PYTHON_VERSIONS)
 def integration_no_babel(session: nox.Session) -> None:
     """Run the integration test suite without babel."""
-    session.install("-e", ".")
+    session.install("-e", ".[docs]")
     session.run("python", "-m", "mkdocs.tests.integration")
 
 
