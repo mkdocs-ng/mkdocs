@@ -121,10 +121,10 @@ hatch run lint:check
 
 If you add a new plugin to mkdocs.yml, you don't need to add it to any "requirements" file, because that is managed automatically.
 
-> INFO: If you don't want to use Hatch, for documentation you can install requirements into a virtualenv, in one of these ways (with `.venv` being the virtualenv directory):
+> INFO: If you don't want to use Hatch, for documentation you can install dependencies into a virtualenv (with `.venv` being the virtualenv directory):
 >
 > ```bash
-> .venv/bin/pip install -r requirements/requirements-docs.txt  # Exact versions of dependencies.
+> .venv/bin/pip install --editable .
 > .venv/bin/pip install -r $(mkdocs get-deps)  # Latest versions of all dependencies.
 > ```
 
