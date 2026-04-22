@@ -96,6 +96,7 @@ artifacts = ["/mkdocs/**/*.mo"]
 [tool.hatch.build.targets.sdist]
 include = ["/mkdocs"]
 [tool.hatch.build.targets.wheel]
+packages = ["mkdocs"]
 exclude = ["/mkdocs/tests", "*.po", "*.pot", "babel.cfg"]
 [tool.hatch.build.hooks.custom]
 dependencies = [
@@ -129,7 +130,7 @@ _coverage = [
 ]
 with-coverage = "test"
 [[tool.hatch.envs.test.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12", "pypy3"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "pypy3"]
 type = ["default", "min-req"]
 [tool.hatch.envs.test.overrides]
 matrix.type.features = [
@@ -146,7 +147,7 @@ detached = false
 [tool.hatch.envs.integration.scripts]
 test = "python -m mkdocs.tests.integration"
 [[tool.hatch.envs.integration.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12", "pypy3"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "pypy3"]
 type = ["default", "no-babel"]
 [tool.hatch.envs.integration.overrides]
 matrix.type.features = [
