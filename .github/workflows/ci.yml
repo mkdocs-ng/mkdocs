@@ -47,7 +47,7 @@ jobs:
           nox -s coverage
       - name: Run integration tests
         run: |
-          nox -s integration
+          nox -s integration-${{ matrix.py || matrix.python-version }}
         shell: bash
       - name: Upload Codecov Results
         if: success()
