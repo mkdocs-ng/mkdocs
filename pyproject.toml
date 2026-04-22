@@ -106,7 +106,7 @@ dependencies = [
 ]
 
 [tool.hatch.env]
-requires = ["hatch-mkdocs", "hatch-pip-compile"]
+requires = ["hatch-mkdocs"]
 
 [tool.hatch.envs.default.scripts]
 all = [
@@ -169,7 +169,6 @@ dependencies = [
 check = "mypy mkdocs"
 
 [tool.hatch.envs.style]
-type = "pip-compile"
 detached = true
 dependencies = [
     "black",
@@ -208,7 +207,6 @@ check = ["markdown", "js", "css", "spelling"]
 [tool.hatch.env.collectors.mkdocs.docs]
 path = "mkdocs.yml"
 [tool.hatch.envs.docs]
-type = "pip-compile"
 detached = false
 
 [tool.black]
