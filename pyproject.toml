@@ -55,6 +55,40 @@ dependencies = [
 i18n = [
     "babel >=2.9.0",
 ]
+dev = [
+    "nox",
+]
+testing = [
+    "coverage",
+]
+style = [
+    "black",
+    "isort",
+    "ruff",
+]
+typing = [
+    "mypy",
+    "babel",
+    "types-Markdown",
+    "types-pytz",
+    "types-PyYAML",
+    "types-setuptools",
+    "typing-extensions",
+]
+spelling = [
+    "codespell==2.2.6",
+]
+docs = [
+    "mkdocs-redirects",
+    "mkdocs-autorefs",
+    "mkdocs-literate-nav",
+    "mkdocstrings[python]",
+    "pymdown-extensions",
+    "mkdocs-callouts",
+    "mdx-gh-links",
+    "mkdocs-click",
+    "black",
+]
 min-versions = [
     "click ==8.1.8",
     "Jinja2 ==3.1.6",

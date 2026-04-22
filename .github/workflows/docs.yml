@@ -19,9 +19,9 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install hatch
+        run: pip install nox
       - name: Build site
-        run: hatch run docs:build
+        run: nox -s docs
 
   deploy:
     runs-on: ubuntu-latest
@@ -37,6 +37,6 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install hatch
+        run: pip install nox
       - name: Deploy to GitHub Pages
-        run: hatch run docs:deploy
+        run: nox -s docs-deploy

@@ -48,29 +48,81 @@ pip install git+https://github.com/mkdocs-ng/mkdocs.git
 
 Note that for development you can just use [Hatch] directly as described below. If you wish to install a local clone of MkDocs anyway, you can run `pip install --editable .`. It is **strongly** recommended that you do this within a [virtualenv].
 
-## Installing Hatch
+## Installing development tools
 
-The main tool that is used for development is [Hatch]. It manages dependencies (in a virtualenv that is created on the fly) and is also the command runner.
+The project provides two equivalent ways to run development tasks. You only need **one** of them.
 
-So first, [install it][install Hatch]. Ideally in an isolated way with **`pipx install hatch`** (after [installing `pipx`]), or just `pip install hatch` as a more well-known way.
+### Option A — Nox (recommended for contributors)
+
+[Nox] is a simple command runner that manages its own virtualenvs. Install it once:
+
+```bash
+pipx install nox   # recommended (isolated)
+# or
+pip install nox
+```
+
+All available sessions can be listed with:
+
+```bash
+nox -l
+```
+
+Quick reference:
+
+| Task | Command |
+|------|---------|
+| Unit tests | `nox -s tests` |
+| Unit tests + coverage | `nox -s coverage` |
+| Integration tests | `nox -s integration` |
+| Ruff lint | `nox -s lint` |
+| Auto-fix formatting | `nox -s format` |
+| Check formatting only | `nox -s format_check` |
+| Type check (mypy) | `nox -s typing` |
+| Spell check | `nox -s spelling` |
+| Markdown lint | `nox -s markdown` |
+| JS lint | `nox -s js` |
+| Build docs | `nox -s docs` |
+| Serve docs locally | `nox -s docs_serve` |
+
+Run the most common checks in one go:
+
+```bash
+nox  # runs: tests, lint, typing
+```
+
+### Option B — Hatch
+
+[Hatch] manages dependencies in a virtualenv that is created on the fly and is also a command runner.
+
+[Install it][install Hatch] with **`pipx install hatch`** (after [installing `pipx`]), or just `pip install hatch`.
 
 ## Running all checks
 
-To run **all** checks that are required for MkDocs, just run the following command in the cloned MkDocs repository:
+With **nox**:
+
+```bash
+nox -s tests integration lint format_check typing spelling
+```
+
+With **hatch**:
 
 ```bash
 hatch run all
 ```
 
-**This will encompass all of the checks mentioned below.**
-
 All checks need to pass.
 
 ### Running tests
 
-To run the test suite for MkDocs, run the following commands:
+To run the test suite for MkDocs:
 
 ```bash
+# nox
+nox -s tests
+nox -s integration
+
+# hatch
 hatch run test:test
 hatch run integration:test
 ```
@@ -83,31 +135,47 @@ will be verified by [GitHub Actions] when you submit a pull request.
 
 Python code within MkDocs' code base is formatted using [Black] and [Isort] and lint-checked using [Ruff], all of which are configured in `pyproject.toml`.
 
-You can automatically check and format the code according to these tools with the following command:
+You can automatically check and format the code:
 
 ```bash
+# nox
+nox -s format
+
+# hatch
 hatch run style:fix
 ```
 
-The code is also type-checked using [mypy] - also configured in `pyproject.toml`, it can be run like this:
+The code is also type-checked using [mypy]:
 
 ```bash
+# nox
+nox -s typing
+
+# hatch
 hatch run types:check
 ```
 
 ### Other style checks
 
-There are several other checks, such as spelling and JS style. To run all of them, use this command:
+There are several other checks, such as spelling and JS style:
 
 ```bash
+# nox
+nox -s spelling markdown js
+
+# hatch
 hatch run lint:check
 ```
 
 ### Documentation of MkDocs itself
 
-After making edits to files under the `docs/` dir, you can preview the site locally using the following command:
+After making edits to files under the `docs/` dir, you can preview the site locally:
 
 ```bash
+# nox
+nox -s docs_serve
+
+# hatch
 hatch run docs:serve
 ```
 
@@ -116,6 +184,10 @@ Note that any 'WARNING' should be resolved before submitting a contribution.
 Documentation files are also checked by markdownlint, so you should run this as well:
 
 ```bash
+# nox
+nox -s markdown
+
+# hatch
 hatch run lint:check
 ```
 
@@ -179,6 +251,7 @@ Everyone interacting in the MkDocs project's codebases, issue trackers, chat
 rooms, and mailing lists is expected to follow the [PyPA Code of Conduct].
 
 [virtualenv]: https://virtualenv.pypa.io/en/latest/user_guide.html
+[Nox]: https://nox.thea.codes/
 [Hatch]: https://hatch.pypa.io/
 [install Hatch]: https://hatch.pypa.io/latest/install/#pip
 [installing `pipx`]: https://pypa.github.io/pipx/installation/
