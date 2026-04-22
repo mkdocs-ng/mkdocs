@@ -125,7 +125,7 @@ If you add a new plugin to mkdocs.yml, you don't need to add it to any "requirem
 >
 > ```bash
 > .venv/bin/pip install --editable .
-> .venv/bin/pip install -r $(mkdocs get-deps)  # Additional dependencies from mkdocs.yml plugins/themes.
+> .venv/bin/pip install $(mkdocs get-deps)  # Additional dependencies from mkdocs.yml plugins/themes.
 > ```
 
 ## Translating themes
