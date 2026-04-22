@@ -50,11 +50,7 @@ Note that for development you can just use [Hatch] directly as described below. 
 
 ## Installing development tools
 
-The project provides two equivalent ways to run development tasks. You only need **one** of them.
-
-### Option A — Nox (recommended for contributors)
-
-[Nox] is a simple command runner that manages its own virtualenvs. Install it once:
+The project uses [Nox] as its task runner. Install it once:
 
 ```bash
 pipx install nox   # recommended (isolated)
@@ -62,134 +58,39 @@ pipx install nox   # recommended (isolated)
 pip install nox
 ```
 
-All available sessions can be listed with:
-
-```bash
-nox -l
-```
-
-Quick reference:
-
-| Task | Command |
-|------|---------|
-| Unit tests | `nox -s tests` |
-| Unit tests + coverage | `nox -s coverage` |
-| Integration tests | `nox -s integration` |
-| Ruff lint | `nox -s lint` |
-| Auto-fix formatting | `nox -s format` |
-| Check formatting only | `nox -s format_check` |
-| Type check (mypy) | `nox -s typing` |
-| Spell check | `nox -s spelling` |
-| Markdown lint | `nox -s markdown` |
-| JS lint | `nox -s js` |
-| Build docs | `nox -s docs` |
-| Serve docs locally | `nox -s docs_serve` |
-
-Run the most common checks in one go:
+Run the most common checks before submitting a PR:
 
 ```bash
 nox  # runs: tests, lint, typing
 ```
 
-### Option B — Hatch
+List all available tasks with `nox -l`, then run any one by name, e.g. `nox -s format`.
 
-[Hatch] manages dependencies in a virtualenv that is created on the fly and is also a command runner.
+## Running checks
 
-[Install it][install Hatch] with **`pipx install hatch`** (after [installing `pipx`]), or just `pip install hatch`.
-
-## Running all checks
-
-With **nox**:
+### Tests
 
 ```bash
-nox -s tests integration lint format_check typing spelling
-```
-
-With **hatch**:
-
-```bash
-hatch run all
-```
-
-All checks need to pass.
-
-### Running tests
-
-To run the test suite for MkDocs:
-
-```bash
-# nox
 nox -s tests
 nox -s integration
-
-# hatch
-hatch run test:test
-hatch run integration:test
 ```
 
-It will attempt to run the tests against all of the Python versions we
-support. So don't be concerned if you are missing some. The rest
-will be verified by [GitHub Actions] when you submit a pull request.
-
-### Python code style
-
-Python code within MkDocs' code base is formatted using [Black] and [Isort] and lint-checked using [Ruff], all of which are configured in `pyproject.toml`.
-
-You can automatically check and format the code:
+### Code style
 
 ```bash
-# nox
-nox -s format
-
-# hatch
-hatch run style:fix
+nox -s format    # auto-fix (isort + black + ruff)
+nox -s lint      # check only (ruff)
+nox -s typing    # mypy
 ```
 
-The code is also type-checked using [mypy]:
+### Documentation
 
 ```bash
-# nox
-nox -s typing
-
-# hatch
-hatch run types:check
+nox -s docs        # build
+nox -s docs-serve  # local preview
 ```
 
-### Other style checks
-
-There are several other checks, such as spelling and JS style:
-
-```bash
-# nox
-nox -s spelling markdown js
-
-# hatch
-hatch run lint:check
-```
-
-### Documentation of MkDocs itself
-
-After making edits to files under the `docs/` dir, you can preview the site locally:
-
-```bash
-# nox
-nox -s docs_serve
-
-# hatch
-hatch run docs:serve
-```
-
-Note that any 'WARNING' should be resolved before submitting a contribution.
-
-Documentation files are also checked by markdownlint, so you should run this as well:
-
-```bash
-# nox
-nox -s markdown
-
-# hatch
-hatch run lint:check
-```
+Note that any 'WARNING' should be resolved before submitting a contribution. Documentation files are also checked by markdownlint (`nox -s markdown`).
 
 If you add a new plugin to mkdocs.yml, you don't need to add it to any "requirements" file, because that is managed automatically.
 
@@ -260,6 +161,4 @@ rooms, and mailing lists is expected to follow the [PyPA Code of Conduct].
 [Translating Themes]: https://mkdocs-ng.github.io/mkdocs/dev-guide/translations/
 [Jinja's i18n extension]: https://jinja.palletsprojects.com/en/latest/extensions/#i18n-extension
 [Ruff]: https://docs.astral.sh/ruff/
-[Black]: https://black.readthedocs.io/
-[Isort]: https://pycqa.github.io/isort/
 [mypy]: https://mypy-lang.org/
