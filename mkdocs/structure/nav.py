@@ -188,16 +188,20 @@ def get_navigation(files: Files, config: MkDocsConfig) -> Navigation:
 def _data_to_navigation(data, files: Files, config: MkDocsConfig):
     if isinstance(data, dict):
         return [
-            _data_to_navigation((key, value), files, config)
-            if isinstance(value, str)
-            else Section(title=key, children=_data_to_navigation(value, files, config))
+            (
+                _data_to_navigation((key, value), files, config)
+                if isinstance(value, str)
+                else Section(title=key, children=_data_to_navigation(value, files, config))
+            )
             for key, value in data.items()
         ]
     elif isinstance(data, list):
         return [
-            _data_to_navigation(item, files, config)[0]
-            if isinstance(item, dict) and len(item) == 1
-            else _data_to_navigation(item, files, config)
+            (
+                _data_to_navigation(item, files, config)[0]
+                if isinstance(item, dict) and len(item) == 1
+                else _data_to_navigation(item, files, config)
+            )
             for item in data
         ]
     title, path = data if isinstance(data, tuple) else (None, data)

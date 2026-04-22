@@ -86,12 +86,10 @@ class BaseConfigOption(Generic[T]):
         self._name = name
 
     @overload
-    def __get__(self, obj: Config, type=None) -> T:
-        ...
+    def __get__(self, obj: Config, type=None) -> T: ...
 
     @overload
-    def __get__(self, obj, type=None) -> BaseConfigOption:
-        ...
+    def __get__(self, obj, type=None) -> BaseConfigOption: ...
 
     def __get__(self, obj, type=None):
         if not isinstance(obj, Config):
