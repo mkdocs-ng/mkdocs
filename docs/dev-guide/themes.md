@@ -15,9 +15,9 @@ basic, yet complete, theme with all the boilerplate required. **You can find
 this base theme on [GitHub][basic theme]**. It contains detailed comments in
 the code to describe the different features and their usage.
 
-[community wiki]: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes
-[catalog]: https://github.com/mkdocs/catalog#-theming
-[basic theme]: https://github.com/mkdocs/mkdocs-basic-theme
+[community wiki]: https://github.com/mkdocs-ng/mkdocs/wiki/MkDocs-Themes
+[catalog]: https://github.com/mkdocs-ng/catalog#-theming
+[basic theme]: https://github.com/mkdocs-ng/mkdocs-basic-theme
 
 ## Creating a custom theme
 
@@ -635,7 +635,7 @@ following `extra` configuration:
 extra:
   version: 0.13.0
   links:
-    - https://github.com/mkdocs
+    - https://github.com/mkdocs-ng
     - https://docs.readthedocs.org/en/latest/builds.html#mkdocs
     - https://www.mkdocs.org/
 ```
@@ -795,7 +795,7 @@ Themes should expect the index to not be present, but can choose to use the
 index when it is available. The `index` object was new in MkDocs version *1.0*.
 
 [Jinja2 template]: https://jinja.palletsprojects.com/
-[built-in themes]: https://github.com/mkdocs/mkdocs/tree/master/mkdocs/themes
+[built-in themes]: https://github.com/mkdocs-ng/mkdocs/tree/master/mkdocs/themes
 [theme's configuration file]: #theme-configuration
 [lunr.js]: https://lunrjs.com/
 [site_dir]: ../user-guide/configuration.md#site_dir

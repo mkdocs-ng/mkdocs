@@ -224,6 +224,6 @@ WARNING: Installing an MkDocs theme means installing a Python package and execut
 [setup-GA4]: https://support.google.com/analytics/answer/9304153?hl=en&ref_topic=9303319
 [upgrade-GA4]: https://support.google.com/analytics/answer/9744165?hl=en&ref_topic=9303319
 [Read the Docs]: https://readthedocs.org/
-[community wiki]: https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes
-[catalog]: https://github.com/mkdocs/catalog#-theming
+[community wiki]: https://github.com/mkdocs-ng/mkdocs/wiki/MkDocs-Themes
+[catalog]: https://github.com/mkdocs-ng/catalog#-theming
 [localizing your theme]: localizing-your-theme.md

@@ -2,9 +2,9 @@
  * Wrap inline code samples otherwise they shoot of the side and
  * can't be read at all.
  *
- * https://github.com/mkdocs/mkdocs/issues/313
- * https://github.com/mkdocs/mkdocs/issues/233
- * https://github.com/mkdocs/mkdocs/issues/834
+ * https://github.com/mkdocs-ng/mkdocs/issues/313
+ * https://github.com/mkdocs-ng/mkdocs/issues/233
+ * https://github.com/mkdocs-ng/mkdocs/issues/834
  */
 .rst-content code {
     white-space: pre-wrap;
@@ -16,9 +16,9 @@
  * Make code blocks display as blocks and give them the appropriate
  * font size and padding.
  *
- * https://github.com/mkdocs/mkdocs/issues/855
- * https://github.com/mkdocs/mkdocs/issues/834
- * https://github.com/mkdocs/mkdocs/issues/233
+ * https://github.com/mkdocs-ng/mkdocs/issues/855
+ * https://github.com/mkdocs-ng/mkdocs/issues/834
+ * https://github.com/mkdocs-ng/mkdocs/issues/233
  */
 .rst-content pre code {
     white-space: pre;
@@ -31,7 +31,7 @@
 /**
  * Fix code colors
  *
- * https://github.com/mkdocs/mkdocs/issues/2027
+ * https://github.com/mkdocs-ng/mkdocs/issues/2027
  */
 .rst-content code {
     color: #E74C3C;
@@ -45,7 +45,7 @@
 /*
  * Fix link colors when the link text is inline code.
  *
- * https://github.com/mkdocs/mkdocs/issues/718
+ * https://github.com/mkdocs-ng/mkdocs/issues/718
  */
 a code {
     color: #2980B9;
@@ -62,7 +62,7 @@ a:visited code {
  * ReadTheDocs theme causing some code to be incorrectly made
  * bold and italic.
  *
- * https://github.com/mkdocs/mkdocs/issues/411
+ * https://github.com/mkdocs-ng/mkdocs/issues/411
  */
 pre .cs, pre .c {
     font-weight: inherit;
@@ -74,7 +74,7 @@ pre .cs, pre .c {
  * samples. Without and highlighting styles attached the
  * formatting is broken.
  *
- * https://github.com/mkdocs/mkdocs/issues/319
+ * https://github.com/mkdocs-ng/mkdocs/issues/319
  */
 .rst-content .no-highlight {
     display: block;
@@ -110,7 +110,7 @@ form .search-query {
 /*
  * Improve inline code blocks within admonitions.
  *
- * https://github.com/mkdocs/mkdocs/issues/656
+ * https://github.com/mkdocs-ng/mkdocs/issues/656
  */
  .rst-content .admonition code {
     color: #404040;
@@ -124,8 +124,8 @@ form .search-query {
  * Account for wide tables which go off the side.
  * Override borders to avoid weirdness on narrow tables.
  *
- * https://github.com/mkdocs/mkdocs/issues/834
- * https://github.com/mkdocs/mkdocs/pull/1034
+ * https://github.com/mkdocs-ng/mkdocs/issues/834
+ * https://github.com/mkdocs-ng/mkdocs/pull/1034
  */
 .rst-content .section .docutils {
     width: 100%;
@@ -149,7 +149,7 @@ td, th {
  * line-height, and then applying a padding-bottom of 40px to this container. In
  * a second step, the items within that container are re-aligned using flexbox.
  *
- * https://github.com/mkdocs/mkdocs/issues/2012
+ * https://github.com/mkdocs-ng/mkdocs/issues/2012
  */
  .wy-nav-side {
     padding-bottom: 40px;
@@ -174,7 +174,7 @@ td, th {
  *    <repo_name>        Next >>      // On the first page
  * <repo_name>  << Previous  Next >>  // On all subsequent pages
  *
- * https://github.com/mkdocs/mkdocs/issues/2012
+ * https://github.com/mkdocs-ng/mkdocs/issues/2012
  */
 .rst-versions .rst-current-version {
     padding: 0 12px;
@@ -189,7 +189,7 @@ td, th {
  * Please note that this amendment also involves removing certain inline-styles
  * from the file ./mkdocs/themes/readthedocs/versions.html.
  *
- * https://github.com/mkdocs/mkdocs/issues/2012
+ * https://github.com/mkdocs-ng/mkdocs/issues/2012
  */
 .rst-current-version span {
     flex: 1;

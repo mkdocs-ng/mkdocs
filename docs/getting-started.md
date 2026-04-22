@@ -206,8 +206,8 @@ To get help with MkDocs, please use the [GitHub discussions] or [GitHub issues].
 [docs_dir]: user-guide/configuration.md#docs_dir
 [deploy]: user-guide/deploying-your-docs.md
 [nav]: user-guide/configuration.md#nav
-[GitHub discussions]: https://github.com/mkdocs/mkdocs/discussions
-[GitHub issues]: https://github.com/mkdocs/mkdocs/issues
+[GitHub discussions]: https://github.com/mkdocs-ng/mkdocs/discussions
+[GitHub issues]: https://github.com/mkdocs-ng/mkdocs/issues
 [site_name]: user-guide/configuration.md#site_name
 [theme]: user-guide/configuration.md#theme
 [User Guide]: user-guide/README.md

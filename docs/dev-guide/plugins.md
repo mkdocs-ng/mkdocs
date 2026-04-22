@@ -561,6 +561,6 @@ You should publish a package on [PyPI], then add it to the [Catalog] for discove
 [post_template]: #on_post_template
 [static_templates]: ../user-guide/configuration.md#static_templates
 [Template Events]: #template-events
-[catalog]: https://github.com/mkdocs/catalog
+[catalog]: https://github.com/mkdocs-ng/catalog
 [on_build_error]: #on_build_error
 [PyPI]: https://pypi.org/

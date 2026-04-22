@@ -1270,7 +1270,7 @@ echo '{INHERIT: mkdocs.yml, site_name: "Renamed site"}' | mkdocs build -f -
 [smarty]: https://python-markdown.github.io/extensions/smarty/
 [exts]: https://python-markdown.github.io/extensions/
 [Python-Markdown wiki]: https://github.com/Python-Markdown/markdown/wiki/Third-Party-Extensions
-[catalog]: https://github.com/mkdocs/catalog
+[catalog]: https://github.com/mkdocs-ng/catalog
 [configuring pages and navigation]: writing-your-docs.md#configure-pages-and-navigation
 [Meta-Data]: writing-your-docs.md#meta-data
 [theme_dir]: customizing-your-theme.md#using-the-theme-custom_dir

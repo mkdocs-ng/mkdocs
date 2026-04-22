@@ -32,8 +32,8 @@ configuration file. Start by reading the [introductory tutorial], then check the
             <a href="user-guide/choosing-your-theme/#mkdocs">mkdocs</a> and
             <a href="user-guide/choosing-your-theme/#readthedocs">readthedocs</a>,
             select one of the third-party themes
-            (on the <a href="https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes">MkDocs Themes</a> wiki page
-            as well as the <a href="https://github.com/mkdocs/catalog#-theming">MkDocs Catalog</a>),
+            (on the <a href="https://github.com/mkdocs-ng/mkdocs/wiki/MkDocs-Themes">MkDocs Themes</a> wiki page
+            as well as the <a href="https://github.com/mkdocs-ng/catalog#-theming">MkDocs Catalog</a>),
             or <a href="dev-guide/themes/">build your own</a>.
         </p>
       </div>
