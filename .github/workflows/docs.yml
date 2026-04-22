@@ -18,3 +18,21 @@ jobs:
         run: pip install --no-deps -r requirements/requirements-docs.txt
       - name: Build site
         run: mkdocs build --strict
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: build
+    permissions:
+      contents: write
+    steps:
+      - name: Download source
+        uses: actions/checkout@v4
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install --no-deps -r requirements/requirements-docs.txt
+      - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --force
