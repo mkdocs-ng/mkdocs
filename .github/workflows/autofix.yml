@@ -3,7 +3,7 @@ on:
   push:
   pull_request:
 jobs:
-  style:
+  pre-commit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -11,13 +11,10 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade hatch
-      - name: Fix code style
-        run: hatch run style:fix --fix-only
-      - name: Check if any edits are necessary
-        run: git diff --color --exit-code
+      - name: Install pre-commit
+        run: pip install pre-commit
+      - name: Run pre-commit hooks
+        run: pre-commit run --all-files
       - name: Apply automatic fixes using pre-commit-ci-lite
         if: failure() && github.event_name == 'pull_request'
         uses: pre-commit-ci/lite-action@v1.1.0

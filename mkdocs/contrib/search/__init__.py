@@ -24,39 +24,45 @@ class LangOption(c.OptionallyRequired[List[str]]):
     """Validate Language(s) provided in config are known languages."""
 
     def get_lunr_supported_lang(self, lang):
-        fallback = {'uk': 'ru'}
+        fallback = {"uk": "ru"}
         for lang_part in lang.split("_"):
             lang_part = lang_part.lower()
             lang_part = fallback.get(lang_part, lang_part)
-            if os.path.isfile(os.path.join(base_path, 'lunr-language', f'lunr.{lang_part}.js')):
+            if os.path.isfile(
+                os.path.join(base_path, "lunr-language", f"lunr.{lang_part}.js")
+            ):
                 return lang_part
 
     def run_validation(self, value: object):
         if isinstance(value, str):
             value = [value]
         if not isinstance(value, list):
-            raise c.ValidationError('Expected a list of language codes.')
+            raise c.ValidationError("Expected a list of language codes.")
         for lang in value[:]:
-            if lang != 'en':
+            if lang != "en":
                 lang_detected = self.get_lunr_supported_lang(lang)
                 if not lang_detected:
-                    log.info(f"Option search.lang '{lang}' is not supported, falling back to 'en'")
+                    log.info(
+                        f"Option search.lang '{lang}' is not supported, falling back to 'en'"
+                    )
                     value.remove(lang)
-                    if 'en' not in value:
-                        value.append('en')
+                    if "en" not in value:
+                        value.append("en")
                 elif lang_detected != lang:
                     value.remove(lang)
                     value.append(lang_detected)
-                    log.info(f"Option search.lang '{lang}' switched to '{lang_detected}'")
+                    log.info(
+                        f"Option search.lang '{lang}' switched to '{lang_detected}'"
+                    )
         return value
 
 
 class _PluginConfig(base.Config):
     lang = c.Optional(LangOption())
-    separator = c.Type(str, default=r'[\s\-]+')
+    separator = c.Type(str, default=r"[\s\-]+")
     min_search_length = c.Type(int, default=3)
-    prebuild_index = c.Choice((False, True, 'node', 'python'), default=False)
-    indexing = c.Choice(('full', 'sections', 'titles'), default='full')
+    prebuild_index = c.Choice((False, True, "node", "python"), default=False)
+    indexing = c.Choice(("full", "sections", "titles"), default="full")
 
 
 class SearchPlugin(BasePlugin[_PluginConfig]):
@@ -64,20 +70,20 @@ class SearchPlugin(BasePlugin[_PluginConfig]):
 
     def on_config(self, config: MkDocsConfig, **kwargs) -> MkDocsConfig:
         """Add plugin templates and scripts to config."""
-        if config.theme.get('include_search_page'):
-            config.theme.static_templates.add('search.html')
-        if not config.theme.get('search_index_only'):
-            path = os.path.join(base_path, 'templates')
+        if config.theme.get("include_search_page"):
+            config.theme.static_templates.add("search.html")
+        if not config.theme.get("search_index_only"):
+            path = os.path.join(base_path, "templates")
             config.theme.dirs.append(path)
-            if 'search/main.js' not in config.extra_javascript:
-                config.extra_javascript.append('search/main.js')  # type: ignore
+            if "search/main.js" not in config.extra_javascript:
+                config.extra_javascript.append("search/main.js")  # type: ignore
         if self.config.lang is None:
             # lang setting undefined. Set default based on theme locale
             validate = _PluginConfig.lang.run_validation
             self.config.lang = validate(config.theme.locale.language)
         # The `python` method of `prebuild_index` is pending deprecation as of version 1.2.
         # TODO: Raise a deprecation warning in a future release (1.3?).
-        if self.config.prebuild_index == 'python':
+        if self.config.prebuild_index == "python":
             log.info(
                 "The 'python' method of the search plugin's 'prebuild_index' config option "
                 "is pending deprecation and will not be supported in a future release."
@@ -94,27 +100,27 @@ class SearchPlugin(BasePlugin[_PluginConfig]):
 
     def on_post_build(self, config: MkDocsConfig, **kwargs) -> None:
         """Build search index."""
-        output_base_path = os.path.join(config.site_dir, 'search')
+        output_base_path = os.path.join(config.site_dir, "search")
         search_index = self.search_index.generate_search_index()
-        json_output_path = os.path.join(output_base_path, 'search_index.json')
-        utils.write_file(search_index.encode('utf-8'), json_output_path)
+        json_output_path = os.path.join(output_base_path, "search_index.json")
+        utils.write_file(search_index.encode("utf-8"), json_output_path)
 
         assert self.config.lang is not None
-        if not config.theme.get('search_index_only'):
+        if not config.theme.get("search_index_only"):
             # Include language support files in output. Copy them directly
             # so that only the needed files are included.
             files = []
-            if len(self.config.lang) > 1 or 'en' not in self.config.lang:
-                files.append('lunr.stemmer.support.js')
+            if len(self.config.lang) > 1 or "en" not in self.config.lang:
+                files.append("lunr.stemmer.support.js")
             if len(self.config.lang) > 1:
-                files.append('lunr.multi.js')
-            if 'ja' in self.config.lang or 'jp' in self.config.lang:
-                files.append('tinyseg.js')
+                files.append("lunr.multi.js")
+            if "ja" in self.config.lang or "jp" in self.config.lang:
+                files.append("tinyseg.js")
             for lang in self.config.lang:
-                if lang != 'en':
-                    files.append(f'lunr.{lang}.js')
+                if lang != "en":
+                    files.append(f"lunr.{lang}.js")
 
             for filename in files:
-                from_path = os.path.join(base_path, 'lunr-language', filename)
+                from_path = os.path.join(base_path, "lunr-language", filename)
                 to_path = os.path.join(output_base_path, filename)
                 utils.copy_file(from_path, to_path)

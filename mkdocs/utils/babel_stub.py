@@ -10,11 +10,11 @@ class UnknownLocaleError(Exception):
 
 class Locale(NamedTuple):
     language: str
-    territory: str = ''
+    territory: str = ""
 
     def __str__(self):
         if self.territory:
-            return f'{self.language}_{self.territory}'
+            return f"{self.language}_{self.territory}"
         return self.language
 
     @classmethod

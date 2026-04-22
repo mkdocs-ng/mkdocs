@@ -14,8 +14,8 @@ class SiteNavigationTests(unittest.TestCase):
 
     def test_simple_nav(self):
         nav_cfg = [
-            {'Home': 'index.md'},
-            {'About': 'about.md'},
+            {"Home": "index.md"},
+            {"About": "about.md"},
         ]
         expected = dedent(
             """
@@ -23,9 +23,14 @@ class SiteNavigationTests(unittest.TestCase):
             Page(title='About', url='/about/')
             """
         )
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
-            File(list(item.values())[0], cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+            File(
+                list(item.values())[0],
+                cfg.docs_dir,
+                cfg.site_dir,
+                cfg.use_directory_urls,
+            )
             for item in nav_cfg
         ]
         files = Files(fs)
@@ -37,8 +42,8 @@ class SiteNavigationTests(unittest.TestCase):
 
     def test_nav_no_directory_urls(self):
         nav_cfg = [
-            {'Home': 'index.md'},
-            {'About': 'about.md'},
+            {"Home": "index.md"},
+            {"About": "about.md"},
         ]
         expected = dedent(
             """
@@ -46,9 +51,16 @@ class SiteNavigationTests(unittest.TestCase):
             Page(title='About', url='/about.html')
             """
         )
-        cfg = load_config(nav=nav_cfg, use_directory_urls=False, site_url='http://example.com/')
+        cfg = load_config(
+            nav=nav_cfg, use_directory_urls=False, site_url="http://example.com/"
+        )
         fs = [
-            File(list(item.values())[0], cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+            File(
+                list(item.values())[0],
+                cfg.docs_dir,
+                cfg.site_dir,
+                cfg.use_directory_urls,
+            )
             for item in nav_cfg
         ]
         files = Files(fs)
@@ -56,21 +68,25 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertEqual(str(site_navigation).strip(), expected)
         self.assertEqual(len(site_navigation.items), 2)
         self.assertEqual(len(site_navigation.pages), 2)
-        self.assertEqual(repr(site_navigation.homepage), "Page(title='Home', url='/index.html')")
+        self.assertEqual(
+            repr(site_navigation.homepage), "Page(title='Home', url='/index.html')"
+        )
 
     def test_nav_missing_page(self):
         nav_cfg = [
-            {'Home': 'index.md'},
+            {"Home": "index.md"},
         ]
         expected = dedent(
             """
             Page(title='Home', url='/')
             """
         )
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
-            File('index.md', cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
-            File('page_not_in_nav.md', cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
+            File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
+            File(
+                "page_not_in_nav.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls
+            ),
         ]
         files = Files(fs)
         site_navigation = get_navigation(files, cfg)
@@ -82,8 +98,8 @@ class SiteNavigationTests(unittest.TestCase):
 
     def test_nav_no_title(self):
         nav_cfg = [
-            'index.md',
-            {'About': 'about.md'},
+            "index.md",
+            {"About": "about.md"},
         ]
         expected = dedent(
             """
@@ -91,10 +107,12 @@ class SiteNavigationTests(unittest.TestCase):
             Page(title='About', url='/about/')
             """
         )
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
             File(nav_cfg[0], cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
-            File(nav_cfg[1]['About'], cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
+            File(
+                nav_cfg[1]["About"], cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls
+            ),
         ]
         files = Files(fs)
         site_navigation = get_navigation(files, cfg)
@@ -104,9 +122,9 @@ class SiteNavigationTests(unittest.TestCase):
 
     def test_nav_external_links(self):
         nav_cfg = [
-            {'Home': 'index.md'},
-            {'Local': '/local.html'},
-            {'External': 'http://example.com/external.html'},
+            {"Home": "index.md"},
+            {"Local": "/local.html"},
+            {"External": "http://example.com/external.html"},
         ]
         expected = dedent(
             """
@@ -115,10 +133,10 @@ class SiteNavigationTests(unittest.TestCase):
             Link(title='External', url='http://example.com/external.html')
             """
         )
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
-        fs = [File('index.md', cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
+        fs = [File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
         files = Files(fs)
-        with self.assertLogs('mkdocs', level='DEBUG') as cm:
+        with self.assertLogs("mkdocs", level="DEBUG") as cm:
             site_navigation = get_navigation(files, cfg)
         self.assertEqual(
             cm.output,
@@ -133,10 +151,10 @@ class SiteNavigationTests(unittest.TestCase):
 
     def test_nav_absolute_links_with_validation(self):
         nav_cfg = [
-            {'Home': 'index.md'},
-            {'Local page': '/foo/bar.md'},
-            {'Local link': '/local.md'},
-            {'External': 'http://example.com/external.html'},
+            {"Home": "index.md"},
+            {"Local page": "/foo/bar.md"},
+            {"Local link": "/local.md"},
+            {"External": "http://example.com/external.html"},
         ]
         expected = dedent(
             """
@@ -148,15 +166,15 @@ class SiteNavigationTests(unittest.TestCase):
         )
         cfg = load_config(
             nav=nav_cfg,
-            site_url='http://example.com/',
-            validation=dict(nav=dict(absolute_links='relative_to_docs')),
+            site_url="http://example.com/",
+            validation=dict(nav=dict(absolute_links="relative_to_docs")),
         )
         fs = [
-            File('index.md', cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
-            File('foo/bar.md', cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
+            File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
+            File("foo/bar.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
         ]
         files = Files(fs)
-        with self.assertLogs('mkdocs', level='DEBUG') as cm:
+        with self.assertLogs("mkdocs", level="DEBUG") as cm:
             site_navigation = get_navigation(files, cfg)
         self.assertEqual(
             cm.output,
@@ -171,9 +189,9 @@ class SiteNavigationTests(unittest.TestCase):
 
     def test_nav_bad_links(self):
         nav_cfg = [
-            {'Home': 'index.md'},
-            {'Missing': 'missing.html'},
-            {'Bad External': 'example.com'},
+            {"Home": "index.md"},
+            {"Missing": "missing.html"},
+            {"Bad External": "example.com"},
         ]
         expected = dedent(
             """
@@ -182,10 +200,10 @@ class SiteNavigationTests(unittest.TestCase):
             Link(title='Bad External', url='example.com')
             """
         )
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
-        fs = [File('index.md', cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
+        fs = [File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
         files = Files(fs)
-        with self.assertLogs('mkdocs') as cm:
+        with self.assertLogs("mkdocs") as cm:
             site_navigation = get_navigation(files, cfg)
         self.assertEqual(
             cm.output,
@@ -200,26 +218,26 @@ class SiteNavigationTests(unittest.TestCase):
 
     def test_indented_nav(self):
         nav_cfg = [
-            {'Home': 'index.md'},
+            {"Home": "index.md"},
             {
-                'API Guide': [
-                    {'Running': 'api-guide/running.md'},
-                    {'Testing': 'api-guide/testing.md'},
-                    {'Debugging': 'api-guide/debugging.md'},
+                "API Guide": [
+                    {"Running": "api-guide/running.md"},
+                    {"Testing": "api-guide/testing.md"},
+                    {"Debugging": "api-guide/debugging.md"},
                     {
-                        'Advanced': [
-                            {'Part 1': 'api-guide/advanced/part-1.md'},
+                        "Advanced": [
+                            {"Part 1": "api-guide/advanced/part-1.md"},
                         ]
                     },
                 ]
             },
             {
-                'About': [
-                    {'Release notes': 'about/release-notes.md'},
-                    {'License': '/license.html'},
+                "About": [
+                    {"Release notes": "about/release-notes.md"},
+                    {"License": "/license.html"},
                 ]
             },
-            {'External': 'https://example.com/'},
+            {"External": "https://example.com/"},
         ]
         expected = dedent(
             """
@@ -236,16 +254,18 @@ class SiteNavigationTests(unittest.TestCase):
             Link(title='External', url='https://example.com/')
             """
         )
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
-            'index.md',
-            'api-guide/running.md',
-            'api-guide/testing.md',
-            'api-guide/debugging.md',
-            'api-guide/advanced/part-1.md',
-            'about/release-notes.md',
+            "index.md",
+            "api-guide/running.md",
+            "api-guide/testing.md",
+            "api-guide/debugging.md",
+            "api-guide/advanced/part-1.md",
+            "about/release-notes.md",
         ]
-        files = Files([File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for s in fs])
+        files = Files(
+            [File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for s in fs]
+        )
         site_navigation = get_navigation(files, cfg)
         self.assertEqual(str(site_navigation).strip(), expected)
         self.assertEqual(len(site_navigation.items), 4)
@@ -257,21 +277,33 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertEqual(site_navigation.items[1].ancestors, [])
         self.assertEqual(len(site_navigation.items[1].children), 4)
         self.assertEqual(
-            repr(site_navigation.items[1].children[0].parent), "Section(title='API Guide')"
+            repr(site_navigation.items[1].children[0].parent),
+            "Section(title='API Guide')",
         )
-        self.assertEqual(site_navigation.items[1].children[0].ancestors, [site_navigation.items[1]])
         self.assertEqual(
-            repr(site_navigation.items[1].children[1].parent), "Section(title='API Guide')"
+            site_navigation.items[1].children[0].ancestors, [site_navigation.items[1]]
         )
-        self.assertEqual(site_navigation.items[1].children[1].ancestors, [site_navigation.items[1]])
         self.assertEqual(
-            repr(site_navigation.items[1].children[2].parent), "Section(title='API Guide')"
+            repr(site_navigation.items[1].children[1].parent),
+            "Section(title='API Guide')",
         )
-        self.assertEqual(site_navigation.items[1].children[2].ancestors, [site_navigation.items[1]])
         self.assertEqual(
-            repr(site_navigation.items[1].children[3].parent), "Section(title='API Guide')"
+            site_navigation.items[1].children[1].ancestors, [site_navigation.items[1]]
         )
-        self.assertEqual(site_navigation.items[1].children[3].ancestors, [site_navigation.items[1]])
+        self.assertEqual(
+            repr(site_navigation.items[1].children[2].parent),
+            "Section(title='API Guide')",
+        )
+        self.assertEqual(
+            site_navigation.items[1].children[2].ancestors, [site_navigation.items[1]]
+        )
+        self.assertEqual(
+            repr(site_navigation.items[1].children[3].parent),
+            "Section(title='API Guide')",
+        )
+        self.assertEqual(
+            site_navigation.items[1].children[3].ancestors, [site_navigation.items[1]]
+        )
         self.assertEqual(len(site_navigation.items[1].children[3].children), 1)
         self.assertEqual(
             repr(site_navigation.items[1].children[3].children[0].parent),
@@ -286,20 +318,24 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertEqual(
             repr(site_navigation.items[2].children[0].parent), "Section(title='About')"
         )
-        self.assertEqual(site_navigation.items[2].children[0].ancestors, [site_navigation.items[2]])
+        self.assertEqual(
+            site_navigation.items[2].children[0].ancestors, [site_navigation.items[2]]
+        )
         self.assertEqual(
             repr(site_navigation.items[2].children[1].parent), "Section(title='About')"
         )
-        self.assertEqual(site_navigation.items[2].children[1].ancestors, [site_navigation.items[2]])
+        self.assertEqual(
+            site_navigation.items[2].children[1].ancestors, [site_navigation.items[2]]
+        )
         self.assertIsNone(site_navigation.items[3].parent)
         self.assertEqual(site_navigation.items[3].ancestors, [])
         self.assertIsNone(site_navigation.items[3].children)
 
     def test_nested_ungrouped_nav(self):
         nav_cfg = [
-            {'Home': 'index.md'},
-            {'Contact': 'about/contact.md'},
-            {'License Title': 'about/sub/license.md'},
+            {"Home": "index.md"},
+            {"Contact": "about/contact.md"},
+            {"License Title": "about/sub/license.md"},
         ]
         expected = dedent(
             """
@@ -308,9 +344,14 @@ class SiteNavigationTests(unittest.TestCase):
             Page(title='License Title', url='/about/sub/license/')
             """
         )
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
-            File(list(item.values())[0], cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+            File(
+                list(item.values())[0],
+                cfg.docs_dir,
+                cfg.site_dir,
+                cfg.use_directory_urls,
+            )
             for item in nav_cfg
         ]
         files = Files(fs)
@@ -321,9 +362,9 @@ class SiteNavigationTests(unittest.TestCase):
 
     def test_nested_ungrouped_nav_no_titles(self):
         nav_cfg = [
-            'index.md',
-            'about/contact.md',
-            'about/sub/license.md',
+            "index.md",
+            "about/contact.md",
+            "about/sub/license.md",
         ]
         expected = dedent(
             """
@@ -333,8 +374,11 @@ class SiteNavigationTests(unittest.TestCase):
             """
         )
 
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
-        fs = [File(item, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for item in nav_cfg]
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
+        fs = [
+            File(item, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+            for item in nav_cfg
+        ]
         files = Files(fs)
         site_navigation = get_navigation(files, cfg)
         self.assertEqual(str(site_navigation).strip(), expected)
@@ -345,9 +389,9 @@ class SiteNavigationTests(unittest.TestCase):
     @unittest.skipUnless(sys.platform.startswith("win"), "requires Windows")
     def test_nested_ungrouped_no_titles_windows(self):
         nav_cfg = [
-            'index.md',
-            'about\\contact.md',
-            'about\\sub\\license.md',
+            "index.md",
+            "about\\contact.md",
+            "about\\sub\\license.md",
         ]
         expected = dedent(
             """
@@ -357,8 +401,11 @@ class SiteNavigationTests(unittest.TestCase):
             """
         )
 
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
-        fs = [File(item, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for item in nav_cfg]
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
+        fs = [
+            File(item, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+            for item in nav_cfg
+        ]
         files = Files(fs)
         site_navigation = get_navigation(files, cfg)
         self.assertEqual(str(site_navigation).strip(), expected)
@@ -372,10 +419,10 @@ class SiteNavigationTests(unittest.TestCase):
             Page(title=[blank], url='/about/')
             """
         )
-        cfg = load_config(site_url='http://example.com/')
+        cfg = load_config(site_url="http://example.com/")
         fs = [
-            File('index.md', cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
-            File('about.md', cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
+            File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
+            File("about.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
         ]
         files = Files(fs)
         site_navigation = get_navigation(files, cfg)
@@ -399,17 +446,19 @@ class SiteNavigationTests(unittest.TestCase):
                     Page(title=[blank], url='/api-guide/advanced/part-1/')
             """
         )
-        cfg = load_config(site_url='http://example.com/')
+        cfg = load_config(site_url="http://example.com/")
         fs = [
-            'index.md',
-            'about/license.md',
-            'about/release-notes.md',
-            'api-guide/debugging.md',
-            'api-guide/running.md',
-            'api-guide/testing.md',
-            'api-guide/advanced/part-1.md',
+            "index.md",
+            "about/license.md",
+            "about/release-notes.md",
+            "api-guide/debugging.md",
+            "api-guide/running.md",
+            "api-guide/testing.md",
+            "api-guide/advanced/part-1.md",
         ]
-        files = Files([File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for s in fs])
+        files = Files(
+            [File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for s in fs]
+        )
         site_navigation = get_navigation(files, cfg)
         self.assertEqual(str(site_navigation).strip(), expected)
         self.assertEqual(len(site_navigation.items), 3)
@@ -428,17 +477,19 @@ class SiteNavigationTests(unittest.TestCase):
                 Page(title=[blank], url='api-guide/testing.html')
             """
         )
-        cfg = load_config(use_directory_urls=False, not_in_nav='*ging.md\n/foo.md\n')
+        cfg = load_config(use_directory_urls=False, not_in_nav="*ging.md\n/foo.md\n")
         fs = [
-            'index.md',
-            'foo.md',
-            'about/license.md',
-            'about/release-notes.md',
-            'api-guide/debugging.md',
-            'api-guide/running.md',
-            'api-guide/testing.md',
+            "index.md",
+            "foo.md",
+            "about/license.md",
+            "about/release-notes.md",
+            "api-guide/debugging.md",
+            "api-guide/running.md",
+            "api-guide/testing.md",
         ]
-        files = Files([File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for s in fs])
+        files = Files(
+            [File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for s in fs]
+        )
         set_exclusions(files, cfg)
         site_navigation = get_navigation(files, cfg)
         self.assertEqual(str(site_navigation).strip(), expected)
@@ -450,8 +501,8 @@ class SiteNavigationTests(unittest.TestCase):
             pass
 
         nav_cfg = [
-            {'Home': 'index.md'},
-            {'About': 'about.md'},
+            {"Home": "index.md"},
+            {"About": "about.md"},
         ]
         expected = dedent(
             """
@@ -459,9 +510,14 @@ class SiteNavigationTests(unittest.TestCase):
             PageSubclass(title=[blank], url='/about/')
             """
         )
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
-            File(list(item.values())[0], cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+            File(
+                list(item.values())[0],
+                cfg.docs_dir,
+                cfg.site_dir,
+                cfg.use_directory_urls,
+            )
             for item in nav_cfg
         ]
         files = Files(fs)
@@ -471,41 +527,45 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertEqual(str(site_navigation).strip(), expected)
         self.assertEqual(len(site_navigation.items), 2)
         self.assertEqual(len(site_navigation.pages), 2)
-        self.assertEqual(repr(site_navigation.homepage), "PageSubclass(title=[blank], url='/')")
+        self.assertEqual(
+            repr(site_navigation.homepage), "PageSubclass(title=[blank], url='/')"
+        )
 
     def test_active(self):
         nav_cfg = [
-            {'Home': 'index.md'},
+            {"Home": "index.md"},
             {
-                'API Guide': [
-                    {'Running': 'api-guide/running.md'},
-                    {'Testing': 'api-guide/testing.md'},
-                    {'Debugging': 'api-guide/debugging.md'},
+                "API Guide": [
+                    {"Running": "api-guide/running.md"},
+                    {"Testing": "api-guide/testing.md"},
+                    {"Debugging": "api-guide/debugging.md"},
                     {
-                        'Advanced': [
-                            {'Part 1': 'api-guide/advanced/part-1.md'},
+                        "Advanced": [
+                            {"Part 1": "api-guide/advanced/part-1.md"},
                         ]
                     },
                 ]
             },
             {
-                'About': [
-                    {'Release notes': 'about/release-notes.md'},
-                    {'License': 'about/license.md'},
+                "About": [
+                    {"Release notes": "about/release-notes.md"},
+                    {"License": "about/license.md"},
                 ]
             },
         ]
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
-            'index.md',
-            'api-guide/running.md',
-            'api-guide/testing.md',
-            'api-guide/debugging.md',
-            'api-guide/advanced/part-1.md',
-            'about/release-notes.md',
-            'about/license.md',
+            "index.md",
+            "api-guide/running.md",
+            "api-guide/testing.md",
+            "api-guide/debugging.md",
+            "api-guide/advanced/part-1.md",
+            "about/release-notes.md",
+            "about/license.md",
         ]
-        files = Files([File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for s in fs])
+        files = Files(
+            [File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for s in fs]
+        )
         site_navigation = get_navigation(files, cfg)
         # Confirm nothing is active
         self.assertTrue(all(page.active is False for page in site_navigation.pages))
@@ -534,17 +594,17 @@ class SiteNavigationTests(unittest.TestCase):
     def test_get_by_type_nested_sections(self):
         nav_cfg = [
             {
-                'Section 1': [
+                "Section 1": [
                     {
-                        'Section 2': [
-                            {'Page': 'page.md'},
+                        "Section 2": [
+                            {"Page": "page.md"},
                         ]
                     },
                 ]
             },
         ]
-        cfg = load_config(nav=nav_cfg, site_url='http://example.com/')
-        fs = [File('page.md', cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
+        fs = [File("page.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
         files = Files(fs)
         site_navigation = get_navigation(files, cfg)
         self.assertEqual(len(_get_by_type(site_navigation, Section)), 2)

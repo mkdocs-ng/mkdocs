@@ -14,31 +14,33 @@ class LocalizationTests(unittest.TestCase):
         self.env = mock.Mock()
 
     def test_jinja_extension_installed(self):
-        install_translations(self.env, parse_locale('en'), [])
-        self.env.add_extension.assert_called_once_with('jinja2.ext.i18n')
+        install_translations(self.env, parse_locale("en"), [])
+        self.env.add_extension.assert_called_once_with("jinja2.ext.i18n")
 
     def test_valid_language(self):
-        locale = parse_locale('en')
-        self.assertEqual(locale.language, 'en')
+        locale = parse_locale("en")
+        self.assertEqual(locale.language, "en")
 
     def test_valid_language_territory(self):
-        locale = parse_locale('en_US')
-        self.assertEqual(locale.language, 'en')
-        self.assertEqual(locale.territory, 'US')
-        self.assertEqual(str(locale), 'en_US')
+        locale = parse_locale("en_US")
+        self.assertEqual(locale.language, "en")
+        self.assertEqual(locale.territory, "US")
+        self.assertEqual(str(locale), "en_US")
 
     def test_unknown_locale(self):
-        self.assertRaises(ValidationError, parse_locale, 'foo')
+        self.assertRaises(ValidationError, parse_locale, "foo")
 
     def test_invalid_locale(self):
-        self.assertRaises(ValidationError, parse_locale, '42')
+        self.assertRaises(ValidationError, parse_locale, "42")
 
     @tempdir()
     def test_no_translations_found(self, dir_without_translations):
-        with self.assertLogs('mkdocs') as cm:
-            install_translations(self.env, parse_locale('fr_CA'), [dir_without_translations])
+        with self.assertLogs("mkdocs") as cm:
+            install_translations(
+                self.env, parse_locale("fr_CA"), [dir_without_translations]
+            )
         self.assertEqual(
-            '\n'.join(cm.output),
+            "\n".join(cm.output),
             "WARNING:mkdocs.localization:No translations could be found for the locale 'fr_CA'. "
             "Defaulting to English.",
         )
@@ -48,8 +50,10 @@ class LocalizationTests(unittest.TestCase):
     def test_translations_found(self, tdir):
         translations = mock.Mock()
 
-        with mock.patch('mkdocs.localization.Translations.load', return_value=translations):
-            install_translations(self.env, parse_locale('en'), [tdir])
+        with mock.patch(
+            "mkdocs.localization.Translations.load", return_value=translations
+        ):
+            install_translations(self.env, parse_locale("en"), [tdir])
 
         self.env.install_gettext_translations.assert_called_once_with(translations)
 
@@ -68,7 +72,9 @@ class LocalizationTests(unittest.TestCase):
             else:
                 self.fail()
 
-        with mock.patch('mkdocs.localization.Translations.load', side_effect=side_effet):
-            install_translations(self.env, parse_locale('en'), [custom_dir, theme_dir])
+        with mock.patch(
+            "mkdocs.localization.Translations.load", side_effect=side_effet
+        ):
+            install_translations(self.env, parse_locale("en"), [custom_dir, theme_dir])
 
         theme_dir_translations.merge.assert_called_once_with(custom_dir_translations)

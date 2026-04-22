@@ -67,8 +67,8 @@ The current members of the MkDocs-NG team.
 
 *   `mkdocs serve` no longer locks up the browser when more than 5 tabs are open. This is achieved by closing the polling connection whenever a tab becomes inactive. Background tabs will no longer auto-reload either - that will instead happen as soon the tab is opened again. Context: #3391
 
-*   New flag `serve --open` to open the site in a browser.  
-    After the first build is finished, this flag will cause the default OS Web browser to be opened at the home page of the local site.  
+*   New flag `serve --open` to open the site in a browser.
+    After the first build is finished, this flag will cause the default OS Web browser to be opened at the home page of the local site.
     Context: #3500
 
 #### Drafts
@@ -113,7 +113,7 @@ Context: #3564, #3578
 
 The "mkdocs" theme got a big update to a newer version of Bootstrap, meaning a slight overhaul of styles. Colors (most notably of admonitions) have much better contrast.
 
-The "mkdocs" theme now has support for dark mode - both automatic (based on the OS/browser setting) and with a manual toggle. Both of these options are **not** enabled by default and need to be configured explicitly.  
+The "mkdocs" theme now has support for dark mode - both automatic (based on the OS/browser setting) and with a manual toggle. Both of these options are **not** enabled by default and need to be configured explicitly.
 See `color_mode`, `user_color_mode_toggle` in [**documentation**](../user-guide/choosing-your-theme.md#mkdocs).
 
 > WARNING: **Possible breaking change.**
@@ -665,8 +665,8 @@ See [**documentation**](../user-guide/configuration.md#hooks).
 
 #### `edit_uri` flexibility (#2927)
 
-There is a new `edit_uri_template:` config.  
-It works like `edit_uri` but more generally covers ways to construct an edit URL.  
+There is a new `edit_uri_template:` config.
+It works like `edit_uri` but more generally covers ways to construct an edit URL.
 See [**documentation**](../user-guide/configuration.md#edit_uri_template).
 
 Additionally, the `edit_uri` functionality will now fully work even if `repo_url` is omitted (#2928)
@@ -681,21 +681,21 @@ Plugins can now choose to set a priority value for their event handlers. This ca
 
 If this is set, events with higher priority are called first. Events without a chosen priority get a default of 0. Events that have the same priority are ordered as they appear in the config.
 
-Recommended priority values: `100` "first", `50` "early", `0` "default", `-50` "late", `-100` "last".  
+Recommended priority values: `100` "first", `50` "early", `0` "default", `-50` "late", `-100` "last".
 As different plugins discover more precise relations to each other, the values should be further tweaked.
 
 See [**documentation**](../dev-guide/plugins.md#event-priorities).
 
 #### New events that persist across builds in `mkdocs serve` (#2972)
 
-The new events are `on_startup` and `on_shutdown`. They run at the very beginning and very end of an `mkdocs` invocation.  
+The new events are `on_startup` and `on_shutdown`. They run at the very beginning and very end of an `mkdocs` invocation.
 `on_startup` also receives information on how `mkdocs` was invoked (e.g. `serve` `--dirtyreload`).
 
 See [**documentation**](../dev-guide/plugins.md#events).
 
 #### Replace `File.src_path` to not deal with backslashes (#2930)
 
-The property `src_path` uses backslashes on Windows, which doesn't make sense as it's a virtual path.  
+The property `src_path` uses backslashes on Windows, which doesn't make sense as it's a virtual path.
 To not make a breaking change, there's no change to how *this* property is used, but now you should:
 
 * Use **`File.src_uri`** instead of `File.src_path`
@@ -721,7 +721,7 @@ See [source code](https://github.com/mkdocs-ng/mkdocs/blob/1.4.0/mkdocs/config/d
 
 #### Rework ConfigOption schemas as class-based (#2962)
 
-When developing a plugin, the settings that it accepts used to be specified in the `config_scheme` variable on the plugin class.  
+When developing a plugin, the settings that it accepts used to be specified in the `config_scheme` variable on the plugin class.
 This approach is now soft-deprecated, and instead you should specify the config in a sub-class of `base.Config`.
 
 Old example:
@@ -744,7 +744,7 @@ class MyPlugin(plugins.BasePlugin):
 
 This code snippet actually has many mistakes but it will pass all type checks and silently run and even succeed in some cases.
 
-So, on to the new equivalent example, changed to new-style schema and attribute-based access:  
+So, on to the new equivalent example, changed to new-style schema and attribute-based access:
 (Complaints from "mypy" added inline)
 
 ```python
@@ -774,15 +774,15 @@ class MyPlugin(plugins.BasePlugin[MyPluginConfig]):
 
 See [**documentation**](../dev-guide/plugins.md#config_scheme).
 
-Also notice that we had to explicitly mark the config attribute `foo` as `Optional`.  
+Also notice that we had to explicitly mark the config attribute `foo` as `Optional`.
 The new-style config has all attributes marked as required by default, and specifying `required=False` or `required=True` is not allowed!
 
 ##### New: `config_options.Optional` (#2962)
 
 Wrapping something into `Optional` is conceptually similar to "I want the default to be `None`" -- and you *have* to express it like that, because writing `default=None` doesn't actually work.
 
-Breaking change: the method `BaseConfigOption.is_required()` was removed. Use `.required` instead. (#2938)  
-And even the `required` property should be mostly unused now.  
+Breaking change: the method `BaseConfigOption.is_required()` was removed. Use `.required` instead. (#2938)
+And even the `required` property should be mostly unused now.
 For class-based configs, there's a new definition for whether an option is "required":
 
 * It has no default, and

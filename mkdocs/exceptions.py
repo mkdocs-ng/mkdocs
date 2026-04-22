@@ -16,7 +16,7 @@ class Abort(MkDocsException, SystemExit):
     code = 1
 
     def show(self, *args, **kwargs) -> None:
-        echo('\n' + self.format_message())
+        echo("\n" + self.format_message())
 
 
 class ConfigurationError(MkDocsException):

@@ -20,7 +20,9 @@ log = logging.getLogger(__name__)
 
 class Navigation:
     def __init__(self, items: list, pages: list[Page]) -> None:
-        self.items = items  # Nested List with full navigation of Sections, Pages, and Links.
+        self.items = (
+            items  # Nested List with full navigation of Sections, Pages, and Links.
+        )
         self.pages = pages  # Flat List of subset of Pages in nav, in order.
 
         self.homepage = None
@@ -36,7 +38,7 @@ class Navigation:
     """A flat list of all [page][mkdocs.structure.pages.Page] objects contained in the navigation."""
 
     def __str__(self) -> str:
-        return '\n'.join(item._indent_print() for item in self)
+        return "\n".join(item._indent_print() for item in self)
 
     def __iter__(self) -> Iterator:
         return iter(self.items)
@@ -91,7 +93,7 @@ class Section(StructureItem):
         ret = [super()._indent_print(depth)]
         for item in self.children:
             ret.append(item._indent_print(depth + 1))
-        return '\n'.join(ret)
+        return "\n".join(ret)
 
 
 class Link(StructureItem):
@@ -101,7 +103,7 @@ class Link(StructureItem):
 
     def __repr__(self):
         name = self.__class__.__name__
-        title = f"{self.title!r}" if self.title is not None else '[blank]'
+        title = f"{self.title!r}" if self.title is not None else "[blank]"
         return f"{name}(title={title}, url={self.url!r})"
 
     title: str
@@ -130,10 +132,12 @@ class Link(StructureItem):
 def get_navigation(files: Files, config: MkDocsConfig) -> Navigation:
     """Build site navigation from config and files."""
     documentation_pages = files.documentation_pages()
-    nav_config = config['nav']
+    nav_config = config["nav"]
     if nav_config is None:
         documentation_pages = sorted(documentation_pages, key=file_sort_key)
-        nav_config = nest_paths(f.src_uri for f in documentation_pages if f.inclusion.is_in_nav())
+        nav_config = nest_paths(
+            f.src_uri for f in documentation_pages if f.inclusion.is_in_nav()
+        )
     items = _data_to_navigation(nav_config, files, config)
     if not isinstance(items, list):
         items = [items]
@@ -157,17 +161,20 @@ def get_navigation(files: Files, config: MkDocsConfig) -> Navigation:
     if missing_from_config:
         log.log(
             config.validation.nav.omitted_files,
-            'The following pages exist in the docs directory, but are not '
-            'included in the "nav" configuration:\n  - ' + '\n  - '.join(missing_from_config),
+            "The following pages exist in the docs directory, but are not "
+            'included in the "nav" configuration:\n  - '
+            + "\n  - ".join(missing_from_config),
         )
 
     links = _get_by_type(items, Link)
     for link in links:
         scheme, netloc, path, query, fragment = urlsplit(link.url)
         if scheme or netloc:
-            log.debug(f"An external link to '{link.url}' is included in the 'nav' configuration.")
+            log.debug(
+                f"An external link to '{link.url}' is included in the 'nav' configuration."
+            )
         elif (
-            link.url.startswith('/')
+            link.url.startswith("/")
             and config.validation.nav.absolute_links
             is not _AbsoluteLinksValidationValue.RELATIVE_TO_DOCS
         ):
@@ -191,7 +198,9 @@ def _data_to_navigation(data, files: Files, config: MkDocsConfig):
             (
                 _data_to_navigation((key, value), files, config)
                 if isinstance(value, str)
-                else Section(title=key, children=_data_to_navigation(value, files, config))
+                else Section(
+                    title=key, children=_data_to_navigation(value, files, config)
+                )
             )
             for key, value in data.items()
         ]
@@ -207,10 +216,11 @@ def _data_to_navigation(data, files: Files, config: MkDocsConfig):
     title, path = data if isinstance(data, tuple) else (None, data)
     lookup_path = path
     if (
-        lookup_path.startswith('/')
-        and config.validation.nav.absolute_links is _AbsoluteLinksValidationValue.RELATIVE_TO_DOCS
+        lookup_path.startswith("/")
+        and config.validation.nav.absolute_links
+        is _AbsoluteLinksValidationValue.RELATIVE_TO_DOCS
     ):
-        lookup_path = lookup_path.lstrip('/')
+        lookup_path = lookup_path.lstrip("/")
     if file := files.get_file_from_path(lookup_path):
         if file.inclusion.is_excluded():
             log.log(
@@ -221,13 +231,15 @@ def _data_to_navigation(data, files: Files, config: MkDocsConfig):
         page = file.page
         if page is not None:
             if not isinstance(page, Page):
-                raise BuildError("A plugin has set File.page to a type other than Page.")
+                raise BuildError(
+                    "A plugin has set File.page to a type other than Page."
+                )
             return page
         return Page(title, file, config)
     return Link(title, path)
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 def _get_by_type(nav, t: type[T]) -> list[T]:

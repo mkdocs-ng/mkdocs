@@ -100,7 +100,7 @@ repo_url: https://example.com/project/repo
 edit_uri: blob/main/docs/
 ```
 
-means that a page named 'foo/bar.md' will have its edit link lead to:  
+means that a page named 'foo/bar.md' will have its edit link lead to:
 <https://example.com/project/repo/blob/main/docs/foo/bar.md>
 
 `edit_uri` can actually be just an absolute URL, not necessarily relative to `repo_url`, so this can achieve the same result:
@@ -166,7 +166,7 @@ And the conversion flag `!q` is available, to percent-encode the field:
 
 >? NOTE: **Suggested useful configurations:**
 >
-> *   GitHub Wiki:  
+> *   GitHub Wiki:
 >     (e.g. `https://github.com/project/repo/wiki/foo/bar/_edit`)
 >
 >     ```yaml
@@ -174,7 +174,7 @@ And the conversion flag `!q` is available, to percent-encode the field:
 >     edit_uri_template: '{path_noext}/_edit'
 >     ```
 >
-> *   BitBucket editor:  
+> *   BitBucket editor:
 >     (e.g. `https://bitbucket.org/project/repo/src/master/docs/foo/bar.md?mode=edit`)
 >
 >     ```yaml
@@ -182,7 +182,7 @@ And the conversion flag `!q` is available, to percent-encode the field:
 >     edit_uri_template: 'src/master/docs/{path}?mode=edit'
 >     ```
 >
-> *   GitLab Static Site Editor:  
+> *   GitLab Static Site Editor:
 >     (e.g. `https://gitlab.com/project/repo/-/sse/master/docs%2Ffoo%2bar.md`)
 >
 >     ```yaml
@@ -190,7 +190,7 @@ And the conversion flag `!q` is available, to percent-encode the field:
 >     edit_uri_template: '-/sse/master/docs%2F{path!q}'
 >     ```
 >
-> *   GitLab Web IDE:  
+> *   GitLab Web IDE:
 >     (e.g. `https://gitlab.com/-/ide/project/repo/edit/master/-/docs/foo/bar.md`)
 >
 >     ```yaml

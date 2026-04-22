@@ -79,12 +79,24 @@ def event(g, name, parameters):
         g, f"cluster_{name}", href=f"#{name}", bgcolor="#ffff3388", pencolor="#00000088"
     ) as c:
         label = "|".join(f"<{p}>{p}" for p in parameters.split())
-        node(c, name, shape="record" if parameters else "point", label=label, fillcolor="#ffffff55")
+        node(
+            c,
+            name,
+            shape="record" if parameters else "point",
+            label=label,
+            fillcolor="#ffffff55",
+        )
 
 
 def placeholder_cluster(g, name):
     with cluster(g, name) as c:
-        node(c, f"placeholder_{name}", label="...", fillcolor="transparent", color="transparent")
+        node(
+            c,
+            f"placeholder_{name}",
+            label="...",
+            fillcolor="transparent",
+            color="transparent",
+        )
 
 
 event(graph, "on_startup", "command dirty")
@@ -110,7 +122,12 @@ with cluster(graph, "cluster_build", bgcolor="#dddddd11") as g:
         event(c, "on_page_content", "html page config files")
 
         edge(c, "on_pre_page:page", "on_page_read_source:page", style="dashed")
-        edge(c, "cluster_on_page_read_source", "on_page_markdown:markdown", style="dashed")
+        edge(
+            c,
+            "cluster_on_page_read_source",
+            "on_page_markdown:markdown",
+            style="dashed",
+        )
         edge(c, "on_page_markdown:markdown", "render_p", style="dashed")
         edge(c, "render_p", "on_page_content:html", style="dashed")
 

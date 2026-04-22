@@ -381,7 +381,7 @@ specific page. The following keys are supported:
 
     2.  A title defined in the `title` meta-data key of a document.
 
-    3.  A level 1 Markdown header on the first line of the document body.  
+    3.  A level 1 Markdown header on the first line of the document body.
         ([Setext-style] headers are supported *only since MkDocs 1.5*.)
 
     4.  The filename of a document.

@@ -37,7 +37,7 @@ class TemplateContext(TypedDict):
 @contextfilter
 def url_filter(context: TemplateContext, value: str) -> str:
     """A Template filter to normalize URLs."""
-    return normalize_url(str(value), page=context['page'], base=context['base_url'])
+    return normalize_url(str(value), page=context["page"], base=context["base_url"])
 
 
 @contextfilter
@@ -48,8 +48,8 @@ def script_tag_filter(context: TemplateContext, extra_script: ExtraScriptValue) 
         if extra_script.type:
             html += ' type="{1.type}"'
         if extra_script.defer:
-            html += ' defer'
+            html += " defer"
         if extra_script.async_:
-            html += ' async'
-    html += '></script>'
+            html += " async"
+    html += "></script>"
     return Markup(html).format(url_filter(context, str(extra_script)), extra_script)

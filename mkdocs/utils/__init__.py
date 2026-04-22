@@ -32,16 +32,16 @@ from mkdocs.utils.yaml import get_yaml_loader, yaml_load  # noqa: F401 - legacy 
 if TYPE_CHECKING:
     from mkdocs.structure.pages import Page
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 log = logging.getLogger(__name__)
 
 markdown_extensions = (
-    '.markdown',
-    '.mdown',
-    '.mkdn',
-    '.mkd',
-    '.md',
+    ".markdown",
+    ".mdown",
+    ".mkdn",
+    ".mkd",
+    ".md",
 )
 
 
@@ -67,7 +67,7 @@ def get_build_datetime() -> datetime:
     Support SOURCE_DATE_EPOCH environment variable for reproducible builds.
     See https://reproducible-builds.org/specs/source-date-epoch/
     """
-    source_date_epoch = os.environ.get('SOURCE_DATE_EPOCH')
+    source_date_epoch = os.environ.get("SOURCE_DATE_EPOCH")
     if source_date_epoch is None:
         return datetime.now(timezone.utc)
 
@@ -81,7 +81,7 @@ def get_build_date() -> str:
     Support SOURCE_DATE_EPOCH environment variable for reproducible builds.
     See https://reproducible-builds.org/specs/source-date-epoch/
     """
-    return get_build_datetime().strftime('%Y-%m-%d')
+    return get_build_datetime().strftime("%Y-%m-%d")
 
 
 if sys.version_info >= (3, 9):
@@ -128,7 +128,7 @@ def write_file(content: bytes, output_path: str) -> None:
     """Write content to output_path, making sure any parent directories exist."""
     output_dir = os.path.dirname(output_path)
     os.makedirs(output_dir, exist_ok=True)
-    with open(output_path, 'wb') as f:
+    with open(output_path, "wb") as f:
         f.write(content)
 
 
@@ -140,7 +140,7 @@ def clean_directory(directory: str) -> None:
     for entry in os.listdir(directory):
         # Don't remove hidden files from the directory. We never copy files
         # that are hidden, so we shouldn't delete them either.
-        if entry.startswith('.'):
+        if entry.startswith("."):
             continue
 
         path = os.path.join(directory, entry)
@@ -159,7 +159,7 @@ def is_markdown_file(path: str) -> bool:
     return path.endswith(markdown_extensions)
 
 
-_ERROR_TEMPLATE_RE = re.compile(r'^\d{3}\.html?$')
+_ERROR_TEMPLATE_RE = re.compile(r"^\d{3}\.html?$")
 
 
 def is_error_template(path: str) -> bool:
@@ -169,10 +169,10 @@ def is_error_template(path: str) -> bool:
 
 @functools.lru_cache(maxsize=None)
 def _norm_parts(path: str) -> list[str]:
-    if not path.startswith('/'):
-        path = '/' + path
+    if not path.startswith("/"):
+        path = "/" + path
     path = posixpath.normpath(path)[1:]
-    return path.split('/') if path else []
+    return path.split("/") if path else []
 
 
 def get_relative_url(url: str, other: str) -> str:
@@ -186,8 +186,8 @@ def get_relative_url(url: str, other: str) -> str:
     root has no effect ('foo/../../bar' ends up just as 'bar').
     """
     # Remove filename from other url if it has one.
-    dirname, _, basename = other.rpartition('/')
-    if '.' in basename:
+    dirname, _, basename = other.rpartition("/")
+    if "." in basename:
         other = dirname
 
     other_parts = _norm_parts(other)
@@ -198,12 +198,12 @@ def get_relative_url(url: str, other: str) -> str:
             break
         common += 1
 
-    rel_parts = ['..'] * (len(other_parts) - common) + dest_parts[common:]
-    relurl = '/'.join(rel_parts) or '.'
-    return relurl + '/' if url.endswith('/') else relurl
+    rel_parts = [".."] * (len(other_parts) - common) + dest_parts[common:]
+    relurl = "/".join(rel_parts) or "."
+    return relurl + "/" if url.endswith("/") else relurl
 
 
-def normalize_url(path: str, page: Page | None = None, base: str = '') -> str:
+def normalize_url(path: str, page: Page | None = None, base: str = "") -> str:
     """Return a URL relative to the given page or using the base."""
     path, relative_level = _get_norm_url(path)
     if relative_level == -1:
@@ -211,7 +211,7 @@ def normalize_url(path: str, page: Page | None = None, base: str = '') -> str:
     if page is not None:
         result = get_relative_url(path, page.url)
         if relative_level > 0:
-            result = '../' * relative_level + result
+            result = "../" * relative_level + result
         return result
 
     return posixpath.join(base, path)
@@ -220,28 +220,28 @@ def normalize_url(path: str, page: Page | None = None, base: str = '') -> str:
 @functools.lru_cache(maxsize=None)
 def _get_norm_url(path: str) -> tuple[str, int]:
     if not path:
-        path = '.'
-    elif '\\' in path:
+        path = "."
+    elif "\\" in path:
         log.warning(
             f"Path '{path}' uses OS-specific separator '\\'. "
             f"That will be unsupported in a future release. Please change it to '/'."
         )
-        path = path.replace('\\', '/')
+        path = path.replace("\\", "/")
     # Allow links to be fully qualified URLs
     parsed = urlsplit(path)
-    if parsed.scheme or parsed.netloc or path.startswith(('/', '#')):
+    if parsed.scheme or parsed.netloc or path.startswith(("/", "#")):
         return path, -1
 
     # Relative path - preserve information about it
-    norm = posixpath.normpath(path) + '/'
+    norm = posixpath.normpath(path) + "/"
     relative_level = 0
-    while norm.startswith('../', relative_level * 3):
+    while norm.startswith("../", relative_level * 3):
         relative_level += 1
     return path, relative_level
 
 
 def create_media_urls(
-    path_list: Iterable[str], page: Page | None = None, base: str = ''
+    path_list: Iterable[str], page: Page | None = None, base: str = ""
 ) -> list[str]:
     """Soft-deprecated, do not use."""
     return [normalize_url(path, page, base) for path in path_list]
@@ -249,9 +249,10 @@ def create_media_urls(
 
 def path_to_url(path):
     warnings.warn(
-        "path_to_url is never used in MkDocs and will be removed soon.", DeprecationWarning
+        "path_to_url is never used in MkDocs and will be removed soon.",
+        DeprecationWarning,
     )
-    return path.replace('\\', '/')
+    return path.replace("\\", "/")
 
 
 def get_theme_dir(name: str) -> str:
@@ -264,13 +265,15 @@ def get_theme_dir(name: str) -> str:
 def get_themes() -> dict[str, EntryPoint]:
     """Return a dict of all installed themes as {name: EntryPoint}."""
     themes: dict[str, EntryPoint] = {}
-    eps: dict[EntryPoint, None] = dict.fromkeys(entry_points(group='mkdocs.themes'))
-    builtins = {ep.name for ep in eps if ep.dist is not None and ep.dist.name == 'mkdocs'}
+    eps: dict[EntryPoint, None] = dict.fromkeys(entry_points(group="mkdocs.themes"))
+    builtins = {
+        ep.name for ep in eps if ep.dist is not None and ep.dist.name == "mkdocs"
+    }
 
     for theme in eps:
         assert theme.dist is not None
 
-        if theme.name in builtins and theme.dist.name != 'mkdocs':
+        if theme.name in builtins and theme.dist.name != "mkdocs":
             raise exceptions.ConfigurationError(
                 f"The theme '{theme.name}' is a builtin theme but the package '{theme.dist.name}' "
                 "attempts to provide a theme with the same name."
@@ -296,7 +299,7 @@ def get_theme_names() -> Collection[str]:
 def dirname_to_title(dirname: str) -> str:
     """Return a page tile obtained from a directory name."""
     title = dirname
-    title = title.replace('-', ' ').replace('_', ' ')
+    title = title.replace("-", " ").replace("_", " ")
     # Capitalize if the dirname was all lowercase, otherwise leave it as-is.
     if title.lower() == title:
         title = title.capitalize()
@@ -306,14 +309,14 @@ def dirname_to_title(dirname: str) -> str:
 
 def get_markdown_title(markdown_src: str) -> str | None:
     """Soft-deprecated, do not use."""
-    lines = markdown_src.replace('\r\n', '\n').replace('\r', '\n').split('\n')
+    lines = markdown_src.replace("\r\n", "\n").replace("\r", "\n").split("\n")
     while lines:
         line = lines.pop(0).strip()
         if not line.strip():
             continue
-        if not line.startswith('# '):
+        if not line.startswith("# "):
             return None
-        return line.lstrip('# ')
+        return line.lstrip("# ")
     return None
 
 
@@ -383,7 +386,10 @@ class CountHandler(logging.NullHandler):
         return rv
 
     def get_counts(self) -> list[tuple[str, int]]:
-        return [(logging.getLevelName(k), v) for k, v in sorted(self.counts.items(), reverse=True)]
+        return [
+            (logging.getLevelName(k), v)
+            for k, v in sorted(self.counts.items(), reverse=True)
+        ]
 
 
 class weak_property:
@@ -400,7 +406,7 @@ class weak_property:
 
 
 def __getattr__(name: str):
-    if name == 'warning_filter':
+    if name == "warning_filter":
         warnings.warn(
             "warning_filter doesn't do anything since MkDocs 1.2 and will be removed soon. "
             "All messages on the `mkdocs` logger get counted automatically.",

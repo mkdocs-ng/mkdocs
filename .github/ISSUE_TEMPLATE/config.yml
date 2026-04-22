@@ -1,0 +1,4 @@
+contact_links:
+  - name: Question / Discussion
+    url: https://github.com/mkdocs-ng/mkdocs/discussions
+    about: For general questions, please use Discussions rather than opening an issue.

@@ -122,16 +122,28 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
         super().__init__((host, port), _Handler, bind_and_activate=False)
         self.set_app(self.serve_request)
 
-        self._wanted_epoch = _timestamp()  # The version of the site that started building.
-        self._visible_epoch = self._wanted_epoch  # Latest fully built version of the site.
-        self._epoch_cond = threading.Condition()  # Must be held when accessing _visible_epoch.
+        self._wanted_epoch = (
+            _timestamp()
+        )  # The version of the site that started building.
+        self._visible_epoch = (
+            self._wanted_epoch
+        )  # Latest fully built version of the site.
+        self._epoch_cond = (
+            threading.Condition()
+        )  # Must be held when accessing _visible_epoch.
 
         self._want_rebuild: bool = False
-        self._rebuild_cond = threading.Condition()  # Must be held when accessing _want_rebuild.
+        self._rebuild_cond = (
+            threading.Condition()
+        )  # Must be held when accessing _want_rebuild.
 
         self._shutdown = False
-        self.serve_thread = threading.Thread(target=lambda: self.serve_forever(shutdown_delay))
-        self.observer = watchdog.observers.polling.PollingObserver(timeout=polling_interval)
+        self.serve_thread = threading.Thread(
+            target=lambda: self.serve_forever(shutdown_delay)
+        )
+        self.observer = watchdog.observers.polling.PollingObserver(
+            timeout=polling_interval
+        )
 
         self._watched_paths: dict[str, int] = {}
         self._watch_refs: dict[str, Any] = {}
@@ -158,7 +170,9 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
         handler = watchdog.events.FileSystemEventHandler()
         handler.on_any_event = callback  # type: ignore[method-assign]
         log.debug(f"Watching '{path}'")
-        self._watch_refs[path] = self.observer.schedule(handler, path, recursive=recursive)
+        self._watch_refs[path] = self.observer.schedule(
+            handler, path, recursive=recursive
+        )
 
     def unwatch(self, path: str) -> None:
         """Stop watching file changes for path. Raises if there was no corresponding `watch` call."""
@@ -176,7 +190,9 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
         if self._watched_paths:
             self.observer.start()
 
-            paths_str = ", ".join(f"'{_try_relativize_path(path)}'" for path in self._watched_paths)
+            paths_str = ", ".join(
+                f"'{_try_relativize_path(path)}'" for path in self._watched_paths
+            )
             log.info(f"Watching paths for changes: {paths_str}")
 
         if open_in_browser:
@@ -193,7 +209,8 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
         while True:
             with self._rebuild_cond:
                 while not self._rebuild_cond.wait_for(
-                    lambda: self._want_rebuild or self._shutdown, timeout=self.shutdown_delay
+                    lambda: self._want_rebuild or self._shutdown,
+                    timeout=self.shutdown_delay,
                 ):
                     # We could have used just one wait instead of a loop + timeout, but we need
                     # occasional breaks, otherwise on Windows we can't receive KeyboardInterrupt.
@@ -278,8 +295,12 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
                     if not condition():
                         # Stall the browser, respond as soon as there's something new.
                         # If there's not, respond anyway after a minute.
-                        self._log_poll_request(environ.get("HTTP_REFERER"), request_id=path)
-                        self._epoch_cond.wait_for(condition, timeout=self.poll_response_timeout)
+                        self._log_poll_request(
+                            environ.get("HTTP_REFERER"), request_id=path
+                        )
+                        self._epoch_cond.wait_for(
+                            condition, timeout=self.poll_response_timeout
+                        )
                     return [b"%d" % self._visible_epoch]
 
         if (path + "/").startswith(self.mount_path):
@@ -291,7 +312,9 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
             rel_file_path = posixpath.normpath("/" + rel_file_path).lstrip("/")
             file_path = os.path.join(self.root, rel_file_path)
         elif path == "/":
-            start_response("302 Found", [("Location", urllib.parse.quote(self.mount_path))])
+            start_response(
+                "302 Found", [("Location", urllib.parse.quote(self.mount_path))]
+            )
             return []
         else:
             return None  # Not found
@@ -304,8 +327,12 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
         try:
             file: BinaryIO = open(file_path, "rb")
         except OSError:
-            if not path.endswith("/") and os.path.isfile(os.path.join(file_path, "index.html")):
-                start_response("302 Found", [("Location", urllib.parse.quote(path) + "/")])
+            if not path.endswith("/") and os.path.isfile(
+                os.path.join(file_path, "index.html")
+            ):
+                start_response(
+                    "302 Found", [("Location", urllib.parse.quote(path) + "/")]
+                )
                 return []
             return None  # Not found
 
@@ -320,7 +347,8 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
 
         content_type = self._guess_type(file_path)
         start_response(
-            "200 OK", [("Content-Type", content_type), ("Content-Length", str(content_length))]
+            "200 OK",
+            [("Content-Type", content_type), ("Content-Length", str(content_length))],
         )
         return wsgiref.util.FileWrapper(file)
 

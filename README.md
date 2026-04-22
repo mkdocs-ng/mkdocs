@@ -35,7 +35,7 @@ If you need help with MkDocs, do not hesitate to get in contact with us!
 Please note that we may only provide
 support for problems/questions regarding core features of MkDocs. Any
 questions or bug reports about features of third-party themes, plugins,
-extensions, or similar should be made to their respective projects.  
+extensions, or similar should be made to their respective projects.
 But, such questions are *not* banned from the [chat room].
 
 Make sure to stick around to answer some questions as well!
@@ -65,12 +65,12 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [GHAction-image]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml/badge.svg
 [GHAction-link]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml
 <!-- Links -->
-[mkdocs]: https://www.mkdocs.org
+[mkdocs]: https://mkdocs-ng.github.io/mkdocs/
 [Issue]: https://github.com/mkdocs-ng/mkdocs/issues
 [Discussions]: https://github.com/mkdocs-ng/mkdocs/discussions
 [Chat room]: https://gitter.im/mkdocs-ng/community
-[release-notes]: https://www.mkdocs-ng.org/about/release-notes/
-[Contributing Guide]: https://www.mkdocs-ng.org/about/contributing/
+[release-notes]: https://mkdocs-ng.github.io/mkdocs/about/release-notes/
+[Contributing Guide]: https://mkdocs-ng.github.io/mkdocs/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [catalog]: https://github.com/mkdocs-ng/catalog
 

@@ -10,7 +10,7 @@ from mkdocs.utils import templates
 class UtilsTemplatesTests(unittest.TestCase):
     def test_script_tag(self):
         cfg_yaml = dedent(
-            '''
+            """
             extra_javascript:
               - some_plain_javascript.js
               - implicitly_as_module.mjs
@@ -26,14 +26,18 @@ class UtilsTemplatesTests(unittest.TestCase):
                 async: true
                 defer: true
               - path: plain.mjs
-            '''
+            """
         )
         config = load_config(**yaml.safe_load(cfg_yaml))
-        config.extra_javascript.append('plain_string.mjs')
+        config.extra_javascript.append("plain_string.mjs")
 
         self.assertEqual(
             [
-                str(templates.script_tag_filter({'page': None, 'base_url': 'here'}, item))
+                str(
+                    templates.script_tag_filter(
+                        {"page": None, "base_url": "here"}, item
+                    )
+                )
                 for item in config.extra_javascript
             ],
             [

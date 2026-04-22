@@ -10,7 +10,7 @@ class DisallowLogsHandler(logging.Handler):
         self.formatter = logging.Formatter("%(levelname)s:%(name)s:%(message)s")
 
     def emit(self, record):
-        raise AssertionError(f'Unexpected log: {self.format(record)!r}')
+        raise AssertionError(f"Unexpected log: {self.format(record)!r}")
 
 
 logging.lastResort = DisallowLogsHandler()  # type: ignore

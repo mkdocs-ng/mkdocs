@@ -37,25 +37,25 @@ class NoBabelExtension(InternationalizationExtension):  # pragma: no cover
 
 def parse_locale(locale: str) -> Locale:
     try:
-        return Locale.parse(locale, sep='_')
+        return Locale.parse(locale, sep="_")
     except (ValueError, UnknownLocaleError, TypeError) as e:
-        raise ValidationError(f'Invalid value for locale: {e}')
+        raise ValidationError(f"Invalid value for locale: {e}")
 
 
 def install_translations(
     env: jinja2.Environment, locale: Locale, theme_dirs: Sequence[str]
 ) -> None:
     if has_babel:
-        env.add_extension('jinja2.ext.i18n')
-        translations = _get_merged_translations(theme_dirs, 'locales', locale)
+        env.add_extension("jinja2.ext.i18n")
+        translations = _get_merged_translations(theme_dirs, "locales", locale)
         if translations is not None:
             env.install_gettext_translations(translations)  # type: ignore[attr-defined]
         else:
             env.install_null_translations()  # type: ignore[attr-defined]
-            if locale.language != 'en':
+            if locale.language != "en":
                 log.warning(
                     f"No translations could be found for the locale '{locale}'. "
-                    'Defaulting to English.'
+                    "Defaulting to English."
                 )
     else:  # pragma: no cover
         # no babel installed, add dummy support for trans/endtrans blocks

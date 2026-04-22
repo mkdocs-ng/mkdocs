@@ -24,12 +24,12 @@ def _construct_dir_placeholder(
 ) -> _DirPlaceholder:
     loader.construct_scalar(node)
 
-    value: str = (node and node.value) or ''
-    prefix, _, suffix = value.partition('/')
-    if prefix.startswith('$'):
-        if prefix == '$config_dir':
+    value: str = (node and node.value) or ""
+    prefix, _, suffix = value.partition("/")
+    if prefix.startswith("$"):
+        if prefix == "$config_dir":
             return ConfigDirPlaceholder(config, suffix)
-        elif prefix == '$docs_dir':
+        elif prefix == "$docs_dir":
             return DocsDirPlaceholder(config, suffix)
         else:
             raise exceptions.ConfigurationError(
@@ -40,7 +40,7 @@ def _construct_dir_placeholder(
 
 
 class _DirPlaceholder(os.PathLike):
-    def __init__(self, config: MkDocsConfig, suffix: str = ''):
+    def __init__(self, config: MkDocsConfig, suffix: str = ""):
         self.config = config
         self.suffix = suffix
 
@@ -89,7 +89,7 @@ class RelativeDirPlaceholder(_DirPlaceholder):
     This is the implementation of the `!relative` tag, but can also be passed programmatically.
     """
 
-    def __init__(self, config: MkDocsConfig, suffix: str = ''):
+    def __init__(self, config: MkDocsConfig, suffix: str = ""):
         if suffix:
             raise exceptions.ConfigurationError(
                 f"'!relative' tag does not expect any value; received {suffix!r}"
@@ -103,7 +103,9 @@ class RelativeDirPlaceholder(_DirPlaceholder):
                 "The current file is not set for the '!relative' tag. "
                 "It cannot be used in this context; the intended usage is within `markdown_extensions`."
             )
-        return os.path.dirname(os.path.join(self.config.docs_dir, current_page.file.src_path))
+        return os.path.dirname(
+            os.path.join(self.config.docs_dir, current_page.file.src_path)
+        )
 
 
 def get_yaml_loader(loader=yaml.Loader, config: MkDocsConfig | None = None):
@@ -117,15 +119,19 @@ def get_yaml_loader(loader=yaml.Loader, config: MkDocsConfig | None = None):
 
     # Attach Environment Variable constructor.
     # See https://github.com/waylan/pyyaml-env-tag
-    Loader.add_constructor('!ENV', yaml_env_tag.construct_env_tag)
+    Loader.add_constructor("!ENV", yaml_env_tag.construct_env_tag)
 
     if config is not None:
-        Loader.add_constructor('!relative', functools.partial(_construct_dir_placeholder, config))
+        Loader.add_constructor(
+            "!relative", functools.partial(_construct_dir_placeholder, config)
+        )
 
     return Loader
 
 
-def yaml_load(source: IO | str, loader: type[yaml.BaseLoader] | None = None) -> dict[str, Any]:
+def yaml_load(
+    source: IO | str, loader: type[yaml.BaseLoader] | None = None
+) -> dict[str, Any]:
     """Return dict of source YAML file using loader, recursively deep merging inherited parent."""
     loader = loader or get_yaml_loader()
     try:
@@ -136,15 +142,15 @@ def yaml_load(source: IO | str, loader: type[yaml.BaseLoader] | None = None) -> 
         )
     if result is None:
         return {}
-    if 'INHERIT' in result and not isinstance(source, str):
-        relpath = result.pop('INHERIT')
+    if "INHERIT" in result and not isinstance(source, str):
+        relpath = result.pop("INHERIT")
         abspath = os.path.normpath(os.path.join(os.path.dirname(source.name), relpath))
         if not os.path.exists(abspath):
             raise exceptions.ConfigurationError(
                 f"Inherited config file '{relpath}' does not exist at '{abspath}'."
             )
         log.debug(f"Loading inherited configuration file: {abspath}")
-        with open(abspath, 'rb') as fd:
+        with open(abspath, "rb") as fd:
             parent = yaml_load(fd, loader)
         result = mergedeep.merge(parent, result)
     return result

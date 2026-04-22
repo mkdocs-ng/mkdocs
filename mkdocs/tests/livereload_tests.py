@@ -64,7 +64,7 @@ def do_request(server, content):
     return headers, content.decode()
 
 
-SCRIPT_REGEX = r'<script>[\S\s]+?livereload\([0-9]+, [0-9]+\);\s*</script>'
+SCRIPT_REGEX = r"<script>[\S\s]+?livereload\([0-9]+, [0-9]+\);\s*</script>"
 
 
 class BuildTests(unittest.TestCase):
@@ -86,7 +86,8 @@ class BuildTests(unittest.TestCase):
         def rebuild():
             started_building.set()
             Path(site_dir, "foo.site").write_text(
-                Path(docs_dir, "foo.docs").read_text() + Path(origin_dir, "mkdocs.yml").read_text()
+                Path(docs_dir, "foo.docs").read_text()
+                + Path(origin_dir, "mkdocs.yml").read_text()
             )
 
         with testing_server(site_dir, rebuild) as server:
@@ -215,7 +216,9 @@ class BuildTests(unittest.TestCase):
     @tempdir({"foo.docs": "docs1"})
     @tempdir({"foo.extra": "extra1"})
     @tempdir({"foo.site": "original"})
-    def test_multiple_dirs_changes_rebuild_only_once(self, site_dir, extra_dir, docs_dir):
+    def test_multiple_dirs_changes_rebuild_only_once(
+        self, site_dir, extra_dir, docs_dir
+    ):
         started_building = threading.Event()
 
         def rebuild():
@@ -288,7 +291,9 @@ class BuildTests(unittest.TestCase):
             time.sleep(0.01)
 
             err = io.StringIO()
-            with contextlib.redirect_stderr(err), self.assertLogs("mkdocs.livereload") as cm:
+            with contextlib.redirect_stderr(err), self.assertLogs(
+                "mkdocs.livereload"
+            ) as cm:
                 Path(docs_dir, "foo.docs").write_text("b")
                 started_building.wait(timeout=10)
 
@@ -318,19 +323,23 @@ class BuildTests(unittest.TestCase):
             server.watch(site_dir)
 
             headers, output = do_request(server, "GET /normal.html")
-            self.assertRegex(output, fr"^<html><body>hello{SCRIPT_REGEX}</body></html>$")
+            self.assertRegex(
+                output, rf"^<html><body>hello{SCRIPT_REGEX}</body></html>$"
+            )
             self.assertEqual(headers.get("content-type"), "text/html")
             self.assertEqual(headers.get("content-length"), str(len(output)))
 
             _, output = do_request(server, "GET /no_body.html")
-            self.assertRegex(output, fr"^<p>hi{SCRIPT_REGEX}$")
+            self.assertRegex(output, rf"^<p>hi{SCRIPT_REGEX}$")
 
             headers, output = do_request(server, "GET /empty.html")
-            self.assertRegex(output, fr"^{SCRIPT_REGEX}$")
+            self.assertRegex(output, rf"^{SCRIPT_REGEX}$")
             self.assertEqual(headers.get("content-length"), str(len(output)))
 
             _, output = do_request(server, "GET /multi_body.html")
-            self.assertRegex(output, fr"^<body>foo</body><body>bar{SCRIPT_REGEX}</body>$")
+            self.assertRegex(
+                output, rf"^<body>foo</body><body>bar{SCRIPT_REGEX}</body>$"
+            )
 
     @tempdir({"index.html": "<body>aaa</body>", "foo/index.html": "<body>bbb</body>"})
     def test_serves_directory_index(self, site_dir):
@@ -452,7 +461,8 @@ class BuildTests(unittest.TestCase):
             self.assertEqual(headers["_status"], "404 Not Found")
             self.assertIn("404", output)
             self.assertRegex(
-                "\n".join(cm.output), r"Failed to render an error message[\s\S]+/missing.+code 404"
+                "\n".join(cm.output),
+                r"Failed to render an error message[\s\S]+/missing.+code 404",
             )
 
     @tempdir(
@@ -544,15 +554,21 @@ class BuildTests(unittest.TestCase):
             Path(dest_docs_dir, "subdir", "foo.md").write_text("edited")
             self.assertTrue(wait_for_build())
 
-    @tempdir(["file_dest_1.md", "file_dest_2.md", "file_dest_unused.md"], prefix="tmp_dir")
+    @tempdir(
+        ["file_dest_1.md", "file_dest_2.md", "file_dest_unused.md"], prefix="tmp_dir"
+    )
     @tempdir(["file_under.md"], prefix="dir_to_link_to")
     @tempdir()
     def test_watches_through_symlinks(self, docs_dir, dir_to_link_to, tmp_dir):
         try:
             Path(docs_dir, "link1.md").symlink_to(Path(tmp_dir, "file_dest_1.md"))
-            Path(docs_dir, "linked_dir").symlink_to(dir_to_link_to, target_is_directory=True)
+            Path(docs_dir, "linked_dir").symlink_to(
+                dir_to_link_to, target_is_directory=True
+            )
 
-            Path(dir_to_link_to, "sublink.md").symlink_to(Path(tmp_dir, "file_dest_2.md"))
+            Path(dir_to_link_to, "sublink.md").symlink_to(
+                Path(tmp_dir, "file_dest_2.md")
+            )
         except NotImplementedError:  # PyPy on Windows
             self.skipTest("Creating symlinks not supported")
 
@@ -612,7 +628,9 @@ class BuildTests(unittest.TestCase):
                 Path(docs_dir, "subdir", "circular").symlink_to(Path(docs_dir))
 
             Path(docs_dir, "broken_1").symlink_to(Path(docs_dir, "oh no"))
-            Path(docs_dir, "broken_2").symlink_to(Path(docs_dir, "oh no"), target_is_directory=True)
+            Path(docs_dir, "broken_2").symlink_to(
+                Path(docs_dir, "oh no"), target_is_directory=True
+            )
             Path(docs_dir, "broken_3").symlink_to(Path(docs_dir, "broken_2"))
         except NotImplementedError:  # PyPy on Windows
             self.skipTest("Creating symlinks not supported")

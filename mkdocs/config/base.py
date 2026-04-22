@@ -28,10 +28,10 @@ if TYPE_CHECKING:
     from mkdocs.config.defaults import MkDocsConfig
 
 
-log = logging.getLogger('mkdocs.config')
+log = logging.getLogger("mkdocs.config")
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class BaseConfigOption(Generic[T]):
@@ -81,7 +81,7 @@ class BaseConfigOption(Generic[T]):
         """
 
     def __set_name__(self, owner, name):
-        if name.endswith('_') and not name.startswith('_'):
+        if name.endswith("_") and not name.startswith("_"):
             name = name[:-1]
         self._name = name
 
@@ -132,15 +132,15 @@ class Config(UserDict):
     config_file_path: str
 
     def __init_subclass__(cls):
-        schema = dict(getattr(cls, '_schema', ()))
+        schema = dict(getattr(cls, "_schema", ()))
         for attr_name, attr in cls.__dict__.items():
             if isinstance(attr, BaseConfigOption):
-                schema[getattr(attr, '_name', attr_name)] = attr
+                schema[getattr(attr, "_name", attr_name)] = attr
         cls._schema = tuple(schema.items())
 
         for attr_name, attr in cls._schema:
             attr.required = True
-            if getattr(attr, '_legacy_required', None) is not None:
+            if getattr(attr, "_legacy_required", None) is not None:
                 raise TypeError(
                     f"{cls.__name__}.{attr_name}: "
                     "Setting 'required' is unsupported in class-based configs. "
@@ -163,10 +163,12 @@ class Config(UserDict):
         if config_file_path is not None and not isinstance(config_file_path, str):
             try:
                 # Assume config_file_path is encoded with the file system encoding.
-                config_file_path = config_file_path.decode(encoding=sys.getfilesystemencoding())
+                config_file_path = config_file_path.decode(
+                    encoding=sys.getfilesystemencoding()
+                )
             except UnicodeDecodeError:
                 raise ValidationError("config_file_path is not a Unicode string.")
-        self.config_file_path = config_file_path or ''
+        self.config_file_path = config_file_path or ""
 
     def set_defaults(self) -> None:
         """
@@ -263,7 +265,8 @@ class Config(UserDict):
     @weak_property
     def user_configs(self) -> Sequence[Mapping[str, Any]]:
         warnings.warn(
-            "user_configs is never used in MkDocs and will be removed soon.", DeprecationWarning
+            "user_configs is never used in MkDocs and will be removed soon.",
+            DeprecationWarning,
         )
         return self.__user_configs
 
@@ -273,7 +276,9 @@ def get_schema(cls: type) -> PlainConfigSchema:
     """Extract ConfigOptions defined in a class (used just as a container) and put them into a schema tuple."""
     if issubclass(cls, Config):
         return cls._schema
-    return tuple((k, v) for k, v in cls.__dict__.items() if isinstance(v, BaseConfigOption))
+    return tuple(
+        (k, v) for k, v in cls.__dict__.items() if isinstance(v, BaseConfigOption)
+    )
 
 
 class LegacyConfig(Config):
@@ -297,12 +302,12 @@ def _open_config_file(config_file: str | IO | None) -> Iterator[IO]:
     """
     # Default to the standard config filename.
     if config_file is None:
-        paths_to_try = ['mkdocs.yml', 'mkdocs.yaml']
+        paths_to_try = ["mkdocs.yml", "mkdocs.yaml"]
     # If it is a string, we can assume it is a path and attempt to open it.
     elif isinstance(config_file, str):
         paths_to_try = [config_file]
     # If closed file descriptor, get file path to reopen later.
-    elif getattr(config_file, 'closed', False):
+    elif getattr(config_file, "closed", False):
         paths_to_try = [config_file.name]
     else:
         result_config_file = config_file
@@ -314,12 +319,14 @@ def _open_config_file(config_file: str | IO | None) -> Iterator[IO]:
             path = os.path.abspath(path)
             log.debug(f"Loading configuration file: {path}")
             try:
-                result_config_file = open(path, 'rb')
+                result_config_file = open(path, "rb")
                 break
             except FileNotFoundError:
                 continue
         else:
-            raise exceptions.ConfigurationError(f"Config file '{paths_to_try[0]}' does not exist.")
+            raise exceptions.ConfigurationError(
+                f"Config file '{paths_to_try[0]}' does not exist."
+            )
     else:
         log.debug(f"Loading configuration file: {result_config_file}")
         # Ensure file descriptor is at beginning
@@ -331,12 +338,15 @@ def _open_config_file(config_file: str | IO | None) -> Iterator[IO]:
     try:
         yield result_config_file
     finally:
-        if hasattr(result_config_file, 'close'):
+        if hasattr(result_config_file, "close"):
             result_config_file.close()
 
 
 def load_config(
-    config_file: str | IO | None = None, *, config_file_path: str | None = None, **kwargs
+    config_file: str | IO | None = None,
+    *,
+    config_file_path: str | None = None,
+    **kwargs,
 ) -> MkDocsConfig:
     """
     Load the configuration for a given file object or name.
@@ -361,7 +371,7 @@ def load_config(
 
         if config_file_path is None:
             if sys.stdin and fd is not sys.stdin.buffer:
-                config_file_path = getattr(fd, 'name', None)
+                config_file_path = getattr(fd, "name", None)
         cfg = MkDocsConfig(config_file_path=config_file_path)
         # load the config file
         cfg.load_file(fd)
