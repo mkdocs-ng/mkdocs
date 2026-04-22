@@ -20,7 +20,7 @@ class _TocToken(TypedDict):
 def get_toc(toc_tokens: list[_TocToken]) -> TableOfContents:
     toc = [_parse_toc_token(i) for i in toc_tokens]
     # For the table of contents, always mark the first element as active
-    if len(toc):
+    if toc:
         toc[0].active = True  # type: ignore[attr-defined]
     return TableOfContents(toc)
 
