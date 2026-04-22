@@ -6,19 +6,19 @@
 # - ruff
 #
 
-black==23.12.1
+black==25.11.0
     # via hatch.envs.style
-click==8.1.7
+click==8.1.8
     # via black
-isort==5.13.2
+isort==6.1.0
     # via hatch.envs.style
-mypy-extensions==1.0.0
+mypy-extensions==1.1.0
     # via black
-packaging==23.2
+packaging==26.1
     # via black
-pathspec==0.12.1
+pathspec==1.0.4
     # via black
-platformdirs==4.1.0
+platformdirs==4.4.0
     # via black
-ruff==0.1.14
+ruff==0.15.11
     # via hatch.envs.style
