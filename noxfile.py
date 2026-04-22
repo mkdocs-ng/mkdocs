@@ -53,7 +53,8 @@ def tests(session: nox.Session) -> None:
 @nox.session(name="tests-min", python=PYTHON_VERSIONS)
 def tests_min(session: nox.Session) -> None:
     """Run the unit test suite with pinned minimum dependency versions."""
-    session.install("-e", ".[i18n,min-versions,testing]")
+    session.install("-e", ".[i18n,testing]")
+    session.run("python", "scripts/install_min_versions.py")
     session.run(
         "python",
         "-m",
