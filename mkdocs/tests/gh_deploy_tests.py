@@ -45,7 +45,7 @@ class TestGitHubDeploy(unittest.TestCase):
             b'',
         )
 
-        expected = ('https://', 'mkdocs/mkdocs.git')
+        expected = ('https://', 'mkdocs-ng/mkdocs.git')
         self.assertEqual(expected, gh_deploy._get_remote_url('origin'))
 
     @mock.patch('subprocess.Popen')
