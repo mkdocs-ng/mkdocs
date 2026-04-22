@@ -66,7 +66,7 @@ def tempdir(files=None, **kw):
             with open(pth, 'r', encoding='utf-8') as f:
                 assert f.read() == 'bar content'
     """
-    files = {f: '' for f in files} if isinstance(files, (list, tuple)) else files or {}
+    files = dict.fromkeys(files, '') if isinstance(files, (list, tuple)) else files or {}
 
     kw['prefix'] = 'mkdocs_test-' + kw.get('prefix', '')
 

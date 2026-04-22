@@ -1222,6 +1222,8 @@ class PathSpec(BaseConfigOption[pathspec.gitignore.GitIgnoreSpec]):
         if not isinstance(value, str):
             raise ValidationError(f'Expected a multiline string, but a {type(value)} was given.')
         try:
-            return pathspec.gitignore.GitIgnoreSpec.from_lines(lines=textwrap.dedent(value).splitlines())
+            return pathspec.gitignore.GitIgnoreSpec.from_lines(
+                lines=textwrap.dedent(value).splitlines()
+            )
         except ValueError as e:
             raise ValidationError(str(e))
