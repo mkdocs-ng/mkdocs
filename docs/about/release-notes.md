@@ -27,6 +27,28 @@ The current and past members of the MkDocs team.
 * [@oprypin](https://github.com/oprypin/)
 * [@ultrabug](https://github.com/ultrabug/)
 
+## Version 1.7.0 (2026-04-22)
+
+### Fixed
+
+* Fix `--livereload` CLI option not being recognized correctly. #4
+* Fix `draft_docs` and `exclude_docs` documentation and add missing tests. #3859
+* Fix `<hr>` color variable in MkDocs theme to be light/dark mode responsive. #4046
+
+### Added
+
+* Add support for Python 3.13 and 3.14 in CI. #4
+
+### Maintenance
+
+* Rename project from `mkdocs` to `mkdocs-ng` and update all repository references. #2 #5
+* Add Dependabot configuration for automated dependency updates. #6
+* Add Release Drafter workflow for automated changelog generation. #7
+* Bump GitHub Actions dependencies. #8
+* Bump pip dependencies. #10
+
+---
+
 ## Version 1.6.1 (2024-08-30)
 
 ### Fixed
