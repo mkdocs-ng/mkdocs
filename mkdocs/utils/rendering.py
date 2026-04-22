@@ -30,14 +30,14 @@ def get_heading_text(el: etree.Element, md: markdown.Markdown) -> str:
 def _strip_tags(text: str) -> str:
     """Strip HTML tags and return plain text. Note: HTML entities are unaffected."""
     # A comment could contain a tag, so strip comments first
-    while (start := text.find('<!--')) != -1 and (end := text.find('-->', start)) != -1:
+    while (start := text.find("<!--")) != -1 and (end := text.find("-->", start)) != -1:
         text = text[:start] + text[end + 3 :]
 
-    while (start := text.find('<')) != -1 and (end := text.find('>', start)) != -1:
+    while (start := text.find("<")) != -1 and (end := text.find(">", start)) != -1:
         text = text[:start] + text[end + 1 :]
 
     # Collapse whitespace
-    text = ' '.join(text.split())
+    text = " ".join(text.split())
     return text
 
 
@@ -47,8 +47,8 @@ def _render_inner_html(el: etree.Element, md: markdown.Markdown) -> str:
     text = _unescape(text)
 
     # Strip parent tag
-    start = text.index('>') + 1
-    end = text.rindex('<')
+    start = text.index(">") + 1
+    end = text.rindex("<")
     text = text[start:end].strip()
 
     for pp in md.postprocessors:
@@ -58,30 +58,30 @@ def _render_inner_html(el: etree.Element, md: markdown.Markdown) -> str:
 
 def _remove_anchorlink(el: etree.Element) -> None:
     """Drop anchorlink from the element, if present."""
-    if len(el) > 0 and el[-1].tag == 'a' and el[-1].get('class') == 'headerlink':
+    if len(el) > 0 and el[-1].tag == "a" and el[-1].get("class") == "headerlink":
         del el[-1]
 
 
 def _remove_fnrefs(root: etree.Element) -> None:
     """Remove footnote references from the element, if any are present."""
-    for parent in root.findall('.//sup[@id]/..'):
+    for parent in root.findall(".//sup[@id]/.."):
         _replace_elements_with_text(parent, _predicate_for_fnrefs)
 
 
 def _predicate_for_fnrefs(el: etree.Element) -> str | None:
-    if el.tag == 'sup' and el.get('id', '').startswith('fnref'):
-        return ''
+    if el.tag == "sup" and el.get("id", "").startswith("fnref"):
+        return ""
     return None
 
 
 def _extract_alt_texts(root: etree.Element) -> None:
     """For images that have an `alt` attribute, replace them with this content."""
-    for parent in root.findall('.//img[@alt]/..'):
+    for parent in root.findall(".//img[@alt]/.."):
         _replace_elements_with_text(parent, _predicate_for_alt_texts)
 
 
 def _predicate_for_alt_texts(el: etree.Element) -> str | None:
-    if el.tag == 'img' and (alt := el.get('alt')):
+    if el.tag == "img" and (alt := el.get("alt")):
         return alt
     return None
 
@@ -91,7 +91,9 @@ def _replace_elements_with_text(
 ) -> None:
     """For each child element, if matched, replace it with the text returned from the predicate."""
     carry_text = ""
-    for child in reversed(parent):  # Reversed for the ability to mutate during iteration.
+    for child in reversed(
+        parent
+    ):  # Reversed for the ability to mutate during iteration.
         # Remove matching elements but carry any `tail` text to preceding elements.
         new_text = predicate(child)
         if new_text is not None:

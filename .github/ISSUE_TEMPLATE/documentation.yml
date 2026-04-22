@@ -1,0 +1,28 @@
+name: Documentation Issue
+description: Report a problem with the documentation
+labels: ["documentation"]
+body:
+  - type: textarea
+    id: location
+    attributes:
+      label: Page or section
+      description: Which page or section of the docs has an issue?
+      placeholder: https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the issue
+      description: What is wrong, missing, or unclear?
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: How should it be fixed or improved?
+    validations:
+      required: false

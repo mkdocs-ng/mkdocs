@@ -172,8 +172,8 @@ class TableOfContentsTests(unittest.TestCase):
         self.assertEqual(len(toc), 1)
 
     def test_charref(self):
-        md = '# &#64;Header'
-        expected = '&#64;Header - #header'
+        md = "# &#64;Header"
+        expected = "&#64;Header - #header"
         toc = get_toc(get_markdown_toc(md))
         self.assertEqual(str(toc).strip(), expected)
         self.assertEqual(len(toc), 1)

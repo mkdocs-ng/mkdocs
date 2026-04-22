@@ -39,7 +39,7 @@ class AnchorLink:
     @property
     def url(self) -> str:
         """The hash fragment of a URL pointing to the item."""
-        return '#' + self.id
+        return "#" + self.id
 
     level: int
     """The zero-based level of the item."""
@@ -51,8 +51,8 @@ class AnchorLink:
         return self.indent_print()
 
     def indent_print(self, depth: int = 0) -> str:
-        indent = '    ' * depth
-        ret = f'{indent}{self.title} - {self.url}\n'
+        indent = "    " * depth
+        ret = f"{indent}{self.title} - {self.url}\n"
         for item in self.children:
             ret += item.indent_print(depth + 1)
         return ret
@@ -71,11 +71,11 @@ class TableOfContents(Iterable[AnchorLink]):
         return len(self.items)
 
     def __str__(self) -> str:
-        return ''.join(str(item) for item in self)
+        return "".join(str(item) for item in self)
 
 
 def _parse_toc_token(token: _TocToken) -> AnchorLink:
-    anchor = AnchorLink(token['name'], token['id'], token['level'])
-    for i in token['children']:
+    anchor = AnchorLink(token["name"], token["id"], token["level"])
+    for i in token["children"]:
         anchor.children.append(_parse_toc_token(i))
     return anchor

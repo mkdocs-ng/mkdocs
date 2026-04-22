@@ -141,7 +141,7 @@ Once you think the code is ready to be reviewed, push
 it to your fork and send a pull request. For a change to be accepted it will
 most likely need to have tests and documentation if it is a new feature.
 
-When working with a pull request branch:  
+When working with a pull request branch:
 Unless otherwise agreed, prefer `commit` over `amend`, and `merge` over `rebase`. Avoid force-pushes, otherwise review history is much harder to navigate. For the end result, the "unclean" history is fine because most pull requests are squash-merged on GitHub.
 
 Do *not* add to *release-notes.md*, this will be written later.

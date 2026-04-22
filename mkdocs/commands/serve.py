@@ -35,7 +35,7 @@ def serve(
     whenever a file is edited.
     """
     # Create a temporary build directory, and set some options to serve it
-    site_dir = tempfile.mkdtemp(prefix='mkdocs_')
+    site_dir = tempfile.mkdtemp(prefix="mkdocs_")
 
     def get_config():
         config = load_config(
@@ -46,14 +46,16 @@ def serve(
         config.watch.extend(watch)
         return config
 
-    is_clean = build_type == 'clean'
-    is_dirty = build_type == 'dirty'
+    is_clean = build_type == "clean"
+    is_dirty = build_type == "dirty"
 
     config = get_config()
-    config.plugins.on_startup(command=('build' if is_clean else 'serve'), dirty=is_dirty)
+    config.plugins.on_startup(
+        command=("build" if is_clean else "serve"), dirty=is_dirty
+    )
 
     host, port = config.dev_addr
-    mount_path = urlsplit(config.site_url or '/').path
+    mount_path = urlsplit(config.site_url or "/").path
     config.site_url = serve_url = _serve_url(host, port, mount_path)
 
     def builder(config: MkDocsConfig | None = None):
@@ -70,9 +72,9 @@ def serve(
 
     def error_handler(code) -> bytes | None:
         if code in (404, 500):
-            error_page = join(site_dir, f'{code}.html')
+            error_page = join(site_dir, f"{code}.html")
             if isfile(error_page):
-                with open(error_page, 'rb') as f:
+                with open(error_page, "rb") as f:
                     return f.read()
         return None
 
