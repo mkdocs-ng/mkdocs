@@ -28,6 +28,10 @@ jobs:
             os: macos-latest
           - python-version: '3.11'
             os: windows-latest
+          # PyPy 3.9 on Windows fails to build zstandard (hatch dep) due to
+          # missing distutils.msvc9compiler in cffi on PyPy; no value in testing this combo
+          - python-version: 'pypy-3.9-v7.x'
+            os: windows-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
