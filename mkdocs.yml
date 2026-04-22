@@ -4,7 +4,7 @@ site_description: Project documentation with Markdown.
 site_author: MkDocs Team
 
 repo_url: https://github.com/mkdocs-ng/mkdocs/
-edit_uri: blob/master/docs/
+edit_uri: blob/main/docs/
 
 theme:
   name: mkdocs

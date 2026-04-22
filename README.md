@@ -58,8 +58,8 @@ Everyone interacting in the MkDocs project's codebases, issue trackers, and
 discussion forums are expected to follow the [PyPA Code of Conduct].
 
 <!-- Badges -->
-[codecov-image]: https://codecov.io/github/mkdocs-ng/mkdocs/coverage.svg?branch=master
-[codecov-link]: https://codecov.io/github/mkdocs-ng/mkdocs?branch=master
+[codecov-image]: https://codecov.io/github/mkdocs-ng/mkdocs/coverage.svg?branch=main
+[codecov-link]: https://codecov.io/github/mkdocs-ng/mkdocs?branch=main
 [pypi-v-image]: https://img.shields.io/pypi/v/mkdocs-ng.svg
 [pypi-v-link]: https://pypi.org/project/mkdocs-ng/
 [GHAction-image]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml/badge.svg
@@ -76,4 +76,4 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 
 ## License
 
-[BSD-2-Clause](https://github.com/mkdocs-ng/mkdocs/blob/master/LICENSE)
+[BSD-2-Clause](https://github.com/mkdocs-ng/mkdocs/blob/main/LICENSE)
