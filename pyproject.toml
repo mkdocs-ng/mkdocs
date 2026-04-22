@@ -84,7 +84,7 @@ docs = [
     "mkdocs-literate-nav",
     "mkdocstrings[python]",
     "pymdown-extensions",
-    "mkdocs-callouts",
+    "callouts",
     "mdx-gh-links",
     "mkdocs-click",
     "black",

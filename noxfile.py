@@ -1,4 +1,5 @@
-"""Nox sessions for MkDocs NG development tasks.
+"""
+Nox sessions for MkDocs NG development tasks.
 
 Usage:
     nox -l                    # list all sessions
@@ -32,13 +33,20 @@ nox.options.sessions = ["tests", "lint", "typing"]
 # Tests
 # ---------------------------------------------------------------------------
 
+
 @nox.session(python=PYTHON_VERSIONS)
 def tests(session: nox.Session) -> None:
     """Run the unit test suite."""
     session.install("-e", ".[i18n,testing]")
     session.run(
-        "python", "-m", "unittest", "discover",
-        "-s", "mkdocs", "-p", "*tests.py",
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "mkdocs",
+        "-p",
+        "*tests.py",
     )
 
 
@@ -47,21 +55,34 @@ def tests_min(session: nox.Session) -> None:
     """Run the unit test suite with pinned minimum dependency versions."""
     session.install("-e", ".[i18n,min-versions,testing]")
     session.run(
-        "python", "-m", "unittest", "discover",
-        "-s", "mkdocs", "-p", "*tests.py",
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "mkdocs",
+        "-p",
+        "*tests.py",
     )
 
 
-@nox.session(python=DEFAULT_PYTHON)
+@nox.session
 def coverage(session: nox.Session) -> None:
     """Run unit tests and produce a coverage report."""
     session.install("-e", ".[i18n,testing]")
     session.run(
-        "coverage", "run",
+        "coverage",
+        "run",
         "--source=mkdocs",
-        "--omit", "mkdocs/tests/*",
-        "-m", "unittest", "discover",
-        "-s", "mkdocs", "-p", "*tests.py",
+        "--omit",
+        "mkdocs/tests/*",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "mkdocs",
+        "-p",
+        "*tests.py",
     )
     session.run("coverage", "xml")
     session.run("coverage", "report", "--show-missing")
@@ -84,6 +105,7 @@ def integration_no_babel(session: nox.Session) -> None:
 # ---------------------------------------------------------------------------
 # Lint & formatting
 # ---------------------------------------------------------------------------
+
 
 @nox.session(python=DEFAULT_PYTHON)
 def lint(session: nox.Session) -> None:
@@ -114,6 +136,7 @@ def format(session: nox.Session) -> None:
 # Type checking
 # ---------------------------------------------------------------------------
 
+
 @nox.session(python=DEFAULT_PYTHON)
 def typing(session: nox.Session) -> None:
     """Run mypy type checking."""
@@ -125,14 +148,21 @@ def typing(session: nox.Session) -> None:
 # Other linters (Node-based, run without a virtualenv)
 # ---------------------------------------------------------------------------
 
+
 @nox.session(venv_backend="none")
 def markdown(session: nox.Session) -> None:
     """Lint Markdown files with markdownlint-cli (requires Node / npx)."""
     session.run(
-        "npm", "exec", "--yes", "--",
+        "npm",
+        "exec",
+        "--yes",
+        "--",
         "markdownlint-cli",
-        "README.md", "CONTRIBUTING.md", "docs/",
-        "--ignore", "docs/CNAME",
+        "README.md",
+        "CONTRIBUTING.md",
+        "docs/",
+        "--ignore",
+        "docs/CNAME",
         external=True,
     )
 
@@ -141,8 +171,12 @@ def markdown(session: nox.Session) -> None:
 def js(session: nox.Session) -> None:
     """Lint JavaScript files with jshint (requires Node / npx)."""
     session.run(
-        "npm", "exec", "--yes", "--",
-        "jshint", "mkdocs/",
+        "npm",
+        "exec",
+        "--yes",
+        "--",
+        "jshint",
+        "mkdocs/",
         external=True,
     )
 
@@ -152,19 +186,29 @@ def spelling(session: nox.Session) -> None:
     """Check spelling with codespell."""
     session.install(".[spelling]")
     session.run(
-        "codespell", "mkdocs", "docs", "*.*",
-        "-S", "LC_MESSAGES",
-        "-S", "*.min.js",
-        "-S", "lunr*.js",
-        "-S", "fontawesome-webfont.svg",
-        "-S", "tinyseg.js",
-        "-S", "*.map",
+        "codespell",
+        "mkdocs",
+        "docs",
+        "*.*",
+        "-S",
+        "LC_MESSAGES",
+        "-S",
+        "*.min.js",
+        "-S",
+        "lunr*.js",
+        "-S",
+        "fontawesome-webfont.svg",
+        "-S",
+        "tinyseg.js",
+        "-S",
+        "*.map",
     )
 
 
 # ---------------------------------------------------------------------------
 # Documentation
 # ---------------------------------------------------------------------------
+
 
 @nox.session(python=DEFAULT_PYTHON)
 def docs(session: nox.Session) -> None:
