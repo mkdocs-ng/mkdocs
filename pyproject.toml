@@ -211,7 +211,7 @@ detached = false
 [tool.hatch.envs.docs.scripts]
 build = "mkdocs build"
 serve = "mkdocs serve"
-deploy = "mkdocs gh-deploy"
+deploy = "mkdocs gh-deploy --force"
 
 [tool.black]
 line-length = 100
