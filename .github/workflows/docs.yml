@@ -15,9 +15,9 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install --no-deps -r requirements/requirements-docs.txt
+        run: pip install hatch
       - name: Build site
-        run: mkdocs build --strict
+        run: hatch run docs:build
 
   deploy:
     runs-on: ubuntu-latest
@@ -33,6 +33,6 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install --no-deps -r requirements/requirements-docs.txt
+        run: pip install hatch
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force
+        run: hatch run docs:deploy
