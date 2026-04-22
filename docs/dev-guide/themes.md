@@ -795,7 +795,7 @@ Themes should expect the index to not be present, but can choose to use the
 index when it is available. The `index` object was new in MkDocs version *1.0*.
 
 [Jinja2 template]: https://jinja.palletsprojects.com/
-[built-in themes]: https://github.com/mkdocs-ng/mkdocs/tree/master/mkdocs/themes
+[built-in themes]: https://github.com/mkdocs-ng/mkdocs/tree/main/mkdocs/themes
 [theme's configuration file]: #theme-configuration
 [lunr.js]: https://lunrjs.com/
 [site_dir]: ../user-guide/configuration.md#site_dir
