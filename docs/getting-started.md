@@ -9,7 +9,7 @@ An introductory tutorial!
 To install MkDocs, run the following command from the command line:
 
 ```bash
-pip install mkdocs
+pip install mkdocs-ng
 ```
 
 For more details, see the [Installation Guide].

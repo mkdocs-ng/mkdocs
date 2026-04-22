@@ -14,7 +14,7 @@ You can determine your currently installed version using `mkdocs --version`:
 
 ```console
 $ mkdocs --version
-mkdocs, version 1.5.0 from /path/to/mkdocs (Python 3.10)
+mkdocs, version 1.7.0 from /path/to/mkdocs (Python 3.12)
 ```
 
 ## Maintenance team
