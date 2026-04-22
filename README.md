@@ -62,18 +62,18 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [codecov-link]: https://codecov.io/github/mkdocs-ng/mkdocs?branch=master
 [pypi-v-image]: https://img.shields.io/pypi/v/mkdocs-ng.svg
 [pypi-v-link]: https://pypi.org/project/mkdocs-ng/
-[GHAction-image]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml/badge.svg
-[GHAction-link]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml
+[GHAction-image]: https://github.com/mkdocs-ng-ng/mkdocs/actions/workflows/ci.yml/badge.svg
+[GHAction-link]: https://github.com/mkdocs-ng-ng/mkdocs/actions/workflows/ci.yml
 <!-- Links -->
 [mkdocs]: https://www.mkdocs.org
-[Issue]: https://github.com/mkdocs-ng/mkdocs/issues
-[Discussions]: https://github.com/mkdocs-ng/mkdocs/discussions
+[Issue]: https://github.com/mkdocs-ng-ng/mkdocs/issues
+[Discussions]: https://github.com/mkdocs-ng-ng/mkdocs/discussions
 [Chat room]: https://gitter.im/mkdocs-ng/community
 [release-notes]: https://www.mkdocs-ng.org/about/release-notes/
 [Contributing Guide]: https://www.mkdocs-ng.org/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
-[catalog]: https://github.com/mkdocs-ng/catalog
+[catalog]: https://github.com/mkdocs-ng-ng/catalog
 
 ## License
 
-[BSD-2-Clause](https://github.com/mkdocs-ng/mkdocs/blob/master/LICENSE)
+[BSD-2-Clause](https://github.com/mkdocs-ng-ng/mkdocs/blob/master/LICENSE)

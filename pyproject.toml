@@ -74,8 +74,8 @@ min-versions = [
 
 [project.urls]
 Documentation = "https://www.mkdocs.org/"
-Source = "https://github.com/mkdocs/mkdocs"
-Issues = "https://github.com/mkdocs/mkdocs/issues"
+Source = "https://github.com/mkdocs-ng/mkdocs"
+Issues = "https://github.com/mkdocs-ng/mkdocs/issues"
 History = "https://www.mkdocs.org/about/release-notes/"
 
 [project.scripts]

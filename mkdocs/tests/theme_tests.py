@@ -107,7 +107,7 @@ class ThemeTests(unittest.TestCase):
 
     def test_empty_config_file(self):
         # Test for themes with *empty* mkdocs_theme.yml.
-        # See https://github.com/mkdocs/mkdocs/issues/3699
+        # See https://github.com/mkdocs-ng/mkdocs/issues/3699
         m = mock.Mock(
             # yaml.load returns "None" for an empty file
             side_effect=[None]

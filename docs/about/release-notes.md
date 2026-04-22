@@ -278,7 +278,7 @@ Context: #3429
 
 * The `sitemap.xml.gz` file is slightly more reproducible and no longer changes on every build, but instead only once per day (upon a date change). Context: #3460
 
-Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/compare/1.5.3...1.6.0).
+Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.5.3...1.6.0).
 
 ## Version 1.5.3 (2023-09-18)
 
@@ -292,9 +292,9 @@ Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/comp
 
 *   Plugins can now set `File.page` to their own subclass of `Page`. There is also now a warning if `File.page` is set to anything other than a strict subclass of `Page`. (#3367, #3381)
 
-    Note that just instantiating a `Page` [sets the file automatically](https://github.com/mkdocs/mkdocs/blob/f94ab3f62d0416d484d81a0c695c8ca86ab3b975/mkdocs/structure/pages.py#L34), so care needs to be taken not to create an unneeded `Page`.
+    Note that just instantiating a `Page` [sets the file automatically](https://github.com/mkdocs-ng/mkdocs/blob/f94ab3f62d0416d484d81a0c695c8ca86ab3b975/mkdocs/structure/pages.py#L34), so care needs to be taken not to create an unneeded `Page`.
 
-Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/compare/1.5.2...1.5.3).
+Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.5.2...1.5.3).
 
 ## Version 1.5.2 (2023-08-02)
 
@@ -306,7 +306,7 @@ Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/comp
 
     Plugins should be free to append strings to `config.extra_javascript`, but when reading the values, they must still make sure to read it as `str(value)` in case it is an `ExtraScriptValue` item. For querying the attributes such as `.type` you need to check `isinstance` first. Static type checking will guide you in that. (#3324)
 
-See [commit log](https://github.com/mkdocs/mkdocs/compare/1.5.1...1.5.2).
+See [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.5.1...1.5.2).
 
 ## Version 1.5.1 (2023-07-28)
 
@@ -314,7 +314,7 @@ See [commit log](https://github.com/mkdocs/mkdocs/compare/1.5.1...1.5.2).
 
 *   Bugfix (regression in 1.5.0): Prevent errors for special setups that have 3 conflicting files, such as `index.html`, `index.md` *and* `README.md` (#3314)
 
-See [commit log](https://github.com/mkdocs/mkdocs/compare/1.5.0...1.5.1).
+See [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.5.0...1.5.1).
 
 ## Version 1.5.0 (2023-07-26)
 
@@ -338,7 +338,7 @@ Context: #3205
 
 ### MkDocs has an official catalog of plugins
 
-Check out <https://github.com/mkdocs/catalog> and add all your general-purpose plugins, themes and extensions there, so that they can be looked up through `mkdocs get-deps`.
+Check out <https://github.com/mkdocs-ng/catalog> and add all your general-purpose plugins, themes and extensions there, so that they can be looked up through `mkdocs get-deps`.
 
 This was renamed from "best-of-mkdocs" and received significant updates. In addition to `pip` installation commands, the page now shows the config boilerplate needed to add a plugin.
 
@@ -485,7 +485,7 @@ See [**documentation**](../dev-guide/themes.md#picking-up-css-and-javascript-fro
 
 *   `File` has a new attribute `inclusion`. Its value is calculated from both the `exclude_docs` and `not_in_nav` configs, and implements their behavior. Plugins can read this value or write to it. New `File` instances by default follow whatever the configs say, but plugins can choose to make this decision explicitly, per file.
 
-*   When creating a `File`, one can now set a `dest_uri` directly, rather than having to update it (and other dependent attributes) after creation. [Context](https://github.com/mkdocs/mkdocs/commit/d5af6426c52421f1113f6dcc591de1e01bea48bd)
+*   When creating a `File`, one can now set a `dest_uri` directly, rather than having to update it (and other dependent attributes) after creation. [Context](https://github.com/mkdocs-ng/mkdocs/commit/d5af6426c52421f1113f6dcc591de1e01bea48bd)
 
 *   A new config option was added - `DictOfItems`. Similarly to `ListOfItems`, it validates a mapping of config options that all have the same type. Keys are arbitrary but always strings. Context: #3242
 
@@ -499,7 +499,7 @@ See [**documentation**](../dev-guide/themes.md#picking-up-css-and-javascript-fro
 
     Context: #3245
 
-*   `SubConfig` config option can be conveniently subclassed with a particular type of config specified. For example, `class ExtraScript(SubConfig[ExtraScriptValue]):`. To see how this is useful, search for this class in code. [Context](https://github.com/mkdocs/mkdocs/commit/73e503990e3e3504bfe1cb627d41a7e97970687e)
+*   `SubConfig` config option can be conveniently subclassed with a particular type of config specified. For example, `class ExtraScript(SubConfig[ExtraScriptValue]):`. To see how this is useful, search for this class in code. [Context](https://github.com/mkdocs-ng/mkdocs/commit/73e503990e3e3504bfe1cb627d41a7e97970687e)
 
 *   Bugfix: `SubConfig` had a bug where paths (from `FilesystemObject` options) were not made relative to the main config file as intended, because `config_file_path` was not properly inherited to it. This is now fixed. Context: #3265
 
@@ -512,15 +512,15 @@ See [**documentation**](../dev-guide/themes.md#picking-up-css-and-javascript-fro
         async_ = Type(bool, default=False)
     ```
 
-    Previously making a config key with a reserved name was impossible with new-style schemas. [Context](https://github.com/mkdocs/mkdocs/commit/1db8e884fa7135a49adf7740add5d875a16a18bc)
+    Previously making a config key with a reserved name was impossible with new-style schemas. [Context](https://github.com/mkdocs-ng/mkdocs/commit/1db8e884fa7135a49adf7740add5d875a16a18bc)
 
 *   `Theme` has its attributes properly declared and gained new attributes `theme.locale`, `theme.custom_dir`.
 
 *   Some type annotations were made more precise. For example:
 
-    * The `context` parameter has gained the type `TemplateContext` (`TypedDict`). [Context](https://github.com/mkdocs/mkdocs/commit/0f793b9984c7e6a1d53ce874e7d17b6d27ebf4b2)
-    * The classes `Page`, `Section`, `Link` now have a common base class `StructureItem`. [Context](https://github.com/mkdocs/mkdocs/commit/01be507e30b05db0a4c44ef05ba62b2098010653)
-    * Some methods stopped accepting `Config` and only accept `MkDocsConfig` as was originally intended. [Context](https://github.com/mkdocs/mkdocs/commit/c459cd24fc0320333f51525e9cf681d4a8370f50)
+    * The `context` parameter has gained the type `TemplateContext` (`TypedDict`). [Context](https://github.com/mkdocs-ng/mkdocs/commit/0f793b9984c7e6a1d53ce874e7d17b6d27ebf4b2)
+    * The classes `Page`, `Section`, `Link` now have a common base class `StructureItem`. [Context](https://github.com/mkdocs-ng/mkdocs/commit/01be507e30b05db0a4c44ef05ba62b2098010653)
+    * Some methods stopped accepting `Config` and only accept `MkDocsConfig` as was originally intended. [Context](https://github.com/mkdocs-ng/mkdocs/commit/c459cd24fc0320333f51525e9cf681d4a8370f50)
     * `config.mdx_configs` got a proper type. Context: #3229
 
 ### Theme updates
@@ -547,7 +547,7 @@ This can be used for config overrides on the fly. See updated section at the bot
 
 The command to use this is `mkdocs build -f -`. In previous versions doing this led to an error.
 
-[Context](https://github.com/mkdocs/mkdocs/commit/d5bb15fa108da86a8e53fb7d84109d8f8d9d6453)
+[Context](https://github.com/mkdocs-ng/mkdocs/commit/d5bb15fa108da86a8e53fb7d84109d8f8d9d6453)
 
 ### New command line flags
 
@@ -569,13 +569,13 @@ The command to use this is `mkdocs build -f -`. In previous versions doing this 
 
 *   Accessing the `user_configs` attribute of a `Config` is deprecated. Note: instead of `config.user_configs[*]['theme']['custom_dir']`, please use the new attribute `config.theme.custom_dir`.
 
-Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/compare/1.4.3...1.5.0).
+Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.4.3...1.5.0).
 
 ## Version 1.4.3 (2023-05-02)
 
 *   Bugfix: for the `hooks` feature, modules no longer fail to load if using some advanced Python features like dataclasses (#3193)
 
-*   Bugfix: Don't create `None` sitemap entries if the page has no populated URL - affects sites that exclude some files from navigation ([`07a297b`](https://github.com/mkdocs/mkdocs/commit/07a297b3b4de4a1b49469b1497ee34039b9f38fa))
+*   Bugfix: Don't create `None` sitemap entries if the page has no populated URL - affects sites that exclude some files from navigation ([`07a297b`](https://github.com/mkdocs-ng/mkdocs/commit/07a297b3b4de4a1b49469b1497ee34039b9f38fa))
 
 *   "readthedocs" theme:
     * Accessibility: add aria labels to Home logo (#3129) and search inputs (#3046)
@@ -586,7 +586,7 @@ Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/comp
     * Fixed `zh_CN` translation (#3125)
     * `tr_TR` translation becomes just `tr` - usage should remain unaffected (#3195)
 
-See [commit log](https://github.com/mkdocs/mkdocs/compare/1.4.2...1.4.3).
+See [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.4.2...1.4.3).
 
 ## Version 1.4.2 (2022-11-01)
 
@@ -612,7 +612,7 @@ See [commit log](https://github.com/mkdocs/mkdocs/compare/1.4.2...1.4.3).
 
 *   Plugin-related warnings look more readable (#3016)
 
-See [commit log](https://github.com/mkdocs/mkdocs/compare/1.4.1...1.4.2).
+See [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.4.1...1.4.2).
 
 ## Version 1.4.1 (2022-10-15)
 
@@ -635,7 +635,7 @@ See [commit log](https://github.com/mkdocs/mkdocs/compare/1.4.1...1.4.2).
 
 *   The ['mkdocs' package](https://pypi.org/project/mkdocs/#files) (wheel and source) is now produced by Hatch build system and pyproject.toml instead of setup.py (#2988)
 
-Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/compare/1.4.0...1.4.1).
+Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.4.0...1.4.1).
 
 ## Version 1.4.0 (2022-09-27)
 
@@ -687,7 +687,7 @@ To not make a breaking change, there's no change to how *this* property is used,
 
 These consistently use forward slashes, and are now the definitive source that MkDocs itself uses.
 
-See [source code](https://github.com/mkdocs/mkdocs/blob/1.4.0/mkdocs/structure/files.py#L151).
+See [source code](https://github.com/mkdocs-ng/mkdocs/blob/1.4.0/mkdocs/structure/files.py#L151).
 
 As a related tip: you should also stop using `os.path.*` or `pathlib.Path()` to deal with these paths, and instead use `posixpath.*` or `pathlib.PurePosixPath()`
 
@@ -697,11 +697,11 @@ As a related tip: you should also stop using `os.path.*` or `pathlib.Path()` to 
 
 MkDocs' plugin event methods now have type annotations. You might have been adding annotations to events already, but now they will be validated to match the original.
 
-See [source code](https://github.com/mkdocs/mkdocs/blob/1.4.0/mkdocs/plugins.py#L165) and [documentation](../dev-guide/plugins.md#events).
+See [source code](https://github.com/mkdocs-ng/mkdocs/blob/1.4.0/mkdocs/plugins.py#L165) and [documentation](../dev-guide/plugins.md#events).
 
-One big update is that now you should annotate method parameters more specifically as `config: defaults.MkDocsConfig` instead of `config: base.Config`. This not only makes it clear that it is the [main config of MkDocs itself](https://github.com/mkdocs/mkdocs/blob/1.4.0/mkdocs/config/defaults.py), but also provides type-safe access through attributes of the object (see next section).
+One big update is that now you should annotate method parameters more specifically as `config: defaults.MkDocsConfig` instead of `config: base.Config`. This not only makes it clear that it is the [main config of MkDocs itself](https://github.com/mkdocs-ng/mkdocs/blob/1.4.0/mkdocs/config/defaults.py), but also provides type-safe access through attributes of the object (see next section).
 
-See [source code](https://github.com/mkdocs/mkdocs/blob/1.4.0/mkdocs/config/defaults.py) and [documentation](../dev-guide/plugins.md#on_event_name).
+See [source code](https://github.com/mkdocs-ng/mkdocs/blob/1.4.0/mkdocs/config/defaults.py) and [documentation](../dev-guide/plugins.md#on_event_name).
 
 #### Rework ConfigOption schemas as class-based (#2962)
 
@@ -846,7 +846,7 @@ Deprecated config option classes: `ConfigItems` (#2983), `OptionallyRequired` (#
 
 *   Bugfix (regression in 1.2): Support listening on an IPv6 address in `mkdocs serve`. (#2951)
 
-Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/compare/1.3.1...1.4.0).
+Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.3.1...1.4.0).
 
 ## Version 1.3.1 (2022-07-19)
 
@@ -861,7 +861,7 @@ Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/comp
 *   Built-in themes now also support these languages:
     * Italian (#2860)
 
-Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/compare/1.3.0...1.3.1).
+Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.3.0...1.3.1).
 
 ## Version 1.3.0 (2022-03-26)
 
@@ -911,9 +911,9 @@ Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/comp
 
 *   Recursively validate `nav` (#2680)
 
-    Validation of the nested `nav` structure has been reworked to report errors early and reliably. Some [edge cases](https://github.com/mkdocs/mkdocs/blob/b7272150bbc9bf8f66c878f6517742de3528972b/mkdocs/tests/config/config_options_tests.py#L783) have been declared invalid.
+    Validation of the nested `nav` structure has been reworked to report errors early and reliably. Some [edge cases](https://github.com/mkdocs-ng/mkdocs/blob/b7272150bbc9bf8f66c878f6517742de3528972b/mkdocs/tests/config/config_options_tests.py#L783) have been declared invalid.
 
-Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/compare/1.2.3...1.3.0).
+Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.2.3...1.3.0).
 
 ## Version 1.2.4 (2022-03-26)
 
@@ -942,7 +942,7 @@ Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/comp
 
 *   Bugfix: Python version 3.10 was displayed incorrectly in `--version` (#2618)
 
-Other small improvements; see [commit log](https://github.com/mkdocs/mkdocs/compare/1.2.2...1.2.3).
+Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.2.2...1.2.3).
 
 ## Version 1.2.2 (2021-07-18)
 
@@ -2037,7 +2037,7 @@ A new index with all the contents from a MkDocs build is created in the
 This new file is created on every MkDocs build (with `mkdocs build`) and
 no configuration is needed to enable it.
 
-[future release]: https://github.com/mkdocs/mkdocs/pull/481
+[future release]: https://github.com/mkdocs-ng/mkdocs/pull/481
 [site_dir]: ../user-guide/configuration.md#site_dir
 
 #### Change the pages configuration

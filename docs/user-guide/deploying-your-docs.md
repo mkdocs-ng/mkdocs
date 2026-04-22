@@ -100,7 +100,7 @@ documentation on [Troubleshooting custom domains].
 [remote_branch]: ./configuration.md#remote_branch
 [Custom Domain]: https://help.github.com/articles/adding-or-removing-a-custom-domain-for-your-github-pages-site
 [docs_dir]: ./configuration.md#docs_dir
-[CNAME file]: https://github.com/mkdocs/mkdocs/blob/master/docs/CNAME
+[CNAME file]: https://github.com/mkdocs-ng/mkdocs/blob/master/docs/CNAME
 [Troubleshooting custom domains]: https://help.github.com/articles/troubleshooting-custom-domains/
 
 ## Read the Docs

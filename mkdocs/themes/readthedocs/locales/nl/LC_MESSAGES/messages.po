@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MkDocs 1.5.3\n"
-"Report-Msgid-Bugs-To: https://github.com/mkdocs/mkdocs/issues\n"
+"Report-Msgid-Bugs-To: https://github.com/mkdocs-ng/mkdocs/issues\n"
 "POT-Creation-Date: 2024-04-09 16:13+0200\n"
 "PO-Revision-Date: 2024-08-12 11:34+0200\n"
 "Last-Translator: Jeroen van de Nieuwenhof <jeroen@tolkie.nl>\n"

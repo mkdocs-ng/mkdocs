@@ -41,11 +41,11 @@ class TestGitHubDeploy(unittest.TestCase):
     @mock.patch('subprocess.Popen')
     def test_get_remote_url_http(self, mock_popeno):
         mock_popeno().communicate.return_value = (
-            b'https://github.com/mkdocs/mkdocs.git\n',
+            b'https://github.com/mkdocs-ng/mkdocs.git\n',
             b'',
         )
 
-        expected = ('https://', 'mkdocs/mkdocs.git')
+        expected = ('https://', 'mkdocs-ng/mkdocs.git')
         self.assertEqual(expected, gh_deploy._get_remote_url('origin'))
 
     @mock.patch('subprocess.Popen')

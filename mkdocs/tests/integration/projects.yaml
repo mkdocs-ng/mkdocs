@@ -1,5 +1,5 @@
 # DO NOT UPDATE THIS FILE, only for tests.
-# This is an intentionally small subset of https://github.com/mkdocs/catalog
+# This is an intentionally small subset of https://github.com/mkdocs-ng/catalog
 projects:
 - name: Material for MkDocs
   mkdocs_theme: material

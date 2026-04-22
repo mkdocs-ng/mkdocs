@@ -456,7 +456,7 @@ class EditURITest(TestCase):
     def test_repo_name_github(self) -> None:
         conf = self.get_config(
             self.Schema,
-            {'repo_url': "https://github.com/mkdocs/mkdocs"},
+            {'repo_url': "https://github.com/mkdocs-ng/mkdocs"},
         )
         assert_type(conf.repo_name, Optional[str])
         self.assertEqual(conf.repo_name, "GitHub")
@@ -485,12 +485,12 @@ class EditURITest(TestCase):
     def test_edit_uri_github(self) -> None:
         conf = self.get_config(
             self.Schema,
-            {'repo_url': "https://github.com/mkdocs/mkdocs"},
+            {'repo_url': "https://github.com/mkdocs-ng/mkdocs"},
         )
         assert_type(conf.edit_uri, Optional[str])
         assert_type(conf.repo_url, Optional[str])
         self.assertEqual(conf.edit_uri, 'edit/master/docs/')
-        self.assertEqual(conf.repo_url, "https://github.com/mkdocs/mkdocs")
+        self.assertEqual(conf.repo_url, "https://github.com/mkdocs-ng/mkdocs")
 
     def test_edit_uri_bitbucket(self) -> None:
         conf = self.get_config(
@@ -518,7 +518,7 @@ class EditURITest(TestCase):
     def test_repo_name_custom_and_empty_edit_uri(self) -> None:
         conf = self.get_config(
             self.Schema,
-            {'repo_url': "https://github.com/mkdocs/mkdocs", 'repo_name': 'mkdocs'},
+            {'repo_url': "https://github.com/mkdocs-ng/mkdocs", 'repo_name': 'mkdocs'},
         )
         self.assertEqual(conf.edit_uri, 'edit/master/docs/')
 
@@ -526,7 +526,7 @@ class EditURITest(TestCase):
         conf = self.get_config(
             self.Schema,
             {
-                'repo_url': "https://github.com/mkdocs/mkdocs",
+                'repo_url': "https://github.com/mkdocs-ng/mkdocs",
                 'edit_uri_template': 'edit/foo/docs/{path}',
             },
         )
@@ -540,7 +540,7 @@ class EditURITest(TestCase):
             self.get_config(
                 self.Schema,
                 {
-                    'repo_url': "https://github.com/mkdocs/mkdocs",
+                    'repo_url': "https://github.com/mkdocs-ng/mkdocs",
                     'edit_uri_template': 'edit/master/{path',
                 },
             )
@@ -549,7 +549,7 @@ class EditURITest(TestCase):
             self.get_config(
                 self.Schema,
                 {
-                    'repo_url': "https://github.com/mkdocs/mkdocs",
+                    'repo_url': "https://github.com/mkdocs-ng/mkdocs",
                     'edit_uri_template': 'edit/master/{path!z}',
                 },
             )
@@ -558,7 +558,7 @@ class EditURITest(TestCase):
             self.get_config(
                 self.Schema,
                 {
-                    'repo_url': "https://github.com/mkdocs/mkdocs",
+                    'repo_url': "https://github.com/mkdocs-ng/mkdocs",
                     'edit_uri_template': 'edit/master/{foo}',
                 },
             )
@@ -567,7 +567,7 @@ class EditURITest(TestCase):
         conf = self.get_config(
             self.Schema,
             {
-                'repo_url': "https://github.com/mkdocs/mkdocs",
+                'repo_url': "https://github.com/mkdocs-ng/mkdocs",
                 'edit_uri': 'edit',
                 'edit_uri_template': 'edit/master/{path}',
             },

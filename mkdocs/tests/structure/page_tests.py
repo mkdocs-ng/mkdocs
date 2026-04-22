@@ -555,9 +555,9 @@ class PageTests(unittest.TestCase):
                 edit_url2='http://github.com/mkdocs/mkdocs/edit/master/docs/sub1/non-index.md',
             ),
             dict(
-                config={'repo_url': 'https://github.com/mkdocs/mkdocs/'},
-                edit_url='https://github.com/mkdocs/mkdocs/edit/master/docs/testing.md',
-                edit_url2='https://github.com/mkdocs/mkdocs/edit/master/docs/sub1/non-index.md',
+                config={'repo_url': 'https://github.com/mkdocs-ng/mkdocs/'},
+                edit_url='https://github.com/mkdocs-ng/mkdocs/edit/master/docs/testing.md',
+                edit_url2='https://github.com/mkdocs-ng/mkdocs/edit/master/docs/sub1/non-index.md',
             ),
             dict(
                 config={'repo_url': 'http://example.com'},
@@ -701,16 +701,16 @@ class PageTests(unittest.TestCase):
         for case in [
             dict(
                 edit_uri='hooks.py',
-                expected_edit_url='https://github.com/mkdocs/mkdocs/edit/master/docs/hooks.py',
+                expected_edit_url='https://github.com/mkdocs-ng/mkdocs/edit/master/docs/hooks.py',
             ),
             dict(
                 edit_uri='../scripts/hooks.py',
-                expected_edit_url='https://github.com/mkdocs/mkdocs/edit/master/scripts/hooks.py',
+                expected_edit_url='https://github.com/mkdocs-ng/mkdocs/edit/master/scripts/hooks.py',
             ),
             dict(edit_uri=None, expected_edit_url=None),
         ]:
             with self.subTest(case['edit_uri']):
-                cfg = load_config(repo_url='https://github.com/mkdocs/mkdocs')
+                cfg = load_config(repo_url='https://github.com/mkdocs-ng/mkdocs')
                 fl = File('testing.md', cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
                 fl.edit_uri = case['edit_uri']
                 pg = Page('Foo', fl, cfg)

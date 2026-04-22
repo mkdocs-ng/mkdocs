@@ -11,7 +11,7 @@ ways, a few examples are:
 - Bug reports and patch reviews
 
 For information about available communication channels please refer to the
-[README](https://github.com/mkdocs/mkdocs#readme) file in our
+[README](https://github.com/mkdocs-ng/mkdocs#readme) file in our
 GitHub repository.
 
 ## Reporting an Issue
@@ -41,7 +41,7 @@ have encountered is fixed in the git master. It is **strongly** recommended
 that you do this within a [virtualenv].
 
 ```bash
-pip install git+https://github.com/mkdocs/mkdocs.git
+pip install git+https://github.com/mkdocs-ng/mkdocs.git
 ```
 
 ## Installing for Development
@@ -159,8 +159,8 @@ updated by running the `extract_messages` command. To update the
 `pot` file for both built-in themes, run these commands:
 
 ```bash
-pybabel extract --project=MkDocs --copyright-holder=MkDocs --msgid-bugs-address='https://github.com/mkdocs/mkdocs/issues' --no-wrap --version="$(hatch version)" --mapping-file mkdocs/themes/babel.cfg --output-file mkdocs/themes/mkdocs/messages.pot mkdocs/themes/mkdocs
-pybabel extract --project=MkDocs --copyright-holder=MkDocs --msgid-bugs-address='https://github.com/mkdocs/mkdocs/issues' --no-wrap --version="$(hatch version)" --mapping-file mkdocs/themes/babel.cfg --output-file mkdocs/themes/readthedocs/messages.pot mkdocs/themes/readthedocs
+pybabel extract --project=MkDocs --copyright-holder=MkDocs --msgid-bugs-address='https://github.com/mkdocs-ng/mkdocs/issues' --no-wrap --version="$(hatch version)" --mapping-file mkdocs/themes/babel.cfg --output-file mkdocs/themes/mkdocs/messages.pot mkdocs/themes/mkdocs
+pybabel extract --project=MkDocs --copyright-holder=MkDocs --msgid-bugs-address='https://github.com/mkdocs-ng/mkdocs/issues' --no-wrap --version="$(hatch version)" --mapping-file mkdocs/themes/babel.cfg --output-file mkdocs/themes/readthedocs/messages.pot mkdocs/themes/readthedocs
 ```
 
 The updated `pot` file should be included in a PR with the updated template.
