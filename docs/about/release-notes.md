@@ -891,7 +891,7 @@ Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/c
     * New option `anonymize_ip` for Google Analytics.
     * Dependencies were upgraded: jQuery upgraded to 3.6.0, Modernizr.js dropped, and others.
 
-    See [documentation of config options for the theme](https://www.mkdocs.org/user-guide/choosing-your-theme/#readthedocs)
+    See [documentation of config options for the theme](https://mkdocs-ng.github.io/mkdocs/user-guide/choosing-your-theme/#readthedocs)
 
 *   Built-in themes now also support these languages:
     * German (#2633)
@@ -903,7 +903,7 @@ Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/c
 
     Normally MkDocs never reaches into any other directories (so this feature shouldn't be necessary), but some plugins and extensions may do so.
 
-    See [documentation](https://www.mkdocs.org/user-guide/configuration/#watch).
+    See [documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#watch).
 
 *   New `--no-history` option for `gh_deploy` (#2594)
 

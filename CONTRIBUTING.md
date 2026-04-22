@@ -184,7 +184,7 @@ rooms, and mailing lists is expected to follow the [PyPA Code of Conduct].
 [installing `pipx`]: https://pypa.github.io/pipx/installation/
 [GitHub Actions]: https://docs.github.com/actions
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
-[Translating Themes]: https://www.mkdocs.org/dev-guide/translations/
+[Translating Themes]: https://mkdocs-ng.github.io/mkdocs/dev-guide/translations/
 [Jinja's i18n extension]: https://jinja.palletsprojects.com/en/latest/extensions/#i18n-extension
 [Ruff]: https://docs.astral.sh/ruff/
 [Black]: https://black.readthedocs.io/
