@@ -1,7 +1,11 @@
 name: Auto-fix
 on:
   push:
+    branches:
+      'main'
   pull_request:
+    branches:
+      'main'
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
