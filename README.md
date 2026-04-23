@@ -27,15 +27,15 @@ user guide.
 
 If you need help with MkDocs, do not hesitate to get in contact with us!
 
--   For questions, a good alternative is the **[Chat room]** on
-    Gitter/Matrix.
+-   For questions, a good alternative is the **[Discussions]** on
+    GitHub.
 -   To report a bug or make a feature request, open an **[Issue]** on GitHub.
 
 Please note that we may only provide
 support for problems/questions regarding core features of MkDocs. Any
 questions or bug reports about features of third-party themes, plugins,
 extensions, or similar should be made to their respective projects.
-But, such questions are *not* banned from the [chat room].
+But, such questions are *not* banned from the [Discussions].
 
 Make sure to stick around to answer some questions as well!
 
@@ -66,7 +66,7 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 <!-- Links -->
 [mkdocs]: https://mkdocs-ng.github.io/mkdocs/
 [Issue]: https://github.com/mkdocs-ng/mkdocs/issues
-[Chat room]: https://gitter.im/mkdocs-ng/community
+[Discussions]: https://github.com/mkdocs-ng/mkdocs/discussions
 [release-notes]: https://mkdocs-ng.github.io/mkdocs/about/release-notes/
 [Contributing Guide]: https://mkdocs-ng.github.io/mkdocs/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
