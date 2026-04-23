@@ -5,22 +5,17 @@ repos:
         name: Hatch Python style fixes
         entry: hatch run style:fix
         language: system
+        always_run: true
         pass_filenames: false
-        files: ^(mkdocs|docs)/
-      - id: hatch-spelling
-        name: Hatch spelling check
-        entry: hatch run lint:spelling
+      - id: hatch-types
+        name: Hatch type check
+        entry: hatch run types:check
         language: system
+        always_run: true
         pass_filenames: false
-
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
-    hooks:
-      - id: trailing-whitespace
-        exclude: ^mkdocs/(contrib|themes)/
-      - id: end-of-file-fixer
-        exclude: ^mkdocs/(contrib|themes)/
-      - id: check-yaml
-      - id: check-toml
-      - id: check-merge-conflict
-      - id: mixed-line-ending
+      - id: hatch-project-lint
+        name: Hatch project lint
+        entry: hatch run lint:check
+        language: system
+        always_run: true
+        pass_filenames: false

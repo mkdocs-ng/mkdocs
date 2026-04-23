@@ -68,20 +68,13 @@ jobs:
           python-version: '3.11'
       - name: Install Python dependencies
         run: |
-          python -m pip install --upgrade hatch
+          python -m pip install --upgrade hatch pre-commit
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: 20
-      - name: Check Python style
-        if: always()
-        run: hatch run style:check
-      - name: Check with mypy
-        if: always()
-        run: hatch run types:check
-      - name: Check project lint
-        if: always()
-        run: hatch run lint:check
+      - name: Run pre-commit
+        run: pre-commit run --all-files
 
   package:
     runs-on: ubuntu-latest
