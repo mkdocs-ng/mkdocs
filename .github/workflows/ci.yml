@@ -73,21 +73,15 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 20
-      - name: Check with ruff
+      - name: Check Python style
         if: always()
-        run: hatch run style:lint
+        run: hatch run style:check
       - name: Check with mypy
         if: always()
         run: hatch run types:check
-      - name: Check Markdown style
+      - name: Check project lint
         if: always()
-        run: hatch run lint:markdown
-      - name: Check JS style
-        if: always()
-        run: hatch run lint:js
-      - name: Check spelling
-        if: always()
-        run: hatch run lint:spelling
+        run: hatch run lint:check
 
   package:
     runs-on: ubuntu-latest

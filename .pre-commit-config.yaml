@@ -1,23 +1,17 @@
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.11
+  - repo: local
     hooks:
-      - id: ruff
-        args: [--fix]
-      - id: ruff-format
-
-  - repo: https://github.com/PyCQA/isort
-    rev: 8.0.1
-    hooks:
-      - id: isort
-
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.2
-    hooks:
-      - id: codespell
-        args:
-          - --skip=*.min.js,lunr*.js,fontawesome-webfont.svg,tinyseg.js,*.map,LC_MESSAGES
-        exclude: ^mkdocs/(contrib|themes)/
+      - id: hatch-style-fix
+        name: Hatch Python style fixes
+        entry: hatch run style:fix
+        language: system
+        pass_filenames: false
+        files: ^(mkdocs|docs)/
+      - id: hatch-spelling
+        name: Hatch spelling check
+        entry: hatch run lint:spelling
+        language: system
+        pass_filenames: false
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
