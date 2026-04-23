@@ -10,9 +10,9 @@ ways, a few examples are:
 - Documentation improvements
 - Bug reports and patch reviews
 
-For information about available communication channels please refer to the
-[README](https://github.com/mkdocs-ng/mkdocs#readme) file in our
-GitHub repository.
+For information about available communication channels, see the support section
+in the [README](https://github.com/mkdocs-ng/mkdocs#readme) in our GitHub
+repository, including [GitHub Discussions] for questions and general help.
 
 ## Reporting an Issue
 
@@ -133,7 +133,7 @@ To localize a theme to your favorite language, follow the guide on [Translating 
 ## Submitting Pull Requests
 
 If you're considering a large code contribution to MkDocs, please prefer to
-open an issue first to get early feedback on the idea.
+open a discussion or issue first to get early feedback on the idea.
 
 Once you think the code is ready to be reviewed, push
 it to your fork and send a pull request. For a change to be accepted it will
@@ -182,6 +182,7 @@ rooms, and mailing lists is expected to follow the [PyPA Code of Conduct].
 [pre-commit]: https://pre-commit.com/
 [installing `pipx`]: https://pypa.github.io/pipx/installation/
 [GitHub Actions]: https://docs.github.com/actions
+[GitHub Discussions]: https://github.com/orgs/mkdocs-ng/discussions
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [Translating Themes]: https://mkdocs-ng.github.io/mkdocs/dev-guide/translations/
 [Jinja's i18n extension]: https://jinja.palletsprojects.com/en/latest/extensions/#i18n-extension

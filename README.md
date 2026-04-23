@@ -66,7 +66,7 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 <!-- Links -->
 [mkdocs]: https://mkdocs-ng.github.io/mkdocs/
 [Issue]: https://github.com/mkdocs-ng/mkdocs/issues
-[Discussions]: https://github.com/mkdocs-ng/mkdocs/discussions
+[Discussions]: https://github.com/orgs/mkdocs-ng/discussions
 [release-notes]: https://mkdocs-ng.github.io/mkdocs/about/release-notes/
 [Contributing Guide]: https://mkdocs-ng.github.io/mkdocs/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
