@@ -1,21 +1,67 @@
-name: Release Drafter
+name: Draft Release Notes
 
 on:
   push:
     branches:
       - "main"
+    paths:
+      - "docs/about/release-notes.md"
+      - ".github/workflows/release-drafter.yml"
+      - ".github/scripts/sync_release_draft.py"
   workflow_dispatch:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   draft-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: release-drafter/release-drafter@v7
+      - uses: actions/checkout@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          config-name: release-drafter.yml
+          python-version: "3.11"
+      - id: notes
+        name: Extract latest release notes
+        run: python .github/scripts/sync_release_draft.py
+      - name: Show next version
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ steps.notes.outputs.version }}
+          RELEASE_NAME: ${{ steps.notes.outputs.release_name }}
+          RELEASE_BODY_PATH: ${{ steps.notes.outputs.body_path }}
+        run: |
+          echo "Next version: ${RELEASE_VERSION}"
+          {
+            echo "## Draft Release"
+            echo
+            echo "- Next version: \`${RELEASE_VERSION}\`"
+            echo "- Draft release title: \`${RELEASE_NAME}\`"
+            echo "- Release notes source: \`docs/about/release-notes.md\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Create or update draft release with GitHub CLI
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ steps.notes.outputs.version }}
+          RELEASE_NAME: ${{ steps.notes.outputs.release_name }}
+          RELEASE_BODY_PATH: ${{ steps.notes.outputs.body_path }}
+        run: |
+          if gh release view "$RELEASE_VERSION" >/dev/null 2>&1; then
+            gh release edit "$RELEASE_VERSION" \
+              --draft \
+              --title "$RELEASE_NAME" \
+              --notes-file "$RELEASE_BODY_PATH"
+          else
+            gh release create "$RELEASE_VERSION" \
+              --draft \
+              --target main \
+              --title "$RELEASE_NAME" \
+              --notes-file "$RELEASE_BODY_PATH"
+          fi
+
+          release_url="$(gh release view "$RELEASE_VERSION" --json url --jq '.url')"
+          echo "Draft release URL: ${release_url}"
+          {
+            echo "- Draft release tag: \`${RELEASE_VERSION}\`"
+            echo "- Draft release URL: ${release_url}"
+          } >> "$GITHUB_STEP_SUMMARY"
