@@ -17,7 +17,6 @@ repos:
       - id: codespell
         args:
           - --skip=*.min.js,lunr*.js,fontawesome-webfont.svg,tinyseg.js,*.map,LC_MESSAGES
-        exclude: ^mkdocs/(contrib|themes)/
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0

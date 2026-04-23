@@ -81,7 +81,7 @@ will be verified by [GitHub Actions] when you submit a pull request.
 
 ### Python code style
 
-Python code within MkDocs' code base is formatted using [Black] and [Isort] and lint-checked using [Ruff], all of which are configured in `pyproject.toml`.
+Python code within MkDocs' code base is formatted using Ruff's formatter and [Isort] and lint-checked using [Ruff]. The shared repository hooks live in `.pre-commit-config.yaml`, and both Hatch and GitHub Actions call into those same hooks to avoid drift.
 
 You can automatically check and format the code according to these tools with the following command:
 
@@ -97,10 +97,16 @@ hatch run types:check
 
 ### Other style checks
 
-There are several other checks, such as spelling and JS style. To run all of them, use this command:
+There are several other checks, such as YAML/TOML validation, spelling, Markdown style and JS style. To run the same repository-wide checks as CI, use this command:
 
 ```bash
 hatch run lint:check
+```
+
+If you only want to run the pre-commit-backed repository hooks, use:
+
+```bash
+hatch run lint:repo
 ```
 
 ### Documentation of MkDocs itself
@@ -187,6 +193,5 @@ rooms, and mailing lists is expected to follow the [PyPA Code of Conduct].
 [Translating Themes]: https://mkdocs-ng.github.io/mkdocs/dev-guide/translations/
 [Jinja's i18n extension]: https://jinja.palletsprojects.com/en/latest/extensions/#i18n-extension
 [Ruff]: https://docs.astral.sh/ruff/
-[Black]: https://black.readthedocs.io/
 [Isort]: https://pycqa.github.io/isort/
 [mypy]: https://mypy-lang.org/

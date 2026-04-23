@@ -15,10 +15,10 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-      - name: Install pre-commit
-        run: pip install pre-commit
-      - name: Run pre-commit hooks
-        run: pre-commit run --all-files
+      - name: Install Hatch
+        run: python -m pip install --upgrade hatch
+      - name: Run shared repository hooks
+        run: hatch run lint:repo
       - name: Apply automatic fixes using pre-commit-ci-lite
         if: failure() && github.event_name == 'pull_request'
         uses: pre-commit-ci/lite-action@v1.1.0
