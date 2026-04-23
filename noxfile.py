@@ -10,6 +10,10 @@ Usage:
 
 from __future__ import annotations
 
+import ast
+from pathlib import Path
+import re
+
 import nox
 
 # ---------------------------------------------------------------------------
@@ -27,6 +31,15 @@ SOURCE_DIRS = ["mkdocs", "docs"]
 
 # Sessions that run by default when `nox` is invoked with no arguments.
 nox.options.sessions = ["tests", "lint", "typing"]
+
+
+def install_min_versions(session: nox.Session) -> None:
+    pyproject = Path("pyproject.toml").read_text(encoding="utf-8")
+    match = re.search(r"(?ms)^min-versions = (\[.*?^])", pyproject)
+    if match is None:
+        raise RuntimeError("Failed to load min-versions from pyproject.toml")
+    dependencies = [dep.replace(" == ", "==") for dep in ast.literal_eval(match.group(1))]
+    session.run("python", "-m", "pip", "install", "--force-reinstall", *dependencies)
 
 
 # ---------------------------------------------------------------------------
@@ -53,7 +66,8 @@ def tests(session: nox.Session) -> None:
 @nox.session(name="tests-min", python=PYTHON_VERSIONS)
 def tests_min(session: nox.Session) -> None:
     """Run the unit test suite with pinned minimum dependency versions."""
-    session.install("-e", ".[i18n,testing,min-versions]")
+    session.install("-e", ".[i18n,testing]")
+    install_min_versions(session)
     session.run(
         "python",
         "-m",
