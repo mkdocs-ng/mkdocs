@@ -54,17 +54,23 @@ The main tool that is used for development is [Hatch]. It manages dependencies (
 
 So first, [install it][install Hatch]. Ideally in an isolated way with **`pipx install hatch`** (after [installing `pipx`]), or just `pip install hatch` as a more well-known way.
 
-## Running all checks
+For repository hooks, install [pre-commit] as well. Ideally use **`pipx install pre-commit`**, or `pip install pre-commit` if you prefer. The Markdown and JavaScript hooks also require Node.js to be available on your `PATH`.
 
-To run **all** checks that are required for MkDocs, just run the following command in the cloned MkDocs repository:
+## Running repository hooks
+
+To run the same repository-wide hooks as CI, use the following command in the cloned MkDocs repository:
 
 ```bash
-hatch run all
+pre-commit run --all-files
 ```
 
-**This will encompass all of the checks mentioned below.**
+This runs the hooks defined in `.pre-commit-config.yaml`, including Python formatting and linting, spelling, YAML/TOML validation, Markdown linting, and JavaScript linting.
 
-All checks need to pass.
+If you want these hooks to run automatically on each commit, install them into your local Git checkout:
+
+```bash
+pre-commit install
+```
 
 ### Running tests
 
@@ -81,26 +87,18 @@ will be verified by [GitHub Actions] when you submit a pull request.
 
 ### Python code style
 
-Python code within MkDocs' code base is formatted using [Black] and [Isort] and lint-checked using [Ruff], all of which are configured in `pyproject.toml`.
+Python code within MkDocs' code base is formatted using Ruff's formatter and [Isort] and lint-checked using [Ruff]. The shared repository hooks live in `.pre-commit-config.yaml`, and GitHub Actions runs those hooks directly to avoid drift.
 
-You can automatically check and format the code according to these tools with the following command:
+You can check and automatically format the repository according to these tools with the following command:
 
 ```bash
-hatch run style:fix
+pre-commit run --all-files
 ```
 
 The code is also type-checked using [mypy] - also configured in `pyproject.toml`, it can be run like this:
 
 ```bash
 hatch run types:check
-```
-
-### Other style checks
-
-There are several other checks, such as spelling and JS style. To run all of them, use this command:
-
-```bash
-hatch run lint:check
 ```
 
 ### Documentation of MkDocs itself
@@ -113,10 +111,10 @@ hatch run docs:serve
 
 Note that any 'WARNING' should be resolved before submitting a contribution.
 
-Documentation files are also checked by markdownlint, so you should run this as well:
+Documentation files are also checked by the repository hooks, so you should run this as well:
 
 ```bash
-hatch run lint:check
+pre-commit run --all-files
 ```
 
 If you add a new plugin to mkdocs.yml, you don't need to add it to any "requirements" file, because that is managed automatically.
@@ -181,12 +179,12 @@ rooms, and mailing lists is expected to follow the [PyPA Code of Conduct].
 [virtualenv]: https://virtualenv.pypa.io/en/latest/user_guide.html
 [Hatch]: https://hatch.pypa.io/
 [install Hatch]: https://hatch.pypa.io/latest/install/#pip
+[pre-commit]: https://pre-commit.com/
 [installing `pipx`]: https://pypa.github.io/pipx/installation/
 [GitHub Actions]: https://docs.github.com/actions
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [Translating Themes]: https://mkdocs-ng.github.io/mkdocs/dev-guide/translations/
 [Jinja's i18n extension]: https://jinja.palletsprojects.com/en/latest/extensions/#i18n-extension
 [Ruff]: https://docs.astral.sh/ruff/
-[Black]: https://black.readthedocs.io/
 [Isort]: https://pycqa.github.io/isort/
 [mypy]: https://mypy-lang.org/

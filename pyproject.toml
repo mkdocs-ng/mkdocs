@@ -108,15 +108,6 @@ dependencies = [
 [tool.hatch.env]
 requires = ["hatch-mkdocs"]
 
-[tool.hatch.envs.default.scripts]
-all = [
-    "hatch run style:fix",
-    "hatch run types:check",
-    "hatch run test:test",
-    "hatch run lint:check",
-    "hatch run +type=default integration:test",
-]
-
 [tool.hatch.envs.test]
 features = ["i18n"]
 dependencies = [
@@ -168,42 +159,6 @@ dependencies = [
 [tool.hatch.envs.types.scripts]
 check = "mypy mkdocs"
 
-[tool.hatch.envs.style]
-detached = true
-dependencies = [
-    "black",
-    "isort",
-    "ruff",
-]
-[tool.hatch.envs.style.scripts]
-check = [
-    "isort --check-only --diff mkdocs docs",
-    "black -q --check --diff mkdocs docs",
-    "lint",
-]
-lint = [
-    "ruff check mkdocs docs {args}"
-]
-fix = [
-    "lint --fix",
-    "format",
-]
-format = [
-    "isort -q mkdocs docs",
-    "black -q mkdocs docs",
-]
-
-[tool.hatch.envs.lint]
-detached = true
-dependencies = [
-    "codespell==2.2.6",
-]
-[tool.hatch.envs.lint.scripts]
-spelling = 'codespell mkdocs docs *.* -S LC_MESSAGES -S "*.min.js" -S "lunr*.js" -S fontawesome-webfont.svg -S tinyseg.js -S "*.map"'
-markdown = "npm exec --yes -- markdownlint-cli README.md CONTRIBUTING.md docs/ --ignore docs/CNAME"
-js = "npm exec --yes -- jshint mkdocs/"
-check = ["markdown", "js", "css", "spelling"]
-
 [tool.hatch.env.collectors.mkdocs.docs]
 path = "mkdocs.yml"
 [tool.hatch.envs.docs]
@@ -212,10 +167,6 @@ detached = false
 build = "mkdocs build"
 serve = "mkdocs serve"
 deploy = "mkdocs gh-deploy --force"
-
-[tool.black]
-line-length = 100
-skip-string-normalization = true
 
 [tool.isort]
 profile = "black"

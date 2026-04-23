@@ -2,7 +2,7 @@ repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.11
     hooks:
-      - id: ruff
+      - id: ruff-check
         args: [--fix]
       - id: ruff-format
 
@@ -30,3 +30,16 @@ repos:
       - id: check-toml
       - id: check-merge-conflict
       - id: mixed-line-ending
+
+  - repo: local
+    hooks:
+      - id: markdownlint
+        name: markdownlint
+        entry: npm exec --yes -- markdownlint-cli
+        language: system
+        files: ^(README\.md|CONTRIBUTING\.md|docs/.*\.md)$
+      - id: jshint
+        name: jshint
+        entry: npm exec --yes -- jshint
+        language: system
+        files: ^mkdocs/.*\.js$
