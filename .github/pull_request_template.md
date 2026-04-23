@@ -18,7 +18,6 @@ Closes #
 
 ## Checklist
 
-- [ ] Tests pass locally (`hatch run test:test`)
 - [ ] New tests added for new behavior (if applicable)
 - [ ] Documentation updated (if applicable)
-- [ ] `CHANGELOG` / release notes updated (if applicable)
+- [ ] Release notes `docs/about/release-notes.md` updated (if applicable)
