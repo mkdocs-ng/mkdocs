@@ -23,23 +23,37 @@ The current members of the MkDocs-NG team.
 
 * [@shenxianpeng](https://github.com/shenxianpeng)
 
-## Version 1.7.0 (2026-04-22)
+## Version 1.7.0 (2026-04-23)
 
-### Fixed
+MkDocs NG 1.7.0 is a small but important release. The biggest change is that
+the package is now published on PyPI as `mkdocs-ng`, while the command-line
+interface remains `mkdocs`.
 
-* Fix `--livereload` CLI option not being recognized correctly. #4
+### Upgrade notes
 
-### Added
+Install or upgrade with:
 
-* Add support for Python 3.13 and 3.14 in CI. #4
+```bash
+pip install -U mkdocs-ng
+```
+
+The CLI command does not change, so existing commands such as `mkdocs serve`,
+`mkdocs build`, and `mkdocs gh-deploy` continue to work as before.
+
+If you maintain setup instructions, templates, or CI snippets, update any old
+references to the previous package name or project URLs.
+
+### Highlights
+
+* The PyPI package name is now `mkdocs-ng`. Repository, documentation, and installation references were updated to the MkDocs NG project locations. #2 #12 #15
+* Fix `mkdocs serve --livereload` so the option is recognized correctly again. #4
+* Add Python 3.13 and 3.14 to the tested and declared supported versions. #4
 
 ### Maintenance
 
-* Rename project from `mkdocs` to `mkdocs-ng` and update all repository references. #2 #5
-* Add Dependabot configuration for automated dependency updates. #6
-* Add Release Drafter workflow for automated changelog generation. #7
-* Bump GitHub Actions dependencies. #8
-* Bump pip dependencies. #10
+* Simplify contributor setup by removing the old pinned requirements files and moving repository-wide checks to shared `pre-commit` hooks. #14 #24
+* Add issue templates, security workflow, Dependabot, and Release Drafter to improve maintenance and release management. #6 #7 #24
+* Refresh GitHub Actions and pip dependency updates. #8 #10 #19
 
 ---
 
