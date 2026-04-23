@@ -6,31 +6,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  test-smoke:
+    name: Smoke tests (${{ matrix.os }}, ${{ matrix.python-version }})
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14', 'pypy-3.9-v7.x']
-        os: [ubuntu-latest, windows-latest, macos-latest]
         include:
-          - python-version: pypy-3.9-v7.x
+          - os: ubuntu-latest
+            python-version: '3.8'
+            test-script: test:test
+          - os: ubuntu-latest
+            python-version: '3.14'
+            test-script: test:with-coverage
+            upload-coverage: true
+          - os: ubuntu-latest
+            python-version: pypy-3.9-v7.x
             py: pypy3
-        # Just to slim down the test matrix:
-        exclude:
-          - python-version: '3.9'
-            os: macos-latest
-          - python-version: '3.9'
-            os: windows-latest
-          - python-version: '3.10'
-            os: ubuntu-latest
-          - python-version: '3.11'
-            os: macos-latest
-          - python-version: '3.11'
-            os: windows-latest
-          # PyPy 3.9 on Windows fails to build zstandard (hatch dep) due to
-          # missing distutils.msvc9compiler in cffi on PyPy; no value in testing this combo
-          - python-version: 'pypy-3.9-v7.x'
-            os: windows-latest
+            test-script: test:test
+          - os: macos-latest
+            python-version: '3.14'
+            test-script: test:test
+          - os: windows-latest
+            python-version: '3.14'
+            test-script: test:test
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
@@ -43,19 +42,53 @@ jobs:
           python -m pip install nox
       - name: Run tests
         run: |
-          nox -s coverage-${{ matrix.py || matrix.python-version }} tests-min-${{ matrix.py || matrix.python-version }}
+          hatch run +py=${{ matrix.py || matrix.python-version }} ${{ matrix.test-script }}
       - name: Run integration tests
         run: |
           nox -s integration-${{ matrix.py || matrix.python-version }} integration-no-babel-${{ matrix.py || matrix.python-version }}
         shell: bash
       - name: Upload Codecov Results
-        if: success()
+        if: success() && matrix.upload-coverage
         uses: codecov/codecov-action@v6
         with:
           file: ./coverage.xml
           flags: unittests
-          name: ${{ matrix.os }}/${{ matrix.python-version }}
+          name: smoke/${{ matrix.os }}/${{ matrix.python-version }}
           fail_ci_if_error: false
+
+  test-full:
+    name: Full tests (ubuntu, ${{ matrix.python-version }})
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python-version: '3.8'
+          - python-version: '3.9'
+          - python-version: '3.10'
+          - python-version: '3.11'
+          - python-version: '3.12'
+          - python-version: '3.13'
+          - python-version: '3.14'
+          - python-version: pypy-3.9-v7.x
+            py: pypy3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade hatch
+      - name: Run tests
+        run: |
+          hatch run +py=${{ matrix.py || matrix.python-version }} test:test
+      - name: Run integration tests
+        run: |
+          hatch run +py=${{ matrix.py || matrix.python-version }} integration:test
+        shell: bash
 
   lint:
     runs-on: ubuntu-latest
@@ -67,26 +100,17 @@ jobs:
           python-version: '3.11'
       - name: Install Python dependencies
         run: |
-          python -m pip install nox
+          python -m pip install --upgrade hatch pre-commit
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: 20
-      - name: Check with ruff
+      - name: Run repository checks
         if: always()
-        run: nox -s lint
+        run: pre-commit run --all-files --show-diff-on-failure
       - name: Check with mypy
         if: always()
-        run: nox -s typing
-      - name: Check Markdown style
-        if: always()
-        run: nox -s markdown
-      - name: Check JS style
-        if: always()
-        run: nox -s js
-      - name: Check spelling
-        if: always()
-        run: nox -s spelling
+        run: hatch run types:check
 
   package:
     runs-on: ubuntu-latest

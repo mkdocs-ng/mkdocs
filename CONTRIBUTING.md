@@ -50,15 +50,31 @@ Note that for development you can just use [Hatch] directly as described below. 
 
 ## Installing development tools
 
-The project uses [Nox] as its task runner. Install it once:
+The main tool that is used for development is [Hatch]. It manages dependencies (in a virtualenv that is created on the fly) and is also the command runner.
+
+So first, [install it][install Hatch]. Ideally in an isolated way with **`pipx install hatch`** (after [installing `pipx`]), or just `pip install hatch` as a more well-known way.
+
+For repository hooks, install [pre-commit] as well. Ideally use **`pipx install pre-commit`**, or `pip install pre-commit` if you prefer. The Markdown and JavaScript hooks also require Node.js to be available on your `PATH`.
+
+## Running repository hooks
+
+To run the same repository-wide hooks as CI, use the following command in the cloned MkDocs repository:
 
 ```bash
-pipx install nox   # recommended (isolated)
-# or
-pip install nox
+pre-commit run --all-files
 ```
 
-Run the most common checks before submitting a PR:
+This runs the hooks defined in `.pre-commit-config.yaml`, including Python formatting and linting, spelling, YAML/TOML validation, Markdown linting, and JavaScript linting.
+
+If you want these hooks to run automatically on each commit, install them into your local Git checkout:
+
+```bash
+pre-commit install
+```
+
+### Running tests
+
+To run the test suite for MkDocs, run the following commands:
 
 ```bash
 nox  # runs: tests, lint, typing
@@ -66,13 +82,12 @@ nox  # runs: tests, lint, typing
 
 List all available tasks with `nox -l`, then run any one by name, e.g. `nox -s format`.
 
-## Running checks
+Python code within MkDocs' code base is formatted using Ruff's formatter and [Isort] and lint-checked using [Ruff]. The shared repository hooks live in `.pre-commit-config.yaml`, and GitHub Actions runs those hooks directly to avoid drift.
 
-### Tests
+You can check and automatically format the repository according to these tools with the following command:
 
 ```bash
-nox -s tests
-nox -s integration
+pre-commit run --all-files
 ```
 
 ### Code style
@@ -83,14 +98,21 @@ nox -s lint      # check only (ruff)
 nox -s typing    # mypy
 ```
 
-### Documentation
+### Documentation of MkDocs itself
+
+After making edits to files under the `docs/` dir, you can preview the site locally using the following command:
 
 ```bash
-nox -s docs        # build
-nox -s docs-serve  # local preview
+hatch run docs:serve
 ```
 
-Note that any 'WARNING' should be resolved before submitting a contribution. Documentation files are also checked by markdownlint (`nox -s markdown`).
+Note that any 'WARNING' should be resolved before submitting a contribution.
+
+Documentation files are also checked by the repository hooks, so you should run this as well:
+
+```bash
+pre-commit run --all-files
+```
 
 If you add a new plugin to mkdocs.yml, you don't need to add it to any "requirements" file, because that is managed automatically.
 
@@ -154,6 +176,13 @@ rooms, and mailing lists is expected to follow the [PyPA Code of Conduct].
 [virtualenv]: https://virtualenv.pypa.io/en/latest/user_guide.html
 [Nox]: https://nox.thea.codes/
 [Hatch]: https://hatch.pypa.io/
+[install Hatch]: https://hatch.pypa.io/latest/install/#pip
+[pre-commit]: https://pre-commit.com/
+[installing `pipx`]: https://pypa.github.io/pipx/installation/
+[GitHub Actions]: https://docs.github.com/actions
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [Translating Themes]: https://mkdocs-ng.github.io/mkdocs/dev-guide/translations/
 [Jinja's i18n extension]: https://jinja.palletsprojects.com/en/latest/extensions/#i18n-extension
+[Ruff]: https://docs.astral.sh/ruff/
+[Isort]: https://pycqa.github.io/isort/
+[mypy]: https://mypy-lang.org/
