@@ -34,13 +34,11 @@ class ConfigTests(unittest.TestCase):
 
     @tempdir()
     def test_invalid_config(self, temp_path):
-        file_contents = dedent(
-            """
+        file_contents = dedent("""
             - ['index.md', 'Introduction']
             - ['index.md', 'Introduction']
             - ['index.md', 'Introduction']
-            """
-        )
+            """)
         config_path = os.path.join(temp_path, "foo.yml")
         with open(config_path, "w") as config_file:
             config_file.write(file_contents)
@@ -58,13 +56,11 @@ class ConfigTests(unittest.TestCase):
             "site_name": "Example",
             "nav": [{"Introduction": "index.md"}],
         }
-        file_contents = dedent(
-            """
+        file_contents = dedent("""
             site_name: Example
             nav:
             - 'Introduction': 'index.md'
-            """
-        )
+            """)
         config_path = os.path.join(temp_path, "mkdocs.yml")
         with open(config_path, "w") as config_file:
             config_file.write(file_contents)

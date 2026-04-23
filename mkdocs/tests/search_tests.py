@@ -322,13 +322,11 @@ class SearchIndexTests(unittest.TestCase):
         """Test finding the relevant TOC item by the tag ID."""
         index = search_index.SearchIndex()
 
-        md = dedent(
-            """
+        md = dedent("""
             # Heading 1
             ## Heading 2
             ### Heading 3
-            """
-        )
+            """)
         toc = get_toc(get_markdown_toc(md))
 
         toc_item = index._find_toc_by_id(toc, "heading-1")
@@ -377,13 +375,11 @@ class SearchIndexTests(unittest.TestCase):
             ),
         ]
 
-        md = dedent(
-            """
+        md = dedent("""
             # Heading 1
             ## Heading 2
             ### Heading 3
-            """
-        )
+            """)
         toc = get_toc(get_markdown_toc(md))
 
         full_content = "".join(f"Heading{i}Content{i}" for i in range(1, 4))
@@ -439,12 +435,10 @@ class SearchIndexTests(unittest.TestCase):
                 <p>Content 2</p>
                 <h3 id="heading-3">Heading 3</h1>
                 <p>Content 3</p>"""
-            test_page.markdown = dedent(
-                """
+            test_page.markdown = dedent("""
                 # Heading 1
                 ## Heading 2
-                ### Heading 3"""
-            )
+                ### Heading 3""")
             test_page.toc = get_toc(get_markdown_toc(test_page.markdown))
             return test_page
 

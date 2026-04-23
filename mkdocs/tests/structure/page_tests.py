@@ -339,14 +339,12 @@ class PageTests(unittest.TestCase):
         md.convert(content)
         self.assertEqual(extract_title_ext.title, expected)
 
-    _SETEXT_CONTENT = dedent(
-        """
+    _SETEXT_CONTENT = dedent("""
         Welcome to MkDocs Setext
         ========================
 
         This tests extracting a setext style title.
-        """
-    )
+        """)
 
     def test_page_title_from_setext_markdown(self):
         self._test_extract_title(
@@ -410,13 +408,11 @@ class PageTests(unittest.TestCase):
         self._test_extract_title("""# Hi ![😄](hah.png)""", expected="Hi 😄")
         self._test_extract_title("""# Hi *-![😄](hah.png)-*""", expected="Hi -😄-")
 
-    _ATTRLIST_CONTENT = dedent(
-        """
+    _ATTRLIST_CONTENT = dedent("""
         # Welcome to MkDocs Attr { #welcome }
 
         This tests extracting the title, with enabled attr_list markdown_extension.
-        """
-    )
+        """)
 
     def test_page_title_from_markdown_stripped_attr_list(self):
         self._test_extract_title(
@@ -773,13 +769,11 @@ class PageTests(unittest.TestCase):
         )
         self.assertEqual(
             str(pg.toc).strip(),
-            dedent(
-                """
+            dedent("""
                 Welcome to MkDocs - #welcome-to-mkdocs
                     Commands - #commands
                     Project layout - #project-layout
-                """
-            ),
+                """),
         )
 
     def test_missing_page(self):

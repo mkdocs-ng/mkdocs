@@ -17,12 +17,10 @@ class SiteNavigationTests(unittest.TestCase):
             {"Home": "index.md"},
             {"About": "about.md"},
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title='Home', url='/')
             Page(title='About', url='/about/')
-            """
-        )
+            """)
         cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
             File(
@@ -45,12 +43,10 @@ class SiteNavigationTests(unittest.TestCase):
             {"Home": "index.md"},
             {"About": "about.md"},
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title='Home', url='/index.html')
             Page(title='About', url='/about.html')
-            """
-        )
+            """)
         cfg = load_config(
             nav=nav_cfg, use_directory_urls=False, site_url="http://example.com/"
         )
@@ -76,11 +72,9 @@ class SiteNavigationTests(unittest.TestCase):
         nav_cfg = [
             {"Home": "index.md"},
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title='Home', url='/')
-            """
-        )
+            """)
         cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
             File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
@@ -101,12 +95,10 @@ class SiteNavigationTests(unittest.TestCase):
             "index.md",
             {"About": "about.md"},
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title=[blank], url='/')
             Page(title='About', url='/about/')
-            """
-        )
+            """)
         cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
             File(nav_cfg[0], cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
@@ -126,13 +118,11 @@ class SiteNavigationTests(unittest.TestCase):
             {"Local": "/local.html"},
             {"External": "http://example.com/external.html"},
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title='Home', url='/')
             Link(title='Local', url='/local.html')
             Link(title='External', url='http://example.com/external.html')
-            """
-        )
+            """)
         cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
         files = Files(fs)
@@ -156,14 +146,12 @@ class SiteNavigationTests(unittest.TestCase):
             {"Local link": "/local.md"},
             {"External": "http://example.com/external.html"},
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title='Home', url='/')
             Page(title='Local page', url='/foo/bar/')
             Link(title='Local link', url='/local.md')
             Link(title='External', url='http://example.com/external.html')
-            """
-        )
+            """)
         cfg = load_config(
             nav=nav_cfg,
             site_url="http://example.com/",
@@ -193,13 +181,11 @@ class SiteNavigationTests(unittest.TestCase):
             {"Missing": "missing.html"},
             {"Bad External": "example.com"},
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title='Home', url='/')
             Link(title='Missing', url='missing.html')
             Link(title='Bad External', url='example.com')
-            """
-        )
+            """)
         cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
         files = Files(fs)
@@ -239,8 +225,7 @@ class SiteNavigationTests(unittest.TestCase):
             },
             {"External": "https://example.com/"},
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title='Home', url='/')
             Section(title='API Guide')
                 Page(title='Running', url='/api-guide/running/')
@@ -252,8 +237,7 @@ class SiteNavigationTests(unittest.TestCase):
                 Page(title='Release notes', url='/about/release-notes/')
                 Link(title='License', url='/license.html')
             Link(title='External', url='https://example.com/')
-            """
-        )
+            """)
         cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
             "index.md",
@@ -337,13 +321,11 @@ class SiteNavigationTests(unittest.TestCase):
             {"Contact": "about/contact.md"},
             {"License Title": "about/sub/license.md"},
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title='Home', url='/')
             Page(title='Contact', url='/about/contact/')
             Page(title='License Title', url='/about/sub/license/')
-            """
-        )
+            """)
         cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
             File(
@@ -366,13 +348,11 @@ class SiteNavigationTests(unittest.TestCase):
             "about/contact.md",
             "about/sub/license.md",
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title=[blank], url='/')
             Page(title=[blank], url='/about/contact/')
             Page(title=[blank], url='/about/sub/license/')
-            """
-        )
+            """)
 
         cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
@@ -393,13 +373,11 @@ class SiteNavigationTests(unittest.TestCase):
             "about\\contact.md",
             "about\\sub\\license.md",
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title=[blank], url='/')
             Page(title=[blank], url='/about/contact/')
             Page(title=[blank], url='/about/sub/license/')
-            """
-        )
+            """)
 
         cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
@@ -413,12 +391,10 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertEqual(len(site_navigation.pages), 3)
 
     def test_nav_from_files(self):
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title=[blank], url='/')
             Page(title=[blank], url='/about/')
-            """
-        )
+            """)
         cfg = load_config(site_url="http://example.com/")
         fs = [
             File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
@@ -432,8 +408,7 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertEqual(repr(site_navigation.homepage), "Page(title=[blank], url='/')")
 
     def test_nav_from_nested_files(self):
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title=[blank], url='/')
             Section(title='About')
                 Page(title=[blank], url='/about/license/')
@@ -444,8 +419,7 @@ class SiteNavigationTests(unittest.TestCase):
                 Page(title=[blank], url='/api-guide/testing/')
                 Section(title='Advanced')
                     Page(title=[blank], url='/api-guide/advanced/part-1/')
-            """
-        )
+            """)
         cfg = load_config(site_url="http://example.com/")
         fs = [
             "index.md",
@@ -466,8 +440,7 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertEqual(repr(site_navigation.homepage), "Page(title=[blank], url='/')")
 
     def test_nav_with_exclusion(self):
-        expected = dedent(
-            """
+        expected = dedent("""
             Page(title=[blank], url='index.html')
             Section(title='About')
                 Page(title=[blank], url='about/license.html')
@@ -475,8 +448,7 @@ class SiteNavigationTests(unittest.TestCase):
             Section(title='Api guide')
                 Page(title=[blank], url='api-guide/running.html')
                 Page(title=[blank], url='api-guide/testing.html')
-            """
-        )
+            """)
         cfg = load_config(use_directory_urls=False, not_in_nav="*ging.md\n/foo.md\n")
         fs = [
             "index.md",
@@ -504,12 +476,10 @@ class SiteNavigationTests(unittest.TestCase):
             {"Home": "index.md"},
             {"About": "about.md"},
         ]
-        expected = dedent(
-            """
+        expected = dedent("""
             PageSubclass(title=[blank], url='/')
             PageSubclass(title=[blank], url='/about/')
-            """
-        )
+            """)
         cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
         fs = [
             File(

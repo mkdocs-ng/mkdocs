@@ -252,13 +252,11 @@ class UtilsTests(unittest.TestCase):
         self.test_nest_paths(os.path.join)
 
     def test_unicode_yaml(self):
-        yaml_src = dedent(
-            """
+        yaml_src = dedent("""
             key: value
             key2:
               - value
-            """
-        )
+            """)
 
         config = utils.yaml_load(yaml_src)
         self.assertTrue(isinstance(config["key"], str))
@@ -266,15 +264,13 @@ class UtilsTests(unittest.TestCase):
 
     @mock.patch.dict(os.environ, {"VARNAME": "Hello, World!", "BOOLVAR": "false"})
     def test_env_var_in_yaml(self):
-        yaml_src = dedent(
-            """
+        yaml_src = dedent("""
             key1: !ENV VARNAME
             key2: !ENV UNDEFINED
             key3: !ENV [UNDEFINED, default]
             key4: !ENV [UNDEFINED, VARNAME, default]
             key5: !ENV BOOLVAR
-            """
-        )
+            """)
         config = utils.yaml_load(yaml_src)
         self.assertEqual(config["key1"], "Hello, World!")
         self.assertIsNone(config["key2"])
@@ -374,8 +370,7 @@ class UtilsTests(unittest.TestCase):
                     os.chmod(src, stat.S_IRUSR | stat.S_IWUSR)
 
     def test_mm_meta_data(self):
-        doc = dedent(
-            """
+        doc = dedent("""
             Title: Foo Bar
             Date: 2018-07-10
             Summary: Line one
@@ -384,8 +379,7 @@ class UtilsTests(unittest.TestCase):
             Tags: bar
 
             Doc body
-            """
-        )
+            """)
         self.assertEqual(
             meta.get_data(doc),
             (
@@ -404,8 +398,7 @@ class UtilsTests(unittest.TestCase):
         self.assertEqual(meta.get_data(doc), (doc.lstrip(), {}))
 
     def test_yaml_meta_data(self):
-        doc = dedent(
-            """
+        doc = dedent("""
             ---
             Title: Foo Bar
             Date: 2018-07-10
@@ -416,8 +409,7 @@ class UtilsTests(unittest.TestCase):
                 - bar
             ---
             Doc body
-            """
-        )
+            """)
         self.assertEqual(
             meta.get_data(doc),
             (
@@ -432,33 +424,27 @@ class UtilsTests(unittest.TestCase):
         )
 
     def test_yaml_meta_data_not_dict(self):
-        doc = dedent(
-            """
+        doc = dedent("""
             ---
             - List item
             ---
             Doc body
-            """
-        )
+            """)
         self.assertEqual(meta.get_data(doc), (doc, {}))
 
     def test_yaml_meta_data_invalid(self):
-        doc = dedent(
-            """
+        doc = dedent("""
             ---
             foo: bar: baz
             ---
             Doc body
-            """
-        )
+            """)
         self.assertEqual(meta.get_data(doc), (doc, {}))
 
     def test_no_meta_data(self):
-        doc = dedent(
-            """
+        doc = dedent("""
             Doc body
-            """
-        )
+            """)
         self.assertEqual(meta.get_data(doc), (doc, {}))
 
 

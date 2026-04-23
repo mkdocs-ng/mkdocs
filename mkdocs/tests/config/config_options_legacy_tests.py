@@ -1148,15 +1148,13 @@ class NavTest(TestCase):
         self.assertEqual(conf["option"], None)
 
     def test_normal_nav(self):
-        nav_yaml = textwrap.dedent(
-            """\
+        nav_yaml = textwrap.dedent("""\
             - Home: index.md
             - getting-started.md
             - User Guide:
               - Overview: user-guide/index.md
               - Installation: user-guide/installation.md
-            """
-        )
+            """)
         nav = yaml_load(io.StringIO(nav_yaml))
 
         conf = self.get_config(self.Schema, {"option": nav})
