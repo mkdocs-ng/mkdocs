@@ -108,15 +108,6 @@ dependencies = [
 [tool.hatch.env]
 requires = ["hatch-mkdocs"]
 
-[tool.hatch.envs.default.scripts]
-all = [
-    "hatch run style:fix",
-    "hatch run types:check",
-    "hatch run test:test",
-    "hatch run lint:check",
-    "hatch run +type=default integration:test",
-]
-
 [tool.hatch.envs.test]
 features = ["i18n"]
 dependencies = [
@@ -167,47 +158,6 @@ dependencies = [
 ]
 [tool.hatch.envs.types.scripts]
 check = "mypy mkdocs"
-
-[tool.hatch.envs.style]
-detached = true
-dependencies = [
-    "pre-commit",
-]
-[tool.hatch.envs.style.scripts]
-_check_imports = "pre-commit run isort --all-files --show-diff-on-failure"
-_check_format = "pre-commit run ruff-format --all-files --show-diff-on-failure"
-check = [
-    "lint",
-    "_check_imports",
-    "_check_format",
-]
-lint = [
-    "pre-commit run ruff --all-files --show-diff-on-failure"
-]
-_fix_ruff = "pre-commit run ruff --all-files || pre-commit run ruff --all-files"
-_fix_imports = "pre-commit run isort --all-files || pre-commit run isort --all-files"
-_fix_format = "pre-commit run ruff-format --all-files || pre-commit run ruff-format --all-files"
-fix = [
-    "_fix_ruff",
-    "_fix_imports",
-    "_fix_format",
-]
-format = [
-    "_fix_imports",
-    "_fix_format",
-]
-
-[tool.hatch.envs.lint]
-detached = true
-dependencies = [
-    "pre-commit",
-]
-[tool.hatch.envs.lint.scripts]
-repo = "pre-commit run --all-files --show-diff-on-failure"
-spelling = "pre-commit run codespell --all-files --show-diff-on-failure"
-markdown = "npm exec --yes -- markdownlint-cli README.md CONTRIBUTING.md docs/ --ignore docs/CNAME"
-js = "npm exec --yes -- jshint mkdocs/"
-check = ["repo", "markdown", "js"]
 
 [tool.hatch.env.collectors.mkdocs.docs]
 path = "mkdocs.yml"

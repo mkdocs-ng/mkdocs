@@ -101,14 +101,14 @@ jobs:
           python-version: '3.11'
       - name: Install Python dependencies
         run: |
-          python -m pip install --upgrade hatch
+          python -m pip install --upgrade hatch pre-commit
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: 20
       - name: Run repository checks
         if: always()
-        run: hatch run lint:check
+        run: pre-commit run --all-files --show-diff-on-failure
       - name: Check with mypy
         if: always()
         run: hatch run types:check
