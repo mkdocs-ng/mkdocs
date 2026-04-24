@@ -28,6 +28,7 @@ jobs:
       - name: Show next version
         env:
           RELEASE_VERSION: ${{ steps.notes.outputs.version }}
+          RELEASE_TAG: ${{ steps.notes.outputs.release_tag }}
           RELEASE_NAME: ${{ steps.notes.outputs.release_name }}
           RELEASE_BODY_PATH: ${{ steps.notes.outputs.body_path }}
         run: |
@@ -36,32 +37,33 @@ jobs:
             echo "## Draft Release"
             echo
             echo "- Next version: \`${RELEASE_VERSION}\`"
+            echo "- Draft release tag: \`${RELEASE_TAG}\`"
             echo "- Draft release title: \`${RELEASE_NAME}\`"
             echo "- Release notes source: \`docs/about/release-notes.md\`"
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Create or update draft release with GitHub CLI
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_VERSION: ${{ steps.notes.outputs.version }}
+          RELEASE_TAG: ${{ steps.notes.outputs.release_tag }}
           RELEASE_NAME: ${{ steps.notes.outputs.release_name }}
           RELEASE_BODY_PATH: ${{ steps.notes.outputs.body_path }}
         run: |
-          if gh release view "$RELEASE_VERSION" >/dev/null 2>&1; then
-            gh release edit "$RELEASE_VERSION" \
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release edit "$RELEASE_TAG" \
               --draft \
               --title "$RELEASE_NAME" \
               --notes-file "$RELEASE_BODY_PATH"
           else
-            gh release create "$RELEASE_VERSION" \
+            gh release create "$RELEASE_TAG" \
               --draft \
               --target main \
               --title "$RELEASE_NAME" \
               --notes-file "$RELEASE_BODY_PATH"
           fi
 
-          release_url="$(gh release view "$RELEASE_VERSION" --json url --jq '.url')"
+          release_url="$(gh release view "$RELEASE_TAG" --json url --jq '.url')"
           echo "Draft release URL: ${release_url}"
           {
-            echo "- Draft release tag: \`${RELEASE_VERSION}\`"
+            echo "- Draft release tag: \`${RELEASE_TAG}\`"
             echo "- Draft release URL: ${release_url}"
           } >> "$GITHUB_STEP_SUMMARY"
