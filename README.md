@@ -13,12 +13,15 @@ configuration file. It is designed to be easy to use and can be extended with
 third-party themes, plugins, and Markdown extensions.
 
 > [!NOTE]
-> mkdocs is a fork of [mkdocs/mkdocs], actively maintained since 1.7.0
+> **mkdocs** is a fork of [mkdocs/mkdocs], actively maintained since 1.7.0
 > and published as `mkdocs-ng` while preserving the `mkdocs` CLI.
+>
 > It includes support for Python 3.13 and 3.14, restores `mkdocs serve --livereload`,
 > improves strict link and anchor validation, ensures reliable cleanup on `SIGTERM`,
 > removes the unmaintained `mergedeep` dependency, and modernizes CI, dependencies,
-> release workflows and much [more]. The project is under active maintenance.
+> release workflows and much [more].
+>
+> The project is under active maintenance.
 
 Please see the [Documentation][mkdocs] for an introductory tutorial and a full user guide.
 
