@@ -52,7 +52,7 @@ python get-pip.py
 
 ## Installing MkDocs
 
-Install the `mkdocs` package using pip:
+Install the `mkdocs-ng` package using pip:
 
 ```bash
 pip install mkdocs-ng

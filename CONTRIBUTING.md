@@ -36,7 +36,7 @@ If you want to just install and try out the latest development version of
 MkDocs (in case it already contains a fix for your issue),
 you can do so with the following command. This can be useful if you
 want to provide feedback for a new feature or want to confirm if a bug you
-have encountered is fixed in the git master. It is **strongly** recommended
+have encountered is fixed in the latest development version. It is **strongly** recommended
 that you do this within a [virtualenv].
 
 ```bash
