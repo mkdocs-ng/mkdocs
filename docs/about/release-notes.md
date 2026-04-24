@@ -29,6 +29,9 @@ MkDocs NG 1.7.0 is a small but important release. The biggest change is that
 the package is now published on PyPI as `mkdocs-ng`, while the command-line
 interface remains `mkdocs`.
 
+This is the first release maintained under the MkDocs NG fork, so the focus is
+maintenance infrastructure rather than new end-user features.
+
 ### Upgrade notes
 
 Install or upgrade with:
