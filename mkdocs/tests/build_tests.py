@@ -12,7 +12,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 from unittest import mock
 
+import markdown.extensions
 import markdown.preprocessors
+import markdown.treeprocessors
 
 from mkdocs.commands import build
 from mkdocs.config import base
@@ -25,6 +27,17 @@ from mkdocs.utils import meta
 
 if TYPE_CHECKING:
     from mkdocs.config.defaults import MkDocsConfig
+
+
+class _LateAnchorTreeprocessor(markdown.treeprocessors.Treeprocessor):
+    def run(self, root):
+        root[0].set("id", "late-anchor")
+        return root
+
+
+class _LateAnchorExtension(markdown.extensions.Extension):
+    def extendMarkdown(self, md):
+        md.treeprocessors.register(_LateAnchorTreeprocessor(md), "late_anchor", 2)
 
 
 def build_page(title, path, config, md_src=""):
@@ -843,6 +856,24 @@ class BuildTests(PathAssertionMixin, unittest.TestCase):
             validation={"anchors": "warn"},
             markdown_extensions=["md_in_html"],
         )
+        build.build(cfg)
+
+    @tempdir(
+        files={
+            "test/foo.md": "[bar](bar.md#late-anchor)",
+            "test/bar.md": "late anchor",
+        }
+    )
+    @tempdir()
+    def test_anchor_no_warning_for_ids_added_by_late_treeprocessor(
+        self, site_dir, docs_dir
+    ):
+        cfg = load_config(
+            docs_dir=docs_dir,
+            site_dir=site_dir,
+            validation={"anchors": "warn"},
+        )
+        cfg.markdown_extensions.append(_LateAnchorExtension())
         build.build(cfg)
 
     @tempdir(

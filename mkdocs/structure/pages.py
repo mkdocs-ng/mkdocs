@@ -359,8 +359,8 @@ class _ExtractAnchorsTreeprocessor(markdown.treeprocessors.Treeprocessor):
 
     def _register(self, md: markdown.Markdown) -> None:
         md.treeprocessors.register(
-            self, "mkdocs_extract_anchors", priority=5
-        )  # Same as 'toc'.
+            self, "mkdocs_extract_anchors", priority=-1
+        )  # Run after extensions have added their final IDs.
 
 
 class _RelativePathTreeprocessor(markdown.treeprocessors.Treeprocessor):
