@@ -1,11 +1,9 @@
-## Description
-
 <!-- A clear and concise description of what this PR does. -->
 
 ## Related Issue
 
 <!-- Link to the issue this PR addresses, if applicable. -->
-Closes #
+Fixes #
 
 ## Type of Change
 
