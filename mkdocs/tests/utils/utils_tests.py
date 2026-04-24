@@ -19,6 +19,10 @@ foo: bar
 baz:
     sub1: replaced
     sub3: new
+replace_list:
+    - child
+replace_scalar:
+    nested: value
 deep1:
     deep2-1:
         deep3-1: replaced
@@ -28,6 +32,9 @@ foo: foo
 baz:
     sub1: 1
     sub2: 2
+replace_list:
+    - parent
+replace_scalar: value
 deep1:
     deep2-1:
         deep3-1: foo
@@ -291,6 +298,8 @@ class UtilsTests(unittest.TestCase):
                 "sub2": 2,
                 "sub3": "new",
             },
+            "replace_list": ["child"],
+            "replace_scalar": {"nested": "value"},
             "deep1": {
                 "deep2-1": {
                     "deep3-1": "replaced",

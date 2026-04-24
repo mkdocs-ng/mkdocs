@@ -4,9 +4,9 @@ import functools
 import logging
 import os
 import os.path
+from collections.abc import MutableMapping
 from typing import IO, TYPE_CHECKING, Any
 
-import mergedeep  # type: ignore
 import yaml
 import yaml.constructor
 import yaml_env_tag  # type: ignore
@@ -17,6 +17,18 @@ if TYPE_CHECKING:
     from mkdocs.config.defaults import MkDocsConfig
 
 log = logging.getLogger(__name__)
+
+
+def _deep_merge(parent: dict[str, Any], child: dict[str, Any]) -> dict[str, Any]:
+    for key, child_value in child.items():
+        parent_value = parent.get(key)
+        if isinstance(parent_value, MutableMapping) and isinstance(
+            child_value, MutableMapping
+        ):
+            _deep_merge(parent_value, child_value)
+        else:
+            parent[key] = child_value
+    return parent
 
 
 def _construct_dir_placeholder(
@@ -152,5 +164,5 @@ def yaml_load(
         log.debug(f"Loading inherited configuration file: {abspath}")
         with open(abspath, "rb") as fd:
             parent = yaml_load(fd, loader)
-        result = mergedeep.merge(parent, result)
+        result = _deep_merge(parent, result)
     return result
