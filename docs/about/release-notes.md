@@ -23,7 +23,7 @@ The current members of the MkDocs-NG team.
 
 * [@shenxianpeng](https://github.com/shenxianpeng)
 
-## Version 1.7.1 (Unreleased)
+## Version 1.7.1 (2026-04-25)
 
 ### Fixed
 
@@ -34,9 +34,9 @@ The current members of the MkDocs-NG team.
 
 ### Maintenance
 
-* Remove the unmaintained `mergedeep` dependency by replacing it with an internal deep-merge helper for inherited YAML configuration. #29
-* Add a release-note generation skill and repository agent instructions to make maintainer workflows more consistent. #35
-* Upgrade `PyPy` from 3.9 to 3.11 to fix CI failure and add a PR auto-labeler workflow to automatically tag incoming pull requests. #37
+* Remove the unmaintained `mergedeep` dependency by replacing it with an internal deep-merge helper. #29
+* Add a `generate-release-note` skill and `AGENTS.md` for maintaining the project. #35
+* Upgrade PyPy from 3.9 to 3.11 to fix CI failure and add PR auto-labeler workflow to automatically tag incoming PRs. #37
 
 ## Version 1.7.0 (2026-04-24)
 
