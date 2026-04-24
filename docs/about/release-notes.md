@@ -28,6 +28,7 @@ The current members of the MkDocs-NG team.
 ### Fixed
 
 * Fix anchor link validation so `mkdocs build -v --strict` still fails when missing anchors are reported as warnings. #30
+* Fix `validation.links.not_found` is always reported as INFO for excluded pages. #32
 
 ### Maintenance
 
