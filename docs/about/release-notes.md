@@ -27,7 +27,7 @@ The current members of the MkDocs-NG team.
 
 ### Fixed
 
-* Fix anchor link validation so `mkdocs build -v --strict` still fails when missing anchors are reported as warnings. #3991
+* Fix anchor link validation so `mkdocs build -v --strict` still fails when missing anchors are reported as warnings. #30
 
 ### Maintenance
 
