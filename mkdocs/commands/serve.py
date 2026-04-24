@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import shutil
+import signal
 import tempfile
 from os.path import isdir, isfile, join
 from typing import TYPE_CHECKING
@@ -15,6 +16,10 @@ if TYPE_CHECKING:
     from mkdocs.config.defaults import MkDocsConfig
 
 log = logging.getLogger(__name__)
+
+
+class _ShutdownRequested(KeyboardInterrupt):
+    pass
 
 
 def serve(
@@ -80,33 +85,42 @@ def serve(
 
     server.error_handler = error_handler
 
+    def handle_sigterm(_signum, _frame) -> None:
+        raise _ShutdownRequested
+
+    previous_sigterm_handler = signal.signal(signal.SIGTERM, handle_sigterm)
+
     try:
-        # Perform the initial build
-        builder(config)
-
-        if livereload:
-            # Watch the documentation files, the config file and the theme files.
-            server.watch(config.docs_dir)
-            if config.config_file_path:
-                server.watch(config.config_file_path)
-
-            if watch_theme:
-                for d in config.theme.dirs:
-                    server.watch(d)
-
-            # Run `serve` plugin events.
-            server = config.plugins.on_serve(server, config=config, builder=builder)
-
-            for item in config.watch:
-                server.watch(item)
-
         try:
-            server.serve(open_in_browser=open_in_browser)
-        except KeyboardInterrupt:
+            # Perform the initial build
+            builder(config)
+
+            if livereload:
+                # Watch the documentation files, the config file and the theme files.
+                server.watch(config.docs_dir)
+                if config.config_file_path:
+                    server.watch(config.config_file_path)
+
+                if watch_theme:
+                    for d in config.theme.dirs:
+                        server.watch(d)
+
+                # Run `serve` plugin events.
+                server = config.plugins.on_serve(server, config=config, builder=builder)
+
+                for item in config.watch:
+                    server.watch(item)
+
+            try:
+                server.serve(open_in_browser=open_in_browser)
+            except KeyboardInterrupt:
+                log.info("Shutting down...")
+            finally:
+                server.shutdown()
+        except _ShutdownRequested:
             log.info("Shutting down...")
-        finally:
-            server.shutdown()
     finally:
+        signal.signal(signal.SIGTERM, previous_sigterm_handler)
         config.plugins.on_shutdown()
         if isdir(site_dir):
             shutil.rmtree(site_dir)
