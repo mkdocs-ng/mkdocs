@@ -1,4 +1,6 @@
 import os
+import shutil
+import subprocess
 import unittest
 from unittest import mock
 
@@ -125,3 +127,28 @@ class ThemeTests(unittest.TestCase):
                     "locale": parse_locale("en"),
                 },
             )
+
+    @unittest.skipUnless(shutil.which("node"), "node is not installed")
+    def test_darkmode_without_highlightjs_stylesheets(self):
+        darkmode_js = os.path.join(theme_dir, "mkdocs", "js", "darkmode.js")
+        script = f"""
+            global.localStorage = {{ getItem: () => null, setItem: () => {{}} }};
+            global.window = {{
+                matchMedia: () => ({{
+                    matches: false,
+                    addEventListener: () => {{}},
+                    removeEventListener: () => {{}},
+                }}),
+            }};
+            global.document = {{
+                documentElement: {{
+                    getAttribute: () => 'light',
+                    setAttribute: () => {{}},
+                }},
+                getElementById: () => null,
+                querySelectorAll: () => [],
+            }};
+            require({darkmode_js!r});
+        """
+
+        subprocess.run(["node", "-e", script], check=True)
