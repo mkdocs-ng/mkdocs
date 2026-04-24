@@ -705,6 +705,29 @@ class BuildTests(PathAssertionMixin, unittest.TestCase):
 
     @tempdir(
         files={
+            "index.md": "[asdf](./asdf.md)",
+            "asdf.md": "excluded content",
+        }
+    )
+    @tempdir()
+    def test_excluded_page_link_uses_not_found_validation_level(
+        self, site_dir, docs_dir
+    ):
+        cfg = load_config(
+            docs_dir=docs_dir,
+            site_dir=site_dir,
+            validation=dict(links=dict(not_found="warn")),
+            exclude_docs="/asdf.md",
+        )
+
+        expected_logs = """
+            WARNING:Doc file 'index.md' contains a link to 'asdf.md' which is excluded from the built site.
+        """
+        with self._assert_build_logs(expected_logs):
+            build.build(cfg)
+
+    @tempdir(
+        files={
             "foo/README.md": "page1 content",
             "foo/index.md": "page2 content",
         }

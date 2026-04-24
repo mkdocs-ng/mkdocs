@@ -17,6 +17,7 @@ from markdown.util import AMP_SUBSTITUTE
 
 from mkdocs import utils
 from mkdocs.structure import StructureItem
+from mkdocs.structure.files import InclusionLevel
 from mkdocs.structure.toc import get_toc
 from mkdocs.utils import (
     _removesuffix,
@@ -533,10 +534,12 @@ class _RelativePathTreeprocessor(markdown.treeprocessors.Treeprocessor):
         if target_file.inclusion.is_excluded():
             if self.file.inclusion.is_excluded():
                 warning_level = logging.DEBUG
-            else:
+            elif target_file.inclusion is InclusionLevel.DRAFT:
                 warning_level = min(
                     logging.INFO, self.config.validation.links.not_found
                 )
+            else:
+                warning_level = self.config.validation.links.not_found
             warning = (
                 f"Doc file '{self.file.src_uri}' contains a link to "
                 f"'{target_uri}' which is excluded from the built site."
