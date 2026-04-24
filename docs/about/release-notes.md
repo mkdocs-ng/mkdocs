@@ -29,6 +29,7 @@ The current members of the MkDocs-NG team.
 
 * Fix anchor link validation so `mkdocs build -v --strict` still fails when missing anchors are reported as warnings. #30
 * Fix `validation.links.not_found` is always reported as INFO for excluded pages. #32
+* Fix `mkdocs serve` cleanup so temporary site directories are removed when the process receives `SIGTERM`. #36
 
 ### Maintenance
 
