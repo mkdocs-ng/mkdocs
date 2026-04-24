@@ -23,7 +23,7 @@ The current members of the MkDocs-NG team.
 
 * [@shenxianpeng](https://github.com/shenxianpeng)
 
-## Version 1.7.0 (2026-04-23)
+## Version 1.7.0 (2026-04-24)
 
 MkDocs NG 1.7.0 is a small but important release. The biggest change is that
 the package is now published on PyPI as `mkdocs-ng`, while the command-line
