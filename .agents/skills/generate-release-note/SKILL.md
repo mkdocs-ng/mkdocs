@@ -71,7 +71,7 @@ Examples:
 
 If `closingIssuesReferences` has user issues, end the entry with the issue number references such as `#30`. Keep issue references short in the source file; `docs/hooks.py` rewrites them to the correct GitHub issue links during docs rendering.
 
-If there is no user issue, end the entry with a PR Markdown link such as `#123` that points to the PR URL.
+If there is no user issue, end the entry with the bare PR number reference such as `#123`.
 
 If multiple user issues are relevant, include all issue references at the end of the same bullet.
 
@@ -82,5 +82,5 @@ After insertion, check:
 - The entry is under the latest `## Version ... (...)` section.
 - The category heading is appropriate and matches nearby release note style.
 - Issue-backed entries use bare issue references.
-- PR-backed entries use Markdown PR links.
+- PR-backed entries use bare PR references.
 - The entry is not duplicated.

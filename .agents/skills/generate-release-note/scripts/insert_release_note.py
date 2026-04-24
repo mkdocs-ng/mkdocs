@@ -58,7 +58,7 @@ def append_to_category(section: str, category: str, note: str) -> str:
     inserted = f"{before}\n{note}\n"
     if after:
         return f"{inserted}\n{after}"
-    return inserted
+    return f"{inserted}\n"
 
 
 def insert_release_note(text: str, category: str, note: str) -> str:

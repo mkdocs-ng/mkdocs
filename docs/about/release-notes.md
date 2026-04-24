@@ -33,6 +33,7 @@ The current members of the MkDocs-NG team.
 ### Maintenance
 
 * Remove the unmaintained `mergedeep` dependency by replacing it with an internal deep-merge helper for inherited YAML configuration. #29
+* Add a release-note generation skill and repository agent instructions to make maintainer workflows more consistent. #35
 
 ## Version 1.7.0 (2026-04-24)
 
