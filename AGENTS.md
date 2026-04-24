@@ -8,6 +8,7 @@
 
 ## Git Safety
 
+* Never git push directly to the `main` branch. Always create a pull request.
 * Run `git status` before staging or committing.
 * Stage only files changed for the current task, using explicit paths.
 * Do not use `git add .` or `git add -A`, because they can include unrelated work.
