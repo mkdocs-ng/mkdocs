@@ -25,6 +25,10 @@ The current members of the MkDocs-NG team.
 
 ## Version 1.7.1 (Unreleased)
 
+### Fixed
+
+* Fix anchor link validation so `mkdocs build -v --strict` still fails when missing anchors are reported as warnings. #30
+
 ### Maintenance
 
 * Remove the unmaintained `mergedeep` dependency by replacing it with an internal deep-merge helper for inherited YAML configuration. #29

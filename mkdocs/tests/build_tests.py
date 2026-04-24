@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import contextlib
 import io
+import logging
 import os.path
 import re
 import textwrap
@@ -768,6 +769,29 @@ class BuildTests(PathAssertionMixin, unittest.TestCase):
         """
         with self._assert_build_logs(expected_logs):
             build.build(cfg)
+
+    @tempdir(
+        files={
+            "index.md": "[missing anchor](#missing)",
+        }
+    )
+    @tempdir()
+    def test_anchor_warning_with_debug_logging(self, site_dir, docs_dir):
+        cfg = load_config(
+            docs_dir=docs_dir, site_dir=site_dir, validation={"anchors": "warn"}
+        )
+
+        pages_log = logging.getLogger("mkdocs.structure.pages")
+        original_level = pages_log.level
+        pages_log.setLevel(logging.DEBUG)
+        try:
+            expected_logs = """
+                WARNING:Doc file 'index.md' contains a link '#missing', but there is no such anchor on this page.
+            """
+            with self._assert_build_logs(expected_logs):
+                build.build(cfg)
+        finally:
+            pages_log.setLevel(original_level)
 
     @tempdir(
         files={
