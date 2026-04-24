@@ -13,15 +13,14 @@ configuration file. It is designed to be easy to use and can be extended with
 third-party themes, plugins, and Markdown extensions.
 
 > [!NOTE]
-> This is a fork of [mkdocs/mkdocs] with active maintenance since
-> 1.7.0, including publication as `mkdocs-ng` while keeping the `mkdocs` CLI,
-> tested support for Python 3.13 and 3.14, restored `mkdocs serve
-> --livereload`, fixes for strict link and anchor validation, reliable
-> `mkdocs serve` cleanup on `SIGTERM`, removal of the unmaintained `mergedeep`
-> dependency, and refreshed CI, dependency, release, and [more]. This project is actively maintained.
+> mkdocs is a fork of [mkdocs/mkdocs], actively maintained since 1.7.0
+> and published as `mkdocs-ng` while preserving the `mkdocs` CLI.
+> It includes support for Python 3.13 and 3.14, restores `mkdocs serve --livereload`,
+> improves strict link and anchor validation, ensures reliable cleanup on `SIGTERM`,
+> removes the unmaintained `mergedeep` dependency, and modernizes CI, dependencies,
+> release workflows and much [more]. The project is under active maintenance.
 
-Please see the [Documentation][mkdocs] for an introductory tutorial and a full
-user guide.
+Please see the [Documentation][mkdocs] for an introductory tutorial and a full user guide.
 
 ## Features
 
@@ -69,7 +68,7 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 <!-- Links -->
 [mkdocs]: https://mkdocs-ng.github.io/mkdocs/
 [mkdocs/mkdocs]: https://github.com/mkdocs-ng/mkdocs
-[more]: https://github.com/mkdocs-ng/mkdocs/pulls?q=is%3Apr+is%3Aclosed
+[more]: https://github.com/mkdocs-ng/mkdocs/pulls?page=1&q=is%3Apr+is%3Aclosed+is%3Amerged
 [Issue]: https://github.com/mkdocs-ng/mkdocs/issues
 [Discussions]: https://github.com/orgs/mkdocs-ng/discussions
 [release-notes]: https://mkdocs-ng.github.io/mkdocs/about/release-notes/
