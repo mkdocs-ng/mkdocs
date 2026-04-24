@@ -12,8 +12,19 @@ source files are written in Markdown and configured with a single YAML
 configuration file. It is designed to be easy to use and can be extended with
 third-party themes, plugins, and Markdown extensions.
 
-Please see the [Documentation][mkdocs] for an introductory tutorial and a full
-user guide.
+> [!NOTE]
+> **mkdocs** is a maintained fork of [mkdocs/mkdocs], continued from the
+> 1.7.0 line and published on PyPI as `mkdocs-ng`, while preserving the `mkdocs` CLI.
+>
+> It adds support for Python 3.13 and 3.14, restores `mkdocs serve --livereload`,
+> improves strict link and anchor validation, ensures reliable cleanup on `SIGTERM`,
+> removes the unmaintained `mergedeep` dependency, and modernizes CI, dependencies,
+> release workflows and much [more].
+>
+> The project is actively maintained and continues to track modern Python,
+> packaging, and documentation workflows.
+
+Please see the [Documentation][mkdocs] for an introductory tutorial and a full user guide.
 
 ## Features
 
@@ -60,6 +71,8 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [GHAction-link]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml
 <!-- Links -->
 [mkdocs]: https://mkdocs-ng.github.io/mkdocs/
+[mkdocs/mkdocs]: https://github.com/mkdocs-ng/mkdocs
+[more]: https://github.com/mkdocs-ng/mkdocs/pulls?page=1&q=is%3Apr+is%3Aclosed+is%3Amerged
 [Issue]: https://github.com/mkdocs-ng/mkdocs/issues
 [Discussions]: https://github.com/orgs/mkdocs-ng/discussions
 [release-notes]: https://mkdocs-ng.github.io/mkdocs/about/release-notes/
