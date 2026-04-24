@@ -1,0 +1,15 @@
+name: PR Auto-labeler
+
+on:
+  # pull_request event is required for auto-labeler
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  draft-release:
+    permissions:
+      pull-requests: write
+      contents: read
+    uses: mkdocs-ng/.github/.github/workflows/pr-labeler.yml@main

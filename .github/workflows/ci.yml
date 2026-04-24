@@ -22,7 +22,7 @@ jobs:
             test-script: test:with-coverage
             upload-coverage: true
           - os: ubuntu-latest
-            python-version: pypy-3.9-v7.x
+            python-version: pypy-3.11
             py: pypy3
             test-script: test:test
           - os: macos-latest
@@ -71,7 +71,7 @@ jobs:
           - python-version: '3.12'
           - python-version: '3.13'
           - python-version: '3.14'
-          - python-version: pypy-3.9-v7.x
+          - python-version: pypy-3.11
             py: pypy3
     runs-on: ubuntu-latest
     steps:
