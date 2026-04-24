@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate release note"
+  short_description: "Generate user-facing release notes"
+  default_prompt: "Use $generate-release-note to generate and insert a user-facing release note for this PR."
