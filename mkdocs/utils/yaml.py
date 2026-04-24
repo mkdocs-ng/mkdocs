@@ -19,7 +19,9 @@ if TYPE_CHECKING:
 log = logging.getLogger(__name__)
 
 
-def _deep_merge(parent: dict[str, Any], child: dict[str, Any]) -> dict[str, Any]:
+def _deep_merge(
+    parent: MutableMapping[Any, Any], child: MutableMapping[Any, Any]
+) -> MutableMapping[Any, Any]:
     for key, child_value in child.items():
         parent_value = parent.get(key)
         if isinstance(parent_value, MutableMapping) and isinstance(
