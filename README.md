@@ -71,7 +71,7 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [GHAction-link]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml
 <!-- Links -->
 [mkdocs]: https://mkdocs-ng.github.io/mkdocs/
-[mkdocs/mkdocs]: https://github.com/mkdocs-ng/mkdocs
+[mkdocs/mkdocs]: https://github.com/mkdocs/mkdocs
 [more]: https://github.com/mkdocs-ng/mkdocs/pulls?page=1&q=is%3Apr+is%3Aclosed+is%3Amerged
 [Issue]: https://github.com/mkdocs-ng/mkdocs/issues
 [Discussions]: https://github.com/orgs/mkdocs-ng/discussions
