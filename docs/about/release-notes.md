@@ -39,6 +39,7 @@ The current members of the MkDocs-NG team.
 * Fix `validation.links.not_found` is always reported as INFO for excluded pages. #32
 * Fix `mkdocs serve` cleanup so temporary site directories are removed when the process receives `SIGTERM`. #36
 * Fix mkdocs theme color mode switching when `highlightjs` is disabled. #39
+* Fix a crash when a dangling symlink exists in the docs directory, so `mkdocs build` and `mkdocs serve` log a warning and continue instead of aborting. #4048
 
 ### Maintenance
 
