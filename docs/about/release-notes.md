@@ -27,7 +27,7 @@ The current members of the MkDocs-NG team.
 
 ### Fixed
 
-* Fix dropdown submenu arrow invisible in the navigation menu. #3909
+* Fix dropdown submenu arrow invisible in the navigation menu. #44
 
 ## Version 1.7.1 (2026-04-25)
 
