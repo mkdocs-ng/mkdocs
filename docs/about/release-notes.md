@@ -23,6 +23,12 @@ The current members of the MkDocs-NG team.
 
 * [@shenxianpeng](https://github.com/shenxianpeng)
 
+## Version 1.7.2 (Unreleased)
+
+### Fixed
+
+* Fix build crash caused by broken (dangling) symlinks in the docs directory. #3785
+
 ## Version 1.7.1 (2026-04-25)
 
 ### Fixed
