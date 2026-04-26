@@ -23,7 +23,7 @@ The current members of the MkDocs-NG team.
 
 * [@shenxianpeng](https://github.com/shenxianpeng)
 
-## Version 1.7.2 (Unreleased)
+## Version 1.7.2 (2026-04-27)
 
 ### Fixed
 
