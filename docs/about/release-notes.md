@@ -27,7 +27,7 @@ The current members of the MkDocs-NG team.
 
 ### Fixed
 
-* Fix malformed URLs (e.g., unterminated IPv6 literals) crashing the entire build. #3939
+* Fix malformed URLs (e.g., unterminated IPv6 literals) crashing the entire build. #45
 
 ## Version 1.7.1 (2026-04-25)
 
