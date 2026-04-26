@@ -514,6 +514,8 @@ class File:
                 utils.copy_file(self.abs_src_path, output_path)
             except shutil.SameFileError:
                 pass  # Let plugins write directly into site_dir.
+            except OSError as e:
+                log.warning(f"Error copying '{self.src_uri}': {e}")
         elif isinstance(content, str):
             with open(output_path, "w", encoding="utf-8") as output_file:
                 output_file.write(content)
@@ -526,9 +528,12 @@ class File:
             return True
         assert self.abs_src_path is not None
         if os.path.isfile(self.abs_dest_path):
-            return os.path.getmtime(self.abs_dest_path) < os.path.getmtime(
-                self.abs_src_path
-            )
+            try:
+                return os.path.getmtime(self.abs_dest_path) < os.path.getmtime(
+                    self.abs_src_path
+                )
+            except OSError:
+                return False
         return True
 
     def is_documentation_page(self) -> bool:
