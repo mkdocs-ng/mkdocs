@@ -23,6 +23,12 @@ The current members of the MkDocs-NG team.
 
 * [@shenxianpeng](https://github.com/shenxianpeng)
 
+## Version 1.7.2 (Unreleased)
+
+### Fixed
+
+* Fix dropdown submenu arrow invisible in the navigation menu. #3909
+
 ## Version 1.7.1 (2026-04-25)
 
 ### Fixed
