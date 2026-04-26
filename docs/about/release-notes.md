@@ -31,6 +31,10 @@ The current members of the MkDocs-NG team.
 * Fix malformed URLs (e.g., unterminated IPv6 literals) crashing the entire build. #45
 * Fix build crash caused by broken (dangling) symlinks in the docs directory. #46
 
+### Maintenance
+
+* Add concurrency settings to CI workflows so redundant in-progress jobs are cancelled when new pushes occur. #47
+
 ## Version 1.7.1 (2026-04-25)
 
 ### Fixed
