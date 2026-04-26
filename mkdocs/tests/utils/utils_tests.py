@@ -386,15 +386,11 @@ class UtilsTests(unittest.TestCase):
     @tempdir()
     def test_copy_broken_symlink(self, src_dir, dst_dir):
         # Regression test for mkdocs/mkdocs#3785: dangling symlinks should
-        # not crash the build. A warning should be logged and the file skipped.
+        # not crash the build. A warning should be raised and the file skipped.
         broken_link = os.path.join(src_dir, "broken_link")
         os.symlink("/nonexistent/path", broken_link)
-        with self.assertLogs("mkdocs", level="WARNING") as cm:
+        with self.assertRaises(FileNotFoundError):
             utils.copy_file(broken_link, os.path.join(dst_dir, "broken_link"))
-        self.assertTrue(
-            any("Symlink broken" in m for m in cm.output),
-            f"Expected a warning about broken symlink, got: {cm.output}",
-        )
         # The broken symlink should not have been copied.
         self.assertFalse(os.path.exists(os.path.join(dst_dir, "broken_link")))
 
