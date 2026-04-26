@@ -27,7 +27,7 @@ The current members of the MkDocs-NG team.
 
 ### Fixed
 
-* Fix build crash caused by broken (dangling) symlinks in the docs directory. #3785
+* Fix build crash caused by broken (dangling) symlinks in the docs directory. #46
 
 ## Version 1.7.1 (2026-04-25)
 
