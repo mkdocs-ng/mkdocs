@@ -803,6 +803,35 @@ class TestFiles(PathAssertionMixin, unittest.TestCase):
         with open(dest_path, encoding="utf-8") as f:
             self.assertEqual(f.read(), "ö")
 
+    @tempdir()
+    @tempdir()
+    def test_copy_file_dangling_symlink(self, src_dir, dest_dir):
+        dangling = os.path.join(src_dir, "dangling.jpg")
+        try:
+            os.symlink(os.path.join(src_dir, "nonexistent"), dangling)
+        except (OSError, NotImplementedError):
+            self.skipTest("Creating symlinks not supported")
+
+        file = File("dangling.jpg", src_dir, dest_dir, use_directory_urls=False)
+        with self.assertLogs("mkdocs.structure.files") as cm:
+            file.copy_file()
+        self.assertRegex(
+            "\n".join(cm.output),
+            r"^WARNING:mkdocs.structure.files:Error copying 'dangling.jpg'",
+        )
+
+    @tempdir()
+    @tempdir()
+    def test_copy_file_missing_source(self, src_dir, dest_dir):
+        """File deleted between discovery and copy should warn, not crash."""
+        file = File("missing.txt", src_dir, dest_dir, use_directory_urls=False)
+        with self.assertLogs("mkdocs.structure.files") as cm:
+            file.copy_file()
+        self.assertRegex(
+            "\n".join(cm.output),
+            r"^WARNING:mkdocs.structure.files:Error copying 'missing.txt'",
+        )
+
     def test_files_append_remove_src_paths(self):
         fs = [
             File("index.md", "/path/to/docs", "/path/to/site", use_directory_urls=True),
