@@ -50,6 +50,7 @@ jobs:
           hatch run +py=${{ matrix.py || matrix.python-version }} ${{ matrix.test-script }}
       - name: Run integration tests
         run: |
+          export DISABLE_MKDOCS_2_WARNING=true
           hatch run +py=${{ matrix.py || matrix.python-version }} integration:test
         shell: bash
       - name: Upload Codecov Results
