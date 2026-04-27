@@ -135,8 +135,6 @@ matrix.type.scripts = [
 path = "mkdocs.yml"
 [tool.hatch.envs.integration]
 detached = false
-[tool.hatch.envs.integration.env]
-DISABLE_MKDOCS_2_WARNING = "true"
 [tool.hatch.envs.integration.scripts]
 test = "python -m mkdocs.tests.integration"
 [[tool.hatch.envs.integration.matrix]]
