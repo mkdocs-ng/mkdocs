@@ -572,8 +572,15 @@ class _RawHTMLPreprocessor(markdown.preprocessors.Preprocessor):
 
     def run(self, lines: list[str]) -> list[str]:
         parser = _HTMLHandler()
-        parser.feed("\n".join(lines))
-        parser.close()
+        try:
+            parser.feed("\n".join(lines))
+            parser.close()
+        except (AssertionError, RuntimeError):
+            # Python's html.parser can throw AssertionError on edge-case
+            # markup such as "<<>>" (Python 3.13+ regression).
+            # RuntimeError is raised when the parser encounters deeply
+            # nested or otherwise problematic input.
+            pass
         self.present_anchor_ids = parser.present_anchor_ids
         return lines
 

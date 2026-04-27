@@ -401,6 +401,18 @@ class PageTests(unittest.TestCase):
     def test_page_title_from_markdown_strip_raw_html(self):
         self._test_extract_title("""# Hello <b>world</b>""", expected="Hello world")
 
+    def test_raw_html_preprocessor_edge_case_markup(self):
+        # Regression test for https://github.com/mkdocs/mkdocs/issues/4001
+        # Python 3.13's html.parser throws AssertionError on "<<>>" markup.
+        from mkdocs.structure.pages import _RawHTMLPreprocessor as RHP
+
+        proc = RHP()
+        # The preprocessor should handle edge-case markup without raising.
+        lines = ["# Title", "", "The PDF object as an `obj<</>>endobj` text block."]
+        result = proc.run(lines)
+        self.assertEqual(result, lines)
+        self.assertEqual(proc.present_anchor_ids, set())
+
     def test_page_title_from_markdown_strip_comments(self):
         self._test_extract_title(
             """# foo <!-- comment with <em> --> bar""", expected="foo bar"
