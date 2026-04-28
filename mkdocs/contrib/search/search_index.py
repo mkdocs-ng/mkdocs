@@ -8,6 +8,8 @@ import subprocess
 from html.parser import HTMLParser
 from typing import TYPE_CHECKING
 
+from mkdocs.utils.rendering import _strip_tags
+
 if TYPE_CHECKING:
     from mkdocs.structure.pages import Page
     from mkdocs.structure.toc import AnchorLink, TableOfContents
@@ -49,6 +51,11 @@ class SearchIndex:
         """A simple wrapper to add an entry, dropping bad characters."""
         text = text.replace("\u00a0", " ")
         text = re.sub(r"[ \t\n\r\f\v]+", " ", text.strip())
+
+        # Strip HTML tags from the title to prevent raw HTML from appearing
+        # in search results (which could also be an XSS vector).
+        if title is not None:
+            title = _strip_tags(title)
 
         self._entries.append({"title": title, "text": text, "location": loc})
 
