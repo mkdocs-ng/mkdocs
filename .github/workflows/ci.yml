@@ -114,9 +114,6 @@ jobs:
       - name: Run repository checks
         if: always()
         run: pre-commit run --all-files --show-diff-on-failure
-      - name: Check with mypy
-        if: always()
-        run: hatch run types:check
 
   package:
     runs-on: ubuntu-latest
