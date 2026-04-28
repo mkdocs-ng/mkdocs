@@ -20,7 +20,11 @@ from mkdocs.structure.files import (
     get_files,
     set_exclusions,
 )
-from mkdocs.structure.nav import Navigation, get_navigation
+from mkdocs.structure.nav import (
+    Navigation,
+    _set_section_titles_from_index_pages,
+    get_navigation,
+)
 from mkdocs.structure.pages import Page
 from mkdocs.utils import DuplicateFilter  # noqa: F401 - legacy re-export
 from mkdocs.utils import templates
@@ -350,6 +354,9 @@ def build(
                 "but will be excluded from `mkdocs build` per `draft_docs` config:\n  - "
                 + "\n  - ".join(excluded)
             )
+
+        # Update auto-generated section titles from index page titles.
+        _set_section_titles_from_index_pages(nav.items)
 
         # Run `env` plugin events.
         env = config.plugins.on_env(env, config=config, files=files)
