@@ -651,3 +651,32 @@ class SearchIndexTests(unittest.TestCase):
         self.assertEqual(mock_popen.call_count, 1)
         self.assertEqual(mock_popen_obj.communicate.call_count, 1)
         self.assertEqual(result, expected)
+
+    def test_html_stripped_from_titles(self):
+        """HTML tags in page and section titles are stripped from search entries."""
+        plugin = search.SearchPlugin()
+        errors, warnings = plugin.load_config({})
+        self.assertEqual(errors, [])
+        self.assertEqual(warnings, [])
+
+        config = load_config(plugins=["search"])
+        # A page title with inline HTML from Markdown (e.g. `<code>foo</code>`)
+        page = Page(
+            "The <code>mkdocs</code> Project",
+            File(
+                "index.md", config.docs_dir, config.site_dir, config.use_directory_urls
+            ),
+            config,
+        )
+        page.content = """
+            <h1 id="heading-1">Heading <em>one</em></h1>
+            <p>Content</p>"""
+        page.markdown = "# Heading 1\n\nContent"
+        page.toc = get_toc(get_markdown_toc(page.markdown))
+
+        index = search_index.SearchIndex(**plugin.config)
+        index.add_entry_from_context(page)
+
+        self.assertEqual(len(index._entries), 2)
+        self.assertEqual(index._entries[0]["title"], "The mkdocs Project")
+        self.assertEqual(index._entries[1]["title"], "Heading 1")
