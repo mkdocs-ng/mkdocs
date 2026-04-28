@@ -162,6 +162,17 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
         def callback(event):
             if event.is_directory:
                 return
+            # Ignore hidden files and editor temporary/backup files:
+            # - .dotfiles (vim swap .foo.md.swp, .foo.md.swo, .foo.md.swn, etc.)
+            # - files ending with ~ (editor backup)
+            # - #files# matching Emacs auto-save pattern
+            name = os.path.basename(event.src_path)
+            if (
+                name.startswith(".")
+                or name.endswith("~")
+                or (name.startswith("#") and name.endswith("#"))
+            ):
+                return
             log.debug(str(event))
             with self._rebuild_cond:
                 self._want_rebuild = True
