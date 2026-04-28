@@ -43,3 +43,10 @@ repos:
         entry: npm exec --yes -- jshint
         language: system
         files: ^mkdocs/.*\.js$
+      - id: mypy
+        name: mypy
+        entry: hatch run types:check
+        language: system
+        pass_filenames: false
+        always_run: false
+        require_serial: true
