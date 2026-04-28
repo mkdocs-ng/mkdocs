@@ -254,7 +254,7 @@ def _get_by_type(nav, t: type[T]) -> list[T]:
 
 def _add_parent_links(nav) -> None:
     for item in nav:
-        if item.is_section:
+        if isinstance(item, Section):
             for child in item.children:
                 child.parent = item
             _add_parent_links(item.children)
@@ -281,10 +281,10 @@ def _set_section_titles_from_index_pages(items: list[StructureItem]) -> None:
     been read/rendered, so its title is known from metadata or headings).
     """
     for item in items:
-        if not item.is_section:
+        if not isinstance(item, Section):
             continue
         for child in item.children:
-            if child.is_page and child.is_index and child.title is not None:
+            if isinstance(child, Page) and child.is_index and child.title is not None:
                 item.title = child.title
                 break
         _set_section_titles_from_index_pages(item.children)
