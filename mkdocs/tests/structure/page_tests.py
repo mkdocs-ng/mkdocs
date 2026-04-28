@@ -329,6 +329,17 @@ class PageTests(unittest.TestCase):
         self.assertEqual(pg.title, "Welcome to MkDocs")
         pg.render(cfg, Files([fl]))
         self.assertEqual(pg.title, "Welcome to MkDocs")
+        self.assertEqual(pg.content_title, "Welcome to MkDocs")
+
+    def test_content_title_property(self):
+        """content_title is None before rendering, set after."""
+        cfg = load_config()
+        fl = File("testing.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+        pg = Page(None, fl, cfg)
+        pg.read_source(cfg)
+        self.assertIsNone(pg.content_title)
+        pg.render(cfg, Files([fl]))
+        self.assertEqual(pg.content_title, "Welcome to MkDocs")
 
     def _test_extract_title(self, content, expected, extensions={}):
         md = markdown.Markdown(
