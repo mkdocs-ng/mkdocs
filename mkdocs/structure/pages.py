@@ -97,6 +97,19 @@ class Page(StructureItem):
     """A mapping of the metadata included at the top of the markdown page."""
 
     @property
+    def content_title(self) -> str | None:
+        """
+        The title of the page extracted from the first `<h1>` heading in the page content.
+
+        This is `None` until the page has been rendered. Unlike `title`,
+        this does not fall back to any other source — it reflects exactly
+        the `<h1>` text from the rendered Markdown, with HTML tags stripped
+        and entities unescaped. It is useful for plugins that need the raw
+        heading text as it appears in the page body.
+        """
+        return self._title_from_render
+
+    @property
     def url(self) -> str:
         """The URL of the page relative to the MkDocs `site_dir`."""
         url = self.file.url
