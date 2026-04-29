@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="MkDocs NG Team">
+        <link rel="canonical" href="https://mkdocs-ng.github.io/mkdocs/user-guide/choosing-your-theme/">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Choosing Your Theme - MkDocs</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" disabled>
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet">
+        <link href="../../css/extra.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/django.min.js"></script>
+        <script>hljs.highlightAll();</script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-274394082"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', "G-274394082");
+        </script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">MkDocs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../getting-started/" class="nav-link">Getting Started</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">User Guide</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../" class="dropdown-item">User Guide</a>
+</li>
+                                    
+<li>
+    <a href="../installation/" class="dropdown-item">Installation</a>
+</li>
+                                    
+<li>
+    <a href="../writing-your-docs/" class="dropdown-item">Writing Your Docs</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Choosing Your Theme</a>
+</li>
+                                    
+<li>
+    <a href="../customizing-your-theme/" class="dropdown-item">Customizing Your Theme</a>
+</li>
+                                    
+<li>
+    <a href="../localizing-your-theme/" class="dropdown-item">Localizing Your Theme</a>
+</li>
+                                    
+<li>
+    <a href="../configuration/" class="dropdown-item">Configuration</a>
+</li>
+                                    
+<li>
+    <a href="../cli/" class="dropdown-item">Command Line Interface</a>
+</li>
+                                    
+<li>
+    <a href="../deploying-your-docs/" class="dropdown-item">Deploying Your Docs</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Developer Guide</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../dev-guide/" class="dropdown-item">Developer Guide</a>
+</li>
+                                    
+<li>
+    <a href="../../dev-guide/themes/" class="dropdown-item">Themes</a>
+</li>
+                                    
+<li>
+    <a href="../../dev-guide/translations/" class="dropdown-item">Translations</a>
+</li>
+                                    
+<li>
+    <a href="../../dev-guide/plugins/" class="dropdown-item">Plugins</a>
+</li>
+                                    
+<li>
+    <a href="../../dev-guide/api/" class="dropdown-item">API Reference</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">About</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../about/release-notes/" class="dropdown-item">Release Notes</a>
+</li>
+                                    
+<li>
+    <a href="../../about/contributing/" class="dropdown-item">Contributing</a>
+</li>
+                                    
+<li>
+    <a href="../../about/license/" class="dropdown-item">License</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../writing-your-docs/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../customizing-your-theme/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/user-guide/choosing-your-theme.md" class="nav-link"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                              <button id="theme-menu" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme" class="nav-link dropdown-toggle">
+                                <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                <span class="d-lg-none ms-2">Toggle theme</span>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                                    <i class="fa-solid fa-sun fa-fw"></i>
+                                    <span class="ms-2">Light</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                                    <i class="fa-solid fa-moon fa-fw"></i>
+                                    <span class="ms-2">Dark</span>
+                                    <i class="fa-solid fa-check ms-auto d-none"></i>
+                                  </button>
+                                </li>
+                                <li>
+                                  <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="true">
+                                    <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
+                                    <span class="ms-2">Auto</span>
+                                    <i class="fa-solid fa-check ms-auto"></i>
+                                  </button>
+                                </li>
+                              </ul>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script src="../../js/darkmode.js"></script>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#choosing-your-theme" class="nav-link">Choosing your Theme</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#mkdocs" class="nav-link">mkdocs</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#readthedocs" class="nav-link">readthedocs</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#third-party-themes" class="nav-link">Third Party Themes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="choosing-your-theme">Choosing your Theme<a class="headerlink" href="#choosing-your-theme" title="Permanent link"></a></h1>
+<p>Selecting and configuring a theme.</p>
+<hr />
+<p>MkDocs includes two built-in themes (<a href="#mkdocs">mkdocs</a> and
+<a href="#readthedocs">readthedocs</a>), as documented below. However, many <a href="#third-party-themes">third party
+themes</a> are available to choose from as well.</p>
+<p>To choose a theme, set the <a href="../configuration/#theme">theme</a> configuration option in your <code>mkdocs.yml</code>
+config file.</p>
+<pre class="highlight"><code class="language-yaml">theme:
+  name: readthedocs</code></pre>
+<h2 id="mkdocs">mkdocs<a class="headerlink" href="#mkdocs" title="Permanent link"></a></h2>
+<p>The default theme, which was built as a custom <a href="https://getbootstrap.com/">Bootstrap</a> theme, supports almost
+every feature of MkDocs.</p>
+<div id="mkdocs-theme-images" class="carousel slide carousel-fade" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="../../img/mkdocs_theme_light_mode.png" class="d-block w-100" alt="MkDocs theme in light mode">
+    </div>
+    <div class="carousel-item">
+      <img src="../../img/mkdocs_theme_dark_mode.png" class="d-block w-100" alt="MkDocs theme in dark mode">
+    </div>
+  </div>
+</div>
+
+<p>In addition to the default <a href="../configuration/#theme">theme configuration options</a>, the <code>mkdocs</code> theme
+supports the following options:</p>
+<ul>
+<li>
+<p><strong><code>color_mode</code></strong>: Set the default color mode for the theme to one of <code>light</code>,
+    <code>dark</code>, or <code>auto</code>. The <code>auto</code> mode will switch to <code>light</code> or <code>dark</code> based on
+    the system configuration of the user's device. Default: <code>light</code>.</p>
+</li>
+<li>
+<p><strong><code>user_color_mode_toggle</code></strong>: Enable a toggle menu in the navigation bar
+    which allows users to select their preferred <code>color_mode</code> (light, dark, auto)
+    from within the browser and save their preference for future page loads. The
+    default selection of the toggle menu on first page load is the value set to
+    <code>color_mode</code>. Default: <code>false</code>.</p>
+<p><img alt="color mode toggle menu" src="../../img/color_mode_toggle_menu.png" /></p>
+</li>
+<li>
+<p><strong><code>nav_style</code></strong>: Adjust the visual style of the top navigation bar. Set to
+    one of <code>primary</code>, <code>dark</code> or <code>light</code>. Default: <code>primary</code>. This option is
+    independent of the <code>color_mode</code> option and must be defined separately.</p>
+</li>
+<li>
+<p><strong><code>highlightjs</code></strong>: Enables highlighting of source code in code blocks using
+    the <a href="https://highlightjs.org/">highlight.js</a> JavaScript library. Default: <code>True</code>.</p>
+</li>
+<li>
+<p><strong><code>hljs_style</code></strong>: The highlight.js library provides many different <a href="https://highlightjs.org/static/demo/">styles</a>
+    (color variations) for highlighting source code in code blocks. Set this to
+    the name of the desired style when in <code>light</code> mode. Default: <code>github</code>.</p>
+</li>
+<li>
+<p><strong><code>hljs_style_dark</code></strong>: Set this to the name of the desired highlight.js
+    style when in <code>dark</code> mode. Default: <code>github_dark</code>.</p>
+</li>
+<li>
+<p><strong><code>hljs_languages</code></strong>: By default, highlight.js only supports 23 common
+    languages. List additional languages here to include support for them.</p>
+<pre class="highlight"><code class="language-yaml">theme:
+  name: mkdocs
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust</code></pre>
+</li>
+<li>
+<p><strong><code>analytics</code></strong>: Defines configuration options for an analytics service.
+    Currently, only Google Analytics v4 is supported via the <code>gtag</code> option.</p>
+<ul>
+<li>
+<p><strong><code>gtag</code></strong>: To enable Google Analytics, set to a Google Analytics v4
+tracking ID, which uses the <code>G-</code> format. See Google's documentation to
+<a href="https://support.google.com/analytics/answer/9304153?hl=en&amp;ref_topic=9303319">Set up Analytics for a website and/or app (GA4)</a> or to
+<a href="https://support.google.com/analytics/answer/9744165?hl=en&amp;ref_topic=9303319">Upgrade to a Google Analytics 4 property</a>.</p>
+<pre class="highlight"><code class="language-yaml">theme:
+  name: mkdocs
+  analytics:
+    gtag: G-ABC123</code></pre>
+<p>When set to the default (<code>null</code>) Google Analytics is disabled for the
+site.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>shortcuts</code></strong>: Defines keyboard shortcut keys.</p>
+<pre class="highlight"><code class="language-yaml">theme:
+  name: mkdocs
+  shortcuts:
+    help: 191    # ?
+    next: 78     # n
+    previous: 80 # p
+    search: 83   # s</code></pre>
+<p>All values must be numeric key codes. It is best to use keys that are
+available on all keyboards. You may use <a href="https://keycode.info/">https://keycode.info/</a> to determine
+the key code for a given key.</p>
+<ul>
+<li>
+<p><strong><code>help</code></strong>: Display a help modal that lists the keyboard shortcuts.
+    Default: <code>191</code> (&quest;)</p>
+</li>
+<li>
+<p><strong><code>next</code></strong>: Navigate to the "next" page. Default: <code>78</code> (n)</p>
+</li>
+<li>
+<p><strong><code>previous</code></strong>: Navigate to the "previous" page. Default: <code>80</code> (p)</p>
+</li>
+<li>
+<p><strong><code>search</code></strong>: Display the search modal. Default: <code>83</code> (s)</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>navigation_depth</code></strong>: The maximum depth of the navigation tree in the
+    sidebar. Default: <code>2</code>.</p>
+</li>
+<li>
+<p><strong id="mkdocs-locale"><code>locale</code></strong>: The locale (language/location) used to
+    build the theme. If your locale is not yet supported, it will fall back
+    to the default.</p>
+<p>The following locales are supported by this theme:</p>
+<ul>
+<li><code>en</code>: English (default)</li>
+<li><code>de</code>: German</li>
+<li><code>es</code>: Spanish</li>
+<li><code>fa</code>: Persian</li>
+<li><code>fr</code>: French</li>
+<li><code>id</code>: Indonesian</li>
+<li><code>it</code>: Italian</li>
+<li><code>ja</code>: Japanese</li>
+<li><code>nb</code>: Norwegian Bokmål</li>
+<li><code>nl</code>: Dutch</li>
+<li><code>nn</code>: Norwegian Nynorsk</li>
+<li><code>pl</code>: Polish</li>
+<li><code>pt_BR</code>: Portuguese (Brazil)</li>
+<li><code>ru</code>: Russian</li>
+<li><code>tr</code>: Turkish</li>
+<li><code>uk</code>: Ukrainian</li>
+<li><code>zh_CN</code>: Chinese (Simplified, China)</li>
+<li><code>zh_TW</code>: Chinese (Traditional, Taiwan)</li>
+</ul>
+<p>See the guide on <a href="../localizing-your-theme/">localizing your theme</a> for more information.</p>
+</li>
+</ul>
+<h2 id="readthedocs">readthedocs<a class="headerlink" href="#readthedocs" title="Permanent link"></a></h2>
+<p>A clone of the default theme used by the <a href="https://readthedocs.org/">Read the Docs</a> service, which offers
+the same restricted feature set as its parent theme. Like its parent theme, only
+two levels of navigation are supported.</p>
+<p><img alt="ReadTheDocs" src="../../img/readthedocs.png" /></p>
+<p>In addition to the default <a href="../configuration/#theme">theme configuration options</a>, the <code>readthedocs</code>
+theme supports the following options:</p>
+<ul>
+<li>
+<p><strong><code>highlightjs</code></strong>: Enables highlighting of source code in code blocks using
+    the <a href="https://highlightjs.org/">highlight.js</a> JavaScript library. Default: <code>True</code>.</p>
+</li>
+<li>
+<p><strong><code>hljs_languages</code></strong>: By default, highlight.js only supports 23 common
+    languages. List additional languages here to include support for them.</p>
+<pre class="highlight"><code class="language-yaml">theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust</code></pre>
+</li>
+<li>
+<p><strong><code>analytics</code></strong>: Defines configuration options for an analytics service.</p>
+<ul>
+<li>
+<p><strong><code>gtag</code></strong>: To enable Google Analytics, set to a Google Analytics v4
+tracking ID, which uses the <code>G-</code> format. See Google's documentation to
+<a href="https://support.google.com/analytics/answer/9304153?hl=en&amp;ref_topic=9303319">Set up Analytics for a website and/or app (GA4)</a> or to
+<a href="https://support.google.com/analytics/answer/9744165?hl=en&amp;ref_topic=9303319">Upgrade to a Google Analytics 4 property</a>.</p>
+<pre class="highlight"><code class="language-yaml">theme:
+  name: readthedocs
+  analytics:
+    gtag: G-ABC123</code></pre>
+<p>When set to the default (<code>null</code>) Google Analytics is disabled for the</p>
+</li>
+<li>
+<p><strong><code>anonymize_ip</code></strong>: To enable anonymous IP address for Google Analytics,
+    set this to <code>True</code>. Default: <code>False</code>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>include_homepage_in_sidebar</code></strong>: Lists the homepage in the sidebar menu. As
+    MkDocs requires that the homepage be listed in the <code>nav</code> configuration
+    option, this setting allows the homepage to be included or excluded from
+    the sidebar. Note that the site name/logo always links to the homepage.
+    Default: <code>True</code>.</p>
+</li>
+<li>
+<p><strong><code>prev_next_buttons_location</code></strong>: One of <code>bottom</code>, <code>top</code>, <code>both</code> , or <code>none</code>.
+    Displays the “Next” and “Previous” buttons accordingly. Default: <code>bottom</code>.</p>
+</li>
+<li>
+<p><strong><code>navigation_depth</code></strong>: The maximum depth of the navigation tree in the
+    sidebar. Default: <code>4</code>.</p>
+</li>
+<li>
+<p><strong><code>collapse_navigation</code></strong>: Only include the page section headers in the
+    sidebar for the current page. Default: <code>True</code>.</p>
+</li>
+<li>
+<p><strong><code>titles_only</code></strong>: Only include page titles in the sidebar, excluding all
+    section headers for all pages. Default: <code>False</code>.</p>
+</li>
+<li>
+<p><strong><code>sticky_navigation</code></strong>: If True, causes the sidebar to scroll with the main
+    page content as you scroll the page. Default: <code>True</code>.</p>
+</li>
+<li>
+<p><strong id="readthedocs-locale"><code>locale</code></strong>: The locale (language/location) used to
+    build the theme. If your locale is not yet supported, it will fall back
+    to the default.</p>
+<p>The following locales are supported by this theme:</p>
+<ul>
+<li><code>en</code>: English (default)</li>
+<li><code>de</code>: German</li>
+<li><code>es</code>: Spanish</li>
+<li><code>fa</code>: Persian</li>
+<li><code>fr</code>: French</li>
+<li><code>id</code>: Indonesian</li>
+<li><code>it</code>: Italian</li>
+<li><code>ja</code>: Japanese</li>
+<li><code>nl</code>: Dutch</li>
+<li><code>pl</code>: Polish</li>
+<li><code>pt_BR</code>: Portuguese (Brazil)</li>
+<li><code>ru</code>: Russian</li>
+<li><code>tr</code>: Turkish</li>
+<li><code>uk</code>: Ukrainian</li>
+<li><code>zh_CN</code>: Chinese (Simplified, China)</li>
+<li><code>zh_TW</code>: Chinese (Traditional, Taiwan)</li>
+</ul>
+<p>See the guide on <a href="../localizing-your-theme/">localizing your theme</a> for more information.</p>
+</li>
+<li>
+<p><strong><code>logo</code></strong>: To set a logo on your project instead of the plain text
+    <code>site_name</code>, set this variable to be the location of your image. Default: <code>null</code>.</p>
+</li>
+</ul>
+<h2 id="third-party-themes">Third Party Themes<a class="headerlink" href="#third-party-themes" title="Permanent link"></a></h2>
+<p>A list of third party themes can be found at the <a href="https://github.com/mkdocs-ng/mkdocs/wiki/MkDocs-Themes">community wiki</a> page and <a href="https://github.com/mkdocs-ng/catalog#-theming">the ranked catalog</a>. If you have created your own, please add them there.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Installing an MkDocs theme means installing a Python package and executing any code that the author has put in there. So, exercise the usual caution; there's no attempt at sandboxing.</p>
+</div></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+                <p>Copyright &copy; 2014 <a href="https://twitter.com/starletdreaming">Tom Christie</a>, Maintained by the <a href="/about/release-notes/#maintenance-team">MkDocs NG Team</a>.</p>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
