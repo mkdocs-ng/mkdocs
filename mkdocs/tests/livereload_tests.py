@@ -619,6 +619,46 @@ class BuildTests(unittest.TestCase):
             Path(origin_dir, "README.md").write_text("edited")
             self.assertTrue(started_building.wait(timeout=10))
 
+    @tempdir({"foo.md": "original"})
+    def test_ignores_dotfile_changes(self, docs_dir):
+        """Hidden files (starting with '.') should not trigger rebuild."""
+        started_building = threading.Event()
+        with testing_server(docs_dir, started_building.set) as server:
+            server.watch(docs_dir)
+            time.sleep(0.01)
+
+            # Vim swap file
+            Path(docs_dir, ".foo.md.swp").write_text("swap")
+            self.assertFalse(started_building.wait(timeout=0.5))
+
+            # Generic dotfile
+            Path(docs_dir, ".hidden").write_text("hidden")
+            self.assertFalse(started_building.wait(timeout=0.5))
+
+    @tempdir({"foo.md": "original"})
+    def test_ignores_tilde_backup_files(self, docs_dir):
+        """Editor backup files (ending with '~') should not trigger rebuild."""
+        started_building = threading.Event()
+        with testing_server(docs_dir, started_building.set) as server:
+            server.watch(docs_dir)
+            time.sleep(0.01)
+
+            # Backup file created by editors
+            Path(docs_dir, "foo.md~").write_text("backup")
+            self.assertFalse(started_building.wait(timeout=0.5))
+
+    @tempdir({"foo.md": "original"})
+    def test_ignores_emacs_autosave_files(self, docs_dir):
+        """Emacs auto-save files (#*#) should not trigger rebuild."""
+        started_building = threading.Event()
+        with testing_server(docs_dir, started_building.set) as server:
+            server.watch(docs_dir)
+            time.sleep(0.01)
+
+            # Emacs auto-save pattern
+            Path(docs_dir, "#foo.md#").write_text("autosave")
+            self.assertFalse(started_building.wait(timeout=0.5))
+
     @tempdir()
     def test_watch_with_broken_symlinks(self, docs_dir):
         Path(docs_dir, "subdir").mkdir()
