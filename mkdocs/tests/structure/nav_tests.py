@@ -4,7 +4,12 @@ import sys
 import unittest
 
 from mkdocs.structure.files import File, Files, set_exclusions
-from mkdocs.structure.nav import Section, _get_by_type, get_navigation
+from mkdocs.structure.nav import (
+    Section,
+    _get_by_type,
+    _set_section_titles_from_index_pages,
+    get_navigation,
+)
 from mkdocs.structure.pages import Page
 from mkdocs.tests.base import dedent, load_config
 
@@ -608,3 +613,33 @@ class SiteNavigationTests(unittest.TestCase):
         files = Files(fs)
         site_navigation = get_navigation(files, cfg)
         self.assertEqual(len(_get_by_type(site_navigation, Section)), 2)
+
+    def test_smart_section_titles_from_index_pages(self):
+        """Section titles use index page titles instead of directory names."""
+        cfg = load_config(site_url="http://example.com/")
+        fs = [
+            "index.md",
+            "about/index.md",
+            "about/license.md",
+            "api-guide/index.md",
+            "api-guide/running.md",
+        ]
+        files = Files(
+            [File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for s in fs]
+        )
+        site_navigation = get_navigation(files, cfg)
+
+        # Before update: sections use directory names
+        about_section = site_navigation.items[1]
+        api_section = site_navigation.items[2]
+        self.assertEqual(about_section.title, "About")
+        self.assertEqual(api_section.title, "Api guide")
+
+        # Set titles on index pages (as if they were read/rendered)
+        about_section.children[0].title = "About This Project"
+        api_section.children[0].title = "API Reference"
+
+        _set_section_titles_from_index_pages(site_navigation.items)
+
+        self.assertEqual(about_section.title, "About This Project")
+        self.assertEqual(api_section.title, "API Reference")
