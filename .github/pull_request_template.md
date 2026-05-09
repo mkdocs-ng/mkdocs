@@ -5,15 +5,6 @@
 <!-- Link to the issue this PR addresses, if applicable. -->
 Fixes #
 
-## Type of Change
-
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Documentation update
-- [ ] Refactor / code cleanup
-- [ ] CI / build / dependency update
-- [ ] Other (describe below)
-
 ## Checklist
 
 - [ ] New tests added for new behavior (if applicable)
