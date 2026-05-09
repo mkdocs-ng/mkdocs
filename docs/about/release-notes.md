@@ -31,6 +31,7 @@ The current members of the MkDocs-NG team.
 * Fix dropdown submenu arrow invisible in the navigation menu. #44
 * Fix malformed URLs (e.g., unterminated IPv6 literals) crashing the entire build. #45
 * Fix build crash caused by broken (dangling) symlinks in the docs directory. #46
+* Fix livereload triggering unnecessary rebuilds for editor temporary files (vim swap, tilde backups, Emacs auto-save). #55
 
 ### Maintenance
 
