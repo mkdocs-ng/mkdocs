@@ -31,6 +31,10 @@ The current members of the MkDocs-NG team.
 * Fix malformed URLs (e.g., unterminated IPv6 literals) crashing the entire build. #45
 * Fix build crash caused by broken (dangling) symlinks in the docs directory. #46
 
+### Added
+
+* Auto-generated section titles now use the index page's title instead of the raw directory name when an index page exists. #54
+
 ### Maintenance
 
 * Add concurrency settings to CI workflows so redundant in-progress jobs are cancelled when new pushes occur. #47
