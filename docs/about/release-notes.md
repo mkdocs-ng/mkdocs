@@ -17,21 +17,32 @@ $ mkdocs --version
 mkdocs, version 1.7.0 from /path/to/mkdocs (Python 3.12)
 ```
 
-## Maintenance team
+## Version 1.7.3 (2026-05-09)
 
-The current members of the MkDocs-NG team.
+### Fixed
 
-* [@shenxianpeng](https://github.com/shenxianpeng)
+* Fix CLI default handling with recent Click versions so omitted options do not override configured `strict`, `use_directory_urls`, or serve reload mode values. #60
+* Fix livereload triggering unnecessary rebuilds for editor temporary files (vim swap, tilde backups, Emacs auto-save). #55
+* Handle edge-case markup (such as `<<>>`) that could crash the build due to `AssertionError` in Python's `html.parser`. #51
+* Strip HTML tags from search entry titles, preventing raw HTML from appearing in search results. #53
+
+### Added
+
+* Expose `page.content_title` property for plugin authors to access the first heading text from rendered page content with HTML tags stripped. #52
+
+### Maintenance
+
+* Add mypy type checking to pre-commit hooks. #57
+* Update pip dependency group. #58
+* Remove "type of change" section from pull request template.
 
 ## Version 1.7.2 (2026-04-27)
 
 ### Fixed
 
-* Fix CLI default handling with recent Click versions so omitted options do not override configured `strict`, `use_directory_urls`, or serve reload mode values.
 * Fix dropdown submenu arrow invisible in the navigation menu. #44
 * Fix malformed URLs (e.g., unterminated IPv6 literals) crashing the entire build. #45
-* Fix build crash caused by broken (dangling) symlinks in the docs directory. #46
-* Fix livereload triggering unnecessary rebuilds for editor temporary files (vim swap, tilde backups, Emacs auto-save). #55
+* Fix build crash caused by broken (dangling) symlinks in the docs directory. #46 #43
 
 ### Maintenance
 
@@ -45,7 +56,6 @@ The current members of the MkDocs-NG team.
 * Fix `validation.links.not_found` is always reported as INFO for excluded pages. #32
 * Fix `mkdocs serve` cleanup so temporary site directories are removed when the process receives `SIGTERM`. #36
 * Fix mkdocs theme color mode switching when `highlightjs` is disabled. #39
-* Fix a crash when a dangling symlink exists in the docs directory, so `mkdocs build` and `mkdocs serve` log a warning and continue instead of aborting. #43
 
 ### Maintenance
 
