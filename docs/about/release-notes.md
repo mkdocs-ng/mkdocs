@@ -27,6 +27,7 @@ The current members of the MkDocs-NG team.
 
 ### Fixed
 
+* Fix CLI default handling with recent Click versions so omitted options do not override configured `strict`, `use_directory_urls`, or serve reload mode values.
 * Fix dropdown submenu arrow invisible in the navigation menu. #44
 * Fix malformed URLs (e.g., unterminated IPv6 literals) crashing the entire build. #45
 * Fix build crash caused by broken (dangling) symlinks in the docs directory. #46

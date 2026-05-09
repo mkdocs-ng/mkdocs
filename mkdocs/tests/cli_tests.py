@@ -14,6 +14,33 @@ class CLITests(unittest.TestCase):
     def setUp(self):
         self.runner = CliRunner()
 
+    def test_unset_default_source_values_restores_default_values(self):
+        kwargs = {"build_type": "False", "strict": False, "use_directory_urls": False}
+        ctx = mock.Mock()
+        ctx.get_parameter_source.return_value = cli.click.core.ParameterSource.DEFAULT
+
+        with mock.patch("mkdocs.__main__.click.get_current_context", return_value=ctx):
+            cli.unset_default_source_values(
+                kwargs, "build_type", "strict", "use_directory_urls"
+            )
+
+        self.assertIsNone(kwargs["build_type"])
+        self.assertIsNone(kwargs["strict"])
+        self.assertIsNone(kwargs["use_directory_urls"])
+
+    def test_unset_default_source_values_preserves_commandline_values(self):
+        kwargs = {"strict": False, "use_directory_urls": False}
+        ctx = mock.Mock()
+        ctx.get_parameter_source.return_value = (
+            cli.click.core.ParameterSource.COMMANDLINE
+        )
+
+        with mock.patch("mkdocs.__main__.click.get_current_context", return_value=ctx):
+            cli.unset_default_source_values(kwargs, "strict", "use_directory_urls")
+
+        self.assertFalse(kwargs["strict"])
+        self.assertFalse(kwargs["use_directory_urls"])
+
     @mock.patch("mkdocs.commands.serve.serve", autospec=True)
     def test_serve_default(self, mock_serve):
         result = self.runner.invoke(cli.cli, ["serve"], catch_exceptions=False)

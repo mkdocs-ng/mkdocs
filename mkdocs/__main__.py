@@ -219,6 +219,19 @@ def color_option(f):
     )(f)
 
 
+def unset_default_source_values(kwargs, *names):
+    ctx = click.get_current_context(silent=True)
+    if ctx is None:
+        return
+
+    for name in names:
+        if (
+            name in kwargs
+            and ctx.get_parameter_source(name) is click.core.ParameterSource.DEFAULT
+        ):
+            kwargs[name] = None
+
+
 common_options = add_options(quiet_option, verbose_option)
 common_config_options = add_options(
     click.option("-f", "--config-file", type=click.File("rb"), help=config_help),
@@ -283,6 +296,7 @@ def serve_command(**kwargs):
     from mkdocs.commands import serve
 
     _enable_warnings()
+    unset_default_source_values(kwargs, "build_type", "strict", "use_directory_urls")
     serve.serve(**kwargs)
 
 
@@ -296,6 +310,7 @@ def build_command(clean, **kwargs):
     from mkdocs.commands import build
 
     _enable_warnings()
+    unset_default_source_values(kwargs, "strict", "use_directory_urls")
     cfg = config.load_config(**kwargs)
     cfg.plugins.on_startup(command="build", dirty=not clean)
     try:
@@ -331,6 +346,7 @@ def gh_deploy_command(
     from mkdocs.commands import build, gh_deploy
 
     _enable_warnings()
+    unset_default_source_values(kwargs, "strict", "use_directory_urls")
     cfg = config.load_config(
         remote_branch=remote_branch, remote_name=remote_name, **kwargs
     )
