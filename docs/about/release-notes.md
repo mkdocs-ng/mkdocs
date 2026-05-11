@@ -17,6 +17,12 @@ $ mkdocs --version
 mkdocs, version 1.7.0 from /path/to/mkdocs (Python 3.12)
 ```
 
+## Version 1.7.4 (2026-05-xx)
+
+### Fixed
+
+Update documentation to fix broken link anchors. #62
+
 ## Version 1.7.3 (2026-05-09)
 
 ### Fixed
@@ -704,7 +710,7 @@ See [commit log](https://github.com/mkdocs-ng/mkdocs/compare/1.4.1...1.4.2).
 
 *   Plugin-related config options have more reliable validation and error reporting (#2997)
 
-*   Translation sub-commands of `setup.py` were completely dropped. See documentation [[1]](../about/contributing.md#submitting-changes-to-the-builtin-themes) [[2]](../dev-guide/translations.md#updating-the-translation-catalogs) for their new replacements (#2990)
+*   Translation sub-commands of `setup.py` were completely dropped. See documentation [[1]](../about/contributing.md#development-setup) [[2]](../dev-guide/translations.md#updating-the-translation-catalogs) for their new replacements (#2990)
 
 *   The ['mkdocs' package](https://pypi.org/project/mkdocs/#files) (wheel and source) is now produced by Hatch build system and pyproject.toml instead of setup.py (#2988)
 
@@ -1074,7 +1080,7 @@ Guide](../dev-guide/themes.md#supporting-theme-localizationtranslation).
 
 Contributors who are updating the templates to the built-in themes should
 review the [Contributing
-Guide](contributing.md#submitting-changes-to-the-builtin-themes).
+Guide](contributing.md#development-setup).
 
 The `lang` setting of the `search` plugin now defaults to the language
 specified in `theme.locale`.

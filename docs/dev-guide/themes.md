@@ -1047,7 +1047,7 @@ themes, see the appropriate [section] of the Contributing Guide and the
 [Translation Guide].
 
 [pybabel]: https://babel.pocoo.org/en/latest/setup.html
-[section]: ../about/contributing.md#submitting-changes-to-the-builtin-themes
+[section]: ../about/contributing.md#development-setup
 [Translation Guide]: translations.md
 
 ### Example custom theme Localization/Translation workflow
