@@ -17,6 +17,12 @@ $ mkdocs --version
 mkdocs, version 1.7.0 from /path/to/mkdocs (Python 3.12)
 ```
 
+## Version 1.7.4 (2026-05-xx)
+
+### Fixed
+
+Update documentation to fix broken link anchors. #62
+
 ## Version 1.7.3 (2026-05-09)
 
 ### Fixed
