@@ -77,3 +77,7 @@ plugins:
 
 watch:
   - mkdocs
+
+validation:
+  links:
+    unrecognized_links: warn
