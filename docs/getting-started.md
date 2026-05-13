@@ -126,7 +126,7 @@ theme: readthedocs
 
 Save your changes, and you'll see the ReadTheDocs theme being used.
 
-![Screenshot](img/.png)
+![Screenshot](img/readthedocs.png)
 
 ## Changing the Favicon Icon
 
@@ -200,11 +200,12 @@ you're done. For specific instructions on a number of common hosts, see the
 
 See the [User Guide] for more complete documentation of all of MkDocs' features.
 
-For help with MkDocs, use [GitHub] for questions and general help,
+For help with MkDocs, use [GitHub Discussions] for questions and general help,
 and [GitHub issues] to report bugs or request features.
 
 [docs_dir]: user-guide/configuration.md#docs_dir
 [deploy]: user-guide/deploying-your-docs.md
+[GitHub Discussions]: https://github.com/orgs/mkdocs-ng/discussions
 [nav]: user-guide/configuration.md#nav
 [GitHub issues]: https://github.com/mkdocs-ng/mkdocs/issues
 [site_name]: user-guide/configuration.md#site_name
