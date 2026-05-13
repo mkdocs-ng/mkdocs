@@ -163,8 +163,8 @@ path = "mkdocs.yml"
 [tool.hatch.envs.docs]
 detached = false
 [tool.hatch.envs.docs.scripts]
-build = "mkdocs build"
-serve = "mkdocs serve"
+build = "mkdocs build --strict"
+serve = "mkdocs serve --strict"
 deploy = "mkdocs gh-deploy --force"
 
 [tool.isort]
