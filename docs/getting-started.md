@@ -12,7 +12,7 @@ To install MkDocs, run the following command from the command line:
 pip install mkdocs-ng
 ```
 
-For more details, see the [Installation].
+For more details, see the [Installation Guide].
 
 ## Creating a new project
 
@@ -203,6 +203,7 @@ See the [User Guide] for more complete documentation of all of MkDocs' features.
 For help with MkDocs, use [GitHub Discussions] for questions and general help,
 and [GitHub issues] to report bugs or request features.
 
+[Installation Guide]: user-guide/installation.md
 [docs_dir]: user-guide/configuration.md#docs_dir
 [deploy]: user-guide/deploying-your-docs.md
 [GitHub Discussions]: https://github.com/orgs/mkdocs-ng/discussions
