@@ -9,6 +9,9 @@ on:
   schedule:
     - cron: '0 6 * * 6'
 
+env:
+  DISABLE_MKDOCS_2_WARNING: true
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
