@@ -254,7 +254,7 @@ def _get_by_type(nav, t: type[T]) -> list[T]:
 
 def _add_parent_links(nav) -> None:
     for item in nav:
-        if item.is_section:
+        if isinstance(item, Section):
             for child in item.children:
                 child.parent = item
             _add_parent_links(item.children)
@@ -265,3 +265,26 @@ def _add_previous_and_next_links(pages: list[Page]) -> None:
     zipped = zip(bookended[:-2], pages, bookended[2:])
     for page0, page1, page2 in zipped:
         page1.previous_page, page1.next_page = page0, page2
+
+
+def _set_section_titles_from_index_pages(items: list[StructureItem]) -> None:
+    """
+    For auto-generated navigation, update section titles to use the index
+    page's title instead of the directory name.
+
+    When `nav` is not explicitly configured, MkDocs generates section names
+    from directory names (e.g. "about" for an "about/" directory). If the
+    section contains an index page (e.g. "about/index.md"), this function
+    uses that page's title as the section title instead.
+
+    This only applies when `page.title` is not None (i.e. the page has
+    been read/rendered, so its title is known from metadata or headings).
+    """
+    for item in items:
+        if not isinstance(item, Section):
+            continue
+        for child in item.children:
+            if isinstance(child, Page) and child.is_index and child.title is not None:
+                item.title = child.title
+                break
+        _set_section_titles_from_index_pages(item.children)
