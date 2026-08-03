@@ -43,6 +43,7 @@ repos:
         entry: npm exec --yes -- jshint
         language: system
         files: ^mkdocs/.*\.js$
+        exclude: ^mkdocs/themes/.*/highlight/
       - id: mypy
         name: mypy
         entry: hatch run types:check

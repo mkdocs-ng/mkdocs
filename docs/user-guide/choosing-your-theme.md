@@ -52,7 +52,9 @@ supports the following options:
     independent of the `color_mode` option and must be defined separately.
 
 *   **`highlightjs`**: Enables highlighting of source code in code blocks using
-    the [highlight.js] JavaScript library. Default: `True`.
+    the [highlight.js] JavaScript library, which is bundled with the theme and
+    served locally — no external CDN is required, so highlighting works in
+    offline, intranet and privacy-sensitive environments. Default: `True`.
 
 *   **`hljs_style`**: The highlight.js library provides many different [styles]
     (color variations) for highlighting source code in code blocks. Set this to
@@ -142,7 +144,8 @@ In addition to the default [theme configuration options][theme], the `readthedoc
 theme supports the following options:
 
 *   **`highlightjs`**: Enables highlighting of source code in code blocks using
-    the [highlight.js] JavaScript library. Default: `True`.
+    the [highlight.js] JavaScript library, which is bundled with the theme and
+    served locally — no external CDN is required. Default: `True`.
 
 *   **`hljs_languages`**: By default, highlight.js only supports 23 common
     languages. List additional languages here to include support for them.

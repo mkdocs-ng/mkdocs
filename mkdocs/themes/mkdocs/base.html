@@ -24,8 +24,8 @@
         <link href="{{ 'css/v4-font-face.min.css'|url }}" rel="stylesheet">
         <link href="{{ 'css/base.css'|url }}" rel="stylesheet">
         {%- if config.theme.highlightjs %}
-        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/{{ config.theme.hljs_style }}.min.css" {% if config.theme.color_mode != "light" %}disabled{% endif %}>
-        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/{{ config.theme.hljs_style_dark }}.min.css" {% if config.theme.color_mode != "dark" %}disabled{% endif %}>
+        <link id="hljs-light" rel="stylesheet" href="{{ ('highlight/styles/' + config.theme.hljs_style + '.min.css')|url }}" {% if config.theme.color_mode != "light" %}disabled{% endif %}>
+        <link id="hljs-dark" rel="stylesheet" href="{{ ('highlight/styles/' + config.theme.hljs_style_dark + '.min.css')|url }}" {% if config.theme.color_mode != "dark" %}disabled{% endif %}>
         {%- endif %}
         {%- for path in config.extra_css %}
         <link href="{{ path|url }}" rel="stylesheet">
@@ -34,9 +34,9 @@
 
       {%- block libs %}
         {%- if config.theme.highlightjs %}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="{{ 'highlight/highlight.min.js'|url }}"></script>
         {%- for lang in config.theme.hljs_languages %}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/{{lang}}.min.js"></script>
+        <script src="{{ ('highlight/languages/' + lang + '.min.js')|url }}"></script>
         {%- endfor %}
         <script>hljs.highlightAll();</script>
         {%- endif %}
