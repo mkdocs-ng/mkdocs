@@ -26,6 +26,7 @@ Update documentation to fix broken link anchors. #62
 ### Added
 
 * Auto-generated section titles now use the index page's title instead of the raw directory name when an index page exists. #54
+* Built-in themes now bundle highlight.js locally instead of loading it from the cdnjs CDN, so syntax highlighting works in offline and privacy-sensitive environments. #75
 
 ## Version 1.7.3 (2026-05-09)
 
