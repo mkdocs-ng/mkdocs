@@ -1,0 +1,19 @@
+docs/about/release-notes.md
+  s_95fc935e63f53d::t_94229cb73a160d 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "7f147c13b93d4d97b74609c1308cec2566942acf",
+  "prompts": {},
+  "sessions": {
+    "s_95fc935e63f53d": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019fc8e3-4ad8-7217-8330-906c26343479",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
