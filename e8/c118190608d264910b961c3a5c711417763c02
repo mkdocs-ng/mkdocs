@@ -1,0 +1,35 @@
+docs/user-guide/README.md
+  s_95fc935e63f53d::t_3552e53d56f76d 19
+docs/dev-guide/api.md
+  s_95fc935e63f53d::t_f83d899125f507 5-14
+docs/user-guide/python-api.md
+  s_95fc935e63f53d::t_c41f397e086fae 1-85
+  s_95fc935e63f53d::t_f002cd53bef2c9 86-94
+mkdocs/tests/api_tests.py
+  s_95fc935e63f53d::t_521aa75183ad43 67-72
+  s_95fc935e63f53d::t_84f6efc8fce106 1-66,73-128
+mkdocs/commands/serve.py
+  s_95fc935e63f53d::t_c32f2517997114 8,26
+mkdocs/tests/cli_tests.py
+  s_95fc935e63f53d::t_304de03cd22d13 59,92,112,132,152,172,192,212,232,252
+mkdocs/__main__.py
+  s_95fc935e63f53d::t_d076f7256e8451 15,299,311
+mkdocs/__init__.py
+  s_95fc935e63f53d::t_f82d78d79a7600 3-9,13-151
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "e8c118190608d264910b961c3a5c711417763c02",
+  "prompts": {},
+  "sessions": {
+    "s_95fc935e63f53d": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019fc8e3-4ad8-7217-8330-906c26343479",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
