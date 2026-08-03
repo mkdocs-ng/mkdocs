@@ -22,8 +22,8 @@ from mkdocs.structure.files import (
 )
 from mkdocs.structure.nav import (
     Navigation,
-    _set_section_titles_from_index_pages,
     get_navigation,
+    set_section_titles_from_index_pages,
 )
 from mkdocs.structure.pages import Page
 from mkdocs.utils import DuplicateFilter  # noqa: F401 - legacy re-export
@@ -355,8 +355,10 @@ def build(
                 + "\n  - ".join(excluded)
             )
 
-        # Update auto-generated section titles from index page titles.
-        _set_section_titles_from_index_pages(nav.items)
+        # If the navigation was auto-generated, update section titles to use the
+        # index page's title instead of the raw directory name.
+        if config.get("nav") is None:
+            set_section_titles_from_index_pages(nav.items)
 
         # Run `env` plugin events.
         env = config.plugins.on_env(env, config=config, files=files)

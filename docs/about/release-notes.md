@@ -23,6 +23,10 @@ mkdocs, version 1.7.0 from /path/to/mkdocs (Python 3.12)
 
 Update documentation to fix broken link anchors. #62
 
+### Added
+
+* Auto-generated section titles now use the index page's title instead of the raw directory name when an index page exists. #54
+
 ## Version 1.7.3 (2026-05-09)
 
 ### Fixed
@@ -49,10 +53,6 @@ Update documentation to fix broken link anchors. #62
 * Fix dropdown submenu arrow invisible in the navigation menu. #44
 * Fix malformed URLs (e.g., unterminated IPv6 literals) crashing the entire build. #45
 * Fix build crash caused by broken (dangling) symlinks in the docs directory. #46 #43
-
-### Added
-
-* Auto-generated section titles now use the index page's title instead of the raw directory name when an index page exists. #54
 
 ### Maintenance
 

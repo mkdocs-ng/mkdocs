@@ -254,7 +254,7 @@ def _get_by_type(nav, t: type[T]) -> list[T]:
 
 def _add_parent_links(nav) -> None:
     for item in nav:
-        if isinstance(item, Section):
+        if item.is_section:
             for child in item.children:
                 child.parent = item
             _add_parent_links(item.children)
@@ -267,7 +267,7 @@ def _add_previous_and_next_links(pages: list[Page]) -> None:
         page1.previous_page, page1.next_page = page0, page2
 
 
-def _set_section_titles_from_index_pages(items: list[StructureItem]) -> None:
+def set_section_titles_from_index_pages(items: list[StructureItem]) -> None:
     """
     For auto-generated navigation, update section titles to use the index
     page's title instead of the directory name.
@@ -287,4 +287,4 @@ def _set_section_titles_from_index_pages(items: list[StructureItem]) -> None:
             if isinstance(child, Page) and child.is_index and child.title is not None:
                 item.title = child.title
                 break
-        _set_section_titles_from_index_pages(item.children)
+        set_section_titles_from_index_pages(item.children)

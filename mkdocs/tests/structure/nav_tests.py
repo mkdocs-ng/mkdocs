@@ -7,8 +7,8 @@ from mkdocs.structure.files import File, Files, set_exclusions
 from mkdocs.structure.nav import (
     Section,
     _get_by_type,
-    _set_section_titles_from_index_pages,
     get_navigation,
+    set_section_titles_from_index_pages,
 )
 from mkdocs.structure.pages import Page
 from mkdocs.tests.base import dedent, load_config
@@ -639,7 +639,7 @@ class SiteNavigationTests(unittest.TestCase):
         about_section.children[0].title = "About This Project"
         api_section.children[0].title = "API Reference"
 
-        _set_section_titles_from_index_pages(site_navigation.items)
+        set_section_titles_from_index_pages(site_navigation.items)
 
         self.assertEqual(about_section.title, "About This Project")
         self.assertEqual(api_section.title, "API Reference")
