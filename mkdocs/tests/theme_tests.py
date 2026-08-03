@@ -128,6 +128,27 @@ class ThemeTests(unittest.TestCase):
                 },
             )
 
+    def test_highlightjs_assets_are_vendored(self):
+        """Built-in themes must serve highlight.js locally, not from a CDN."""
+        for theme_name in ("mkdocs", "readthedocs"):
+            base = os.path.join(theme_dir, theme_name, "base.html")
+            with open(base, encoding="utf-8") as f:
+                content = f.read()
+            self.assertNotIn("cdnjs", content)
+            self.assertNotIn("cloudflare", content)
+            self.assertIn("highlight/highlight.min.js", content)
+            # The files referenced by the default theme config must exist.
+            for rel in (
+                "highlight/highlight.min.js",
+                "highlight/styles/github.min.css",
+                "highlight/styles/github-dark.min.css",
+                "highlight/LICENSE",
+            ):
+                self.assertTrue(
+                    os.path.isfile(os.path.join(theme_dir, theme_name, rel)),
+                    f"{theme_name} theme is missing vendored file {rel}",
+                )
+
     @unittest.skipUnless(shutil.which("node"), "node is not installed")
     def test_darkmode_without_highlightjs_stylesheets(self):
         darkmode_js = os.path.join(theme_dir, "mkdocs", "js", "darkmode.js")
