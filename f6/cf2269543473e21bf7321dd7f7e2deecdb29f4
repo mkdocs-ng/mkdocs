@@ -1,0 +1,29 @@
+mkdocs/tests/build_tests.py
+  s_d293c4651ed8b8::t_561afb8128289e 1079
+  s_d293c4651ed8b8::t_bab9f9203decc9 1071-1078,1080-1118
+docs/about/release-notes.md
+  s_d293c4651ed8b8::t_a853bd9ffdd948 26-29
+mkdocs/commands/build.py
+  s_d293c4651ed8b8::t_2429af396dafdd 26,358-361
+mkdocs/tests/structure/nav_tests.py
+  s_d293c4651ed8b8::t_07b168a7ba5e2b 11,642
+mkdocs/structure/nav.py
+  s_d293c4651ed8b8::t_adfa130cf67fdb 290
+  s_d293c4651ed8b8::t_8137168b189f1b 257,270
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "f6cf2269543473e21bf7321dd7f7e2deecdb29f4",
+  "prompts": {},
+  "sessions": {
+    "s_d293c4651ed8b8": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019fc87e-4593-7be7-963b-ebb3f11b3d9c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
