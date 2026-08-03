@@ -1068,6 +1068,54 @@ class BuildTests(PathAssertionMixin, unittest.TestCase):
     def test_not_site_dir_contains_stale_files(self, site_dir):
         self.assertFalse(build.site_directory_contains_stale_files(site_dir))
 
+    @tempdir(
+        files={
+            "index.md": "# Home Page",
+            "about/index.md": "# About Us",
+            "about/license.md": "# License",
+        }
+    )
+    @tempdir()
+    def test_auto_nav_section_titles_use_index_page_titles(self, site_dir, docs_dir):
+        captured: dict = {}
+
+        def on_nav(nav, config, files):
+            captured["nav"] = nav
+            return nav
+
+        cfg = load_config(docs_dir=docs_dir, site_dir=site_dir)
+        cfg.plugins.events["nav"] += [on_nav]
+        build.build(cfg)
+
+        about_section = captured["nav"].items[1]
+        self.assertEqual(about_section.title, "About Us")
+
+    @tempdir(
+        files={
+            "index.md": "# Home Page",
+            "about/index.md": "# About Us",
+            "about/license.md": "# License",
+        }
+    )
+    @tempdir()
+    def test_explicit_nav_section_titles_are_preserved(self, site_dir, docs_dir):
+        captured: dict = {}
+
+        def on_nav(nav, config, files):
+            captured["nav"] = nav
+            return nav
+
+        cfg = load_config(
+            docs_dir=docs_dir,
+            site_dir=site_dir,
+            nav=[{"My Custom Section": ["about/index.md", "about/license.md"]}],
+        )
+        cfg.plugins.events["nav"] += [on_nav]
+        build.build(cfg)
+
+        section = captured["nav"].items[0]
+        self.assertEqual(section.title, "My Custom Section")
+
 
 class _TestPreprocessor(markdown.preprocessors.Preprocessor):
     def __init__(self, base_path: str) -> None:

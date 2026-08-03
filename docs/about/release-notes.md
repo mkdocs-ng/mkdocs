@@ -23,6 +23,10 @@ mkdocs, version 1.7.0 from /path/to/mkdocs (Python 3.12)
 
 Update documentation to fix broken link anchors. #62
 
+### Added
+
+* Auto-generated section titles now use the index page's title instead of the raw directory name when an index page exists. #54
+
 ## Version 1.7.3 (2026-05-09)
 
 ### Fixed
