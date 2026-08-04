@@ -12,6 +12,7 @@ import warnings
 
 import click
 
+import mkdocs
 from mkdocs import __version__, config, utils
 
 if sys.platform.startswith("win"):
@@ -293,11 +294,9 @@ def cli():
 @common_options
 def serve_command(**kwargs):
     """Run the builtin development server."""
-    from mkdocs.commands import serve
-
     _enable_warnings()
     unset_default_source_values(kwargs, "build_type", "strict", "use_directory_urls")
-    serve.serve(**kwargs)
+    mkdocs.serve(**kwargs)
 
 
 @cli.command(name="build")
@@ -307,16 +306,9 @@ def serve_command(**kwargs):
 @common_options
 def build_command(clean, **kwargs):
     """Build the MkDocs documentation."""
-    from mkdocs.commands import build
-
     _enable_warnings()
     unset_default_source_values(kwargs, "strict", "use_directory_urls")
-    cfg = config.load_config(**kwargs)
-    cfg.plugins.on_startup(command="build", dirty=not clean)
-    try:
-        build.build(cfg, dirty=not clean)
-    finally:
-        cfg.plugins.on_shutdown()
+    mkdocs.build(**kwargs, dirty=not clean)
 
 
 @cli.command(name="gh-deploy")

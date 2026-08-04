@@ -56,7 +56,7 @@ class CLITests(unittest.TestCase):
             theme=None,
             use_directory_urls=None,
             watch_theme=False,
-            watch=(),
+            watch=[],
         )
 
     @mock.patch("mkdocs.commands.serve.serve", autospec=True)
@@ -89,7 +89,7 @@ class CLITests(unittest.TestCase):
             theme=None,
             use_directory_urls=None,
             watch_theme=False,
-            watch=(),
+            watch=[],
         )
 
     @mock.patch("mkdocs.commands.serve.serve", autospec=True)
@@ -109,7 +109,7 @@ class CLITests(unittest.TestCase):
             theme=None,
             use_directory_urls=None,
             watch_theme=False,
-            watch=(),
+            watch=[],
         )
 
     @mock.patch("mkdocs.commands.serve.serve", autospec=True)
@@ -129,7 +129,7 @@ class CLITests(unittest.TestCase):
             theme="readthedocs",
             use_directory_urls=None,
             watch_theme=False,
-            watch=(),
+            watch=[],
         )
 
     @mock.patch("mkdocs.commands.serve.serve", autospec=True)
@@ -149,7 +149,7 @@ class CLITests(unittest.TestCase):
             theme=None,
             use_directory_urls=True,
             watch_theme=False,
-            watch=(),
+            watch=[],
         )
 
     @mock.patch("mkdocs.commands.serve.serve", autospec=True)
@@ -169,7 +169,7 @@ class CLITests(unittest.TestCase):
             theme=None,
             use_directory_urls=False,
             watch_theme=False,
-            watch=(),
+            watch=[],
         )
 
     @mock.patch("mkdocs.commands.serve.serve", autospec=True)
@@ -189,7 +189,7 @@ class CLITests(unittest.TestCase):
             theme=None,
             use_directory_urls=None,
             watch_theme=False,
-            watch=(),
+            watch=[],
         )
 
     @mock.patch("mkdocs.commands.serve.serve", autospec=True)
@@ -209,7 +209,7 @@ class CLITests(unittest.TestCase):
             theme=None,
             use_directory_urls=None,
             watch_theme=False,
-            watch=(),
+            watch=[],
         )
 
     @mock.patch("mkdocs.commands.serve.serve", autospec=True)
@@ -229,7 +229,7 @@ class CLITests(unittest.TestCase):
             theme=None,
             use_directory_urls=None,
             watch_theme=False,
-            watch=(),
+            watch=[],
         )
 
     @mock.patch("mkdocs.commands.serve.serve", autospec=True)
@@ -249,7 +249,7 @@ class CLITests(unittest.TestCase):
             theme=None,
             use_directory_urls=None,
             watch_theme=True,
-            watch=(),
+            watch=[],
         )
 
     @mock.patch("mkdocs.config.load_config", autospec=True)

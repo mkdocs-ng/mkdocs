@@ -5,7 +5,7 @@ import shutil
 import signal
 import tempfile
 from os.path import isdir, isfile, join
-from typing import TYPE_CHECKING
+from typing import IO, TYPE_CHECKING
 from urllib.parse import urlsplit
 
 from mkdocs.commands.build import build
@@ -23,7 +23,7 @@ class _ShutdownRequested(KeyboardInterrupt):
 
 
 def serve(
-    config_file: str | None = None,
+    config_file: str | IO | None = None,
     livereload: bool = True,
     build_type: str | None = None,
     watch_theme: bool = False,

@@ -2,6 +2,16 @@
 
 NOTE: The main entry point to the API is through [Events](plugins.md#events) that are received by plugins. These events' descriptions link back to this page.
 
+For using MkDocs programmatically (building and serving sites from Python), see the [Python API](../user-guide/python-api.md) guide.
+
+::: mkdocs.build
+    options:
+      show_root_heading: true
+
+::: mkdocs.serve
+    options:
+      show_root_heading: true
+
 ::: mkdocs.structure.files.Files
     options:
       show_root_heading: true
