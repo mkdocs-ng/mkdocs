@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Iterator, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 from urllib.parse import urlsplit
 
 from mkdocs.exceptions import BuildError
@@ -11,6 +11,8 @@ from mkdocs.structure.pages import Page, _AbsoluteLinksValidationValue
 from mkdocs.utils import nest_paths
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from mkdocs.config.defaults import MkDocsConfig
     from mkdocs.structure.files import Files
 
@@ -262,7 +264,7 @@ def _add_parent_links(nav) -> None:
 
 def _add_previous_and_next_links(pages: list[Page]) -> None:
     bookended = [None, *pages, None]
-    zipped = zip(bookended[:-2], pages, bookended[2:])
+    zipped = zip(bookended[:-2], pages, bookended[2:], strict=False)
     for page0, page1, page2 in zipped:
         page1.previous_page, page1.next_page = page0, page2
 

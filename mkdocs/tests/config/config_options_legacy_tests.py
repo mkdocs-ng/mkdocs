@@ -5,7 +5,6 @@ import copy
 import io
 import os
 import re
-import sys
 import textwrap
 import unittest
 from typing import Any
@@ -389,10 +388,6 @@ class IpAddressTest(TestCase):
         self.assertEqual(conf["option"].host, "::")
         self.assertEqual(conf["option"].port, 8000)
 
-    @unittest.skipIf(
-        sys.version_info < (3, 9, 5),
-        "Leading zeros allowed in IP addresses before Python3.9.5",
-    )
     def test_invalid_leading_zeros(self):
         with self.expect_error(
             option="'127.000.000.001' does not appear to be an IPv4 or IPv6 address"

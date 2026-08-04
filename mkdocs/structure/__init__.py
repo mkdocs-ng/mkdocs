@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import abc
-from typing import TYPE_CHECKING, Iterable
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from mkdocs.structure.nav import Section
 
 

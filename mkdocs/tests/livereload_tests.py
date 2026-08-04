@@ -291,9 +291,10 @@ class BuildTests(unittest.TestCase):
             time.sleep(0.01)
 
             err = io.StringIO()
-            with contextlib.redirect_stderr(err), self.assertLogs(
-                "mkdocs.livereload"
-            ) as cm:
+            with (
+                contextlib.redirect_stderr(err),
+                self.assertLogs("mkdocs.livereload") as cm,
+            ):
                 Path(docs_dir, "foo.docs").write_text("b")
                 started_building.wait(timeout=10)
 

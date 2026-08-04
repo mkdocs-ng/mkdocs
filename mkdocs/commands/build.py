@@ -4,7 +4,7 @@ import gzip
 import logging
 import os
 import time
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING
 from urllib.parse import urljoin, urlsplit
 
 import jinja2
@@ -30,6 +30,8 @@ from mkdocs.utils import DuplicateFilter  # noqa: F401 - legacy re-export
 from mkdocs.utils import templates
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
+
     from mkdocs.config.defaults import MkDocsConfig
 
 

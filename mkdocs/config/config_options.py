@@ -13,18 +13,11 @@ import warnings
 from collections import Counter, UserString
 from types import SimpleNamespace
 from typing import (
+    TYPE_CHECKING,
     Any,
-    Callable,
-    Collection,
-    Dict,
     Generic,
-    Iterator,
-    List,
-    Mapping,
-    MutableMapping,
     NamedTuple,
     TypeVar,
-    Union,
     overload,
 )
 from urllib.parse import quote as urlquote
@@ -43,6 +36,9 @@ from mkdocs.config.base import (
     ValidationError,
 )
 from mkdocs.exceptions import ConfigurationError
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Collection, Iterator, Mapping, MutableMapping
 
 T = TypeVar("T")
 SomeConfig = TypeVar("SomeConfig", bound=Config)
@@ -189,7 +185,7 @@ class OptionallyRequired(Generic[T], BaseConfigOption[T]):
         return self.run_validation(value)
 
 
-class ListOfItems(Generic[T], BaseConfigOption[List[T]]):
+class ListOfItems(Generic[T], BaseConfigOption[list[T]]):
     """
     Validates a homogeneous list of items.
 
@@ -232,7 +228,7 @@ class ListOfItems(Generic[T], BaseConfigOption[List[T]]):
         # Emulate a config-like environment for pre_validation and post_validation.
         parent_key_name = getattr(self, "_key_name", "")
         fake_keys = [f"{parent_key_name}[{i}]" for i in range(len(value))]
-        fake_config.data = dict(zip(fake_keys, value))
+        fake_config.data = dict(zip(fake_keys, value, strict=False))
 
         self.option_type.warnings = self.warnings
         for key_name in fake_config:
@@ -248,7 +244,7 @@ class ListOfItems(Generic[T], BaseConfigOption[List[T]]):
         return [fake_config[k] for k in fake_keys]
 
 
-class DictOfItems(Generic[T], BaseConfigOption[Dict[str, T]]):
+class DictOfItems(Generic[T], BaseConfigOption[dict[str, T]]):
     """
     Validates a dict of items. Keys are always strings.
 
@@ -537,7 +533,7 @@ class URL(OptionallyRequired[str]):
         )
 
 
-class Optional(Generic[T], BaseConfigOption[Union[T, None]]):
+class Optional(Generic[T], BaseConfigOption[T | None]):
     """
     Wraps a field and makes a None value possible for it when no value is set.
 
@@ -962,7 +958,7 @@ class ExtraScriptValue(Config):
         return self.path
 
 
-class ExtraScript(BaseConfigOption[Union[ExtraScriptValue, str]]):
+class ExtraScript(BaseConfigOption[ExtraScriptValue | str]):
     def __init__(self):
         super().__init__()
         self.option_type = SubConfig[ExtraScriptValue]()
@@ -978,7 +974,7 @@ class ExtraScript(BaseConfigOption[Union[ExtraScriptValue, str]]):
         return self.option_type.run_validation(value)
 
 
-class MarkdownExtensions(OptionallyRequired[List[str]]):
+class MarkdownExtensions(OptionallyRequired[list[str]]):
     """
     Markdown Extensions Config Option.
 
@@ -1207,7 +1203,7 @@ class Plugins(OptionallyRequired[plugins.PluginCollection]):
         return plugin
 
 
-class Hooks(BaseConfigOption[List[types.ModuleType]]):
+class Hooks(BaseConfigOption[list[types.ModuleType]]):
     """A list of Python scripts to be treated as instances of plugins."""
 
     def __init__(self, plugins_key: str) -> None:
@@ -1225,11 +1221,11 @@ class Hooks(BaseConfigOption[List[types.ModuleType]]):
         assert isinstance(value, list)
 
         hooks = {}
-        for name, path in zip(value, paths):
+        for name, path in zip(value, paths, strict=False):
             hooks[name] = self._load_hook(name, path)
         return hooks
 
-    @functools.lru_cache(maxsize=None)
+    @functools.cache
     def _load_hook(self, name, path):
         import importlib.util
 

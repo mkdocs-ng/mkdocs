@@ -13,23 +13,21 @@ import os
 import posixpath
 import re
 import shutil
-import sys
 import warnings
+from bisect import insort  # noqa: F401 - re-exported for mkdocs.plugins
 from collections import defaultdict
 from datetime import datetime, timezone
+from importlib.metadata import EntryPoint, entry_points
 from pathlib import PurePath
-from typing import TYPE_CHECKING, Collection, Iterable, MutableSequence, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 from urllib.parse import urlsplit
-
-if sys.version_info >= (3, 10):
-    from importlib.metadata import EntryPoint, entry_points
-else:
-    from importlib_metadata import EntryPoint, entry_points
 
 from mkdocs import exceptions
 from mkdocs.utils.yaml import get_yaml_loader, yaml_load  # noqa: F401 - legacy re-export
 
 if TYPE_CHECKING:
+    from collections.abc import Collection, Iterable
+
     from mkdocs.structure.pages import Page
 
 T = TypeVar("T")
@@ -84,31 +82,9 @@ def get_build_date() -> str:
     return get_build_datetime().strftime("%Y-%m-%d")
 
 
-if sys.version_info >= (3, 9):
-    _removesuffix = str.removesuffix
-else:
-
-    def _removesuffix(s: str, suffix: str) -> str:
-        if suffix and s.endswith(suffix):
-            return s[: -len(suffix)]
-        return s
-
-
 def reduce_list(data_set: Iterable[T]) -> list[T]:
     """Reduce duplicate items in a list and preserve order."""
     return list(dict.fromkeys(data_set))
-
-
-if sys.version_info >= (3, 10):
-    from bisect import insort
-else:
-
-    def insort(a: MutableSequence[T], x: T, *, key=lambda v: v) -> None:
-        kx = key(x)
-        i = len(a)
-        while i > 0 and kx < key(a[i - 1]):
-            i -= 1
-        a.insert(i, x)
 
 
 def copy_file(source_path: str, output_path: str) -> None:
@@ -169,7 +145,7 @@ def is_error_template(path: str) -> bool:
     return bool(_ERROR_TEMPLATE_RE.match(path))
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def _norm_parts(path: str) -> list[str]:
     if not path.startswith("/"):
         path = "/" + path
@@ -195,7 +171,7 @@ def get_relative_url(url: str, other: str) -> str:
     other_parts = _norm_parts(other)
     dest_parts = _norm_parts(url)
     common = 0
-    for a, b in zip(other_parts, dest_parts):
+    for a, b in zip(other_parts, dest_parts, strict=False):
         if a != b:
             break
         common += 1
@@ -219,7 +195,7 @@ def normalize_url(path: str, page: Page | None = None, base: str = "") -> str:
     return posixpath.join(base, path)
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def _get_norm_url(path: str) -> tuple[str, int]:
     if not path:
         path = "."
@@ -263,7 +239,7 @@ def get_theme_dir(name: str) -> str:
     return os.path.dirname(os.path.abspath(theme.load().__file__))
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def get_themes() -> dict[str, EntryPoint]:
     """Return a dict of all installed themes as {name: EntryPoint}."""
     themes: dict[str, EntryPoint] = {}

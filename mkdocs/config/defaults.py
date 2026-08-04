@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import logging
-from typing import IO, Dict, Mapping
+from typing import IO, TYPE_CHECKING
 
 from mkdocs.config import base
 from mkdocs.config import config_options as c
 from mkdocs.structure.pages import Page, _AbsoluteLinksValidationValue
 from mkdocs.utils.yaml import get_yaml_loader, yaml_load
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 
 class _LogLevel(c.OptionallyRequired[int]):
@@ -138,7 +141,7 @@ class MkDocsConfig(base.Config):
     )
     """PyMarkdown extension names."""
 
-    mdx_configs = c.Private[Dict[str, dict]]()
+    mdx_configs = c.Private[dict[str, dict]]()
     """PyMarkdown extension configs. Populated from `markdown_extensions`."""
 
     strict = c.Type(bool, default=False)

@@ -855,11 +855,9 @@ class RelativePathExtensionTests(unittest.TestCase):
                 pg.render(cfg, Files(fs))
             msgs = [f"{r.levelname}:{r.message}" for r in cm.records]
             self.assertEqual("\n".join(msgs), textwrap.dedent(logs).strip("\n"))
-        elif sys.version_info >= (3, 10):
+        else:
             with self.assertNoLogs("mkdocs.structure.pages"):
                 pg.render(cfg, Files(fs))
-        else:
-            pg.render(cfg, Files(fs))
 
         assert pg.content is not None
         content = pg.content

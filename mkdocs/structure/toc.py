@@ -8,7 +8,8 @@ maintain compatibility with older versions of MkDocs.
 
 from __future__ import annotations
 
-from typing import Iterable, Iterator, TypedDict
+from collections.abc import Iterable, Iterator
+from typing import TypedDict
 
 
 class _TocToken(TypedDict):
