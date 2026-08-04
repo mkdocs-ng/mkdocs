@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import IO, TYPE_CHECKING, Any, Sequence
+from typing import IO, TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
+
     from mkdocs.config.defaults import MkDocsConfig
 
 # For acceptable version formats, see https://www.python.org/dev/peps/pep-0440/

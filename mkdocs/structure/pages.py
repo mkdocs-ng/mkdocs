@@ -4,7 +4,7 @@ import enum
 import logging
 import posixpath
 import warnings
-from typing import TYPE_CHECKING, Any, Callable, Iterator, MutableMapping, Sequence
+from typing import TYPE_CHECKING, Any
 from urllib.parse import unquote as urlunquote
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
@@ -20,7 +20,6 @@ from mkdocs.structure import StructureItem
 from mkdocs.structure.files import InclusionLevel
 from mkdocs.structure.toc import get_toc
 from mkdocs.utils import (
-    _removesuffix,
     get_build_date,
     get_markdown_title,
     meta,
@@ -29,6 +28,7 @@ from mkdocs.utils import (
 from mkdocs.utils.rendering import get_heading_text
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Iterator, MutableMapping, Sequence
     from xml.etree import ElementTree as etree
 
     from mkdocs.config.defaults import MkDocsConfig
@@ -444,7 +444,7 @@ class _RelativePathTreeprocessor(markdown.treeprocessors.Treeprocessor):
             and not path.endswith(".md")
             and (use_directory_urls or not path.endswith("/"))
         ):
-            suffixes.append(lambda p: _removesuffix(p, ".html") + ".md")
+            suffixes.append(lambda p: p.removesuffix(".html") + ".md")
 
         for pref in prefixes:
             for suf in suffixes:

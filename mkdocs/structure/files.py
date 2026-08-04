@@ -11,11 +11,6 @@ from functools import cached_property
 from pathlib import PurePath, PurePosixPath
 from typing import (
     TYPE_CHECKING,
-    Callable,
-    Iterable,
-    Iterator,
-    Mapping,
-    Sequence,
     overload,
 )
 from urllib.parse import quote as urlquote
@@ -27,6 +22,8 @@ import pathspec.util
 from mkdocs import utils
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
+
     import jinja2.environment
 
     from mkdocs.config.defaults import MkDocsConfig

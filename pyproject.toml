@@ -20,8 +20,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -34,7 +32,7 @@ classifiers = [
     "Topic :: Text Processing",
 ]
 dynamic = ["version"]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "click >=8.1.8",
     "Jinja2 >=2.11.1",
@@ -44,7 +42,6 @@ dependencies = [
     "watchdog >=2.0",
     "ghp-import >=1.0",
     "pyyaml_env_tag >=0.1",
-    "importlib-metadata >=4.4; python_version < '3.10'",
     "packaging >=20.5",
     "pathspec >=0.11.1",
     "mkdocs-get-deps >=0.2.0",
@@ -63,7 +60,6 @@ min-versions = [
     "watchdog ==6.0.0",
     "ghp-import ==2.1.0",
     "pyyaml_env_tag ==1.1",
-    "importlib-metadata ==4.4; python_version < '3.10'",
     "packaging ==26.2",
     "pathspec ==1.1.1",
     "mkdocs-get-deps ==0.2.2",
@@ -121,7 +117,7 @@ _coverage = [
 ]
 with-coverage = "test"
 [[tool.hatch.envs.test.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "pypy3"]
+python = ["3.10", "3.11", "3.12", "3.13", "3.14", "pypy3"]
 type = ["default", "min-req"]
 [tool.hatch.envs.test.overrides]
 matrix.type.features = [
@@ -138,7 +134,7 @@ detached = false
 [tool.hatch.envs.integration.scripts]
 test = "python -m mkdocs.tests.integration"
 [[tool.hatch.envs.integration.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "pypy3"]
+python = ["3.10", "3.11", "3.12", "3.13", "3.14", "pypy3"]
 type = ["default", "no-babel"]
 [tool.hatch.envs.integration.overrides]
 matrix.type.features = [

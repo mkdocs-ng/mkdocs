@@ -172,8 +172,10 @@ class TestGitHubDeploy(unittest.TestCase):
         self.assertEqual(
             cm.output,
             [
-                "ERROR:mkdocs.commands.gh_deploy:Failed to deploy to GitHub with error: \n"
-                "TestError123"
+                (
+                    "ERROR:mkdocs.commands.gh_deploy:Failed to deploy to GitHub with error: \n"
+                    "TestError123"
+                )
             ],
         )
 
