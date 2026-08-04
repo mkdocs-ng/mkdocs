@@ -1,0 +1,104 @@
+mkdocs/__init__.py
+  s_95fc935e63f53d::t_5a7618c13a5dd6 9
+  s_95fc935e63f53d::t_793f2c4103cec5 10
+  s_95fc935e63f53d::t_225bf6249c2f19 6
+mkdocs/tests/plugin_tests.py
+  s_95fc935e63f53d::t_a418a3dac67bc0 6
+  s_95fc935e63f53d::t_edd612c11719d4 80
+mkdocs/plugins.py
+  s_95fc935e63f53d::t_225bf6249c2f19 6-7,38-40
+mkdocs/utils/__init__.py
+  s_95fc935e63f53d::t_793f2c4103cec5 30
+  s_95fc935e63f53d::t_e9c77f68617924 20
+  s_95fc935e63f53d::t_edd612c11719d4 17
+  s_95fc935e63f53d::t_5a7618c13a5dd6 29,174
+  s_95fc935e63f53d::t_225bf6249c2f19 22,148,198,242
+mkdocs/structure/toc.py
+  s_95fc935e63f53d::t_225bf6249c2f19 11-12
+mkdocs/utils/rendering.py
+  s_95fc935e63f53d::t_5a7618c13a5dd6 10
+  s_95fc935e63f53d::t_225bf6249c2f19 4
+mkdocs/localization.py
+  s_95fc935e63f53d::t_793f2c4103cec5 13
+  s_95fc935e63f53d::t_225bf6249c2f19 5
+  s_95fc935e63f53d::t_5a7618c13a5dd6 12
+mkdocs/utils/templates.py
+  s_95fc935e63f53d::t_5a7618c13a5dd6 6
+  s_95fc935e63f53d::t_225bf6249c2f19 3
+mkdocs/structure/__init__.py
+  s_95fc935e63f53d::t_225bf6249c2f19 4
+  s_95fc935e63f53d::t_5a7618c13a5dd6 7
+  s_95fc935e63f53d::t_793f2c4103cec5 8
+mkdocs/structure/nav.py
+  s_95fc935e63f53d::t_793f2c4103cec5 15
+  s_95fc935e63f53d::t_5a7618c13a5dd6 14,267
+  s_95fc935e63f53d::t_225bf6249c2f19 4
+mkdocs/utils/cache.py
+  s_95fc935e63f53d::t_225bf6249c2f19 3
+mkdocs/theme.py
+  s_95fc935e63f53d::t_225bf6249c2f19 6-7
+mkdocs/config/base.py
+  s_95fc935e63f53d::t_225bf6249c2f19 9,110,113-114,270
+mkdocs/tests/config/config_options_tests.py
+  s_95fc935e63f53d::t_793f2c4103cec5 11
+  s_95fc935e63f53d::t_edd612c11719d4 125,479,508-509,551,1180,2534
+  s_95fc935e63f53d::t_a418a3dac67bc0 656,838,1560,1563
+  s_95fc935e63f53d::t_225bf6249c2f19 607,632,670,720,738,789,814,852,1066,1094,1541,1592,1621,1754,1760-1761,1769,1792,1813,1836,1848,1860,1875,1894,1903,1982,2536
+pyproject.toml
+  s_95fc935e63f53d::t_a3f8f16779bbf6 120,137
+  s_95fc935e63f53d::t_cbd737c48767f0 35
+mkdocs/tests/gh_deploy_tests.py
+  s_95fc935e63f53d::t_793f2c4103cec5 175-178
+mkdocs/tests/structure/page_tests.py
+  s_95fc935e63f53d::t_c57e6dafecbe18 858
+mkdocs/structure/pages.py
+  s_95fc935e63f53d::t_225bf6249c2f19 7
+  s_95fc935e63f53d::t_5a7618c13a5dd6 31
+  s_95fc935e63f53d::t_3c7df641225a2f 447
+mkdocs/tests/livereload_tests.py
+  s_95fc935e63f53d::t_225bf6249c2f19 294-297
+mkdocs/config/config_options.py
+  s_95fc935e63f53d::t_225bf6249c2f19 188,247,977,1206,1228
+  s_95fc935e63f53d::t_793f2c4103cec5 16
+  s_95fc935e63f53d::t_5a7618c13a5dd6 40-42,231,1224
+  s_95fc935e63f53d::t_edd612c11719d4 536,961
+mkdocs/structure/files.py
+  s_95fc935e63f53d::t_5a7618c13a5dd6 25
+  s_95fc935e63f53d::t_793f2c4103cec5 26
+mkdocs/tests/structure/file_tests.py
+  s_95fc935e63f53d::t_793f2c4103cec5 1
+  s_95fc935e63f53d::t_5a7618c13a5dd6 76
+mkdocs/tests/config/config_tests.py
+  s_95fc935e63f53d::t_5a7618c13a5dd6 230
+mkdocs/contrib/search/__init__.py
+  s_95fc935e63f53d::t_225bf6249c2f19 23
+  s_95fc935e63f53d::t_edd612c11719d4 5
+mkdocs/commands/build.py
+  s_95fc935e63f53d::t_225bf6249c2f19 7
+  s_95fc935e63f53d::t_5a7618c13a5dd6 33
+  s_95fc935e63f53d::t_793f2c4103cec5 34
+mkdocs/config/defaults.py
+  s_95fc935e63f53d::t_225bf6249c2f19 144
+  s_95fc935e63f53d::t_5a7618c13a5dd6 4,11-12
+  s_95fc935e63f53d::t_c34075d5f0ac01 13
+mkdocs/livereload/__init__.py
+  s_95fc935e63f53d::t_793f2c4103cec5 24
+  s_95fc935e63f53d::t_5a7618c13a5dd6 29-30
+  s_95fc935e63f53d::t_243ffe079fde67 31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "85c6507f8bf7897bcad52d15c73730aa6b235e2b",
+  "prompts": {},
+  "sessions": {
+    "s_95fc935e63f53d": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019fc8e3-4ad8-7217-8330-906c26343479",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
