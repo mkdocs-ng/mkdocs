@@ -55,7 +55,7 @@ min-versions = [
     "click ==8.4.2",
     "Jinja2 ==3.1.6",
     "markupsafe ==3.0.3",
-    "Markdown ==3.10.2",
+    "Markdown ==3.10.3",
     "PyYAML ==6.0.3",
     "watchdog ==6.0.0",
     "ghp-import ==2.1.0",
