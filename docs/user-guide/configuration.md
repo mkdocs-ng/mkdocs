@@ -964,6 +964,30 @@ plugins:
 
 **default**: `'[\s\-]+'`
 
+##### **stop_words**
+
+A boolean that determines whether [lunr.js] filters common "stop words" (such
+as `for`, `from`, `if`, `when` or `while` in English) out of the search index.
+
+Stop word filtering slightly reduces the size of the index, but it makes those
+words impossible to search for, which is a poor fit for technical
+documentation where words like `for`, `from` or `while` are often meaningful
+keywords. For that reason stop words are kept in the index by default. Set
+this option to `true` to restore lunr's stop word filtering:
+
+```yaml
+plugins:
+  - search:
+      stop_words: true
+```
+
+NOTE:
+Regardless of this setting, queries shorter than `min_search_length`
+characters are ignored. For example, to be able to search for `if` or `in`,
+`min_search_length` must also be lowered to `2`.
+
+**default**: `False`
+
 ##### **min_search_length**
 
 An integer value that defines the minimum length for a search query. By default

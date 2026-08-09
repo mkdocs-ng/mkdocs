@@ -79,6 +79,7 @@ class SearchPluginTests(unittest.TestCase):
         expected = {
             "lang": None,
             "separator": r"[\s\-]+",
+            "stop_words": False,
             "min_search_length": 3,
             "prebuild_index": False,
             "indexing": "full",
@@ -93,6 +94,7 @@ class SearchPluginTests(unittest.TestCase):
         expected = {
             "lang": ["es"],
             "separator": r"[\s\-]+",
+            "stop_words": False,
             "min_search_length": 3,
             "prebuild_index": False,
             "indexing": "full",
@@ -107,6 +109,7 @@ class SearchPluginTests(unittest.TestCase):
         expected = {
             "lang": None,
             "separator": r"[\s\-\.]+",
+            "stop_words": False,
             "min_search_length": 3,
             "prebuild_index": False,
             "indexing": "full",
@@ -117,10 +120,26 @@ class SearchPluginTests(unittest.TestCase):
         self.assertEqual(errors, [])
         self.assertEqual(warnings, [])
 
+    def test_plugin_config_stop_words(self):
+        expected = {
+            "lang": None,
+            "separator": r"[\s\-]+",
+            "stop_words": True,
+            "min_search_length": 3,
+            "prebuild_index": False,
+            "indexing": "full",
+        }
+        plugin = search.SearchPlugin()
+        errors, warnings = plugin.load_config({"stop_words": True})
+        self.assertEqual(plugin.config, expected)
+        self.assertEqual(errors, [])
+        self.assertEqual(warnings, [])
+
     def test_plugin_config_min_search_length(self):
         expected = {
             "lang": None,
             "separator": r"[\s\-]+",
+            "stop_words": False,
             "min_search_length": 2,
             "prebuild_index": False,
             "indexing": "full",
@@ -135,6 +154,7 @@ class SearchPluginTests(unittest.TestCase):
         expected = {
             "lang": None,
             "separator": r"[\s\-]+",
+            "stop_words": False,
             "min_search_length": 3,
             "prebuild_index": True,
             "indexing": "full",
@@ -149,6 +169,7 @@ class SearchPluginTests(unittest.TestCase):
         expected = {
             "lang": None,
             "separator": r"[\s\-]+",
+            "stop_words": False,
             "min_search_length": 3,
             "prebuild_index": False,
             "indexing": "titles",

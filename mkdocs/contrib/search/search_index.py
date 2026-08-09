@@ -133,11 +133,23 @@ class SearchIndex:
                 log.warning(f"Failed to pre-build search index. Error: {e}")
         elif self.config["prebuild_index"] == "python":
             if haslunrpy:
+                builder = None
+                if not self.config.get("stop_words"):
+                    # Build with the stop word filter(s) removed so that words
+                    # like 'while', 'if', 'for' or 'from' remain searchable.
+                    # See https://github.com/mkdocs/mkdocs/issues/4167
+                    from lunr import get_default_builder  # type: ignore
+
+                    builder = get_default_builder(self.config["lang"])
+                    for fn in list(builder.pipeline._stack):
+                        if "stopWordFilter" in getattr(fn, "label", ""):
+                            builder.pipeline.remove(fn)
                 lunr_idx = lunr(
                     ref="location",
                     fields=("title", "text"),
                     documents=self._entries,
                     languages=self.config["lang"],
+                    builder=builder,
                 )
                 page_dicts["index"] = lunr_idx.serialize()
                 data = json.dumps(page_dicts, sort_keys=True, separators=(",", ":"))
