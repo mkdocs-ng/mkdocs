@@ -60,6 +60,7 @@ class LangOption(c.OptionallyRequired[list[str]]):
 class _PluginConfig(base.Config):
     lang = c.Optional(LangOption())
     separator = c.Type(str, default=r"[\s\-]+")
+    stop_words = c.Type(bool, default=False)
     min_search_length = c.Type(int, default=3)
     prebuild_index = c.Choice((False, True, "node", "python"), default=False)
     indexing = c.Choice(("full", "sections", "titles"), default="full")

@@ -75,6 +75,17 @@ function onScriptsLoaded () {
       } else if (lang.length > 1) {
         this.use(lunr.multiLanguage.apply(null, lang));  // spread operator not supported in all browsers: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator#Browser_compatibility
       }
+      if (!data.config || !data.config.stop_words) {
+        // Stop word filtering is disabled: keep words like 'while', 'if',
+        // 'for' or 'from' searchable, which lunr would otherwise drop from
+        // the index. See https://github.com/mkdocs/mkdocs/issues/4167
+        this.pipeline.remove(lunr.stopWordFilter);
+        for (var j=0; j < lang.length; j++) {
+          if (lang[j] !== 'en' && lunr[lang[j]] && lunr[lang[j]].stopWordFilter) {
+            this.pipeline.remove(lunr[lang[j]].stopWordFilter);
+          }
+        }
+      }
       this.field('title');
       this.field('text');
       this.ref('location');
