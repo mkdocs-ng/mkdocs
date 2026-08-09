@@ -48,9 +48,9 @@ stdin.on('end', function () {
       // 'for' or 'from' searchable, which lunr would otherwise drop from
       // the index. See https://github.com/mkdocs/mkdocs/issues/4167
       this.pipeline.remove(lunr.stopWordFilter);
-      for (var i=0; i < lang.length; i++) {
-        if (lang[i] != 'en' && lunr[lang[i]] && lunr[lang[i]].stopWordFilter) {
-          this.pipeline.remove(lunr[lang[i]].stopWordFilter);
+      for (var j=0; j < lang.length; j++) {
+        if (lang[j] != 'en' && lunr[lang[j]] && lunr[lang[j]].stopWordFilter) {
+          this.pipeline.remove(lunr[lang[j]].stopWordFilter);
         }
       }
     }
