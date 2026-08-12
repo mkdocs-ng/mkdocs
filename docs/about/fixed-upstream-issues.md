@@ -26,34 +26,34 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
-[#2171] | Built-in themes loaded resources from CDNs, sharing visitor data with third parties and breaking offline use. highlight.js is now bundled locally and the themes contain no CDN references. | 1.7.4 (#75)
-[#3630] | The long-dead Universal Analytics (`analytics.js`) snippet was hardcoded into the themes. It is removed; use `analytics.gtag` (GA4) or override the `analytics` template block. | 1.7.4 (#84)
+[#2171] | Built-in themes loaded resources from CDNs, sharing visitor data with third parties and breaking offline use. highlight.js is now bundled locally and the themes contain no CDN references. | 1.8.0 (#75)
+[#3630] | The long-dead Universal Analytics (`analytics.js`) snippet was hardcoded into the themes. It is removed; use `analytics.gtag` (GA4) or override the `analytics` template block. | 1.8.0 (#84)
 [#4045] | Disabling `highlightjs` broke switching between light and dark mode in the mkdocs theme. | 1.7.1 (#39)
 
 ## Search
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
-[#4167] | Searching for words that happen to be English stop words — `while`, `if`, `for`, `from` and many more — returned no results, even though they are meaningful keywords in technical documentation. Stop words are now indexed by default; a `stop_words` plugin option restores the old behavior. | 1.7.4 (#80)
+[#4167] | Searching for words that happen to be English stop words — `while`, `if`, `for`, `from` and many more — returned no results, even though they are meaningful keywords in technical documentation. Stop words are now indexed by default; a `stop_words` plugin option restores the old behavior. | 1.8.0 (#80)
 
 ## Validation
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
 [#3690] | Anchor validation reported false positives for anchors generated late by Markdown extensions, e.g. `pymdownx.tabbed` with `combine_header_slug`. | 1.7.1 (#34)
-[#3703] | The "does not contain an anchor" warning gave no hint when the only problem was letter case; it now suggests the correct anchor (`did you mean '#conflicts'?`). | 1.7.4 (#83)
+[#3703] | The "does not contain an anchor" warning gave no hint when the only problem was letter case; it now suggests the correct anchor (`did you mean '#conflicts'?`). | 1.8.0 (#83)
 
 ## Python API
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
-[#1240] | No stable programmatic API — running MkDocs from Python code required subprocess calls or private imports. MkDocs NG provides `mkdocs.build()` and `mkdocs.serve()`. | 1.7.4 (#76)
+[#1240] | No stable programmatic API — running MkDocs from Python code required subprocess calls or private imports. MkDocs NG provides `mkdocs.build()` and `mkdocs.serve()`. | 1.8.0 (#76)
 
 ## Also worth knowing
 
 *   Python 3.13 and 3.14 are fully supported and tested (added in 1.7.0), while
   upstream's last release predates them.
-*   Version numbers marked 1.7.4 refer to the upcoming release; the fixes are
+*   Version numbers marked 1.8.0 refer to the upcoming release; the fixes are
   already merged on the `main` branch.
 *   Found another upstream issue you'd like to see fixed here? Please
   [open an issue].

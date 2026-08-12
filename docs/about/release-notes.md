@@ -17,7 +17,7 @@ $ mkdocs --version
 mkdocs, version 1.7.0 from /path/to/mkdocs (Python 3.12)
 ```
 
-## Version 1.7.4 (2026-05-xx)
+## Version 1.8.0 (2026-08-xx)
 
 ### Fixed
 
