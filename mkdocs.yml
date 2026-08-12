@@ -24,6 +24,7 @@ nav:
   - Developer Guide: dev-guide/
   - About:
     - Release Notes: about/release-notes.md
+    - Fixed Upstream Issues: about/fixed-upstream-issues.md
     - Contributing: about/contributing.md
     - License: about/license.md
 
