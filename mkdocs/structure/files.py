@@ -180,15 +180,55 @@ class Files:
                     return False
             return True
 
+        # The built-in themes bundle the full highlight.js distribution, but a
+        # site only ever references the assets selected by the theme's
+        # 'highlightjs', 'hljs_style'/'hljs_style_dark' and 'hljs_languages'
+        # options. Skip the hundreds of unused grammar/style files instead of
+        # copying them into every build.
+        builtin_themes_dir = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "themes"
+        )
+
+        def is_unused_highlight_file(path: str, dir: str) -> bool:
+            if not path.startswith("highlight/"):
+                return False
+            # Never skip files provided by a custom_dir or a third-party theme.
+            dir_norm = os.path.normcase(os.path.abspath(dir))
+            themes_norm = os.path.normcase(builtin_themes_dir)
+            if not dir_norm.startswith(themes_norm + os.sep):
+                return False
+            highlightjs = config.theme.get("highlightjs")
+            if highlightjs is None:
+                return False
+            if not highlightjs:
+                return True
+            if path.startswith("highlight/languages/") and path.endswith(".min.js"):
+                lang = path[len("highlight/languages/") : -len(".min.js")]
+                return lang not in (config.theme.get("hljs_languages") or ())
+            if path.startswith("highlight/styles/") and path.endswith(".min.css"):
+                style = path[len("highlight/styles/") : -len(".min.css")]
+                wanted = {
+                    config.theme.get("hljs_style"),
+                    config.theme.get("hljs_style_dark"),
+                }
+                return style not in wanted
+            return False
+
         for path in env.list_templates(filter_func=filter):
             # Theme files do not override docs_dir files
             if self.get_file_from_path(path) is None:
                 for dir in config.theme.dirs:
                     # Find the first theme dir which contains path
                     if os.path.isfile(os.path.join(dir, path)):
-                        self.append(
-                            File(path, dir, config.site_dir, config.use_directory_urls)
-                        )
+                        if not is_unused_highlight_file(path, dir):
+                            self.append(
+                                File(
+                                    path,
+                                    dir,
+                                    config.site_dir,
+                                    config.use_directory_urls,
+                                )
+                            )
                         break
 
     @property

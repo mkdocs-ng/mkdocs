@@ -440,6 +440,46 @@ class TestFiles(PathAssertionMixin, unittest.TestCase):
             os.path.normpath(os.path.join(ddir, "favicon.ico")),
         )
 
+    def _theme_static_files(self, **theme):
+        config = load_config(theme=theme)
+        env = config.theme.get_env()
+        files = get_files(config)
+        files.add_files_from_theme(env, config)
+        return {file.src_uri for file in files}
+
+    def test_add_files_from_theme_copies_only_used_highlight_assets(self):
+        static = self._theme_static_files(name="mkdocs")
+        self.assertIn("highlight/highlight.min.js", static)
+        # Only the configured styles are included (defaults: github, github-dark).
+        self.assertIn("highlight/styles/github.min.css", static)
+        self.assertIn("highlight/styles/github-dark.min.css", static)
+        self.assertNotIn("highlight/styles/agate.min.css", static)
+        # No languages are configured by default.
+        self.assertFalse(any(s.startswith("highlight/languages/") for s in static))
+
+    def test_add_files_from_theme_copies_configured_highlight_assets(self):
+        static = self._theme_static_files(
+            name="mkdocs", hljs_languages=["yaml", "rust"], hljs_style="agate"
+        )
+        self.assertIn("highlight/highlight.min.js", static)
+        self.assertIn("highlight/languages/yaml.min.js", static)
+        self.assertIn("highlight/languages/rust.min.js", static)
+        self.assertNotIn("highlight/languages/python.min.js", static)
+        self.assertIn("highlight/styles/agate.min.css", static)
+        self.assertNotIn("highlight/styles/github.min.css", static)
+
+    def test_add_files_from_theme_skips_highlight_when_disabled(self):
+        static = self._theme_static_files(name="mkdocs", highlightjs=False)
+        self.assertFalse(any(s.startswith("highlight/") for s in static))
+
+    @tempdir(files=["highlight/languages/custom.min.js"])
+    def test_add_files_from_theme_keeps_custom_dir_highlight_files(self, tdir):
+        # Files provided by a custom_dir are never filtered, even when they are
+        # not referenced by the hljs_* configuration.
+        static = self._theme_static_files(name="mkdocs", custom_dir=tdir)
+        self.assertIn("highlight/languages/custom.min.js", static)
+        self.assertNotIn("highlight/languages/python.min.js", static)
+
     def test_get_relative_url_use_directory_urls(self):
         to_files = [
             "index.md",

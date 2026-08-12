@@ -65,6 +65,12 @@ class SearchIndex:
         the page itself and then one for each of its' heading
         tags.
         """
+        # Only the page title is indexed in 'titles' mode - skip the
+        # (comparatively expensive) parse of the page's rendered HTML.
+        if self.config["indexing"] == "titles":
+            self._add_entry(title=page.title, text="", loc=page.url)
+            return
+
         # Create the content parser and feed in the HTML for the
         # full page. This handles all the parsing and prepares
         # us to iterate through it.
