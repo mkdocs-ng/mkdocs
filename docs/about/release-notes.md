@@ -32,6 +32,7 @@ Update documentation to fix broken link anchors. #62
 * Built-in themes now bundle highlight.js locally instead of loading it from the cdnjs CDN, so syntax highlighting works in offline and privacy-sensitive environments. #75
 * Add a stable public Python API — `mkdocs.build()` and `mkdocs.serve()` — for building and serving documentation programmatically. #76
 * The built-in search plugin no longer filters out English stop words, so searching for words like `while`, `if`, `for` or `from` now returns results. A new `stop_words` option restores the previous behavior when set to `true`. #80
+* Add a continuous benchmarking suite (`benchmarks/`, `hatch run bench:run`) tracked by [CodSpeed](https://codspeed.io) in CI, including scaling and serve-loop scenarios, establishing a performance baseline for build-pipeline optimization work. #88 #89
 
 ### Changed
 
