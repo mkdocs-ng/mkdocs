@@ -111,7 +111,12 @@ def make_markdown(seed: int, *, headings: int = 8, links: tuple[str, ...] = ()) 
     return "\n".join(parts) + "\n"
 
 
-def write_site(root: str) -> str:
+def write_site(
+    root: str,
+    *,
+    sections: int = SECTIONS,
+    pages_per_section: int = PAGES_PER_SECTION,
+) -> str:
     """
     Write a full MkDocs project (config + nested docs tree) under `root`.
 
@@ -119,7 +124,7 @@ def write_site(root: str) -> str:
     """
     docs_dir = os.path.join(root, "docs")
     os.makedirs(docs_dir, exist_ok=True)
-    section_names = [f"section-{i:02d}" for i in range(SECTIONS)]
+    section_names = [f"section-{i:02d}" for i in range(sections)]
 
     with open(os.path.join(docs_dir, "index.md"), "w", encoding="utf-8") as f:
         f.write(make_markdown(0, links=tuple(f"{n}/index.md" for n in section_names)))
@@ -127,7 +132,7 @@ def write_site(root: str) -> str:
     for s, name in enumerate(section_names):
         section_dir = os.path.join(docs_dir, name)
         os.makedirs(section_dir, exist_ok=True)
-        page_names = tuple(f"page-{p:02d}.md" for p in range(PAGES_PER_SECTION))
+        page_names = tuple(f"page-{p:02d}.md" for p in range(pages_per_section))
         links = ("../index.md", *page_names)
         with open(os.path.join(section_dir, "index.md"), "w", encoding="utf-8") as f:
             f.write(make_markdown(100 + s, links=links))
