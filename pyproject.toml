@@ -60,7 +60,7 @@ min-versions = [
     "watchdog ==6.0.0",
     "ghp-import ==2.1.0",
     "pyyaml_env_tag ==1.1",
-    "packaging ==26.2",
+    "packaging ==26.3",
     "pathspec ==1.1.1",
     "mkdocs-get-deps ==0.2.2",
     "colorama ==0.4.6; platform_system == 'Windows'",
