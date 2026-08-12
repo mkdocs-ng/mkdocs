@@ -830,6 +830,25 @@ class BuildTests(PathAssertionMixin, unittest.TestCase):
 
     @tempdir(
         files={
+            "test/foo.md": "[bar](bar.md#Page2-Heading)",
+            "test/bar.md": "## page2 heading\n\n[self](#PAGE2-heading)",
+        }
+    )
+    @tempdir()
+    def test_anchor_warning_with_case_suggestion(self, site_dir, docs_dir):
+        cfg = load_config(
+            docs_dir=docs_dir, site_dir=site_dir, validation={"anchors": "warn"}
+        )
+
+        expected_logs = """
+            WARNING:Doc file 'test/bar.md' contains a link '#PAGE2-heading', but there is no such anchor on this page. Note: anchor comparison is case-sensitive; did you mean '#page2-heading'?
+            WARNING:Doc file 'test/foo.md' contains a link 'bar.md#Page2-Heading', but the doc 'test/bar.md' does not contain an anchor '#Page2-Heading'. Note: anchor comparison is case-sensitive; did you mean '#page2-heading'?
+        """
+        with self._assert_build_logs(expected_logs):
+            build.build(cfg)
+
+    @tempdir(
+        files={
             "index.md": "[missing anchor](#missing)",
         }
     )

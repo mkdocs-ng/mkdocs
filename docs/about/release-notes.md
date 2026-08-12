@@ -23,6 +23,8 @@ mkdocs, version 1.7.0 from /path/to/mkdocs (Python 3.12)
 
 Update documentation to fix broken link anchors. #62
 
+* Anchor validation warnings now point out case-only mismatches: when a linked anchor differs from an existing anchor only by letter case, the warning suggests the correct anchor (e.g. `did you mean '#conflicts'?`). #83
+
 ### Added
 
 * Auto-generated section titles now use the index page's title instead of the raw directory name when an index page exists. #54

@@ -343,9 +343,15 @@ class Page(StructureItem):
                 if anchor in page.present_anchor_ids:
                     continue
                 context = ""
+                case_matches = sorted(
+                    a for a in page.present_anchor_ids if a.lower() == anchor.lower()
+                )
+                if case_matches:
+                    suggestion = ", ".join(f"'#{a}'" for a in case_matches)
+                    context = f" Note: anchor comparison is case-sensitive; did you mean {suggestion}?"
                 if to_file == self.file:
                     problem = "there is no such anchor on this page"
-                    if anchor.startswith("fnref:"):
+                    if not context and anchor.startswith("fnref:"):
                         context = (
                             " This seems to be a footnote that is never referenced."
                         )
