@@ -91,14 +91,16 @@ class MkDocsConfig(base.Config):
 
     google_analytics = c.Deprecated(
         message=(
-            "The configuration option {} has been deprecated and "
-            "will be removed in a future release of MkDocs. See the "
-            "options available on your theme for an alternative."
+            "The configuration option {} is deprecated and no longer has any "
+            "effect: Google shut down Universal Analytics, and the built-in "
+            "themes no longer include the legacy 'analytics.js' snippet. Use "
+            "your theme's 'analytics' options (e.g. 'analytics.gtag' for "
+            "Google Analytics 4) or override the 'analytics' template block "
+            "instead."
         ),
         option_type=c.Type(list, length=2),
     )
-    """set of values for Google analytics containing the account IO and domain
-    this should look like, ['UA-27795084-5', 'mkdocs.org']"""
+    """Legacy Universal Analytics option; ignored by the built-in themes."""
 
     dev_addr = c.IpAddress(default="127.0.0.1:8000")
     """The address on which to serve the live reloading docs server."""

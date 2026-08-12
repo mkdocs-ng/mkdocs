@@ -168,6 +168,18 @@ following blocks:
 * `content`: Contains the page content and table of contents for the page.
 * `footer`: Contains the page footer.
 
+For example, to add an analytics service other than Google Analytics 4 (the
+only one supported by the built-in themes' `analytics` options), override the
+`analytics` block with the snippet provided by your service:
+
+```django
+{% extends "base.html" %}
+
+{% block analytics %}
+<script defer data-domain="example.com" src="https://analytics.example.com/script.js"></script>
+{% endblock %}
+```
+
 You may need to view the source template files to ensure your modifications will
 work with the structure of the site. See [Template Variables] for a list of
 variables you can use within your custom blocks. For a more complete
