@@ -56,7 +56,13 @@ uvx prek run -a
 hatch run test:test
 hatch run integration:test
 hatch run types:check
+hatch run bench:test        # smoke-run the performance benchmarks
+hatch run bench:codspeed    # measure them (wall-time locally)
 ```
+
+The performance benchmarks live in `benchmarks/` (see its README) and run
+under [CodSpeed](https://codspeed.io) instrumentation in CI on every pull
+request.
 
 If you changed documentation, preview it locally:
 

@@ -129,6 +129,15 @@ matrix.type.scripts = [
 
 [tool.hatch.env.collectors.mkdocs.integration]
 path = "mkdocs.yml"
+[tool.hatch.envs.bench]
+dependencies = [
+    "pytest",
+    "pytest-codspeed",
+]
+[tool.hatch.envs.bench.scripts]
+test = "pytest {args:benchmarks/}"
+codspeed = "pytest --codspeed {args:benchmarks/}"
+
 [tool.hatch.envs.integration]
 detached = false
 [tool.hatch.envs.integration.scripts]
@@ -162,6 +171,9 @@ detached = false
 build = "mkdocs build"
 serve = "mkdocs serve"
 deploy = "mkdocs gh-deploy --force"
+
+[tool.pytest.ini_options]
+testpaths = ["benchmarks"]
 
 [tool.isort]
 profile = "black"
