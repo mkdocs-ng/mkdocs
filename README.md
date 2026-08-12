@@ -5,6 +5,7 @@
 [![PyPI Version][pypi-v-image]][pypi-v-link]
 [![Build Status][GHAction-image]][GHAction-link]
 [![Coverage Status][codecov-image]][codecov-link]
+[![CodSpeed][codspeed-image]][codspeed-link]
 
 MkDocs is a **fast**, **simple**, and **downright gorgeous** static site
 generator that's geared towards building project documentation. Documentation
@@ -69,6 +70,8 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [pypi-v-link]: https://pypi.org/project/mkdocs-ng/
 [GHAction-image]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml/badge.svg
 [GHAction-link]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml
+[codspeed-image]: https://img.shields.io/endpoint?url=https://codspeed.io/badge.json
+[codspeed-link]: https://app.codspeed.io/mkdocs-ng/mkdocs?utm_source=badge
 <!-- Links -->
 [mkdocs]: https://mkdocs-ng.github.io/mkdocs/
 [mkdocs/mkdocs]: https://github.com/mkdocs/mkdocs

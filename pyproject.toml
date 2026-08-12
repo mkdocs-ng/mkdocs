@@ -141,6 +141,15 @@ matrix.type.features = [
     { value = "i18n", if = ["default"] },
 ]
 
+[tool.hatch.envs.bench]
+dependencies = [
+    "pytest",
+    "pytest-codspeed",
+]
+[tool.hatch.envs.bench.scripts]
+run = "pytest benchmarks {args}"
+codspeed = "pytest benchmarks --codspeed {args}"
+
 [tool.hatch.envs.types]
 dependencies = [
     "mypy",
