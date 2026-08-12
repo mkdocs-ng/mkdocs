@@ -17,28 +17,51 @@ $ mkdocs --version
 mkdocs, version 1.7.0 from /path/to/mkdocs (Python 3.12)
 ```
 
-## Version 1.8.0 (2026-08-xx)
+## Version 1.8.0 (2026-08-13)
 
-### Fixed
+MkDocs NG 1.8.0 makes builds faster, search smarter, and the built-in themes
+lighter and more privacy-friendly.
 
-Update documentation to fix broken link anchors. #62
+**Requires Python 3.10 or newer.** Python 3.8 and 3.9 (both end-of-life) are
+no longer supported; pip keeps installing 1.7.x on those versions. #77
 
-* Add a "Fixed Upstream Issues" documentation page tracking notable upstream mkdocs/mkdocs issues already resolved in this fork. #85
-* Anchor validation warnings now point out case-only mismatches: when a linked anchor differs from an existing anchor only by letter case, the warning suggests the correct anchor (e.g. `did you mean '#conflicts'?`). #83
+### Highlights
 
-### Added
-
-* Auto-generated section titles now use the index page's title instead of the raw directory name when an index page exists. #54
-* Built-in themes now bundle highlight.js locally instead of loading it from the cdnjs CDN, so syntax highlighting works in offline and privacy-sensitive environments. #75
-* Add a stable public Python API — `mkdocs.build()` and `mkdocs.serve()` — for building and serving documentation programmatically. #76
-* The built-in search plugin no longer filters out English stop words, so searching for words like `while`, `if`, `for` or `from` now returns results. A new `stop_words` option restores the previous behavior when set to `true`. #80
-* Add a continuous benchmarking suite (`benchmarks/`, `hatch run bench:run`) tracked by [CodSpeed](https://codspeed.io) in CI, including scaling and serve-loop scenarios, establishing a performance baseline for build-pipeline optimization work. #88 #89
+*   **Search now finds programming keywords.** Searching for `while`, `if`,
+    `for`, `from` and similar words used to return nothing because they were
+    filtered out as English stop words. They are indexed by default now; set
+    the search plugin's `stop_words: true` to restore the old behavior. #80
+*   **Faster, smaller builds.** The built-in themes copy only the
+    highlight.js styles and languages your configuration actually uses —
+    clean builds are ~14% faster in our benchmarks and built sites shrink by
+    about 440 files. #90
+*   **A stable Python API.** Call `mkdocs.build()` and `mkdocs.serve()` from
+    your own code — no more subprocess calls or private imports. #76
+*   **Helpful anchor warnings.** When a link's anchor differs from an
+    existing one only by letter case, validation now suggests the correct
+    anchor (`did you mean '#conflicts'?`). #83
+*   **Offline syntax highlighting.** highlight.js is bundled with the
+    built-in themes instead of being loaded from a CDN, so highlighting works
+    in offline, intranet and privacy-sensitive environments. #75
+*   **Nicer automatic navigation.** When no `nav` is configured, section
+    titles use the index page's title instead of the raw directory name. #54
 
 ### Changed
 
-* Drop support for Python 3.8 and 3.9; MkDocs now requires Python 3.10 or newer. #77
-* The built-in themes no longer embed the legacy Universal Analytics (`analytics.js`) snippet — Google shut the service down in 2023. The deprecated `google_analytics` option is still accepted but has no effect and warns accordingly; use the theme's `analytics.gtag` option (Google Analytics 4) or override the `analytics` template block. #84
-* Built-in themes now copy only the highlight.js assets referenced by the configuration (`hljs_style`, `hljs_style_dark`, `hljs_languages`) into the built site instead of the whole bundled distribution, making clean builds noticeably faster and site output ~440 files smaller; with `highlightjs: false` no highlight.js files are copied at all. Files from a theme `custom_dir` are never filtered. The search plugin also skips parsing page HTML when `indexing: titles` is configured. #90
+*   The built-in themes no longer embed the legacy Universal Analytics
+    (`analytics.js`) snippet — Google shut the service down in 2023. The
+    deprecated `google_analytics` option now has no effect; use the theme's
+    `analytics.gtag` option (Google Analytics 4) or override the `analytics`
+    template block. #84
+
+### Maintenance
+
+*   Every pull request now runs a performance benchmark suite under
+    [CodSpeed](https://codspeed.io), guarding against build-speed
+    regressions. #88 #89
+*   New [Fixed Upstream Issues](https://mkdocs-ng.github.io/mkdocs/about/fixed-upstream-issues/)
+    page tracking notable upstream issues already resolved in MkDocs NG. #85
+*   Documentation link fixes. #62
 
 ## Version 1.7.3 (2026-05-09)
 

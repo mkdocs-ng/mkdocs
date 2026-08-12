@@ -53,8 +53,6 @@ Upstream issue | Symptom | Fixed in
 
 *   Python 3.13 and 3.14 are fully supported and tested (added in 1.7.0), while
   upstream's last release predates them.
-*   Version numbers marked 1.8.0 refer to the upcoming release; the fixes are
-  already merged on the `main` branch.
 *   Found another upstream issue you'd like to see fixed here? Please
   [open an issue].
 
