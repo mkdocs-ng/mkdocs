@@ -14,16 +14,17 @@ configuration file. It is designed to be easy to use and can be extended with
 third-party themes, plugins, and Markdown extensions.
 
 > [!NOTE]
-> **mkdocs** is a maintained fork of [mkdocs/mkdocs], continued from the
-> 1.7.0 line and published on PyPI as `mkdocs-ng`, while preserving the `mkdocs` CLI.
+> **MkDocs NG** is a maintained fork of [mkdocs/mkdocs], published on PyPI as
+> `mkdocs-ng` while keeping the `mkdocs` command, imports and configuration
+> unchanged — a drop-in replacement.
 >
-> It adds support for Python 3.13 and 3.14, restores `mkdocs serve --livereload`,
-> improves strict link and anchor validation, ensures reliable cleanup on `SIGTERM`,
-> removes the unmaintained `mergedeep` dependency, and modernizes CI, dependencies,
-> release workflows and much [more].
->
-> The project is actively maintained and continues to track modern Python,
-> packaging, and documentation workflows.
+> Highlights beyond the last upstream release: Python 3.10–3.14 support,
+> search that finds programming keywords like `while` and `for`, faster
+> builds with smaller site output, a stable Python API (`mkdocs.build()` /
+> `mkdocs.serve()`), fully offline syntax highlighting with no CDNs or
+> analytics, and many long-standing bug fixes — see
+> [Fixed Upstream Issues][fixed-upstream] and the [release notes][release-notes],
+> or browse [all merged changes][more].
 
 Please see the [Documentation][mkdocs] for an introductory tutorial and a full user guide.
 
@@ -34,6 +35,21 @@ Please see the [Documentation][mkdocs] for an introductory tutorial and a full u
 - Use the built-in themes, third-party themes, or create your own.
 - Publish your documentation anywhere that static files can be served.
 - Much more!
+
+## Installation
+
+Install with pip:
+
+```bash
+pip install mkdocs-ng
+```
+
+Switching from `mkdocs`? Uninstall it first — the command, imports and
+configuration stay exactly the same:
+
+```bash
+pip uninstall mkdocs && pip install -U mkdocs-ng
+```
 
 ## Support
 
@@ -50,6 +66,7 @@ first, but they are still welcome in [Discussions].
 
 - [Official Documentation][mkdocs]
 - [Latest Release Notes][release-notes]
+- [Fixed Upstream Issues][fixed-upstream]
 - [Catalog of third-party plugins, themes and recipes][catalog]
 
 ## Contributing to MkDocs
@@ -79,6 +96,7 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [Issue]: https://github.com/mkdocs-ng/mkdocs/issues
 [Discussions]: https://github.com/orgs/mkdocs-ng/discussions
 [release-notes]: https://mkdocs-ng.github.io/mkdocs/about/release-notes/
+[fixed-upstream]: https://mkdocs-ng.github.io/mkdocs/about/fixed-upstream-issues/
 [Contributing Guide]: https://mkdocs-ng.github.io/mkdocs/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [catalog]: https://github.com/mkdocs-ng/catalog
