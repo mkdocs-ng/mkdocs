@@ -24,7 +24,6 @@ mkdocs, version 1.7.0 from /path/to/mkdocs (Python 3.12)
 Update documentation to fix broken link anchors. #62
 
 * Add a "Fixed Upstream Issues" documentation page tracking notable upstream mkdocs/mkdocs issues already resolved in this fork. #85
-
 * Anchor validation warnings now point out case-only mismatches: when a linked anchor differs from an existing anchor only by letter case, the warning suggests the correct anchor (e.g. `did you mean '#conflicts'?`). #83
 
 ### Added
