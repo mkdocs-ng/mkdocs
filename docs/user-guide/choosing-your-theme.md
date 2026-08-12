@@ -56,6 +56,12 @@ supports the following options:
     served locally — no external CDN is required, so highlighting works in
     offline, intranet and privacy-sensitive environments. Default: `True`.
 
+    Only the highlight.js assets that the configuration references are copied
+    into the built site: the library itself, the styles selected by
+    `hljs_style`/`hljs_style_dark`, and the languages listed in
+    `hljs_languages`. When this option is set to `False`, no highlight.js
+    files are copied at all.
+
 *   **`hljs_style`**: The highlight.js library provides many different [styles]
     (color variations) for highlighting source code in code blocks. Set this to
     the name of the desired style when in `light` mode. Default: `github`.

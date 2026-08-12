@@ -38,6 +38,7 @@ Update documentation to fix broken link anchors. #62
 
 * Drop support for Python 3.8 and 3.9; MkDocs now requires Python 3.10 or newer. #77
 * The built-in themes no longer embed the legacy Universal Analytics (`analytics.js`) snippet — Google shut the service down in 2023. The deprecated `google_analytics` option is still accepted but has no effect and warns accordingly; use the theme's `analytics.gtag` option (Google Analytics 4) or override the `analytics` template block. #84
+* Built-in themes now copy only the highlight.js assets referenced by the configuration (`hljs_style`, `hljs_style_dark`, `hljs_languages`) into the built site instead of the whole bundled distribution, making clean builds noticeably faster and site output ~440 files smaller; with `highlightjs: false` no highlight.js files are copied at all. Files from a theme `custom_dir` are never filtered. The search plugin also skips parsing page HTML when `indexing: titles` is configured. #90
 
 ## Version 1.7.3 (2026-05-09)
 
