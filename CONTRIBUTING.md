@@ -58,6 +58,14 @@ hatch run integration:test
 hatch run types:check
 ```
 
+Performance-sensitive changes (building, rendering, navigation, search index)
+are covered by the benchmarks in `benchmarks/`. They run on every pull request
+with [CodSpeed], and can be run locally with:
+
+```bash
+hatch run bench:run
+```
+
 If you changed documentation, preview it locally:
 
 ```bash
@@ -86,6 +94,7 @@ consistent with the surrounding style.
 Everyone interacting in MkDocs NG spaces is expected to follow the
 [PyPA Code of Conduct].
 
+[CodSpeed]: https://app.codspeed.io/mkdocs-ng/mkdocs
 [GitHub Discussions]: https://github.com/orgs/mkdocs-ng/discussions
 [GitHub issues]: https://github.com/mkdocs-ng/mkdocs/issues
 [Hatch]: https://hatch.pypa.io/
