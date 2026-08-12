@@ -131,6 +131,10 @@ matrix.type.scripts = [
 path = "mkdocs.yml"
 [tool.hatch.envs.integration]
 detached = false
+# Same shadowing hazard as the docs env - the integration tests shell out to
+# the 'mkdocs' console script, which would otherwise run the upstream
+# distribution instead of this checkout.
+env-vars = { PYTHONPATH = "{root}" }
 [tool.hatch.envs.integration.scripts]
 test = "python -m mkdocs.tests.integration"
 [[tool.hatch.envs.integration.matrix]]
@@ -167,6 +171,11 @@ check = "mypy mkdocs"
 path = "mkdocs.yml"
 [tool.hatch.envs.docs]
 detached = false
+# The docs tooling depends on the upstream 'mkdocs' distribution (every plugin
+# requires it by name), which ships a package of the same name and lands in
+# site-packages after this project, shadowing it. Putting the project root
+# first on sys.path keeps the docs built with this checkout.
+env-vars = { PYTHONPATH = "{root}" }
 [tool.hatch.envs.docs.scripts]
 build = "mkdocs build"
 serve = "mkdocs serve"

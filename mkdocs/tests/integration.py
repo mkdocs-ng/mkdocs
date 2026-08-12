@@ -16,10 +16,13 @@ TODOs
 
 import logging
 import os
+import re
 import subprocess
 import tempfile
 
 import click
+
+import mkdocs
 
 log = logging.getLogger("mkdocs")
 
@@ -27,6 +30,36 @@ DIR = os.path.dirname(__file__)
 MKDOCS_CONFIG = os.path.abspath(os.path.join(DIR, "../../mkdocs.yml"))
 MKDOCS_THEMES = ["mkdocs", "readthedocs"]
 TEST_PROJECTS = os.path.abspath(os.path.join(DIR, "integration"))
+VERSION_ORIGIN_RE = re.compile(r"from (.+) \(Python")
+
+
+def check_mkdocs_command() -> None:
+    """
+    Verify that the `mkdocs` command runs the same code as these tests.
+
+    The builds below shell out to the `mkdocs` console script. Documentation
+    tooling also depends on an upstream distribution that ships a package of
+    the same name, and whichever lands last in site-packages wins for console
+    scripts - so without this check the tests could silently exercise a
+    different MkDocs than the one being developed.
+    """
+    assert mkdocs.__file__ is not None
+    expected = os.path.realpath(os.path.dirname(mkdocs.__file__))
+
+    output = subprocess.check_output(["mkdocs", "--version"], text=True)
+    match = VERSION_ORIGIN_RE.search(output)
+    if match is None:
+        raise click.ClickException(
+            f"Could not tell which MkDocs the 'mkdocs' command runs: {output.strip()!r}"
+        )
+
+    actual = os.path.realpath(match[1])
+    if actual != expected:
+        raise click.ClickException(
+            f"The 'mkdocs' command runs {actual}, but these tests are for "
+            f"{expected}. Run them through 'hatch run integration:test', which "
+            f"puts the project first on sys.path."
+        )
 
 
 @click.command()
@@ -46,6 +79,8 @@ def main(output=None):
     stream.setFormatter(formatter)
     log.addHandler(stream)
     log.setLevel(logging.DEBUG)
+
+    check_mkdocs_command()
 
     base_cmd = ["mkdocs", "build", "-q", "-s", "--site-dir"]
 
