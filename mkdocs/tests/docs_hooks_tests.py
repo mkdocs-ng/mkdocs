@@ -24,6 +24,21 @@ class DocsHooksTests(unittest.TestCase):
     def setUpClass(cls):
         cls.hooks = _load_docs_hooks()
 
+    def test_version_example_tracks_current_release(self):
+        import mkdocs
+
+        markdown = dedent(
+            """
+            ```console
+            $ mkdocs --version
+            mkdocs, version 0.0.0 from /path/to/mkdocs (Python 3.12)
+            ```
+            """
+        )
+        result = self.hooks._update_version_example(markdown)
+        self.assertIn(f"mkdocs, version {mkdocs.__version__} from", result)
+        self.assertNotIn("version 0.0.0", result)
+
     def test_release_notes_links_switch_repo_after_fork(self):
         markdown = dedent(
             """
