@@ -18,6 +18,7 @@ RELEASE_NOTES_SECTION_RE = re.compile(
 )
 FENCED_CODE_BLOCK_RE = re.compile(r"(^```.*?^```[ \t]*$)", re.MULTILINE | re.DOTALL)
 ISSUE_REF_RE = re.compile(r"(?<![\w/`\[])#(?P<number>\d+)\b")
+VERSION_EXAMPLE_RE = re.compile(r"mkdocs, version \S+ from")
 
 
 def _get_language_of_translation_file(path: Path) -> str:
@@ -74,11 +75,20 @@ def _rewrite_release_notes_links(markdown: str) -> str:
     return "".join(result)
 
 
+def _update_version_example(markdown: str) -> str:
+    """Keep the `mkdocs --version` sample output in sync with the current release."""
+    import mkdocs
+
+    return VERSION_EXAMPLE_RE.sub(
+        f"mkdocs, version {mkdocs.__version__} from", markdown, count=1
+    )
+
+
 def on_page_markdown(
     markdown: str, page: Page, config: MkDocsConfig, **kwargs
 ) -> str | None:
     if page.file.src_uri == "about/release-notes.md":
-        return _rewrite_release_notes_links(markdown)
+        return _rewrite_release_notes_links(_update_version_example(markdown))
 
     if page.file.src_uri == "user-guide/choosing-your-theme.md":
         here = Path(config.config_file_path).parent
