@@ -1,17 +1,33 @@
-var base_path = 'function' === typeof importScripts ? '.' : '/search/';
+var in_worker = 'function' === typeof importScripts;
+// Outside a Web Worker, this script runs in the page (see main.js), which
+// defines `base_url` for the site root.
+var base_path = in_worker ? '.' : base_url.replace(/\/?$/, '/') + 'search/';
 var allowSearch = false;
 var index;
 var documents = {};
 var lang = ['en'];
 var data;
 
+// Send a message to the search UI. From a Web Worker that's `postMessage`.
+// When running in the page, call main.js's handler directly instead, leaving
+// the page's own `window.postMessage` alone.
+function sendMessage(msg) {
+  if (in_worker) {
+    postMessage(msg);
+  } else {
+    onWorkerMessage({data: msg});
+  }
+}
+
 function getScript(script, callback) {
   console.log('Loading script: ' + script);
-  $.getScript(base_path + script).done(function () {
-    callback();
-  }).fail(function (jqxhr, settings, exception) {
-    console.log('Error: ' + exception);
-  });
+  var element = document.createElement('script');
+  element.src = base_path + script;
+  element.onload = callback;
+  element.onerror = function () {
+    console.log('Error loading script: ' + script);
+  };
+  document.head.appendChild(element);
 }
 
 function getScriptsInOrder(scripts, callback) {
@@ -25,7 +41,7 @@ function getScriptsInOrder(scripts, callback) {
 }
 
 function loadScripts(urls, callback) {
-  if( 'function' === typeof importScripts ) {
+  if (in_worker) {
     importScripts.apply(null, urls);
     callback();
   } else {
@@ -99,18 +115,14 @@ function onScriptsLoaded () {
     console.log('Lunr index built, search ready');
   }
   allowSearch = true;
-  postMessage({config: data.config});
-  postMessage({allowSearch: allowSearch});
+  sendMessage({config: data.config});
+  sendMessage({allowSearch: allowSearch});
 }
 
 function init () {
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", onJSONLoaded);
-  var index_path = base_path + '/search_index.json';
-  if( 'function' === typeof importScripts ){
-      index_path = 'search_index.json';
-  }
-  oReq.open("GET", index_path);
+  oReq.open("GET", in_worker ? 'search_index.json' : base_path + 'search_index.json');
   oReq.send();
 }
 
@@ -131,7 +143,7 @@ function search (query) {
   return resultDocuments;
 }
 
-if( 'function' === typeof importScripts ) {
+if (in_worker) {
   onmessage = function (e) {
     if (e.data.init) {
       init();

@@ -91,16 +91,18 @@ function onWorkerMessage (e) {
 
 if (!window.Worker) {
   console.log('Web Worker API not supported');
-  // load index in main thread
-  $.getScript(joinUrl(base_url, "search/worker.js")).done(function () {
+  // Load the search code into the page itself. It reports back by calling
+  // onWorkerMessage directly (see sendMessage in worker.js).
+  var script = document.createElement('script');
+  script.src = joinUrl(base_url, "search/worker.js");
+  script.onload = function () {
     console.log('Loaded worker');
     init();
-    window.postMessage = function (msg) {
-      onWorkerMessage({data: msg});
-    };
-  }).fail(function (jqxhr, settings, exception) {
+  };
+  script.onerror = function () {
     console.error('Could not load worker.js');
-  });
+  };
+  document.head.appendChild(script);
 } else {
   // Wrap search in a web worker
   var searchWorker = new Worker(joinUrl(base_url, "search/worker.js"));
