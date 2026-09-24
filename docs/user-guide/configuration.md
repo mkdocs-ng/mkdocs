@@ -716,6 +716,10 @@ about/license.md | /about/license/index.html | /about/license/
 Determines how warnings are handled. Set to `true` to halt processing when a
 warning is raised. Set to `false` to print a warning and continue processing.
 
+Notices about deprecated configuration options (of MkDocs or of plugins) are
+logged at INFO level and don't halt processing, so upgrading doesn't break a
+strict build. Options that have been removed are always an error.
+
 This is also available as a command line flag: `--strict`.
 
 **default**: `false`

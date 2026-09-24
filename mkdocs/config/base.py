@@ -114,6 +114,23 @@ ConfigErrors = list[tuple[str, Exception]]
 ConfigWarnings = list[tuple[str, str]]
 
 
+class DeprecationNotice(str):
+    """
+    A config warning about a deprecated option.
+
+    It is collected alongside other config warnings, but logged at INFO level
+    and not counted in `strict` mode, so that upgrading MkDocs or a plugin
+    doesn't break the build of a site that still uses a deprecated option.
+    """
+
+
+def prefix_warning(prefix: str, msg: str) -> str:
+    """Prepend `prefix` to a config warning, preserving `DeprecationNotice`."""
+    if isinstance(msg, DeprecationNotice):
+        return DeprecationNotice(prefix + msg)
+    return prefix + msg
+
+
 class Config(UserDict):
     """
     Base class for MkDocs configuration, plugin configuration (and sub-configuration) objects.
@@ -376,6 +393,12 @@ def load_config(
     cfg.load_dict(options)
 
     errors, warnings = cfg.validate()
+
+    notices = [w for w in warnings if isinstance(w[1], DeprecationNotice)]
+    warnings = [w for w in warnings if not isinstance(w[1], DeprecationNotice)]
+
+    for config_name, notice in notices:
+        log.info(f"Config value '{config_name}': {notice}")
 
     for config_name, warning in warnings:
         log.warning(f"Config value '{config_name}': {warning}")

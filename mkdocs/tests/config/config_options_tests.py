@@ -22,7 +22,7 @@ else:
 import mkdocs
 from mkdocs.config import config_options as c
 from mkdocs.config import defaults
-from mkdocs.config.base import Config
+from mkdocs.config.base import Config, DeprecationNotice
 from mkdocs.plugins import BasePlugin, PluginCollection
 from mkdocs.tests.base import tempdir
 from mkdocs.theme import Theme
@@ -222,6 +222,18 @@ class DeprecatedTest(TestCase):
                     "future release."
                 ),
             )
+
+    def test_deprecated_option_is_notice(self) -> None:
+        class Schema(Config):
+            d = c.Deprecated()
+
+        conf = Schema()
+        conf.load_dict({"d": "value"})
+        errors, warnings = conf.validate()
+
+        self.assertEqual(errors, [])
+        self.assertEqual(len(warnings), 1)
+        self.assertIsInstance(warnings[0][1], DeprecationNotice)
 
     def test_removed_option(self) -> None:
         class Schema(Config):
@@ -1496,6 +1508,35 @@ class SubConfigTest(TestCase):
         )
         self.assertEqual(conf.option, {"unknown": 0})
 
+    def test_subconfig_deprecated_option(self) -> None:
+        class Sub(Config):
+            old = c.Deprecated()
+
+        class Schema(Config):
+            option = c.SubConfig(Sub)
+
+        conf = Schema()
+        conf.load_dict({"option": {"old": 1, "unknown": 2}})
+        errors, warnings = conf.validate()
+
+        self.assertEqual(errors, [])
+        self.assertEqual(
+            warnings,
+            [
+                (
+                    "option",
+                    "Sub-option 'old': The configuration option 'old' has been "
+                    "deprecated and will be removed in a future release.",
+                ),
+                (
+                    "option",
+                    "Sub-option 'unknown': Unrecognised configuration name: unknown",
+                ),
+            ],
+        )
+        self.assertIsInstance(warnings[0][1], DeprecationNotice)
+        self.assertNotIsInstance(warnings[1][1], DeprecationNotice)
+
     def test_subconfig_invalid_option(self) -> None:
         class Sub(Config):
             cc = c.Choice(("foo", "bar"))
@@ -2461,6 +2502,11 @@ class PluginsTest(TestCase):
 
         self.assertIsInstance(conf.plugins, PluginCollection)
         self.assertIn("sample2", conf.plugins)
+
+        conf = Schema()
+        conf.load_dict(cfg)
+        _, warnings = conf.validate()
+        self.assertIsInstance(warnings[0][1], DeprecationNotice)
 
 
 class HooksTest(TestCase):
