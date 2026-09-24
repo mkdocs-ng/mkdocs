@@ -183,7 +183,9 @@ def quiet_option(f):
     def callback(ctx, param, value):
         state = ctx.ensure_object(State)
         if value:
-            state.logger.setLevel(logging.ERROR)
+            # Only silence the console output. Lowering the logger level instead
+            # would drop warnings before `strict` mode gets a chance to count them.
+            state.stream.setLevel(logging.ERROR)
 
     return click.option(
         "-q",

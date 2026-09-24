@@ -17,6 +17,12 @@ $ mkdocs --version
 mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 ```
 
+## Version 1.8.1 (2026-10-xx)
+
+### Fixed
+
+* `--quiet` no longer disables `strict` mode. Previously, `mkdocs build --quiet --strict` (or `--quiet` with `strict: true` in the config) exited successfully even when there were warnings, letting broken links slip through CI. Warnings are now still counted and the build aborts, while the output stays quiet.
+
 ## Version 1.8.0 (2026-08-13)
 
 MkDocs NG 1.8.0 makes builds faster, search smarter, and the built-in themes
