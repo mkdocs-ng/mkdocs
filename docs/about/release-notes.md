@@ -17,7 +17,11 @@ $ mkdocs --version
 mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 ```
 
-## Version 1.8.1 (2026-10-xx)
+## Version 2.0.0 (2026-xx-xx)
+
+### Added
+
+* New built-in `llms_txt` plugin that publishes your documentation for LLMs and coding agents, following the [llms.txt](https://llmstxt.org/) proposal: a Markdown version of every page (the page's Markdown after plugins have processed it, at its source path) and an `llms.txt` index at the site root. Set `full_output: true` to also write `llms-full.txt` with all pages in one file. Enable it with `plugins: [search, llms_txt]`. See [LLMs.txt](../user-guide/configuration.md#llmstxt). #105
 
 ### Fixed
 

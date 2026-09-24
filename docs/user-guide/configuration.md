@@ -1105,6 +1105,59 @@ Option | Description
 
 **default**: `full`
 
+#### LLMs.txt
+
+NEW: **New in version 2.0.**
+
+The `llms_txt` plugin, provided with MkDocs but not enabled by default,
+publishes your documentation in a form that is easy for LLMs and coding agents
+to read, following the [llms.txt] proposal:
+
+*   A Markdown version of every page, at the page's source path. For example,
+    `docs/user-guide/install.md` is published as `user-guide/install.md` next to
+    the HTML page. The content is the page's Markdown after other plugins have
+    processed it (so macros and snippets are expanded), without its front
+    matter, and starting with the page's title. Relative links between pages
+    keep working.
+*   An `llms.txt` file at the root of the site, with the `site_name` as its
+    title, the `site_description` as its summary, and links to the Markdown
+    pages grouped by navigation section. A page's `description`
+    [meta-data][Meta-Data] becomes the note of its link. Links are absolute when `site_url` is set.
+
+```yaml
+site_url: https://example.com/
+site_description: Short summary of the project.
+
+plugins:
+  - search
+  - llms_txt
+```
+
+Draft pages are left out, and so are [links](#nav) that are not pages.
+
+NOTE:
+The Markdown versions are made from the pages' Markdown, not from the
+generated HTML. Content that Markdown extensions generate while rendering the
+page, such as API documentation from `mkdocstrings` (`::: identifier`
+blocks), appears in its source form.
+
+NOTE:
+Add `search` to `plugins` as well if you want to keep the search feature:
+listing `plugins` replaces the default list.
+
+##### **full_output**
+
+A boolean that determines whether to also write `llms-full.txt`: the content
+of all pages in navigation order, in a single file.
+
+```yaml
+plugins:
+  - llms_txt:
+      full_output: true
+```
+
+**default**: `False`
+
 ## Special YAML tags
 
 ### Environment variables
@@ -1319,6 +1372,7 @@ echo '{INHERIT: mkdocs.yml, site_name: "Renamed site"}' | mkdocs build -f -
 [extra_css]: #extra_css
 [Plugins]: ../dev-guide/plugins.md
 [lunr.js]: https://lunrjs.com/
+[llms.txt]: https://llmstxt.org/
 [ISO 639-1]: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 [Lunr Languages]: https://github.com/MihaiValentin/lunr-languages#lunr-languages-----
 [contribute additional languages]: https://github.com/MihaiValentin/lunr-languages/blob/master/CONTRIBUTING.md

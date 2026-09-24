@@ -40,23 +40,29 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
-[#3710] | When the same page was listed more than once in `nav` under different titles, every entry showed the title of the first one. Each entry now keeps its own title. | 1.8.1 (#103)
-[#4026] | A `nav` entry that links to a section of a page (`page.md#anchor` or `page/#anchor`) was reported as "not found in the documentation files", failing `strict` builds; the `page.md#anchor` form also produced a broken link. Both forms now work without a warning. | 1.8.1 (#104)
+[#3710] | When the same page was listed more than once in `nav` under different titles, every entry showed the title of the first one. Each entry now keeps its own title. | 2.0.0 (#103)
+[#4026] | A `nav` entry that links to a section of a page (`page.md#anchor` or `page/#anchor`) was reported as "not found in the documentation files", failing `strict` builds; the `page.md#anchor` form also produced a broken link. Both forms now work without a warning. | 2.0.0 (#104)
 
 ## Validation
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
 [#3690] | Anchor validation reported false positives for anchors generated late by Markdown extensions, e.g. `pymdownx.tabbed` with `combine_header_slug`. | 1.7.1 (#34)
-[#3696] | Using a deprecated configuration option — including deprecated options of plugins — emitted a WARNING, so `strict` builds failed although the option still worked or was harmless. Deprecation notices are now logged at INFO level. | 1.8.1 (#102)
+[#3696] | Using a deprecated configuration option — including deprecated options of plugins — emitted a WARNING, so `strict` builds failed although the option still worked or was harmless. Deprecation notices are now logged at INFO level. | 2.0.0 (#102)
 [#3703] | The "does not contain an anchor" warning gave no hint when the only problem was letter case; it now suggests the correct anchor (`did you mean '#conflicts'?`). | 1.8.0 (#83)
-[#4126] | `mkdocs build --quiet --strict` exited successfully even when there were warnings, because `--quiet` stopped warnings from being counted. Warnings are now still counted in `strict` mode; only their output is silenced. | 1.8.1 (#101)
+[#4126] | `mkdocs build --quiet --strict` exited successfully even when there were warnings, because `--quiet` stopped warnings from being counted. Warnings are now still counted in `strict` mode; only their output is silenced. | 2.0.0 (#101)
 
 ## Python API
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
 [#1240] | No stable programmatic API — running MkDocs from Python code required subprocess calls or private imports. MkDocs NG provides `mkdocs.build()` and `mkdocs.serve()`. | 1.8.0 (#76)
+
+## Output for LLMs
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3973] | No way to publish the documentation's Markdown for LLMs and coding agents; converting the HTML back to Markdown loses precision. The built-in `llms_txt` plugin publishes each page's Markdown and an `llms.txt` index. | 2.0.0 (#105)
 
 ## Also worth knowing
 
@@ -74,6 +80,7 @@ Upstream issue | Symptom | Fixed in
 [#3696]: https://github.com/mkdocs/mkdocs/issues/3696
 [#3703]: https://github.com/mkdocs/mkdocs/issues/3703
 [#3710]: https://github.com/mkdocs/mkdocs/issues/3710
+[#3973]: https://github.com/mkdocs/mkdocs/issues/3973
 [#4001]: https://github.com/mkdocs/mkdocs/issues/4001
 [#4014]: https://github.com/mkdocs/mkdocs/issues/4014
 [#4026]: https://github.com/mkdocs/mkdocs/issues/4026

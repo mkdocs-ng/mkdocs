@@ -82,6 +82,7 @@ mkdocs = "mkdocs.themes.mkdocs"
 readthedocs = "mkdocs.themes.readthedocs"
 
 [project.entry-points."mkdocs.plugins"]
+llms_txt = "mkdocs.contrib.llms_txt:LlmsTxtPlugin"
 search = "mkdocs.contrib.search:SearchPlugin"
 
 [tool.hatch.version]
