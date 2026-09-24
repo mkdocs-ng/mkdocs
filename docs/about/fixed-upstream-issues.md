@@ -18,7 +18,7 @@ pip uninstall mkdocs && pip install -U mkdocs-ng
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
-[#2624] | `INHERIT` accepted a single parent file, so splitting a configuration into several files required chaining them one after another. It now accepts a list of files. | 2.0.0
+[#2624] | `INHERIT` accepted a single parent file, so splitting a configuration into several files required chaining them one after another. It now accepts a list of files. | 2.0.0 (#107)
 
 ## Development server
 
