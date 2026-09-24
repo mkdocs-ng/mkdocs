@@ -24,6 +24,7 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 * `--quiet` no longer disables `strict` mode. Previously, `mkdocs build --quiet --strict` (or `--quiet` with `strict: true` in the config) exited successfully even when there were warnings, letting broken links slip through CI. Warnings are now still counted and the build aborts, while the output stays quiet. #101
 * Using a deprecated configuration option no longer fails the build in `strict` mode. Deprecation notices, from MkDocs itself or from plugins, are now logged at INFO level instead of WARNING, so upgrading doesn't break strict builds of sites that still set, for example, `google_analytics`. Removed options remain an error. #102
 * When the same page is listed more than once in `nav`, each entry shows the title given to it instead of all entries using the first one. Such a page also appears only once in previous/next links. #103
+* `nav` entries can link to a section of a page, such as `about.md#license`. The link now points to the page's URL (`about/#license`, or `about.html#license` without directory URLs) instead of the Markdown file, and isn't reported as not found. Links that use a page's URL directly, such as `about/#license`, are no longer reported as not found either. #104
 
 ## Version 1.8.0 (2026-08-13)
 

@@ -202,6 +202,10 @@ def get_navigation(files: Files, config: MkDocsConfig) -> Navigation:
             + "\n  - ".join(missing_from_config),
         )
 
+    page_urls: set[str] = set()
+    for file in documentation_pages:
+        page_urls.update(url.rstrip("/") for url in (file.url, file.dest_uri))
+
     links = _get_by_type(items, Link)
     for link in links:
         scheme, netloc, path, query, fragment = urlsplit(link.url)
@@ -218,6 +222,11 @@ def get_navigation(files: Files, config: MkDocsConfig) -> Navigation:
                 config.validation.nav.absolute_links,
                 f"An absolute path to '{link.url}' is included in the 'nav' "
                 "configuration, which presumably points to an external resource.",
+            )
+        elif path.strip("/") in page_urls:
+            log.debug(
+                f"A link to '{link.url}', the URL of a documentation page, is included "
+                "in the 'nav' configuration."
             )
         else:
             log.log(
@@ -275,6 +284,15 @@ def _data_to_navigation(data, files: Files, config: MkDocsConfig, seen: set[int]
             return PageAlias(title, page)
         seen.add(id(page))
         return page
+    # A link to a section of a page, such as `page.md#anchor`: point it at the page's URL.
+    doc_path, sep, anchor = lookup_path.partition("#")
+    if (
+        sep
+        and (file := files.get_file_from_path(doc_path))
+        and file.is_documentation_page()
+        and not file.inclusion.is_excluded()
+    ):
+        return Link(title, f"{file.url}#{anchor}")
     return Link(title, path)
 
 

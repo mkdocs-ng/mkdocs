@@ -250,6 +250,18 @@ All paths in the navigation configuration must be relative to the
 pages and navigation] for a more detailed breakdown, including how to create
 sub-sections.
 
+To link to a section of a page, add the section's anchor to the path of the
+Markdown file. MkDocs points the link at the page's URL, for example
+`about/#license` (or `about.html#license` with
+[`use_directory_urls: false`](#use_directory_urls)). Such an entry is a plain
+link: it has no title of its own, so a title is required.
+
+```yaml
+nav:
+  - About: 'about.md'
+  - License: 'about.md#license'
+```
+
 Navigation items may also include links to external sites. While titles are
 optional for internal links, they are required for external links. An external
 link may be a full URL or a relative URL. Any path which is not found in the

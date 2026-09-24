@@ -41,6 +41,7 @@ Upstream issue | Symptom | Fixed in
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
 [#3710] | When the same page was listed more than once in `nav` under different titles, every entry showed the title of the first one. Each entry now keeps its own title. | 1.8.1 (#103)
+[#4026] | A `nav` entry that links to a section of a page (`page.md#anchor` or `page/#anchor`) was reported as "not found in the documentation files", failing `strict` builds; the `page.md#anchor` form also produced a broken link. Both forms now work without a warning. | 1.8.1 (#104)
 
 ## Validation
 
@@ -75,6 +76,7 @@ Upstream issue | Symptom | Fixed in
 [#3710]: https://github.com/mkdocs/mkdocs/issues/3710
 [#4001]: https://github.com/mkdocs/mkdocs/issues/4001
 [#4014]: https://github.com/mkdocs/mkdocs/issues/4014
+[#4026]: https://github.com/mkdocs/mkdocs/issues/4026
 [#4032]: https://github.com/mkdocs/mkdocs/issues/4032
 [#4045]: https://github.com/mkdocs/mkdocs/issues/4045
 [#4055]: https://github.com/mkdocs/mkdocs/issues/4055

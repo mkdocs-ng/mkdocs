@@ -222,6 +222,77 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertEqual(len(site_navigation.items), 3)
         self.assertEqual(len(site_navigation.pages), 1)
 
+    def test_nav_anchor_links(self):
+        nav_cfg = [
+            {"Home": "index.md"},
+            {"Home intro": "index.md#intro"},
+            {"Guide section": "guide.md#section"},
+            {"Guide section URL": "guide/#section"},
+            {"Local section": "/guide.md#section"},
+            {"Missing section": "missing.md#section"},
+        ]
+        expected = dedent(
+            """
+            Page(title='Home', url='/')
+            Link(title='Home intro', url='./#intro')
+            Link(title='Guide section', url='guide/#section')
+            Link(title='Guide section URL', url='guide/#section')
+            Link(title='Local section', url='guide/#section')
+            Link(title='Missing section', url='missing.md#section')
+            """
+        )
+        cfg = load_config(
+            nav=nav_cfg,
+            site_url="http://example.com/",
+            validation=dict(nav=dict(absolute_links="relative_to_docs")),
+        )
+        fs = [
+            File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
+            File("guide.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls),
+        ]
+        files = Files(fs)
+        with self.assertLogs("mkdocs", level="INFO") as cm:
+            site_navigation = get_navigation(files, cfg)
+        self.assertEqual(
+            cm.output,
+            [
+                'INFO:mkdocs.structure.nav:The following pages exist in the docs directory, but are not included in the "nav" configuration:\n  - guide.md',
+                "WARNING:mkdocs.structure.nav:A reference to 'missing.md#section' is included in the 'nav' configuration, which is not found in the documentation files.",
+            ],
+        )
+        self.assertEqual(str(site_navigation).strip(), expected)
+        self.assertEqual(len(site_navigation.pages), 1)
+
+    def test_nav_anchor_links_no_directory_urls(self):
+        nav_cfg = [
+            {"Guide": "guide.md"},
+            {"Guide section": "guide.md#section"},
+            {"Guide section URL": "guide.html#section"},
+            {"Wrong URL": "guide/#section"},
+        ]
+        expected = dedent(
+            """
+            Page(title='Guide', url='/guide.html')
+            Link(title='Guide section', url='guide.html#section')
+            Link(title='Guide section URL', url='guide.html#section')
+            Link(title='Wrong URL', url='guide/#section')
+            """
+        )
+        cfg = load_config(
+            nav=nav_cfg, use_directory_urls=False, site_url="http://example.com/"
+        )
+        fs = [File("guide.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
+        files = Files(fs)
+        with self.assertLogs("mkdocs") as cm:
+            site_navigation = get_navigation(files, cfg)
+        self.assertEqual(
+            cm.output,
+            [
+                "WARNING:mkdocs.structure.nav:A reference to 'guide/#section' is included in the 'nav' configuration, which is not found in the documentation files.",
+            ],
+        )
+        self.assertEqual(str(site_navigation).strip(), expected)
+
     def test_indented_nav(self):
         nav_cfg = [
             {"Home": "index.md"},
