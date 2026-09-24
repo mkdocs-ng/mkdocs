@@ -19,6 +19,7 @@ class ServeTests(unittest.TestCase):
 
         config = SimpleNamespace(
             config_file_path=None,
+            _inherited_config_files=(),
             dev_addr=("127.0.0.1", 8000),
             docs_dir=str(Path(temp_dir, "docs")),
             plugins=mock.Mock(),
@@ -74,6 +75,46 @@ class ServeTests(unittest.TestCase):
                 mock.call(signal.SIGTERM, mock.ANY),
                 mock.call(signal.SIGTERM, signal.SIG_DFL),
             ]
+        )
+
+    @tempdir()
+    def test_watches_inherited_config_files(self, temp_dir):
+        config = SimpleNamespace(
+            config_file_path=str(Path(temp_dir, "mkdocs.yml")),
+            _inherited_config_files=[
+                str(Path(temp_dir, "config", "base.yml")),
+                str(Path(temp_dir, "config", "plugins.yml")),
+            ],
+            dev_addr=("127.0.0.1", 8000),
+            docs_dir=str(Path(temp_dir, "docs")),
+            plugins=mock.Mock(),
+            site_url=None,
+            theme=SimpleNamespace(dirs=[]),
+            watch=[],
+        )
+        config.plugins.on_serve.side_effect = lambda server, **kwargs: server
+        server = mock.Mock()
+
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(
+                mock.patch("mkdocs.commands.serve.load_config", return_value=config)
+            )
+            stack.enter_context(mock.patch("mkdocs.commands.serve.build"))
+            stack.enter_context(
+                mock.patch(
+                    "mkdocs.commands.serve.LiveReloadServer", return_value=server
+                )
+            )
+            serve.serve()
+
+        self.assertEqual(
+            server.watch.call_args_list,
+            [
+                mock.call(config.docs_dir),
+                mock.call(config.config_file_path),
+                mock.call(config._inherited_config_files[0]),
+                mock.call(config._inherited_config_files[1]),
+            ],
         )
 
 

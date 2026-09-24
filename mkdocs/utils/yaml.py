@@ -144,10 +144,27 @@ def get_yaml_loader(loader=yaml.Loader, config: MkDocsConfig | None = None):
 
 
 def yaml_load(
-    source: IO | str, loader: type[yaml.BaseLoader] | None = None
+    source: IO | str,
+    loader: type[yaml.BaseLoader] | None = None,
+    *,
+    inherited: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Return dict of source YAML file using loader, recursively deep merging inherited parent."""
-    loader = loader or get_yaml_loader()
+    """
+    Return dict of source YAML file using loader, recursively deep merging inherited parents.
+
+    `INHERIT` names a parent file, or a list of them. Parents are merged in order, each
+    overriding the ones before it, and the file itself overrides all of them.
+    If `inherited` is given, the absolute paths of all inherited files are appended to it.
+    """
+    return _yaml_load(source, loader or get_yaml_loader(), inherited, ())
+
+
+def _yaml_load(
+    source: IO | str,
+    loader: type[yaml.BaseLoader],
+    inherited: list[str] | None,
+    chain: tuple[str, ...],
+) -> dict[str, Any]:
     try:
         result = yaml.load(source, Loader=loader)
     except yaml.YAMLError as e:
@@ -157,14 +174,38 @@ def yaml_load(
     if result is None:
         return {}
     if "INHERIT" in result and not isinstance(source, str):
-        relpath = result.pop("INHERIT")
-        abspath = os.path.normpath(os.path.join(os.path.dirname(source.name), relpath))
-        if not os.path.exists(abspath):
-            raise exceptions.ConfigurationError(
-                f"Inherited config file '{relpath}' does not exist at '{abspath}'."
+        # The files being loaded, from the primary one to this one, to detect cycles.
+        chain = (*chain, os.path.realpath(source.name))
+        parents: dict[str, Any] = {}
+        for relpath in _inherit_paths(result.pop("INHERIT")):
+            abspath = os.path.normpath(
+                os.path.join(os.path.dirname(source.name), relpath)
             )
-        log.debug(f"Loading inherited configuration file: {abspath}")
-        with open(abspath, "rb") as fd:
-            parent = yaml_load(fd, loader)
-        result = _deep_merge(parent, result)
+            if not os.path.exists(abspath):
+                raise exceptions.ConfigurationError(
+                    f"Inherited config file '{relpath}' does not exist at '{abspath}'."
+                )
+            if os.path.realpath(abspath) in chain:
+                cycle = " -> ".join((*chain, os.path.realpath(abspath)))
+                raise exceptions.ConfigurationError(
+                    f"Config file '{relpath}' inherits from itself: {cycle}"
+                )
+            log.debug(f"Loading inherited configuration file: {abspath}")
+            if inherited is not None:
+                inherited.append(os.path.abspath(abspath))
+            with open(abspath, "rb") as fd:
+                parent = _yaml_load(fd, loader, inherited, chain)
+            _deep_merge(parents, parent)
+        result = _deep_merge(parents, result)
     return result
+
+
+def _inherit_paths(value: object) -> list[str]:
+    """Validate the value of `INHERIT`: a path or a list of paths."""
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, list) and all(isinstance(v, str) for v in value):
+        return value
+    raise exceptions.ConfigurationError(
+        f"'INHERIT' must be a path or a list of paths, got: {value!r}"
+    )

@@ -9,7 +9,7 @@ from mkdocs.structure.pages import Page, _AbsoluteLinksValidationValue
 from mkdocs.utils.yaml import get_yaml_loader, yaml_load
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import Mapping, Sequence
 
 
 class _LogLevel(c.OptionallyRequired[int]):
@@ -211,6 +211,9 @@ class MkDocsConfig(base.Config):
     """The currently rendered page. Please do not access this and instead
     rely on the `page` argument to event handlers."""
 
+    _inherited_config_files: Sequence[str] = ()
+    """Absolute paths of the config files inherited via `INHERIT`, if any."""
+
     def load_dict(self, patch: dict) -> None:
         super().load_dict(patch)
         if "config_file_path" in patch:
@@ -219,7 +222,9 @@ class MkDocsConfig(base.Config):
     def load_file(self, config_file: IO) -> None:
         """Load config options from the open file descriptor of a YAML file."""
         loader = get_yaml_loader(config=self)
-        self.load_dict(yaml_load(config_file, loader))
+        inherited: list[str] = []
+        self.load_dict(yaml_load(config_file, loader, inherited=inherited))
+        self._inherited_config_files = inherited
 
 
 def get_schema() -> base.PlainConfigSchema:

@@ -22,6 +22,7 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 ### Added
 
 * New built-in `llms_txt` plugin that publishes your documentation for LLMs and coding agents, following the [llms.txt](https://llmstxt.org/) proposal: a Markdown version of every page (the page's Markdown after plugins have processed it, at its source path) and an `llms.txt` index at the site root. Set `full_output: true` to also write `llms-full.txt` with all pages in one file. Enable it with `plugins: [search, llms_txt]`. See [LLMs.txt](../user-guide/configuration.md#llmstxt). #105
+* `INHERIT` accepts a list of files, so a configuration can be split into several files without chaining them. Later files override earlier ones, and the primary file overrides all of them. A file that inherits from itself is reported as an error instead of crashing. See [Configuration Inheritance](../user-guide/configuration.md#configuration-inheritance). #107
 
 ### Fixed
 
@@ -30,6 +31,7 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 * When the same page is listed more than once in `nav`, each entry shows the title given to it instead of all entries using the first one. Such a page also appears only once in previous/next links. #103
 * `nav` entries can link to a section of a page, such as `about.md#license`. The link now points to the page's URL (`about/#license`, or `about.html#license` without directory URLs) instead of the Markdown file, and isn't reported as not found. Links that use a page's URL directly, such as `about/#license`, are no longer reported as not found either. #104
 * Built-in search no longer replaces the page's global `window.postMessage` function in browsers without Web Worker support, which broke other scripts that use it. That fallback also works again: it no longer needs jQuery (which the `mkdocs` theme doesn't include) and finds its files when the site is served from a subdirectory. #106
+* `mkdocs serve` now rebuilds the site when an inherited configuration file (see `INHERIT`) changes, not only the primary one. #107
 
 ## Version 1.8.0 (2026-08-13)
 

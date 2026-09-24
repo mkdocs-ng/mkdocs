@@ -142,6 +142,26 @@ class ConfigBaseTests(unittest.TestCase):
             "ERROR:mkdocs.config:Config value 'site_name': Required configuration not provided.",
         )
 
+    @tempdir(
+        files={
+            "mkdocs.yml": "INHERIT: [config/base.yml, config/extra.yml]\n",
+            "config/base.yml": "site_name: Example\n",
+            "config/extra.yml": "extra: {foo: bar}\n",
+            "docs/index.md": "",
+        }
+    )
+    def test_load_records_inherited_config_files(self, temp_dir):
+        cfg = base.load_config(config_file=os.path.join(temp_dir, "mkdocs.yml"))
+        self.assertEqual(cfg.site_name, "Example")
+        self.assertEqual(cfg.extra, {"foo": "bar"})
+        self.assertEqual(
+            cfg._inherited_config_files,
+            [
+                os.path.join(temp_dir, "config", "base.yml"),
+                os.path.join(temp_dir, "config", "extra.yml"),
+            ],
+        )
+
     @tempdir()
     def test_load_deprecated_option_strict(self, temp_dir):
         """A deprecated option is reported at INFO level and doesn't fail `strict` mode."""

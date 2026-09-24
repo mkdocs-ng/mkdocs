@@ -14,6 +14,12 @@ configuration stay the same:
 pip uninstall mkdocs && pip install -U mkdocs-ng
 ```
 
+## Configuration
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#2624] | `INHERIT` accepted a single parent file, so splitting a configuration into several files required chaining them one after another. It now accepts a list of files. | 2.0.0 (#107)
+
 ## Development server
 
 Upstream issue | Symptom | Fixed in
@@ -76,6 +82,7 @@ Upstream issue | Symptom | Fixed in
 [#1240]: https://github.com/mkdocs/mkdocs/issues/1240
 [#2171]: https://github.com/mkdocs/mkdocs/issues/2171
 [#2519]: https://github.com/mkdocs/mkdocs/issues/2519
+[#2624]: https://github.com/mkdocs/mkdocs/issues/2624
 [#3630]: https://github.com/mkdocs/mkdocs/issues/3630
 [#3690]: https://github.com/mkdocs/mkdocs/issues/3690
 [#3696]: https://github.com/mkdocs/mkdocs/issues/3696
