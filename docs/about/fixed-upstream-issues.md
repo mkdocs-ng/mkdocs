@@ -35,7 +35,7 @@ Upstream issue | Symptom | Fixed in
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
 [#4167] | Searching for words that happen to be English stop words — `while`, `if`, `for`, `from` and many more — returned no results, even though they are meaningful keywords in technical documentation. Stop words are now indexed by default; a `stop_words` plugin option restores the old behavior. | 1.8.0 (#80)
-[#4106] | In browsers without Web Worker support, search replaced the page's global `window.postMessage` function, breaking other scripts that rely on it. The fallback now leaves it alone (and no longer depends on jQuery or on the site being served from the domain root). | 2.0.0
+[#4106] | In browsers without Web Worker support, search replaced the page's global `window.postMessage` function, breaking other scripts that rely on it. The fallback now leaves it alone (and no longer depends on jQuery or on the site being served from the domain root). | 2.0.0 (#106)
 
 ## Navigation
 
