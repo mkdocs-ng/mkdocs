@@ -1,0 +1,40 @@
+mkdocs/config/base.py
+  s_8f6962aef7692a::t_1008df3af85a07 129-131
+  s_8f6962aef7692a::t_d77837c2d949fe 122-123
+  s_8f6962aef7692a::t_98523d0f786d2b 127-128
+  s_8f6962aef7692a::t_7e283daf479c5b 117-121,124-126,132-133
+  s_8f6962aef7692a::t_f1b0a19052417f 397-402
+mkdocs/tests/config/base_tests.py
+  s_8f6962aef7692a::t_346c0c92834b31 145-180
+mkdocs/tests/config/config_options_tests.py
+  s_8f6962aef7692a::t_ed62a402cca319 226-237,1511-1539,2506-2509
+  s_8f6962aef7692a::t_346c0c92834b31 25
+  s_8f6962aef7692a::t_e867355d756cfe 2510
+mkdocs/config/config_options.py
+  s_8f6962aef7692a::t_1008df3af85a07 401
+  s_8f6962aef7692a::t_38cc6e917b88f0 34,38,119-121,399-400,440,1198,1201-1203
+  s_8f6962aef7692a::t_8ae960df28108b 402-404
+docs/about/fixed-upstream-issues.md
+  s_8f6962aef7692a::t_cb63c0e7458a6d 44
+  s_8f6962aef7692a::t_dff7e7afa5f887 67
+docs/about/release-notes.md
+  s_8f6962aef7692a::t_a7a5fc1cc139c8 25
+docs/user-guide/configuration.md
+  s_8f6962aef7692a::t_320bae46c871fa 719-722
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ed02673c1ee63d3ae6b42b170e0836a7424fc9da",
+  "prompts": {},
+  "sessions": {
+    "s_8f6962aef7692a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cdfa0e31-051f-41af-81c3-29b66e926009",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Xianpeng Shen <xianpeng.shen@gmail.com>"
+    }
+  }
+}
