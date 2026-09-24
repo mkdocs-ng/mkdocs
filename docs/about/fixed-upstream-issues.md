@@ -62,7 +62,7 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
-[#3973] | No way to publish the documentation's Markdown for LLMs and coding agents; converting the HTML back to Markdown loses precision. The built-in `llms_txt` plugin publishes each page's Markdown and an `llms.txt` index. | 2.0.0
+[#3973] | No way to publish the documentation's Markdown for LLMs and coding agents; converting the HTML back to Markdown loses precision. The built-in `llms_txt` plugin publishes each page's Markdown and an `llms.txt` index. | 2.0.0 (#105)
 
 ## Also worth knowing
 
