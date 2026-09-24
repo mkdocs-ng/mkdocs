@@ -21,7 +21,7 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 
 ### Fixed
 
-* `--quiet` no longer disables `strict` mode. Previously, `mkdocs build --quiet --strict` (or `--quiet` with `strict: true` in the config) exited successfully even when there were warnings, letting broken links slip through CI. Warnings are now still counted and the build aborts, while the output stays quiet.
+* `--quiet` no longer disables `strict` mode. Previously, `mkdocs build --quiet --strict` (or `--quiet` with `strict: true` in the config) exited successfully even when there were warnings, letting broken links slip through CI. Warnings are now still counted and the build aborts, while the output stays quiet. #101
 
 ## Version 1.8.0 (2026-08-13)
 
