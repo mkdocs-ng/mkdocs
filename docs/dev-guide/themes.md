@@ -515,6 +515,13 @@ Page objects are the full page object as used for the current [page](#page) with
 all of the same attributes available. Section and Link objects contain a subset
 of those attributes as defined below:
 
+If the same page is listed more than once in the `nav` configuration, only its
+first entry is the page object itself. Each later entry is a `PageAlias`: it has
+its own `title` (as given in the `nav`) and `parent`, `page` refers to the page
+object, and all other page attributes (`url`, `active`, `toc`, `is_page`, ...)
+are those of the page. Page aliases are not included in [nav.pages](#nav), so
+the page appears only once in previous/next links.
+
 #### Section
 
 A `section` navigation object defines a named section in the navigation and

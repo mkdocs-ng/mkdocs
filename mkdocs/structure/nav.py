@@ -131,6 +131,40 @@ class Link(StructureItem):
     """Indicates that the navigation object is a "link" object. Always `True` for link objects."""
 
 
+class PageAlias(StructureItem):
+    """
+    A repeated navigation entry for a page that already appears earlier in the nav.
+
+    It has its own `title` and `parent`, and forwards everything else (`url`,
+    `active`, `toc`, ...) to the page. It isn't included in `Navigation.pages`,
+    so the page is still built once and appears once in previous/next links.
+    """
+
+    def __init__(self, title: str | None, page: Page) -> None:
+        self._title = title
+        self.page = page
+
+    def __repr__(self):
+        name = self.__class__.__name__
+        title = f"{self.title!r}" if self.title is not None else "[blank]"
+        url = self.page.abs_url or self.page.file.url
+        return f"{name}(title={title}, url={url!r})"
+
+    def __getattr__(self, name: str):
+        return getattr(self.page, name)
+
+    page: Page
+    """The page this entry points to."""
+
+    @property
+    def title(self) -> str | None:  # type: ignore[override]
+        """The title given to this entry in the nav, or else the page's title."""
+        return self._title if self._title is not None else self.page.title
+
+    is_page: bool = True
+    """Behaves like a "page" object. Always `True` for page aliases."""
+
+
 def get_navigation(files: Files, config: MkDocsConfig) -> Navigation:
     """Build site navigation from config and files."""
     documentation_pages = files.documentation_pages()
@@ -140,7 +174,7 @@ def get_navigation(files: Files, config: MkDocsConfig) -> Navigation:
         nav_config = nest_paths(
             f.src_uri for f in documentation_pages if f.inclusion.is_in_nav()
         )
-    items = _data_to_navigation(nav_config, files, config)
+    items = _data_to_navigation(nav_config, files, config, set())
     if not isinstance(items, list):
         items = [items]
 
@@ -194,14 +228,15 @@ def get_navigation(files: Files, config: MkDocsConfig) -> Navigation:
     return Navigation(items, pages)
 
 
-def _data_to_navigation(data, files: Files, config: MkDocsConfig):
+def _data_to_navigation(data, files: Files, config: MkDocsConfig, seen: set[int]):
     if isinstance(data, dict):
         return [
             (
-                _data_to_navigation((key, value), files, config)
+                _data_to_navigation((key, value), files, config, seen)
                 if isinstance(value, str)
                 else Section(
-                    title=key, children=_data_to_navigation(value, files, config)
+                    title=key,
+                    children=_data_to_navigation(value, files, config, seen),
                 )
             )
             for key, value in data.items()
@@ -209,9 +244,9 @@ def _data_to_navigation(data, files: Files, config: MkDocsConfig):
     elif isinstance(data, list):
         return [
             (
-                _data_to_navigation(item, files, config)[0]
+                _data_to_navigation(item, files, config, seen)[0]
                 if isinstance(item, dict) and len(item) == 1
-                else _data_to_navigation(item, files, config)
+                else _data_to_navigation(item, files, config, seen)
             )
             for item in data
         ]
@@ -231,13 +266,15 @@ def _data_to_navigation(data, files: Files, config: MkDocsConfig):
                 "configuration, but this file is excluded from the built site.",
             )
         page = file.page
-        if page is not None:
-            if not isinstance(page, Page):
-                raise BuildError(
-                    "A plugin has set File.page to a type other than Page."
-                )
-            return page
-        return Page(title, file, config)
+        if page is None:
+            page = Page(title, file, config)
+        elif not isinstance(page, Page):
+            raise BuildError("A plugin has set File.page to a type other than Page.")
+        elif id(page) in seen:
+            # The same page is listed again: keep this entry's own title.
+            return PageAlias(title, page)
+        seen.add(id(page))
+        return page
     return Link(title, path)
 
 

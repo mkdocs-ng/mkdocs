@@ -36,6 +36,12 @@ Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
 [#4167] | Searching for words that happen to be English stop words — `while`, `if`, `for`, `from` and many more — returned no results, even though they are meaningful keywords in technical documentation. Stop words are now indexed by default; a `stop_words` plugin option restores the old behavior. | 1.8.0 (#80)
 
+## Navigation
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3710] | When the same page was listed more than once in `nav` under different titles, every entry showed the title of the first one. Each entry now keeps its own title. | 1.8.1
+
 ## Validation
 
 Upstream issue | Symptom | Fixed in
@@ -66,6 +72,7 @@ Upstream issue | Symptom | Fixed in
 [#3690]: https://github.com/mkdocs/mkdocs/issues/3690
 [#3696]: https://github.com/mkdocs/mkdocs/issues/3696
 [#3703]: https://github.com/mkdocs/mkdocs/issues/3703
+[#3710]: https://github.com/mkdocs/mkdocs/issues/3710
 [#4001]: https://github.com/mkdocs/mkdocs/issues/4001
 [#4014]: https://github.com/mkdocs/mkdocs/issues/4014
 [#4032]: https://github.com/mkdocs/mkdocs/issues/4032

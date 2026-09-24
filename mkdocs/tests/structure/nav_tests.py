@@ -5,6 +5,7 @@ import unittest
 
 from mkdocs.structure.files import File, Files, set_exclusions
 from mkdocs.structure.nav import (
+    PageAlias,
     Section,
     _get_by_type,
     get_navigation,
@@ -535,6 +536,82 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertEqual(
             repr(site_navigation.homepage), "PageSubclass(title=[blank], url='/')"
         )
+
+    def test_nav_duplicate_page(self):
+        nav_cfg = [
+            {"Home": "index.md"},
+            {"Main Dishes": "cuisine.md"},
+            {"About": "about.md"},
+            {"Desserts": [{"French Desserts": "cuisine.md"}, "cuisine.md"]},
+        ]
+        expected = dedent(
+            """
+            Page(title='Home', url='/')
+            Page(title='Main Dishes', url='/cuisine/')
+            Page(title='About', url='/about/')
+            Section(title='Desserts')
+                PageAlias(title='French Desserts', url='/cuisine/')
+                PageAlias(title='Main Dishes', url='/cuisine/')
+            """
+        )
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
+        fs = ["index.md", "cuisine.md", "about.md"]
+        files = Files(
+            [File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls) for s in fs]
+        )
+        site_navigation = get_navigation(files, cfg)
+        self.assertEqual(str(site_navigation).strip(), expected)
+
+        page = site_navigation.items[1]
+        section = site_navigation.items[3]
+        alias, untitled_alias = section.children
+        self.assertIs(files.get_file_from_path("cuisine.md").page, page)
+        self.assertIsInstance(alias, PageAlias)
+        self.assertIs(alias.page, page)
+        self.assertTrue(alias.is_page)
+        self.assertFalse(alias.is_section)
+        self.assertFalse(alias.is_link)
+        self.assertEqual(alias.url, page.url)
+        self.assertIsNone(alias.children)
+        # Each entry keeps its own parent.
+        self.assertIsNone(page.parent)
+        self.assertIs(alias.parent, section)
+        self.assertIs(untitled_alias.parent, section)
+
+        # The page is listed once, so previous/next links stay linear.
+        self.assertEqual(
+            [p.title for p in site_navigation.pages], ["Home", "Main Dishes", "About"]
+        )
+        self.assertIs(page.next_page, site_navigation.pages[2])
+        self.assertIsNone(site_navigation.pages[2].next_page)
+
+        # The alias follows the page's active state.
+        page.active = True
+        self.assertTrue(alias.active)
+        page.active = False
+        self.assertFalse(alias.active)
+
+    def test_nav_duplicate_page_subclass(self):
+        class PageSubclass(Page):
+            pass
+
+        nav_cfg = [
+            {"First": "page.md"},
+            {"Second": "page.md"},
+        ]
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
+        files = Files(
+            [File("page.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
+        )
+        page = PageSubclass(None, files.get_file_from_path("page.md"), cfg)
+        site_navigation = get_navigation(files, cfg)
+
+        first, second = site_navigation.items
+        self.assertIs(first, page)
+        self.assertIsInstance(second, PageAlias)
+        self.assertIs(second.page, page)
+        self.assertEqual(second.title, "Second")
+        self.assertEqual(site_navigation.pages, [page])
 
     def test_active(self):
         nav_cfg = [
