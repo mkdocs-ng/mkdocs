@@ -142,6 +142,42 @@ class ConfigBaseTests(unittest.TestCase):
             "ERROR:mkdocs.config:Config value 'site_name': Required configuration not provided.",
         )
 
+    @tempdir()
+    def test_load_deprecated_option_strict(self, temp_dir):
+        """A deprecated option is reported at INFO level and doesn't fail `strict` mode."""
+        with open(os.path.join(temp_dir, "mkdocs.yml"), "w") as config_file:
+            config_file.write(
+                "site_name: Example\nstrict: true\ngoogle_analytics: ['UA-1', 'auto']\n"
+            )
+        os.mkdir(os.path.join(temp_dir, "docs"))
+
+        with self.assertLogs("mkdocs", level="INFO") as cm:
+            cfg = base.load_config(config_file=config_file.name)
+        self.assertTrue(cfg.strict)
+        self.assertEqual(len(cm.records), 1)
+        self.assertEqual(cm.records[0].levelname, "INFO")
+        self.assertIn("Config value 'google_analytics': ", cm.output[0])
+
+    @tempdir()
+    def test_load_unrecognised_option_strict(self, temp_dir):
+        """Other config warnings still fail `strict` mode."""
+        with open(os.path.join(temp_dir, "mkdocs.yml"), "w") as config_file:
+            config_file.write(
+                "site_name: Example\nstrict: true\ngoogle_analytics: ['UA-1', 'auto']\n"
+                "not_an_option: 1\n"
+            )
+        os.mkdir(os.path.join(temp_dir, "docs"))
+
+        with self.assertLogs("mkdocs", level="INFO") as cm:
+            with self.assertRaisesRegex(
+                exceptions.Abort, "Aborted with 1 configuration warnings"
+            ):
+                base.load_config(config_file=config_file.name)
+        self.assertEqual(
+            [r.levelname for r in cm.records if "Config value" in r.getMessage()],
+            ["INFO", "WARNING"],
+        )
+
     def test_pre_validation_error(self):
         class InvalidConfigOption(c.BaseConfigOption):
             def pre_validation(self, config, key_name):

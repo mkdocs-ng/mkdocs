@@ -31,9 +31,11 @@ from mkdocs import plugins, theme, utils
 from mkdocs.config.base import (
     BaseConfigOption,
     Config,
+    DeprecationNotice,
     LegacyConfig,
     PlainConfigSchemaItem,
     ValidationError,
+    prefix_warning,
 )
 from mkdocs.exceptions import ConfigurationError
 
@@ -114,7 +116,9 @@ class SubConfig(Generic[SomeConfig], BaseConfigOption[SomeConfig]):
 
         if self._do_validation:
             # Capture errors and warnings
-            self.warnings.extend(f"Sub-option '{key}': {msg}" for key, msg in warnings)
+            self.warnings.extend(
+                prefix_warning(f"Sub-option '{key}': ", msg) for key, msg in warnings
+            )
             if failed:
                 # Get the first failing one
                 key, err = failed[0]
@@ -392,10 +396,12 @@ class Deprecated(BaseConfigOption):
     """
     Deprecated Config Option.
 
-    Raises a warning as the option is deprecated. Uses `message` for the
-    warning. If `move_to` is set to the name of a new config option, the value
-    is moved to the new option on pre_validation. If `option_type` is set to a
-    ConfigOption instance, then the value is validated against that type.
+    Reports the option as deprecated, using `message`. This is logged at INFO
+    level and doesn't fail the build in `strict` mode; set `removed` to make
+    using the option an error instead. If `move_to` is set to the name of a new
+    config option, the value is moved to the new option on pre_validation. If
+    `option_type` is set to a ConfigOption instance, then the value is
+    validated against that type.
     """
 
     def __init__(
@@ -431,7 +437,7 @@ class Deprecated(BaseConfigOption):
         if config.get(key_name) is not None:
             if self.removed:
                 raise ValidationError(self.message.format(key_name))
-            self.warnings.append(self.message.format(key_name))
+            self.warnings.append(DeprecationNotice(self.message.format(key_name)))
 
             if self.moved_to is not None:
                 *parent_keys, target_key = self.moved_to.split(".")
@@ -1189,10 +1195,12 @@ class Plugins(OptionallyRequired[plugins.PluginCollection]):
         )
         for warning in warns:
             if isinstance(warning, str):
-                self.warnings.append(f"Plugin '{inst_name}': {warning}")
+                self.warnings.append(prefix_warning(f"Plugin '{inst_name}': ", warning))
             else:
                 key, msg = warning
-                self.warnings.append(f"Plugin '{inst_name}' option '{key}': {msg}")
+                self.warnings.append(
+                    prefix_warning(f"Plugin '{inst_name}' option '{key}': ", msg)
+                )
 
         errors_message = "\n".join(
             f"Plugin '{name}' option '{key}': {msg}" for key, msg in errors
