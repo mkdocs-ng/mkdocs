@@ -96,10 +96,12 @@ def serve(
             builder(config)
 
             if livereload:
-                # Watch the documentation files, the config file and the theme files.
+                # Watch the documentation files, the config files and the theme files.
                 server.watch(config.docs_dir)
                 if config.config_file_path:
                     server.watch(config.config_file_path)
+                for path in config._inherited_config_files:
+                    server.watch(path)
 
                 if watch_theme:
                     for d in config.theme.dirs:

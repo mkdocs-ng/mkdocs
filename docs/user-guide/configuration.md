@@ -1244,6 +1244,24 @@ To define the parent for a configuration file, set the `INHERIT` (all caps) key
 to the path of the parent file. The path must be relative to the location of the
 primary file.
 
+NEW: **New in version 2.0.**
+
+`INHERIT` can also be a list of paths, to split the configuration into several
+files. The files are merged in order: each one overrides the ones before it, and
+the primary file overrides all of them. A parent file may itself set `INHERIT`,
+with paths relative to that file. A file that inherits from itself, directly or
+indirectly, is an error.
+
+```yaml
+INHERIT:
+  - config/markdown_extensions.yml
+  - config/plugins.yml
+site_name: Foo Project
+```
+
+`mkdocs serve` watches inherited files too, and rebuilds the site when they
+change.
+
 For configuration options to be merged with a parent configuration, those
 options must be defined as key/value pairs. Specifically, the
 [markdown_extensions] and [plugins](#plugins) options must use the alternative syntax

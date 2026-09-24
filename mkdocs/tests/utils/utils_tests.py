@@ -318,6 +318,88 @@ class UtilsTests(unittest.TestCase):
             with self.assertRaises(exceptions.ConfigurationError):
                 utils.yaml_load(fd)
 
+    @tempdir(
+        files={
+            "mkdocs.yml": "INHERIT: [config/first.yml, config/second.yml]\nown: child\n",
+            "config/first.yml": "INHERIT: base.yml\nshared: first\nnested: {a: first}\n",
+            "config/second.yml": "shared: second\nnested: {b: second}\nown: second\n",
+            "config/base.yml": "shared: base\nfrom_base: base\n",
+        }
+    )
+    def test_yaml_inheritance_multiple(self, tdir):
+        inherited = []
+        with open(os.path.join(tdir, "mkdocs.yml")) as fd:
+            result = utils.yaml_load(fd, inherited=inherited)
+        # Later parents override earlier ones; the file itself overrides all of them.
+        self.assertEqual(
+            result,
+            {
+                "shared": "second",
+                "from_base": "base",
+                "nested": {"a": "first", "b": "second"},
+                "own": "child",
+            },
+        )
+        self.assertEqual(
+            inherited,
+            [
+                os.path.join(tdir, "config", name)
+                for name in ("first.yml", "base.yml", "second.yml")
+            ],
+        )
+
+    @tempdir(
+        files={
+            "mkdocs.yml": "INHERIT: [a.yml, b.yml]\n",
+            "a.yml": "INHERIT: base.yml\na: 1\n",
+            "b.yml": "INHERIT: base.yml\nb: 1\n",
+            "base.yml": "base: 1\n",
+        }
+    )
+    def test_yaml_inheritance_shared_parent(self, tdir):
+        with open(os.path.join(tdir, "mkdocs.yml")) as fd:
+            result = utils.yaml_load(fd)
+        self.assertEqual(result, {"base": 1, "a": 1, "b": 1})
+
+    @tempdir(files={"mkdocs.yml": "INHERIT: []\nfoo: bar\n"})
+    def test_yaml_inheritance_empty_list(self, tdir):
+        with open(os.path.join(tdir, "mkdocs.yml")) as fd:
+            result = utils.yaml_load(fd)
+        self.assertEqual(result, {"foo": "bar"})
+
+    @tempdir(
+        files={
+            "mkdocs.yml": "INHERIT: a.yml\n",
+            "a.yml": "INHERIT: b.yml\n",
+            "b.yml": "INHERIT: [base.yml, a.yml]\n",
+            "base.yml": "foo: bar\n",
+            "self.yml": "INHERIT: self.yml\n",
+        }
+    )
+    def test_yaml_inheritance_cycle(self, tdir):
+        with open(os.path.join(tdir, "mkdocs.yml")) as fd:
+            with self.assertRaisesRegex(
+                exceptions.ConfigurationError,
+                r"Config file 'a.yml' inherits from itself: .*mkdocs.yml -> "
+                r".*a.yml -> .*b.yml -> .*a.yml$",
+            ):
+                utils.yaml_load(fd)
+        with open(os.path.join(tdir, "self.yml")) as fd:
+            with self.assertRaisesRegex(
+                exceptions.ConfigurationError, "inherits from itself"
+            ):
+                utils.yaml_load(fd)
+
+    @tempdir(files={"dict.yml": "INHERIT: {a: 1}\n", "list.yml": "INHERIT: [1]\n"})
+    def test_yaml_inheritance_invalid(self, tdir):
+        for name in "dict.yml", "list.yml":
+            with self.subTest(name), open(os.path.join(tdir, name)) as fd:
+                with self.assertRaisesRegex(
+                    exceptions.ConfigurationError,
+                    "'INHERIT' must be a path or a list of paths",
+                ):
+                    utils.yaml_load(fd)
+
     @tempdir()
     @tempdir()
     def test_copy_files(self, src_dir, dst_dir):
