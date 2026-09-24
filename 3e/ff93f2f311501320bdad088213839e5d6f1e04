@@ -1,0 +1,21 @@
+docs/about/fixed-upstream-issues.md
+  s_8f6962aef7692a::t_ee8818261e9014 44
+docs/about/release-notes.md
+  s_8f6962aef7692a::t_e32de464bd6729 25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "3eff93f2f311501320bdad088213839e5d6f1e04",
+  "prompts": {},
+  "sessions": {
+    "s_8f6962aef7692a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cdfa0e31-051f-41af-81c3-29b66e926009",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Xianpeng Shen <xianpeng.shen@gmail.com>"
+    }
+  }
+}
