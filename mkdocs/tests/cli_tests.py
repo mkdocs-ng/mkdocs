@@ -2,6 +2,7 @@
 
 import io
 import logging
+import os
 import unittest
 from unittest import mock
 
@@ -423,10 +424,31 @@ class CLITests(unittest.TestCase):
 
         self.assertEqual(result.exit_code, 0)
         self.assertEqual(mock_build.call_count, 1)
+        # Warnings are still emitted (so `strict` can count them), just not printed.
         for log_name in "mkdocs", "mkdocs.structure.pages", "mkdocs.plugins.foo":
-            self.assertEqual(
-                logging.getLogger(log_name).getEffectiveLevel(), logging.ERROR
+            self.assertLessEqual(
+                logging.getLogger(log_name).getEffectiveLevel(), logging.WARNING
             )
+        stream = [
+            h
+            for h in logging.getLogger("mkdocs").handlers
+            if h.name == "MkDocsStreamHandler"
+        ][-1]
+        self.assertEqual(stream.level, logging.ERROR)
+
+    def test_build_quiet_strict_aborts_on_warnings(self):
+        with self.runner.isolated_filesystem():
+            os.mkdir("docs")
+            with open("docs/index.md", "w") as f:
+                f.write("# Home\n\n[missing](missing.md)\n")
+            with open("mkdocs.yml", "w") as f:
+                f.write("site_name: Test\n")
+
+            result = self.runner.invoke(cli.cli, ["build", "--quiet", "--strict"])
+
+        self.assertEqual(result.exit_code, 1)
+        self.assertIn("Aborted with 1 warnings in strict mode!", result.output)
+        self.assertNotIn("missing.md", result.output)
 
     @mock.patch("mkdocs.commands.new.new", autospec=True)
     def test_new(self, mock_new):
