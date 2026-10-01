@@ -1,0 +1,35 @@
+.pre-commit-config.yaml
+  s_66212c309e21f0::t_a9f719c886b9d2 3,10,15
+benchmarks/corpus.py
+  s_66212c309e21f0::t_48a37c59a671cd 108-111
+mkdocs/tests/config/config_options_tests.py
+  s_66212c309e21f0::t_49da775ba72c1b 1617-1620
+mkdocs/tests/gh_deploy_tests.py
+  s_66212c309e21f0::t_ded0e66fc2e5dd 190-193,217-224,260-267
+mkdocs/tests/search_tests.py
+  s_66212c309e21f0::t_58ca0c99aa7f22 203-207
+mkdocs/tests/structure/file_tests.py
+  s_66212c309e21f0::t_3869f3d6e52553 1052-1059
+mkdocs/tests/structure/nav_tests.py
+  s_66212c309e21f0::t_607c82565755ba 825-828
+mkdocs/tests/structure/page_tests.py
+  s_66212c309e21f0::t_8899c1de60b3d0 1489-1492
+pyproject.toml
+  s_66212c309e21f0::t_ba2bfc4276c4e0 191-195
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b9070db5b479f01cc5977946a0b28cbfea616220",
+  "prompts": {},
+  "sessions": {
+    "s_66212c309e21f0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8763d161-5362-48a1-ae9b-11f7bcd83469",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Xianpeng Shen <xianpeng.shen@gmail.com>"
+    }
+  }
+}
