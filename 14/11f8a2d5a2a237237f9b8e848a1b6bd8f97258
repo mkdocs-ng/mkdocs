@@ -1,0 +1,24 @@
+mkdocs/tests/config/config_options_tests.py
+  s_66212c309e21f0::t_ab03d0a2e7fff9 478-482,484-487
+  s_66212c309e21f0::t_d8df9f10db0eda 483
+docs/about/release-notes.md
+  s_66212c309e21f0::t_235c8ad6589b9a 35
+mkdocs/config/config_options.py
+  s_66212c309e21f0::t_59970282841abb 529
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1411f8a2d5a2a237237f9b8e848a1b6bd8f97258",
+  "prompts": {},
+  "sessions": {
+    "s_66212c309e21f0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8763d161-5362-48a1-ae9b-11f7bcd83469",
+        "model": "unknown"
+      },
+      "human_author": "Xianpeng Shen <xianpeng.shen@gmail.com>"
+    }
+  }
+}
