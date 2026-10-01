@@ -1,0 +1,82 @@
+mkdocs/tests/config/base_tests.py
+  s_66212c309e21f0::t_e50b243a4e84c0 343-399
+  s_66212c309e21f0::t_d7bb939114355e 1,4
+mkdocs/structure/files.py
+  s_66212c309e21f0::t_d7664697abd142 660
+mkdocs/tests/build_tests.py
+  s_66212c309e21f0::t_f93b9657ff3e89 619-637
+mkdocs/tests/utils/rendering_tests.py
+  s_66212c309e21f0::t_29b327c76133c8 1-55
+mkdocs/tests/config/config_options_legacy_tests.py
+  s_66212c309e21f0::t_21fcaa5f9c2a0b 673-742
+mkdocs/__main__.py
+  s_66212c309e21f0::t_b8596d9ce0a7c5 18
+mkdocs/tests/config/config_options_tests.py
+  s_66212c309e21f0::t_36ec512ebfab03 2748-2760
+  s_66212c309e21f0::t_73e8827714b796 5,10
+  s_66212c309e21f0::t_af70c06cec4c2b 825,2625-2688
+  s_66212c309e21f0::t_bd8cef37d5da52 749-765
+  s_66212c309e21f0::t_52d7e800b481ad 2107-2129
+  s_66212c309e21f0::t_3170c2274131bc 814-822
+  s_66212c309e21f0::t_5e3dad7e44f04e 960-972
+  s_66212c309e21f0::t_2d4592d3bf0a2a 113-126
+  s_66212c309e21f0::t_6e0cccf3a2dddf 2734-2747,2761-2782
+  s_66212c309e21f0::t_0f766d537a7fd2 1319-1332
+  s_66212c309e21f0::t_6f4620b8f829fe 766,823-824,973-975,1333-1335,2130-2131,2689-2691,2783-2785
+mkdocs/contrib/search/search_index.py
+  s_66212c309e21f0::t_cbb39b988072fc 21
+mkdocs/plugins.py
+  s_66212c309e21f0::t_397acfaa181db9 167,183,209,226,244,284,302,321,340,360,379,398,422,441,447
+mkdocs/tests/cli_tests.py
+  s_66212c309e21f0::t_43f6d2ac8a2e56 5,7,10,14,746-906
+mkdocs/tests/config/config_tests.py
+  s_66212c309e21f0::t_b006297a222eb3 290-301
+mkdocs/tests/gh_deploy_tests.py
+  s_66212c309e21f0::t_7ab5778882f1ec 9,182-260
+mkdocs/tests/livereload_tests.py
+  s_66212c309e21f0::t_1690844963b836 6-7,15-16,689-940
+mkdocs/tests/new_tests.py
+  s_66212c309e21f0::t_597b77ef09b55c 25-52
+mkdocs/tests/plugin_tests.py
+  s_66212c309e21f0::t_6d37f7ba7a8fd3 6,8,388-486
+mkdocs/tests/search_tests.py
+  s_66212c309e21f0::t_6a8d24f88744bb 4,195-208,295-309,397-398,677,689-715
+mkdocs/tests/serve_tests.py
+  s_66212c309e21f0::t_fdf5f170fdf8f5 120-302
+mkdocs/tests/structure/file_tests.py
+  s_66212c309e21f0::t_47c94126a29ec0 7-15,935-1088
+mkdocs/tests/structure/nav_tests.py
+  s_66212c309e21f0::t_341f12987f8083 6,795-837
+mkdocs/tests/structure/page_tests.py
+  s_66212c309e21f0::t_bc4a929df95cae 3,17-18,1468-1553
+mkdocs/tests/theme_tests.py
+  s_66212c309e21f0::t_84b2eac03eda2a 8,132-162
+mkdocs/tests/utils/cache_tests.py
+  s_66212c309e21f0::t_2582dd7c77ce78 3,32-57
+mkdocs/tests/utils/templates_tests.py
+  s_66212c309e21f0::t_c08a9cfde97262 54-58
+mkdocs/tests/utils/utils_tests.py
+  s_66212c309e21f0::t_afd193ce1cec2e 13,16,569-675
+mkdocs/utils/rendering.py
+  s_66212c309e21f0::t_1a735b10ddc295 17
+mkdocs/utils/templates.py
+  s_66212c309e21f0::t_0fa574faca0001 13
+pyproject.toml
+  s_66212c309e21f0::t_b377818edf7a1a 111-112
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "08af08e66006c2b830646106ba720376696b95c5",
+  "prompts": {},
+  "sessions": {
+    "s_66212c309e21f0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8763d161-5362-48a1-ae9b-11f7bcd83469",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Xianpeng Shen <xianpeng.shen@gmail.com>"
+    }
+  }
+}
