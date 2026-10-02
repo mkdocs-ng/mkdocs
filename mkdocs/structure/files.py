@@ -657,7 +657,7 @@ def get_files(config: MkDocsConfig) -> Files:
         else:
             try:
                 files.remove(b)
-            except ValueError:
+            except ValueError:  # pragma: no cover - `b` is in only one pair
                 pass
 
     return Files(files)

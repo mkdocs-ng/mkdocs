@@ -670,6 +670,76 @@ class ListOfItemsTest(TestCase):
             self.get_config(Schema, {"option": ["localhost:8000", "1.2.3.4:asdf"]})
 
 
+class DictOfItemsTest(TestCase):
+    def test_dict_default(self):
+        class Schema:
+            option = c.DictOfItems(c.Type(int), default={"a": 1})
+
+        conf = self.get_config(Schema, {})
+        self.assertEqual(conf["option"], {"a": 1})
+
+        conf = self.get_config(Schema, {"option": None})
+        self.assertEqual(conf["option"], {"a": 1})
+
+        # Each config gets its own copy of the default.
+        conf["option"]["b"] = 2
+        self.assertEqual(Schema.option.default, {"a": 1})
+
+    def test_none_without_default(self):
+        class Schema:
+            option = c.DictOfItems(c.Type(str))
+
+        with self.expect_error(option="Required configuration not provided."):
+            self.get_config(Schema, {"option": None})
+
+        conf = self.get_config(Schema, {"option": {"foo": "bar"}})
+        self.assertEqual(conf["option"], {"foo": "bar"})
+
+
+class RepoURLTest(TestCase):
+    def get_repo_config(self, cfg):
+        with self.assertWarnsRegex(
+            DeprecationWarning, "RepoURL is no longer used in MkDocs"
+        ):
+
+            class Schema:
+                repo_url = c.RepoURL()
+                repo_name = c.Type(str, required=False)
+                edit_uri = c.Type(str, required=False)
+
+        return self.get_config(Schema, cfg)
+
+    def test_known_hosts(self):
+        for repo_url, repo_name, edit_uri in (
+            ("https://github.com/mkdocs/mkdocs", "GitHub", "edit/master/docs/"),
+            ("https://bitbucket.org/gutworth/six/", "Bitbucket", "src/default/docs/"),
+            ("https://gitlab.com/gitlab-org/gitlab", "GitLab", "edit/master/docs/"),
+            ("https://launchpad.net/python-tuskarclient", "Launchpad", ""),
+        ):
+            with self.subTest(repo_url=repo_url):
+                conf = self.get_repo_config({"repo_url": repo_url})
+                self.assertEqual(conf["repo_name"], repo_name)
+                self.assertEqual(conf["edit_uri"], edit_uri)
+
+    def test_explicit_values_are_kept(self):
+        conf = self.get_repo_config(
+            {
+                "repo_url": "https://github.com/mkdocs/mkdocs",
+                "repo_name": "mkdocs",
+                "edit_uri": "edit/main/docs",
+            }
+        )
+        self.assertEqual(conf["repo_name"], "mkdocs")
+        # A trailing slash is added to the edit URI.
+        self.assertEqual(conf["edit_uri"], "edit/main/docs/")
+
+    def test_no_repo_url(self):
+        conf = self.get_repo_config({})
+        self.assertIsNone(conf["repo_url"])
+        self.assertIsNone(conf["repo_name"])
+        self.assertIsNone(conf["edit_uri"])
+
+
 class FilesystemObjectTest(TestCase):
     def test_valid_dir(self):
         for cls in c.Dir, c.FilesystemObject:

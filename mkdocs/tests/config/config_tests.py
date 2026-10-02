@@ -287,3 +287,15 @@ class ConfigTests(unittest.TestCase):
 
                 self.assertEqual(len(errors), 1)
                 self.assertEqual(warnings, [])
+
+    def test_config_file_path_cannot_be_set_from_config(self):
+        conf = defaults.MkDocsConfig()
+        with self.assertRaisesRegex(
+            ValidationError, "Can't set config_file_path in config"
+        ):
+            conf.load_dict({"site_name": "Example", "config_file_path": "other.yml"})
+
+    def test_get_schema(self):
+        schema = defaults.get_schema()
+        self.assertIs(schema, defaults.MkDocsConfig._schema)
+        self.assertIn("site_name", dict(schema))

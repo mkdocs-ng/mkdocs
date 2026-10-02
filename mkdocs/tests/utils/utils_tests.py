@@ -10,8 +10,10 @@ import unittest
 from unittest import mock
 
 from mkdocs import exceptions, utils
+from mkdocs.config.defaults import MkDocsConfig
 from mkdocs.tests.base import dedent, tempdir
 from mkdocs.utils import meta
+from mkdocs.utils.yaml import _DirPlaceholder, get_yaml_loader
 
 BASEYML = """
 INHERIT: parent.yml
@@ -563,6 +565,113 @@ class UtilsTests(unittest.TestCase):
             """
         )
         self.assertEqual(meta.get_data(doc), (doc, {}))
+
+    @tempdir(files=[".hidden", "file.txt", "sub/nested.txt", ".hidden_dir/keep.txt"])
+    def test_clean_directory_keeps_hidden_entries(self, tdir):
+        utils.clean_directory(tdir)
+        self.assertEqual(sorted(os.listdir(tdir)), [".hidden", ".hidden_dir"])
+        self.assertTrue(os.path.isfile(os.path.join(tdir, ".hidden_dir", "keep.txt")))
+
+    def test_clean_directory_missing(self):
+        # Nothing to clean, and no error either.
+        utils.clean_directory(os.path.join("does", "not", "exist"))
+
+    def test_create_media_urls(self):
+        self.assertEqual(
+            utils.create_media_urls(
+                ["css/extra.css", "https://example.com/x.js", "/abs.js"], base=".."
+            ),
+            ["../css/extra.css", "https://example.com/x.js", "/abs.js"],
+        )
+
+    def test_path_to_url_is_deprecated(self):
+        with self.assertWarnsRegex(DeprecationWarning, "path_to_url is never used"):
+            self.assertEqual(utils.path_to_url("foo\\bar/baz.md"), "foo/bar/baz.md")
+
+    def test_get_markdown_title(self):
+        self.assertEqual(
+            utils.get_markdown_title("\n  \n# The title\nText"), "The title"
+        )
+        self.assertIsNone(utils.get_markdown_title("Text first\n# Title"))
+        self.assertIsNone(utils.get_markdown_title("\n \n"))
+        self.assertIsNone(utils.get_markdown_title(""))
+
+    def test_weak_property(self):
+        class Example:
+            @utils.weak_property
+            def value(self):
+                """The documented value."""
+                return 1
+
+        # Accessed on the class, the descriptor itself is returned.
+        self.assertIsInstance(Example.value, utils.weak_property)
+        self.assertEqual(Example.value.__doc__, "The documented value.")
+        example = Example()
+        self.assertEqual(example.value, 1)
+        # Unlike a property, it can be overwritten on an instance.
+        example.value = 2
+        self.assertEqual(example.value, 2)
+
+    def test_deprecated_warning_filter(self):
+        with self.assertWarnsRegex(
+            DeprecationWarning, "warning_filter doesn't do anything"
+        ):
+            warning_filter = utils.warning_filter
+        self.assertIsInstance(warning_filter, logging.Filter)
+
+        with self.assertRaisesRegex(
+            AttributeError, "module 'mkdocs.utils' has no attribute 'no_such_thing'"
+        ):
+            utils.no_such_thing  # noqa: B018
+
+    def test_duplicate_filter(self):
+        def record(msg):
+            return logging.LogRecord(
+                "mkdocs", logging.WARNING, __file__, 1, msg, None, None
+            )
+
+        duplicate_filter = utils.DuplicateFilter()
+        self.assertTrue(duplicate_filter(record("Same message")))
+        self.assertFalse(duplicate_filter(record("Same message")))
+        self.assertTrue(duplicate_filter(record("Other message")))
+
+    def test_yaml_load_empty(self):
+        self.assertEqual(utils.yaml_load(""), {})
+        self.assertEqual(utils.yaml_load("# Only a comment\n"), {})
+
+    def test_yaml_load_syntax_error(self):
+        with self.assertRaisesRegex(
+            exceptions.ConfigurationError,
+            "^MkDocs encountered an error parsing the configuration file: ",
+        ):
+            utils.yaml_load("foo: [unclosed\n")
+
+    def test_yaml_relative_tag_errors(self):
+        loader = get_yaml_loader(config=MkDocsConfig())
+        with self.assertRaisesRegex(
+            exceptions.ConfigurationError,
+            r"^Unknown prefix '\$unknown' in !relative '\$unknown/foo'$",
+        ):
+            utils.yaml_load("path: !relative $unknown/foo\n", loader)
+        with self.assertRaisesRegex(
+            exceptions.ConfigurationError,
+            r"^'!relative' tag does not expect any value; received 'foo'$",
+        ):
+            utils.yaml_load("path: !relative foo\n", loader)
+
+    def test_yaml_relative_tag_outside_of_a_page(self):
+        config = MkDocsConfig()
+        data = utils.yaml_load("path: !relative\n", get_yaml_loader(config=config))
+        # The placeholder is resolved lazily, and only works while a page is rendered.
+        with self.assertRaisesRegex(
+            exceptions.ConfigurationError,
+            "The current file is not set for the '!relative' tag",
+        ):
+            os.fspath(data["path"])
+
+    def test_yaml_dir_placeholder_base_class(self):
+        with self.assertRaises(NotImplementedError):
+            os.fspath(_DirPlaceholder(MkDocsConfig()))
 
 
 class ThemeUtilsTests(unittest.TestCase):

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 import sys
 import textwrap
@@ -13,6 +14,8 @@ from mkdocs.structure.files import File, Files
 from mkdocs.structure.pages import (
     Page,
     _ExtractTitleTreeprocessor,
+    _HTMLHandler,
+    _RawHTMLPreprocessor,
     _RelativePathTreeprocessor,
 )
 from mkdocs.tests.base import dedent, tempdir
@@ -1462,3 +1465,91 @@ class RelativePathExtensionTests(unittest.TestCase):
             exp_true="test.png, test.png.md, foo/test.png, foo/test.png.md",
             exp_false="test.png, test.png.md",
         )
+
+
+class PageEdgeCaseTests(unittest.TestCase):
+    def make_page(self, cfg, src_uri="testing.md", title="Foo"):
+        fl = File(src_uri, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+        return Page(title, fl, cfg)
+
+    def test_canonical_url_base_without_trailing_slash(self):
+        pg = self.make_page(load_config())
+        pg._set_canonical_url("https://example.com/docs")
+        self.assertEqual(pg.canonical_url, "https://example.com/docs/testing/")
+        self.assertEqual(pg.abs_url, "/docs/testing/")
+
+    def test_edit_url_unparsable(self):
+        pg = self.make_page(load_config())
+        with self.assertLogs("mkdocs.structure.pages") as cm:
+            pg._set_edit_url(None, "http://[::1/")
+        self.assertEqual(pg.edit_url, "http://[::1/testing.md")
+        self.assertEqual(
+            cm.output,
+            [
+                (
+                    "WARNING:mkdocs.structure.pages:edit_uri: 'http://[::1/testing.md' "
+                    "is not a valid URL: Invalid IPv6 URL"
+                )
+            ],
+        )
+
+    @tempdir()
+    def test_encoding_error(self, docs_dir):
+        with open(os.path.join(docs_dir, "index.md"), "wb") as f:
+            f.write(b"# Title\n\nNot UTF-8: \xff\n")
+        cfg = load_config(docs_dir=docs_dir)
+        pg = self.make_page(cfg, "index.md", title=None)
+        with self.assertLogs("mkdocs") as cm:
+            with self.assertRaises(UnicodeDecodeError):
+                pg.read_source(cfg)
+        self.assertEqual(
+            cm.output,
+            ["ERROR:mkdocs.structure.pages:Encoding error reading file: index.md"],
+        )
+
+    def test_set_title_is_deprecated(self):
+        pg = self.make_page(load_config())
+        with self.assertWarnsRegex(
+            DeprecationWarning, "_set_title is no longer used in MkDocs"
+        ):
+            pg._set_title()
+
+    def test_render_without_source(self):
+        cfg = load_config()
+        pg = self.make_page(cfg)
+        with self.assertRaisesRegex(
+            RuntimeError, r"`markdown` field hasn't been set \(via `read_source`\)"
+        ):
+            pg.render(cfg, Files([pg.file]))
+
+    def test_validate_anchor_links_skips_pages_that_were_not_rendered(self):
+        cfg = load_config()
+        pg = self.make_page(cfg, "index.md", title="Home")
+        other = self.make_page(cfg, "other.md", title="Other")  # never rendered
+        no_page = File("nopage.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+        pg.links_to_anchors = {
+            other.file: {"missing": "other.md#missing"},
+            no_page: {"missing": "nopage.md#missing"},
+        }
+        with self.assertNoLogs("mkdocs"):
+            pg.validate_anchor_links(
+                files=Files([pg.file, other.file, no_page]), log_level=logging.WARNING
+            )
+
+    def test_anchor_from_link_name_attribute(self):
+        cfg = load_config(markdown_extensions=["attr_list"])
+        pg = self.make_page(cfg)
+        pg.markdown = "[Example](https://example.com){name=target}\n\n[Back](#target)\n"
+        pg.render(cfg, Files([pg.file]))
+        self.assertIn("target", pg.present_anchor_ids)
+        with self.assertNoLogs("mkdocs"):
+            pg.validate_anchor_links(files=Files([pg.file]), log_level=logging.WARNING)
+
+    def test_raw_html_preprocessor_survives_parser_errors(self):
+        lines = ['<a id="anchor">', "text"]
+        for error in (AssertionError, RuntimeError):
+            with self.subTest(error=error):
+                proc = _RawHTMLPreprocessor()
+                with mock.patch.object(_HTMLHandler, "feed", side_effect=error):
+                    self.assertEqual(proc.run(lines), lines)
+                self.assertEqual(proc.present_anchor_ids, set())

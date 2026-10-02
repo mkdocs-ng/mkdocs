@@ -51,3 +51,8 @@ class UtilsTemplatesTests(unittest.TestCase):
                 '<script src="here/plain_string.mjs"></script>',
             ],
         )
+
+    def test_legacy_filters_module(self):
+        from mkdocs.utils import filters
+
+        self.assertIs(filters.url_filter, templates.url_filter)

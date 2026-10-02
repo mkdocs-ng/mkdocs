@@ -3,6 +3,8 @@
 import contextlib
 import email
 import io
+import os
+import socket
 import sys
 import threading
 import time
@@ -10,7 +12,8 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from mkdocs.livereload import LiveReloadServer
+from mkdocs.exceptions import Abort
+from mkdocs.livereload import LiveReloadServer, _try_relativize_path
 from mkdocs.tests.base import change_dir, tempdir
 
 
@@ -683,3 +686,255 @@ class BuildTests(unittest.TestCase):
 
             Path(docs_dir, "subdir", "test").write_text("test")
             self.assertTrue(started_building.wait(timeout=10))
+
+
+class _ScriptedCondition:
+    """A stand-in for the rebuild condition that replays the results of `wait()`."""
+
+    def __init__(self, waits):
+        self._waits = list(waits)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc_info):
+        return None
+
+    def wait_for(self, predicate, timeout=None):
+        return predicate()
+
+    def wait(self, timeout=None):
+        return self._waits.pop(0)
+
+    def notify_all(self):
+        pass
+
+
+def _make_server(root, builder=lambda: None, host="localhost", port=8000):
+    """Create the server without binding or listening on a socket."""
+    with mock.patch("socket.socket"):
+        return LiveReloadServer(builder, host=host, port=port, root=root)
+
+
+class ServerTests(unittest.TestCase):
+    @tempdir()
+    def test_address_family(self, site_dir):
+        self.assertEqual(
+            _make_server(site_dir, host="::1").address_family, socket.AF_INET6
+        )
+        self.assertEqual(
+            _make_server(site_dir, host="127.0.0.1").address_family, socket.AF_INET
+        )
+        # Host names are not IP addresses; the default (IPv4) family is kept.
+        self.assertEqual(
+            _make_server(site_dir, host="localhost").address_family, socket.AF_INET
+        )
+
+    @tempdir()
+    def test_url(self, site_dir):
+        with mock.patch("socket.socket"):
+            server = LiveReloadServer(
+                lambda: None,
+                host="127.0.0.1",
+                port=8001,
+                root=site_dir,
+                mount_path="sub",
+            )
+        self.assertEqual(server.url, "http://127.0.0.1:8001/sub/")
+        self.assertEqual(server.mount_path, "/sub/")
+
+    @tempdir()
+    def test_watch_rejects_custom_function(self, site_dir):
+        server = _make_server(site_dir)
+        with self.assertRaisesRegex(
+            TypeError, "Plugins can no longer pass a 'func' parameter to watch()"
+        ):
+            server.watch(site_dir, lambda: None)
+        # Passing the server's own builder is still accepted.
+        server.watch(site_dir, server.builder)
+        server.unwatch(site_dir)
+
+    @tempdir()
+    def test_serve_and_open_in_browser(self, site_dir):
+        server = _make_server(site_dir)
+        server.watch(site_dir)
+        with (
+            mock.patch.object(server, "server_bind") as server_bind,
+            mock.patch.object(server, "server_activate") as server_activate,
+            mock.patch.object(server, "observer") as observer,
+            mock.patch.object(server, "serve_thread") as serve_thread,
+            mock.patch.object(server, "_build_loop") as build_loop,
+            mock.patch("webbrowser.open") as open_browser,
+            self.assertLogs("mkdocs.livereload") as cm,
+        ):
+            server.serve(open_in_browser=True)
+
+        server_bind.assert_called_once_with()
+        server_activate.assert_called_once_with()
+        observer.start.assert_called_once_with()
+        serve_thread.start.assert_called_once_with()
+        build_loop.assert_called_once_with()
+        open_browser.assert_called_once_with("http://localhost:8000/")
+        self.assertRegex(
+            "\n".join(cm.output),
+            r"^INFO:mkdocs.livereload:.*Watching paths for changes: '.+'\n"
+            r"INFO:mkdocs.livereload:.*Serving on http://localhost:8000/ "
+            r"and opening it in a browser$",
+        )
+
+    @tempdir()
+    def test_serve_without_watching(self, site_dir):
+        server = _make_server(site_dir)
+        with (
+            mock.patch.object(server, "server_bind"),
+            mock.patch.object(server, "server_activate"),
+            mock.patch.object(server, "observer") as observer,
+            mock.patch.object(server, "serve_thread") as serve_thread,
+            mock.patch.object(server, "_build_loop"),
+            mock.patch("webbrowser.open") as open_browser,
+            self.assertLogs("mkdocs.livereload") as cm,
+        ):
+            server.serve()
+
+        observer.start.assert_not_called()
+        serve_thread.start.assert_called_once_with()
+        open_browser.assert_not_called()
+        self.assertRegex(
+            "\n".join(cm.output),
+            r"^INFO:mkdocs.livereload:.*Serving on http://localhost:8000/$",
+        )
+
+    @tempdir()
+    def test_shutdown_waits_for_running_server(self, site_dir):
+        server = _make_server(site_dir)
+        with (
+            mock.patch("socketserver.BaseServer.shutdown") as base_shutdown,
+            mock.patch.object(server, "server_close") as server_close,
+            mock.patch.object(server, "observer") as observer,
+            mock.patch.object(server, "serve_thread") as serve_thread,
+        ):
+            serve_thread.is_alive.return_value = True
+            server.shutdown(wait=True)
+
+        self.assertTrue(server._shutdown)
+        observer.stop.assert_called_once_with()
+        base_shutdown.assert_called_once_with()
+        server_close.assert_called_once_with()
+        serve_thread.join.assert_called_once_with()
+        observer.join.assert_called_once_with()
+
+    @tempdir()
+    def test_build_loop_waits_for_changes_to_stop(self, site_dir):
+        builds = []
+
+        def builder():
+            builds.append(server._wanted_epoch)
+            server._shutdown = True
+
+        server = _make_server(site_dir, builder)
+        # Another change arrives during the first debounce wait, then things settle.
+        server._rebuild_cond = _ScriptedCondition(waits=[True, False])
+        server._want_rebuild = True
+        initial_epoch = server._visible_epoch
+
+        with self.assertLogs("mkdocs.livereload", level="DEBUG") as cm:
+            server._build_loop()
+
+        self.assertEqual(len(builds), 1)
+        self.assertFalse(server._want_rebuild)
+        self.assertEqual(server._visible_epoch, builds[0])
+        self.assertGreaterEqual(server._visible_epoch, initial_epoch)
+        self.assertRegex(
+            "\n".join(cm.output),
+            r"^INFO:mkdocs.livereload:.*Detected file changes\n"
+            r"DEBUG:mkdocs.livereload:.*Waiting for file changes to stop happening\n"
+            r"INFO:mkdocs.livereload:.*Reloading browsers$",
+        )
+
+    @tempdir()
+    def test_build_loop_reports_abort(self, site_dir):
+        def builder():
+            server._shutdown = True
+            # Raised by a strict build with warnings; it is also a SystemExit.
+            raise Abort("Aborted with 1 warnings in strict mode!")
+
+        server = _make_server(site_dir, builder)
+        server._rebuild_cond = _ScriptedCondition(waits=[False])
+        server._want_rebuild = True
+        initial_epoch = server._visible_epoch
+
+        err = io.StringIO()
+        with (
+            contextlib.redirect_stderr(err),
+            self.assertLogs("mkdocs.livereload") as cm,
+        ):
+            server._build_loop()
+
+        # The message is shown without a traceback and the old site stays visible.
+        self.assertEqual(err.getvalue(), "Aborted with 1 warnings in strict mode!\n")
+        self.assertEqual(server._visible_epoch, initial_epoch)
+        self.assertRegex(
+            "\n".join(cm.output),
+            r"ERROR:mkdocs.livereload:.*An error happened during the rebuild",
+        )
+
+    @tempdir({"index.html": "<body>hi</body>"})
+    def test_internal_server_error(self, site_dir):
+        with testing_server(site_dir) as server:
+            with (
+                mock.patch.object(
+                    server, "_serve_request", side_effect=ValueError("boom")
+                ),
+                self.assertLogs("mkdocs.livereload") as cm,
+            ):
+                headers, output = do_request(server, "GET /index.html")
+
+        self.assertEqual(headers["_status"], "500 Internal Server Error")
+        self.assertEqual(output, "500 Internal Server Error")
+        log_output = "\n".join(cm.output)
+        self.assertIn("ERROR:mkdocs.livereload:", log_output)
+        self.assertIn("ValueError: boom", log_output)
+        self.assertRegex(log_output, r'"GET /index.html HTTP/1.1" code 500')
+
+    @tempdir({"index.html": "<body>hi</body>"})
+    def test_outside_of_mount_path_not_found(self, site_dir):
+        with testing_server(site_dir, mount_path="/sub/") as server:
+            with self.assertLogs("mkdocs.livereload") as cm:
+                headers, output = do_request(server, "GET /index.html")
+
+        self.assertEqual(headers["_status"], "404 Not Found")
+        self.assertEqual(output, "404 Not Found")
+        self.assertRegex("\n".join(cm.output), r'"GET /index.html HTTP/1.1" code 404')
+
+    @tempdir({"archive.tar.gz": "gzip data", "data.unknownext": "data"})
+    def test_more_mime_types(self, site_dir):
+        with testing_server(site_dir) as server:
+            headers, _ = do_request(server, "GET /archive.tar.gz")
+            self.assertEqual(headers.get("content-type"), "application/gzip")
+
+            headers, _ = do_request(server, "GET /data.unknownext")
+            self.assertEqual(headers.get("content-type"), "application/octet-stream")
+
+    @tempdir()
+    def test_request_line_too_long(self, site_dir):
+        with testing_server(site_dir) as server:
+            with self.assertLogs("mkdocs.livereload", level="DEBUG") as cm:
+                headers, _ = do_request(server, "GET /" + "a" * 70000)
+
+        self.assertTrue(headers["_status"].startswith("414 "), headers["_status"])
+        # Errors reported by the HTTP handler itself are logged at DEBUG level.
+        self.assertRegex(
+            "\n".join(cm.output), r"DEBUG:mkdocs.livereload:.*code 414, message"
+        )
+
+    @tempdir()
+    def test_try_relativize_path(self, tmp_dir):
+        tmp_dir = os.path.realpath(tmp_dir)
+        os.mkdir(os.path.join(tmp_dir, "project"))
+        with change_dir(os.path.join(tmp_dir, "project")):
+            self.assertEqual(
+                _try_relativize_path(os.path.join(tmp_dir, "project", "docs")), "docs"
+            )
+            # Paths outside of the current directory are kept as they are.
+            outside = os.path.join(tmp_dir, "elsewhere")
+            self.assertEqual(_try_relativize_path(outside), outside)

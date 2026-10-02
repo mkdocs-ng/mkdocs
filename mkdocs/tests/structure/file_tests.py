@@ -4,7 +4,15 @@ import sys
 import unittest
 from unittest import mock
 
-from mkdocs.structure.files import File, Files, _sort_files, file_sort_key, get_files
+from mkdocs.structure.files import (
+    File,
+    Files,
+    InclusionLevel,
+    _filter_paths,
+    _sort_files,
+    file_sort_key,
+    get_files,
+)
 from mkdocs.tests.base import PathAssertionMixin, load_config, tempdir
 
 
@@ -924,3 +932,161 @@ class TestFiles(PathAssertionMixin, unittest.TestCase):
         self.assertEqual(len(files), 2)
         self.assertEqual(list(files)[0].src_uri, "b.jpg")
         self.assertEqual(list(files)[1].src_uri, "a.md")
+
+    @tempdir()
+    @tempdir(files={"a.txt": "a", "b.txt": "b", "c.md": "c"})
+    def test_copy_static_files_inclusion(self, src_dir, dest_dir):
+        files = Files(
+            [
+                File("a.txt", src_dir, dest_dir, use_directory_urls=False),
+                File(
+                    "b.txt",
+                    src_dir,
+                    dest_dir,
+                    use_directory_urls=False,
+                    inclusion=InclusionLevel.EXCLUDED,
+                ),
+                File("c.md", src_dir, dest_dir, use_directory_urls=False),
+            ]
+        )
+        files.copy_static_files()
+        self.assertPathIsFile(dest_dir, "a.txt")
+        self.assertPathNotExists(dest_dir, "b.txt")
+        # Documentation pages are never copied as static files.
+        self.assertPathNotExists(dest_dir, "c.md")
+
+        files.copy_static_files(inclusion=InclusionLevel.all)
+        self.assertPathIsFile(dest_dir, "b.txt")
+        self.assertPathNotExists(dest_dir, "c.md")
+
+    def test_files_contains_and_src_paths(self):
+        f = File(
+            "foo/bar.md", "/path/to/docs", "/path/to/site", use_directory_urls=True
+        )
+        files = Files([f])
+        self.assertIn("foo/bar.md", files)
+        self.assertNotIn("foo/baz.md", files)
+        self.assertEqual(files.src_paths, {os.path.normpath("foo/bar.md"): f})
+
+    def test_files_remove_missing_file(self):
+        files = Files([])
+        f = File("foo.md", "/path/to/docs", "/path/to/site", use_directory_urls=True)
+        with self.assertRaisesRegex(ValueError, r"^'foo\.md' not in collection$"):
+            files.remove(f)
+
+    def test_files_private_attribute_is_deprecated(self):
+        a = File("a.md", "/path/to/docs", "/path/to/site", use_directory_urls=True)
+        b = File("b.md", "/path/to/docs", "/path/to/site", use_directory_urls=True)
+        files = Files([a])
+        with self.assertWarnsRegex(
+            DeprecationWarning, r"Do not access Files\._files\."
+        ):
+            self.assertIs(files._files, files)
+        with self.assertWarnsRegex(
+            DeprecationWarning, r"Do not access Files\._files\."
+        ):
+            files._files = [b]
+        self.assertEqual(list(files), [b])
+
+    def test_dest_path(self):
+        f = File(
+            "foo/bar.md", "/path/to/docs", "/path/to/site", use_directory_urls=True
+        )
+        self.assertEqual(f.dest_path, os.path.normpath("foo/bar/index.html"))
+        f.dest_path = os.path.join("other", "page.html")
+        self.assertEqual(f.dest_uri, "other/page.html")
+        self.assertEqual(f.dest_path, os.path.normpath("other/page.html"))
+
+    def test_abs_src_path_without_src_dir(self):
+        f = File("foo.md", None, "/path/to/site", use_directory_urls=True)
+        self.assertIsNone(f.abs_src_path)
+
+    def test_generated_requires_exactly_one_source(self):
+        config = load_config()
+        for kwargs in ({}, {"content": "a", "abs_src_path": "/path/to/a.md"}):
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaisesRegex(
+                    TypeError,
+                    "File must have exactly one of 'content' or 'abs_src_path'",
+                ):
+                    File.generated(config, "foo.md", **kwargs)
+
+    def test_repr(self):
+        f = File(
+            "foo/bar.md", "/path/to/docs", "/path/to/site", use_directory_urls=False
+        )
+        self.assertEqual(
+            repr(f),
+            "File('foo/bar.md', src_dir='/path/to/docs', dest_dir='/path/to/site', "
+            "use_directory_urls=False, dest_uri='foo/bar.html', "
+            "inclusion=InclusionLevel.UNDEFINED)",
+        )
+
+    @tempdir(files={"test.txt": "destination content"})
+    @tempdir(files={"test.txt": "source content"})
+    def test_is_modified(self, src_dir, dest_dir):
+        f = File("test.txt", src_dir, dest_dir, use_directory_urls=False)
+        # If the timestamps can't be compared, the file is treated as unmodified.
+        with mock.patch("os.path.getmtime", side_effect=OSError("stat failed")):
+            self.assertFalse(f.is_modified())
+
+        generated = File("test.txt", None, dest_dir, use_directory_urls=False)
+        generated.content_string = "generated content"
+        # Files with in-memory content are always considered modified.
+        self.assertTrue(generated.is_modified())
+
+    def test_file_sort_key_of_empty_path(self):
+        f = File(".", "/path/to/docs", "/path/to/site", use_directory_urls=False)
+        self.assertEqual(file_sort_key(f), ())
+
+    @tempdir(files=["README.md", "index.md", "index.html"])
+    def test_get_files_with_several_index_conflicts(self, tdir):
+        config = load_config(docs_dir=tdir)
+        with self.assertLogs("mkdocs") as cm:
+            files = get_files(config)
+
+        # README.md conflicts with both index files; it is excluded only once.
+        self.assertEqual(
+            cm.output,
+            [
+                (
+                    "WARNING:mkdocs.structure.files:Excluding 'README.md' from the site "
+                    "because it conflicts with 'index.html'."
+                ),
+                (
+                    "WARNING:mkdocs.structure.files:Excluding 'README.md' from the site "
+                    "because it conflicts with 'index.md'."
+                ),
+            ],
+        )
+        self.assertNotIn("README.md", [f.src_uri for f in files])
+
+    def test_add_files_from_theme_without_highlightjs_option(self):
+        # Without a boolean `highlightjs` option nothing is filtered out.
+        static = self._theme_static_files(name="mkdocs", highlightjs=None)
+        self.assertIn("highlight/languages/python.min.js", static)
+        self.assertIn("highlight/styles/agate.min.css", static)
+
+    def test_filter_paths_is_deprecated(self):
+        for basename, path, is_dir, exclude, expected in (
+            ("foo.md", "foo.md", False, ["*.md"], True),
+            # Patterns starting with '/' are matched against the whole path.
+            ("foo.md", "dir/foo.md", False, ["/dir/*.md"], True),
+            ("foo.md", "other/foo.md", False, ["/dir/*.md"], False),
+            # Patterns ending with '/' only match directories.
+            ("drafts", "drafts", True, ["drafts/"], True),
+            ("drafts", "drafts", False, ["drafts/"], False),
+            ("foo.md", "foo.md", False, [], False),
+        ):
+            with self.subTest(path=path, is_dir=is_dir, exclude=exclude):
+                with self.assertWarnsRegex(
+                    DeprecationWarning, "_filter_paths is not used since MkDocs 1.5"
+                ):
+                    self.assertEqual(
+                        _filter_paths(basename, path, is_dir, exclude), expected
+                    )
+
+    def test_inclusion_level_all(self):
+        for level in InclusionLevel:
+            with self.subTest(level=level):
+                self.assertTrue(level.all())

@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 _unescape: Callable[[str], str]
 try:
     _unescape = markdown.treeprocessors.UnescapeTreeprocessor().unescape
-except AttributeError:
+except AttributeError:  # pragma: no cover - Markdown < 3.4
     _unescape = lambda s: s
 
 # TODO: Most of this file will become unnecessary after https://github.com/Python-Markdown/markdown/pull/1441

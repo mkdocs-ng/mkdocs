@@ -10,7 +10,7 @@ from markupsafe import Markup
 
 try:
     from jinja2 import pass_context as contextfilter  # type: ignore
-except ImportError:
+except ImportError:  # pragma: no cover - Jinja2 < 3.0
     from jinja2 import contextfilter  # type: ignore
 
 from mkdocs.utils import normalize_url

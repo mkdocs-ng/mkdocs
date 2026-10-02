@@ -1,5 +1,7 @@
+import io
 import os
 import unittest
+from unittest import mock
 
 from mkdocs import exceptions
 from mkdocs.config import base
@@ -338,3 +340,60 @@ class ConfigBaseTests(unittest.TestCase):
                 ("aa", FooConfig.aa),
             ),
         )
+
+    def test_set_option_on_non_config_object(self):
+        class Schema:
+            option = c.Type(int)
+
+        with self.assertRaisesRegex(
+            AttributeError,
+            r"can't set attribute \(option\) because the parent is a .+ not a .+Config",
+        ):
+            Schema().option = 1
+
+    def test_required_is_unsupported_in_class_based_config(self):
+        with self.assertRaisesRegex(
+            TypeError,
+            r"^Schema\.option: Setting 'required' is unsupported in class-based configs\.",
+        ):
+
+            class Schema(base.Config):
+                option = c.Type(int, required=True)
+
+    def test_config_file_path_bytes(self):
+        path = os.path.join("project", "mkdocs.yml")
+        with mock.patch.object(base.sys, "getfilesystemencoding", return_value="utf-8"):
+            conf = defaults.MkDocsConfig(config_file_path=path.encode("utf-8"))
+            self.assertEqual(conf.config_file_path, path)
+
+            with self.assertRaisesRegex(
+                ValidationError, "config_file_path is not a Unicode string."
+            ):
+                defaults.MkDocsConfig(config_file_path=b"\xff/mkdocs.yml")
+
+    def test_load_file_is_deprecated(self):
+        conf = base.LegacyConfig((("site_name", c.Type(str)),))
+        with self.assertWarnsRegex(
+            DeprecationWarning, "Config.load_file is not used since MkDocs 1.5"
+        ):
+            conf.load_file(io.StringIO("site_name: Example\n"))
+        self.assertEqual(conf["site_name"], "Example")
+
+    def test_user_configs_is_deprecated(self):
+        conf = base.LegacyConfig((("site_name", c.Type(str)),))
+        conf.load_dict({"site_name": "a"})
+        conf.load_dict({"site_name": "b"})
+        with self.assertWarnsRegex(DeprecationWarning, "user_configs is never used"):
+            user_configs = conf.user_configs
+        self.assertEqual(user_configs, [{"site_name": "a"}, {"site_name": "b"}])
+
+    def test_open_config_file_that_cannot_seek(self):
+        class Unseekable(io.BytesIO):
+            def seek(self, *args):
+                raise OSError("not seekable")
+
+        config_file = Unseekable(b"site_name: Example\n")
+        with base._open_config_file(config_file) as f:
+            self.assertIs(f, config_file)
+            self.assertEqual(f.read(), b"site_name: Example\n")
+        self.assertTrue(config_file.closed)
