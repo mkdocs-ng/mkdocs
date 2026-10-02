@@ -616,6 +616,25 @@ class BuildTests(PathAssertionMixin, unittest.TestCase):
         self.assertPathNotExists(site_dir, "main.html")
         self.assertPathNotExists(site_dir, "locales")
 
+    @tempdir(
+        files={
+            "index.md": "page content",
+            "robots.txt": "Sitemap: {{ config.site_url }}sitemap.xml",
+        }
+    )
+    @tempdir()
+    def test_build_renders_extra_templates(self, site_dir, docs_dir):
+        cfg = load_config(
+            docs_dir=docs_dir,
+            site_dir=site_dir,
+            site_url="https://example.com/",
+            extra_templates=["robots.txt"],
+        )
+        build.build(cfg)
+
+        with open(os.path.join(site_dir, "robots.txt"), encoding="utf-8") as f:
+            self.assertEqual(f.read(), "Sitemap: https://example.com/sitemap.xml")
+
     @contextlib.contextmanager
     def _assert_build_logs(self, expected):
         with self.assertLogs("mkdocs") as cm:

@@ -108,6 +108,8 @@ requires = ["hatch-mkdocs"]
 features = ["i18n"]
 dependencies = [
     "coverage",
+    # Optional dependency of the search plugin's `prebuild_index: python`.
+    "lunr",
 ]
 [tool.hatch.envs.test.scripts]
 test = 'python -m unittest discover -s mkdocs -p "*tests.py"'

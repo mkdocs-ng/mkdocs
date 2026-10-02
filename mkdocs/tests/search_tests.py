@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import json
+import os
 import unittest
 from unittest import mock
 
@@ -191,6 +192,22 @@ class SearchPluginTests(unittest.TestCase):
         self.assertEqual(result["extra_javascript"], ["search/main.js"])
         self.assertEqual(plugin.config.lang, [result["theme"]["locale"].language])
 
+    def test_event_on_config_python_prebuild_index(self):
+        plugin = search.SearchPlugin()
+        plugin.load_config({"prebuild_index": "python"})
+        with self.assertLogs("mkdocs.contrib.search", level="INFO") as cm:
+            plugin.on_config(load_config(theme="mkdocs", extra_javascript=[]))
+        self.assertEqual(
+            cm.output,
+            [
+                (
+                    "INFO:mkdocs.contrib.search:The 'python' method of the search plugin's "
+                    "'prebuild_index' config option is pending deprecation and will not be "
+                    "supported in a future release."
+                )
+            ],
+        )
+
     def test_event_on_config_lang(self):
         plugin = search.SearchPlugin()
         plugin.load_config({"lang": "es"})
@@ -279,6 +296,21 @@ class SearchPluginTests(unittest.TestCase):
 
     @mock.patch("mkdocs.utils.write_file", autospec=True)
     @mock.patch("mkdocs.utils.copy_file", autospec=True)
+    def test_event_on_post_build_japanese(self, mock_copy_file, mock_write_file):
+        plugin = search.SearchPlugin()
+        plugin.load_config({"lang": ["ja"]})
+        config = load_config(theme="mkdocs")
+        plugin.on_pre_build(config)
+        plugin.on_post_build(config)
+        # Japanese also needs the TinySegmenter word splitter.
+        self.assertEqual(
+            [os.path.basename(c.args[1]) for c in mock_copy_file.call_args_list],
+            ["lunr.stemmer.support.js", "tinyseg.js", "lunr.ja.js"],
+        )
+        self.assertEqual(mock_write_file.call_count, 1)
+
+    @mock.patch("mkdocs.utils.write_file", autospec=True)
+    @mock.patch("mkdocs.utils.copy_file", autospec=True)
     def test_event_on_post_build_search_index_only(
         self, mock_copy_file, mock_write_file
     ):
@@ -363,6 +395,8 @@ class SearchIndexTests(unittest.TestCase):
         toc_item3 = index._find_toc_by_id(toc, "heading-3")
         self.assertEqual(toc_item3.url, "#heading-3")
         self.assertEqual(toc_item3.title, "Heading 3")
+
+        self.assertIsNone(index._find_toc_by_id(toc, "heading-4"))
 
     def test_create_search_index(self):
         html_content = """
@@ -642,7 +676,7 @@ class SearchIndexTests(unittest.TestCase):
         self.assertEqual(mock_lunr.call_count, 1)
         self.assertEqual(result, expected)
 
-    @unittest.skipIf(search_index.haslunrpy, "lunr.py is installed")
+    @mock.patch("mkdocs.contrib.search.search_index.haslunrpy", False)
     def test_prebuild_index_python_missing_lunr(self):
         # When the lunr.py dependencies are not installed no prebuilt index is created.
         index = search_index.SearchIndex(prebuild_index="python", lang="en")
@@ -653,6 +687,33 @@ class SearchIndexTests(unittest.TestCase):
         with self.assertLogs("mkdocs", level="WARNING"):
             result = json.loads(index.generate_search_index())
         self.assertEqual(result, expected)
+
+    @unittest.skipUnless(search_index.haslunrpy, "lunr.py is not installed")
+    def test_prebuild_index_python_stop_words(self):
+        from lunr.index import Index  # type: ignore
+
+        def search_prebuilt_index(**config):
+            index = search_index.SearchIndex(
+                prebuild_index="python", lang=["en"], **config
+            )
+            index._add_entry("Loops", "Use a while loop for repetition", "loops/")
+            result = json.loads(index.generate_search_index())
+            lunr_index = Index.load(result["index"])
+            return {
+                word: [r["ref"] for r in lunr_index.search(word)]
+                for word in ("while", "repetition")
+            }
+
+        # By default, words like 'while' and 'for' stay searchable.
+        self.assertEqual(
+            search_prebuilt_index(stop_words=False),
+            {"while": ["loops/"], "repetition": ["loops/"]},
+        )
+        # With `stop_words` enabled, lunr's default stop word filter applies.
+        self.assertEqual(
+            search_prebuilt_index(stop_words=True),
+            {"while": [], "repetition": ["loops/"]},
+        )
 
     @mock.patch("subprocess.Popen", autospec=True)
     def test_prebuild_index_node(self, mock_popen):

@@ -4,11 +4,15 @@ import io
 import logging
 import os
 import unittest
+import warnings
 from unittest import mock
 
+import click
 from click.testing import CliRunner
 
 from mkdocs import __main__ as cli
+from mkdocs import utils
+from mkdocs.tests.base import tempdir
 
 
 class CLITests(unittest.TestCase):
@@ -739,3 +743,164 @@ class CLITests(unittest.TestCase):
             use_directory_urls=None,
             site_dir="custom",
         )
+
+    def test_unset_default_source_values_without_click_context(self):
+        kwargs = {"strict": False, "use_directory_urls": False}
+        cli.unset_default_source_values(kwargs, "strict", "use_directory_urls")
+        self.assertEqual(kwargs, {"strict": False, "use_directory_urls": False})
+
+    def _restore_mkdocs_log_handlers(self):
+        # `get-deps` attaches a warning counter to the "mkdocs" logger.
+        logger = logging.getLogger("mkdocs")
+        handlers = logger.handlers[:]
+        self.addCleanup(setattr, logger, "handlers", handlers)
+
+    @tempdir(files={"mkdocs.yml": "site_name: Test\nplugins: [redirects]\n"})
+    def test_get_deps(self, tdir):
+        self._restore_mkdocs_log_handlers()
+        config_path = os.path.join(tdir, "mkdocs.yml")
+        with (
+            mock.patch("mkdocs_get_deps.get_projects_file") as mock_get_projects_file,
+            mock.patch(
+                "mkdocs_get_deps.get_deps",
+                return_value=["mkdocs-ng", "mkdocs-redirects"],
+            ) as mock_get_deps,
+        ):
+            result = self.runner.invoke(
+                cli.cli,
+                ["get-deps", "-f", config_path, "-p", "projects.yaml"],
+                catch_exceptions=False,
+            )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(result.output, "mkdocs-ng\nmkdocs-redirects\n")
+        mock_get_projects_file.assert_called_once_with("projects.yaml")
+        (call,) = mock_get_deps.call_args_list
+        self.assertEqual(call.kwargs["config_file"].name, config_path)
+        self.assertIs(
+            call.kwargs["projects_file"],
+            mock_get_projects_file.return_value.__enter__.return_value,
+        )
+
+    @tempdir(files={"mkdocs.yml": "site_name: Test\nplugins: [foo]\n"})
+    def test_get_deps_with_warnings_exits_with_error(self, tdir):
+        self._restore_mkdocs_log_handlers()
+
+        def get_deps(config_file, projects_file):
+            logging.getLogger("mkdocs.get_deps").warning(
+                "Plugin 'foo' was not found in the projects file"
+            )
+            return ["mkdocs-ng"]
+
+        with (
+            mock.patch("mkdocs_get_deps.get_projects_file"),
+            mock.patch("mkdocs_get_deps.get_deps", side_effect=get_deps),
+        ):
+            result = self.runner.invoke(
+                cli.cli, ["get-deps", "-f", os.path.join(tdir, "mkdocs.yml")]
+            )
+
+        self.assertEqual(result.exit_code, 1)
+        self.assertIn("mkdocs-ng\n", result.output)
+        self.assertIn("Plugin 'foo' was not found in the projects file", result.output)
+
+
+class ColorFormatterTests(unittest.TestCase):
+    def make_record(self, level, msg):
+        return logging.LogRecord("mkdocs", level, __file__, 1, msg, None, None)
+
+    def test_format_without_terminal_width(self):
+        formatter = cli.ColorFormatter()
+        with mock.patch.object(cli.ColorFormatter.text_wrapper, "width", 0):
+            self.assertEqual(
+                formatter.format(
+                    self.make_record(logging.INFO, "Building documentation...")
+                ),
+                "INFO    -  Building documentation...",
+            )
+            self.assertEqual(
+                formatter.format(self.make_record(logging.WARNING, "Careful")),
+                click.style("WARNING -  ", fg="yellow") + "Careful",
+            )
+
+    def test_format_wraps_to_terminal_width(self):
+        formatter = cli.ColorFormatter()
+        record = self.make_record(
+            logging.ERROR, "one two three four five six seven\nsecond line"
+        )
+        with mock.patch.object(cli.ColorFormatter.text_wrapper, "width", 30):
+            output = formatter.format(record)
+
+        # Continuation lines are indented to line up with the text after the prefix.
+        self.assertEqual(
+            output,
+            click.style("ERROR   -  ", fg="red")
+            + "one two three four\n"
+            + "           five six seven\n"
+            + "           second line",
+        )
+
+
+class ShowWarningTests(unittest.TestCase):
+    def test_falls_back_to_the_warning_location(self):
+        with (
+            mock.patch("traceback.extract_stack", side_effect=RuntimeError("no stack")),
+            self.assertLogs("mkdocs.__main__", level="INFO") as cm,
+        ):
+            cli._showwarning("old thing", DeprecationWarning, "plugin.py", 12)
+
+        self.assertEqual(
+            cm.output,
+            [
+                'INFO:mkdocs.__main__:DeprecationWarning: old thing\n  File "plugin.py", line 12'
+            ],
+        )
+
+    def test_shows_the_calling_location(self):
+        def deprecated_api():
+            cli._showwarning("old thing", DeprecationWarning, __file__, 1)
+
+        with self.assertLogs("mkdocs.__main__", level="INFO") as cm:
+            deprecated_api()
+
+        [message] = cm.output
+        self.assertTrue(
+            message.startswith("INFO:mkdocs.__main__:DeprecationWarning: old thing\n")
+        )
+        self.assertIn(f'File "{__file__}", line', message)
+        self.assertIn("deprecated_api()", message)
+
+    def test_adds_the_warning_location_if_not_in_the_stack(self):
+        with self.assertLogs("mkdocs.__main__", level="INFO") as cm:
+            cli._showwarning("bad syntax", SyntaxWarning, "elsewhere.py", 7)
+
+        [message] = cm.output
+        self.assertTrue(
+            message.startswith("INFO:mkdocs.__main__:SyntaxWarning: bad syntax\n")
+        )
+        self.assertIn('File "elsewhere.py", line 7', message)
+
+
+class EnableWarningsTests(unittest.TestCase):
+    def test_enable_warnings(self):
+        from mkdocs.commands import build
+
+        self.addCleanup(setattr, build.log, "filters", build.log.filters[:])
+        with warnings.catch_warnings(), mock.patch.object(cli.sys, "warnoptions", []):
+            cli._enable_warnings()
+            self.assertIs(warnings.showwarning, cli._showwarning)
+            self.assertIsInstance(build.log.filters[-1], utils.DuplicateFilter)
+
+    def test_enable_warnings_keeps_user_configuration(self):
+        from mkdocs.commands import build
+
+        self.addCleanup(setattr, build.log, "filters", build.log.filters[:])
+        filters = build.log.filters[:]
+        with (
+            warnings.catch_warnings(),
+            mock.patch.object(cli.sys, "warnoptions", ["error::DeprecationWarning"]),
+        ):
+            showwarning = warnings.showwarning
+            cli._enable_warnings()
+            self.assertIs(warnings.showwarning, showwarning)
+            self.assertEqual(build.log.filters, filters)

@@ -5,6 +5,7 @@ import unittest
 from unittest import mock
 
 import mkdocs
+from mkdocs.config.base import ValidationError
 from mkdocs.localization import parse_locale
 from mkdocs.tests.base import tempdir
 from mkdocs.theme import Theme
@@ -127,6 +128,37 @@ class ThemeTests(unittest.TestCase):
                     "locale": parse_locale("en"),
                 },
             )
+
+    def test_vars_mapping_protocol(self):
+        theme = Theme(name="mkdocs", foo="bar")
+        size = len(theme)
+        self.assertEqual(size, len(dict(theme)))
+        del theme["foo"]
+        self.assertNotIn("foo", theme)
+        self.assertEqual(len(theme), size - 1)
+        with self.assertWarnsRegex(DeprecationWarning, r"Do not access Theme\._vars"):
+            theme_vars = theme._vars
+        self.assertEqual(theme_vars, dict(theme))
+
+    @tempdir()
+    def test_theme_without_config_file(self, theme_path):
+        with mock.patch("mkdocs.utils.get_theme_dir", return_value=theme_path):
+            with self.assertRaisesRegex(
+                ValidationError,
+                "^The theme 'mytheme' does not appear to have a configuration file. "
+                "Please upgrade to a current version of the theme.$",
+            ):
+                Theme(name="mytheme")
+
+    @tempdir(files={"mkdocs_theme.yml": "extends: missing-theme\n"})
+    def test_theme_extends_uninstalled_theme(self, theme_path):
+        with mock.patch("mkdocs.utils.get_theme_dir", return_value=theme_path):
+            with self.assertRaisesRegex(
+                ValidationError,
+                "^The theme 'mytheme' inherits from 'missing-theme', which does not "
+                "appear to be installed. The available installed themes are: ",
+            ):
+                Theme(name="mytheme")
 
     def test_highlightjs_assets_are_vendored(self):
         """Built-in themes must serve highlight.js locally, not from a CDN."""

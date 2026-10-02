@@ -164,7 +164,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             `livereload.Server` instance
         """
-        return server
+        return server  # pragma: no cover - removed below
 
     # Global events
 
@@ -180,7 +180,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             global configuration object
         """
-        return config
+        return config  # pragma: no cover - removed below
 
     def on_pre_build(self, *, config: MkDocsConfig) -> None:
         """
@@ -206,7 +206,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             global files collection
         """
-        return files
+        return files  # pragma: no cover - removed below
 
     def on_nav(
         self, nav: Navigation, /, *, config: MkDocsConfig, files: Files
@@ -223,7 +223,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             global navigation object
         """
-        return nav
+        return nav  # pragma: no cover - removed below
 
     def on_env(
         self, env: jinja2.Environment, /, *, config: MkDocsConfig, files: Files
@@ -241,7 +241,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             global Jinja Environment
         """
-        return env
+        return env  # pragma: no cover - removed below
 
     def on_post_build(self, *, config: MkDocsConfig) -> None:
         """
@@ -281,7 +281,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             a Jinja2 [Template](https://jinja.palletsprojects.com/en/latest/api/#jinja2.Template) object
         """
-        return template
+        return template  # pragma: no cover - removed below
 
     def on_template_context(
         self, context: TemplateContext, /, *, template_name: str, config: MkDocsConfig
@@ -299,7 +299,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             dict of template context variables
         """
-        return context
+        return context  # pragma: no cover - removed below
 
     def on_post_template(
         self, output_content: str, /, *, template_name: str, config: MkDocsConfig
@@ -318,7 +318,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             output of rendered template as string
         """
-        return output_content
+        return output_content  # pragma: no cover - removed below
 
     # Page events
 
@@ -337,7 +337,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             `mkdocs.structure.pages.Page` instance
         """
-        return page
+        return page  # pragma: no cover - removed below
 
     def on_page_read_source(self, /, *, page: Page, config: MkDocsConfig) -> str | None:
         """
@@ -357,7 +357,7 @@ class BasePlugin(Generic[SomeConfig]):
             The raw source for a page as unicode string. If `None` is returned, the
                 default loading from a file will be performed.
         """
-        return None
+        return None  # pragma: no cover - removed below
 
     def on_page_markdown(
         self, markdown: str, /, *, page: Page, config: MkDocsConfig, files: Files
@@ -376,7 +376,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             Markdown source text of page as string
         """
-        return markdown
+        return markdown  # pragma: no cover - removed below
 
     def on_page_content(
         self, html: str, /, *, page: Page, config: MkDocsConfig, files: Files
@@ -395,7 +395,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             HTML rendered from Markdown source as string
         """
-        return html
+        return html  # pragma: no cover - removed below
 
     def on_page_context(
         self,
@@ -419,7 +419,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             dict of template context variables
         """
-        return context
+        return context  # pragma: no cover - removed below
 
     def on_post_page(
         self, output: str, /, *, page: Page, config: MkDocsConfig
@@ -438,7 +438,7 @@ class BasePlugin(Generic[SomeConfig]):
         Returns:
             output of rendered template as string
         """
-        return output
+        return output  # pragma: no cover - removed below
 
 
 EVENTS = tuple(k[3:] for k in BasePlugin.__dict__ if k.startswith("on_"))

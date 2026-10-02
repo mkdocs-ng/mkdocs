@@ -18,7 +18,7 @@ try:
     from lunr import lunr  # type: ignore
 
     haslunrpy = True
-except ImportError:
+except ImportError:  # pragma: no cover - lunr.py is a test dependency
     haslunrpy = False
 
 log = logging.getLogger(__name__)

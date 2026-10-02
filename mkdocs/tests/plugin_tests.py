@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import os
 import unittest
+from importlib.metadata import EntryPoint
 from typing import TYPE_CHECKING
+from unittest import mock
 
 if TYPE_CHECKING:
     from typing_extensions import assert_type
@@ -283,6 +285,28 @@ class TestPluginCollection(unittest.TestCase):
         with self.assertRaises(KeyError):
             collection.run_event("unknown", "page content")
 
+    def test_register_unhashable_event_handler(self):
+        class UpperHandler:
+            __hash__ = None
+
+            def __eq__(self, other):
+                return isinstance(other, UpperHandler)
+
+            def __call__(self, markdown, **kwargs):
+                return markdown.upper()
+
+        class UnhashableHandlerPlugin(plugins.BasePlugin):
+            def __init__(self):
+                self.on_page_markdown = UpperHandler()
+
+        collection = plugins.PluginCollection()
+        plugin = UnhashableHandlerPlugin()
+        collection["unhashable"] = plugin
+        # The handler is registered, but the plugin it came from can't be recorded.
+        self.assertEqual(len(collection.events["page_markdown"]), 1)
+        self.assertIs(collection.events["page_markdown"][0], plugin.on_page_markdown)
+        self.assertEqual(collection._event_origins, {})
+
     @tempdir()
     def test_run_build_error_event(self, site_dir):
         build_errors = []
@@ -346,3 +370,102 @@ class TestPluginCollection(unittest.TestCase):
         self.assertEqual(str(build_errors[2]), "page content error")
         self.assertIs(build_errors[3].__class__, ValueError)
         self.assertEqual(str(build_errors[3]), "post page error")
+
+
+class TestBasePlugin(unittest.TestCase):
+    def test_config_class_must_be_a_config(self):
+        with self.assertRaisesRegex(
+            TypeError,
+            r"config_class <class 'dict'> must be a subclass of `mkdocs\.config\.base\.Config`",
+        ):
+
+            class BadPlugin(plugins.BasePlugin):
+                config_class = dict
+
+    def test_legacy_config_scheme(self):
+        class LegacyPlugin(plugins.BasePlugin):
+            config_scheme = (
+                ("foo", c.Type(str, default="default foo")),
+                ("bar", c.Type(int, default=0)),
+            )
+
+        plugin = LegacyPlugin()
+        errors, warnings = plugin.load_config({"bar": 2})
+        self.assertEqual((errors, warnings), ([], []))
+        self.assertIsInstance(plugin.config, base.LegacyConfig)
+        self.assertEqual(plugin.config, {"foo": "default foo", "bar": 2})
+
+    def test_combined_event_is_not_callable_directly(self):
+        class CombinedPlugin(plugins.BasePlugin):
+            def _on_nav_1(self, nav, **kwargs):
+                return nav
+
+            on_nav = plugins.CombinedEvent(_on_nav_1)
+
+        # The sub-methods are registered individually; the combined object itself
+        # is only a container and can't be called.
+        with self.assertRaisesRegex(
+            TypeError, "'CombinedEvent' object is not callable"
+        ):
+            CombinedPlugin().on_nav(["nav"], config={}, files=[])
+
+
+class TestGetPlugins(unittest.TestCase):
+    def test_third_party_plugin_overrides_builtin_one(self):
+        third_party = EntryPoint("search", "my_search:SearchPlugin", "mkdocs.plugins")
+        builtin = EntryPoint(
+            "search", "mkdocs.contrib.search:SearchPlugin", "mkdocs.plugins"
+        )
+        other = EntryPoint("other", "other_plugin:Plugin", "mkdocs.plugins")
+        for entry_points in (
+            [third_party, builtin, other],
+            [builtin, third_party, other],
+        ):
+            with self.subTest(entry_points=entry_points):
+                with mock.patch(
+                    "mkdocs.plugins.entry_points", return_value=entry_points
+                ):
+                    self.assertEqual(
+                        plugins.get_plugins(), {"search": third_party, "other": other}
+                    )
+
+
+class TestPluginCollectionEvents(unittest.TestCase):
+    def test_run_event_logs_the_plugin_at_debug_level(self):
+        collection = plugins.PluginCollection()
+        plugin = DummyPlugin()
+        plugin.load_config({})
+        collection["dummy"] = plugin
+        with self.assertLogs("mkdocs.plugins", level="DEBUG") as cm:
+            collection.on_page_content("html", page=None, config={}, files=[])
+        self.assertEqual(
+            cm.output,
+            ["DEBUG:mkdocs.plugins:Running `page_content` event from plugin 'dummy'"],
+        )
+        # The current plugin is only set while its event handler runs.
+        self.assertIsNone(collection._current_plugin)
+
+    def test_run_serve_event(self):
+        class WatchingPlugin(plugins.BasePlugin):
+            def on_serve(self, server, config, builder):
+                server.watch("extra_dir")
+
+        collection = plugins.PluginCollection()
+        collection["watcher"] = WatchingPlugin()
+        server = mock.Mock()
+        # A handler that returns None keeps the server it was given.
+        self.assertIs(collection.on_serve(server, config={}, builder=print), server)
+        server.watch.assert_called_once_with("extra_dir")
+
+
+class TestPluginLogger(unittest.TestCase):
+    def test_get_plugin_logger(self):
+        logger = plugins.get_plugin_logger("my_plugin.submodule")
+        self.assertIsInstance(logger, plugins.PrefixedLogger)
+        self.assertEqual(logger.logger.name, "mkdocs.plugins.my_plugin.submodule")
+        with self.assertLogs("mkdocs.plugins.my_plugin.submodule", level="INFO") as cm:
+            logger.info("Hello %s", "world")
+        self.assertEqual(
+            cm.output,
+            ["INFO:mkdocs.plugins.my_plugin.submodule:my_plugin: Hello world"],
+        )

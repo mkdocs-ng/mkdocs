@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import contextlib
 import copy
+import importlib.machinery
 import io
 import logging
 import os
 import re
+import sys
 import textwrap
 import unittest
 from typing import TYPE_CHECKING, Any, TypeVar
@@ -106,6 +108,20 @@ class TypeTest(TestCase):
             ValueError, "doesn't need to be wrapped into Optional"
         ):
             c.Optional(c.Type(int, default=5))
+
+
+class OptionalTest(TestCase):
+    def test_copy(self) -> None:
+        # Copying creates the object without calling __init__, so attribute lookups
+        # must not recurse into the not-yet-set wrapped option.
+        option = c.Optional(c.Type(int))
+        for copied in (copy.copy(option), copy.deepcopy(option)):
+            with self.subTest(copied=copied):
+                self.assertIsInstance(copied, c.Optional)
+                self.assertIsNone(copied.validate(None))
+                self.assertEqual(copied.validate(5), 5)
+                with self.assertRaises(c.ValidationError):
+                    copied.validate("5")
 
 
 class ChoiceTest(TestCase):
@@ -720,6 +736,24 @@ class ListOfItemsTest(TestCase):
             ),
         )
 
+    def test_repr(self) -> None:
+        option = c.ListOfItems(c.Type(int))
+        self.assertRegex(
+            repr(option),
+            r"^ListOfItems: <mkdocs\.config\.config_options\.Type object at 0x[0-9a-fA-F]+>$",
+        )
+
+    def test_validate_without_pre_validation(self) -> None:
+        # Used standalone (outside of a Config), there is no parent config to take
+        # the config file path from, but the items are still validated.
+        option = c.ListOfItems(c.Type(int))
+        self.assertEqual(option.validate([1, 2]), [1, 2])
+        with self.assertRaisesRegex(
+            c.ValidationError,
+            "Expected type: <class 'int'> but received: <class 'str'>",
+        ):
+            option.validate([1, "2"])
+
 
 class ExtraScriptsTest(TestCase):
     def test_js_async(self) -> None:
@@ -766,6 +800,18 @@ class ExtraScriptsTest(TestCase):
             option="The configuration is invalid. Expected a key-value mapping (dict) but received: <class 'int'>"
         ):
             self.get_config(Schema, {"option": [1]})
+
+    def test_path_like(self) -> None:
+        class Schema(Config):
+            option = c.ListOfItems(c.ExtraScript(), default=[])
+
+        conf = self.get_config(
+            Schema, {"option": [{"path": "js/bar.js", "defer": True}]}
+        )
+        script = conf.option[0]
+        assert isinstance(script, c.ExtraScriptValue)
+        self.assertEqual(str(script), "js/bar.js")
+        self.assertEqual(os.fspath(script), "js/bar.js")
 
     def test_unknown_key(self) -> None:
         class Schema(Config):
@@ -900,6 +946,22 @@ class DictOfItemsTest(TestCase):
             option="Expected type: <class 'str'> for keys, but received: <class 'int'> (key=2)"
         ):
             self.get_config(Schema, {"option": {"a": 1, 2: 3}})
+
+    def test_repr(self) -> None:
+        option = c.DictOfItems(c.Optional(c.Type(str)))
+        self.assertRegex(
+            repr(option),
+            r"^DictOfItems: <mkdocs\.config\.config_options\.Optional object at 0x[0-9a-fA-F]+>$",
+        )
+
+    def test_validate_without_pre_validation(self) -> None:
+        option = c.DictOfItems(c.Type(int))
+        self.assertEqual(option.validate({"a": 1, "b": 2}), {"a": 1, "b": 2})
+        with self.assertRaisesRegex(
+            c.ValidationError,
+            "Expected type: <class 'int'> but received: <class 'str'>",
+        ):
+            option.validate({"a": "1"})
 
 
 class FilesystemObjectTest(TestCase):
@@ -1244,6 +1306,23 @@ class ThemeTest(TestCase):
         )
         self.assertEqual(conf.option["show_sidebar"], False)
 
+    @tempdir()
+    def test_theme_relative_custom_dir(self, config_dir) -> None:
+        custom_dir = os.path.join(config_dir, "overrides")
+        os.mkdir(custom_dir)
+
+        class Schema(Config):
+            option = c.Theme()
+
+        # A relative custom_dir is resolved against the config file's directory.
+        conf = self.get_config(
+            Schema,
+            {"option": {"name": "mkdocs", "custom_dir": "overrides"}},
+            config_file_path=os.path.join(config_dir, "mkdocs.yml"),
+        )
+        self.assertEqual(conf.option.custom_dir, custom_dir)
+        self.assertEqual(conf.option.dirs[0], custom_dir)
+
     def test_theme_name_is_none(self) -> None:
         config = {
             "name": None,
@@ -1525,8 +1604,10 @@ class SubConfigTest(TestCase):
             [
                 (
                     "option",
-                    "Sub-option 'old': The configuration option 'old' has been "
-                    "deprecated and will be removed in a future release.",
+                    (
+                        "Sub-option 'old': The configuration option 'old' has been "
+                        "deprecated and will be removed in a future release."
+                    ),
                 ),
                 (
                     "option",
@@ -2014,6 +2095,31 @@ class MarkdownExtensionsTest(TestCase):
             markdown_extensions=re.compile(r"Failed to load extension 'unknown'.\n.+")
         ):
             self.get_config(Schema, config)
+
+    def test_invalid_extension_name(self) -> None:
+        class Schema(Config):
+            markdown_extensions = c.MarkdownExtensions()
+
+        with self.expect_error(
+            markdown_extensions="'1' is not a valid Markdown Extension name."
+        ):
+            self.get_config(Schema, {"markdown_extensions": {1: {"foo": "bar"}}})
+
+    def test_extension_error_includes_traceback(self) -> None:
+        class Schema(Config):
+            markdown_extensions = c.MarkdownExtensions()
+
+        # The extension itself fails, so the frames of its own code are reported.
+        with self.expect_error(
+            markdown_extensions=re.compile(
+                r"Failed to load extension 'toc'\.\n"
+                r"(?s:.*)toc\.py\", line \d+(?s:.*)\n"
+                r"KeyError: 'no_such_option'"
+            )
+        ):
+            self.get_config(
+                Schema, {"markdown_extensions": [{"toc": {"no_such_option": True}}]}
+            )
 
     def test_multiple_markdown_config_instances(self) -> None:
         # This had a bug where an extension config would persist to separate
@@ -2508,6 +2614,73 @@ class PluginsTest(TestCase):
         _, warnings = conf.validate()
         self.assertIsInstance(warnings[0][1], DeprecationNotice)
 
+    def test_plugin_config_dict_with_non_string_name(self) -> None:
+        class Schema(Config):
+            plugins = c.Plugins()
+
+        with self.expect_error(plugins="'1' is not a valid plugin name."):
+            self.get_config(Schema, {"plugins": {1: {}}})
+
+
+class _NotAPlugin:
+    pass
+
+
+class _StartupPlugin(BasePlugin[_FakePluginConfig]):
+    def on_startup(self, *, command, dirty) -> None:
+        pass
+
+
+class _StringWarningPlugin(BasePlugin[_FakePluginConfig]):
+    def load_config(self, options, config_file_path=None):
+        errors, warnings = super().load_config(options, config_file_path)
+        return errors, [*warnings, "a plain string warning"]
+
+
+@mock.patch(
+    "mkdocs.plugins.entry_points",
+    mock.Mock(
+        return_value=[
+            FakeEntryPoint("not-a-plugin", _NotAPlugin),
+            FakeEntryPoint("startup", _StartupPlugin),
+            FakeEntryPoint("sample", FakePlugin),
+            FakeEntryPoint("string-warning", _StringWarningPlugin),
+        ]
+    ),
+)
+class PluginLoadingTest(TestCase):
+    def test_plugin_not_a_base_plugin_subclass(self) -> None:
+        class Schema(Config):
+            plugins = c.Plugins()
+
+        with self.expect_error(
+            plugins=f"{_NotAPlugin.__module__}._NotAPlugin must be a subclass of "
+            "mkdocs.plugins.BasePlugin"
+        ):
+            self.get_config(Schema, {"plugins": ["not-a-plugin"]})
+
+    def test_plugins_with_startup_event_are_reused(self) -> None:
+        class Schema(Config):
+            plugins = c.Plugins()
+
+        conf1 = self.get_config(Schema, {"plugins": ["startup", "sample"]})
+        conf2 = self.get_config(Schema, {"plugins": ["startup", "sample"]})
+        # A plugin with `on_startup`/`on_shutdown` keeps its instance when the config
+        # is loaded again (as on rebuilds in `mkdocs serve`); others are recreated.
+        self.assertIsInstance(conf1.plugins["startup"], _StartupPlugin)
+        self.assertIs(conf1.plugins["startup"], conf2.plugins["startup"])
+        self.assertIsNot(conf1.plugins["sample"], conf2.plugins["sample"])
+
+    def test_plugin_string_warnings_are_prefixed(self) -> None:
+        class Schema(Config):
+            plugins = c.Plugins()
+
+        self.get_config(
+            Schema,
+            {"plugins": ["string-warning"]},
+            warnings=dict(plugins="Plugin 'string-warning': a plain string warning"),
+        )
+
 
 class HooksTest(TestCase):
     class Schema(Config):
@@ -2549,6 +2722,58 @@ class HooksTest(TestCase):
             hooks="Expected type: <class 'str'> but received: <class 'int'>"
         ):
             self.get_config(self.Schema, {"hooks": [7]})
+
+    @tempdir(files={"hooks/my_hook.txt": "print('not a module')"})
+    def test_hooks_not_a_python_module(self, src_dir) -> None:
+        # Only files that Python can import as modules are accepted.
+        hook_path = os.path.join(src_dir, "hooks", "my_hook.txt")
+        with self.expect_error(
+            hooks=f"Cannot import path '{hook_path}' as a Python module"
+        ):
+            self.get_config(
+                self.Schema,
+                {"hooks": ["hooks/my_hook.txt"]},
+                config_file_path=os.path.join(src_dir, "mkdocs.yml"),
+            )
+
+    @tempdir(files={"hooks/my_hook.py": ""})
+    def test_hooks_spec_without_loader(self, src_dir) -> None:
+        hook_path = os.path.join(src_dir, "hooks", "my_hook.py")
+        spec = importlib.machinery.ModuleSpec("my_hook", None, origin=hook_path)
+        with (
+            mock.patch("importlib.util.spec_from_file_location", return_value=spec),
+            mock.patch.dict(sys.modules),
+        ):
+            with self.expect_error(
+                hooks=f"Cannot import path '{hook_path}' as a Python module"
+            ):
+                self.get_config(
+                    self.Schema,
+                    {"hooks": ["hooks/my_hook.py"]},
+                    config_file_path=os.path.join(src_dir, "mkdocs.yml"),
+                )
+
+
+class PathSpecTest(TestCase):
+    class Schema(Config):
+        option = c.PathSpec()
+
+    def test_valid_patterns(self) -> None:
+        conf = self.get_config(self.Schema, {"option": "*.py\n/drafts/\n!keep.py\n"})
+        self.assertTrue(conf.option.match_file("foo/bar.py"))
+        self.assertTrue(conf.option.match_file("drafts/page.md"))
+        self.assertFalse(conf.option.match_file("keep.py"))
+        self.assertFalse(conf.option.match_file("nested/drafts/page.md"))
+
+    def test_wrong_type(self) -> None:
+        with self.expect_error(
+            option="Expected a multiline string, but a <class 'list'> was given."
+        ):
+            self.get_config(self.Schema, {"option": ["*.py"]})
+
+    def test_invalid_pattern(self) -> None:
+        with self.expect_error(option="Invalid git pattern: '!'"):
+            self.get_config(self.Schema, {"option": "*.py\n!\n"})
 
 
 class SchemaTest(TestCase):

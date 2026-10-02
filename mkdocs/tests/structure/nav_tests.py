@@ -3,6 +3,7 @@
 import sys
 import unittest
 
+from mkdocs.exceptions import BuildError
 from mkdocs.structure.files import File, Files, set_exclusions
 from mkdocs.structure.nav import (
     PageAlias,
@@ -791,3 +792,48 @@ class SiteNavigationTests(unittest.TestCase):
 
         self.assertEqual(about_section.title, "About This Project")
         self.assertEqual(api_section.title, "API Reference")
+
+    def test_nav_set_to_a_single_page(self):
+        # Validation requires a list, but a plugin may set `nav` to a single path.
+        cfg = load_config(site_url="http://example.com/")
+        cfg["nav"] = "index.md"
+        files = Files(
+            [File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
+        )
+        site_navigation = get_navigation(files, cfg)
+        self.assertEqual(str(site_navigation).strip(), "Page(title=[blank], url='/')")
+        self.assertEqual(len(site_navigation.items), 1)
+        self.assertEqual(len(site_navigation.pages), 1)
+
+    def test_nav_references_excluded_file(self):
+        nav_cfg = [{"Home": "index.md"}, {"Draft": "draft.md"}]
+        cfg = load_config(
+            nav=nav_cfg, site_url="http://example.com/", exclude_docs="draft.md"
+        )
+        files = Files(
+            [
+                File(s, cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+                for s in ("index.md", "draft.md")
+            ]
+        )
+        set_exclusions(files, cfg)
+        with self.assertLogs("mkdocs", level="INFO") as cm:
+            get_navigation(files, cfg)
+        self.assertEqual(
+            cm.output,
+            [
+                (
+                    "INFO:mkdocs.structure.nav:A reference to 'draft.md' is included in the "
+                    "'nav' configuration, but this file is excluded from the built site."
+                )
+            ],
+        )
+
+    def test_nav_file_page_set_to_other_type(self):
+        cfg = load_config(nav=[{"Home": "index.md"}], site_url="http://example.com/")
+        file = File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+        file.page = "not a page"
+        with self.assertRaisesRegex(
+            BuildError, "A plugin has set File.page to a type other than Page."
+        ):
+            get_navigation(Files([file]), cfg)

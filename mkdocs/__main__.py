@@ -15,7 +15,7 @@ import click
 import mkdocs
 from mkdocs import __version__, config, utils
 
-if sys.platform.startswith("win"):
+if sys.platform.startswith("win"):  # pragma: no cover - Windows-only, at import time
     try:
         import colorama
     except ImportError:
