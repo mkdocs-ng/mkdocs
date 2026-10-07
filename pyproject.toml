@@ -52,9 +52,9 @@ i18n = [
     "babel >=2.9.0",
 ]
 min-versions = [
-    "click ==8.4.2",
+    "click ==8.5.0",
     "Jinja2 ==3.1.6",
-    "markupsafe ==3.0.3",
+    "markupsafe ==3.0.4",
     "Markdown ==3.10.3",
     "PyYAML ==6.0.3",
     "watchdog ==6.0.0",
