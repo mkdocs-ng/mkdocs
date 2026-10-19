@@ -73,6 +73,7 @@ jobs:
           - python-version: '3.12'
           - python-version: '3.13'
           - python-version: '3.14'
+          - python-version: '3.15'
           - python-version: pypy-3.11
             py: pypy3
     runs-on: ubuntu-latest

@@ -73,7 +73,7 @@ Upstream issue | Symptom | Fixed in
 
 ## Also worth knowing
 
-*   Python 3.13 and 3.14 are fully supported and tested (added in 1.7.0), while
+*   Python 3.13, 3.14, and 3.15 are fully supported and tested, while
   upstream's last release predates them.
 *   Found another upstream issue you'd like to see fixed here? Please
   [open an issue].
