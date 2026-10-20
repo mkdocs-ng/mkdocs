@@ -249,30 +249,30 @@ _BUILTIN_THEME_DISTS = frozenset({"mkdocs-ng", "mkdocs"})
 def get_themes() -> dict[str, EntryPoint]:
     """Return a dict of all installed themes as {name: EntryPoint}."""
     themes: dict[str, EntryPoint] = {}
-    eps: dict[EntryPoint, None] = dict.fromkeys(entry_points(group="mkdocs.themes"))
+    # `EntryPoint.dist.name` parses the distribution's metadata on every access,
+    # and this runs for every config load (`Theme` clears the cache), so read
+    # each name once.
+    dist_names: dict[EntryPoint, str] = {}
+    for ep in dict.fromkeys(entry_points(group="mkdocs.themes")):
+        assert ep.dist is not None
+        dist_names[ep] = ep.dist.name
     builtins = {
-        ep.name
-        for ep in eps
-        if ep.dist is not None and ep.dist.name in _BUILTIN_THEME_DISTS
+        ep.name for ep, dist in dist_names.items() if dist in _BUILTIN_THEME_DISTS
     }
 
-    for theme in eps:
-        assert theme.dist is not None
-
-        if theme.name in builtins and theme.dist.name not in _BUILTIN_THEME_DISTS:
+    for theme, dist in dist_names.items():
+        if theme.name in builtins and dist not in _BUILTIN_THEME_DISTS:
             raise exceptions.ConfigurationError(
-                f"The theme '{theme.name}' is a builtin theme but the package '{theme.dist.name}' "
+                f"The theme '{theme.name}' is a builtin theme but the package '{dist}' "
                 "attempts to provide a theme with the same name."
             )
         elif theme.name in builtins and theme.name in themes:
             # Provided by both MkDocs NG and upstream MkDocs: same theme.
             continue
         elif theme.name in themes:
-            other_dist = themes[theme.name].dist
-            assert other_dist is not None
             log.warning(
-                f"A theme named '{theme.name}' is provided by the Python packages '{theme.dist.name}' "
-                f"and '{other_dist.name}'. The one in '{theme.dist.name}' will be used."
+                f"A theme named '{theme.name}' is provided by the Python packages '{dist}' "
+                f"and '{dist_names[themes[theme.name]]}'. The one in '{dist}' will be used."
             )
 
         themes[theme.name] = theme
