@@ -756,6 +756,42 @@ class ThemeUtilsTests(unittest.TestCase):
         ):
             utils.get_theme_names()
 
+    @mock.patch("mkdocs.utils.entry_points", autospec=True)
+    def test_get_themes_error_builtin_from_mkdocs_ng(self, mock_iter):
+        theme1 = mock.Mock()
+        theme1.name = "mkdocs"
+        theme1.dist.name = "mkdocs-ng"
+
+        theme2 = mock.Mock()
+        theme2.name = "mkdocs"
+        theme2.dist.name = "mkdocs2"
+
+        mock_iter.return_value = [theme1, theme2]
+
+        with self.assertRaisesRegex(
+            exceptions.ConfigurationError,
+            "The theme 'mkdocs' is a builtin theme but the package 'mkdocs2' ",
+        ):
+            utils.get_theme_names()
+
+    @mock.patch("mkdocs.utils.entry_points", autospec=True)
+    def test_get_themes_builtin_from_mkdocs_ng_and_upstream(self, mock_iter):
+        # Plugins pull in upstream MkDocs, which registers the same builtin themes.
+        themes = []
+        for dist in "mkdocs-ng", "mkdocs":
+            for name in "mkdocs", "readthedocs":
+                theme = mock.Mock()
+                theme.name = name
+                theme.dist.name = dist
+                themes.append(theme)
+
+        mock_iter.return_value = themes
+
+        with self.assertNoLogs("mkdocs"):
+            result = utils.get_themes()
+        self.assertCountEqual(result, ["mkdocs", "readthedocs"])
+        self.assertEqual(result["mkdocs"].dist.name, "mkdocs-ng")
+
 
 class LogCounterTests(unittest.TestCase):
     def setUp(self):

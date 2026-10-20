@@ -239,23 +239,34 @@ def get_theme_dir(name: str) -> str:
     return os.path.dirname(os.path.abspath(theme.load().__file__))
 
 
+# Distributions whose entry points provide the builtin themes. Upstream MkDocs is
+# usually installed too (plugins depend on it), and its entry points name the
+# same modules, which load from MkDocs NG.
+_BUILTIN_THEME_DISTS = frozenset({"mkdocs-ng", "mkdocs"})
+
+
 @functools.cache
 def get_themes() -> dict[str, EntryPoint]:
     """Return a dict of all installed themes as {name: EntryPoint}."""
     themes: dict[str, EntryPoint] = {}
     eps: dict[EntryPoint, None] = dict.fromkeys(entry_points(group="mkdocs.themes"))
     builtins = {
-        ep.name for ep in eps if ep.dist is not None and ep.dist.name == "mkdocs"
+        ep.name
+        for ep in eps
+        if ep.dist is not None and ep.dist.name in _BUILTIN_THEME_DISTS
     }
 
     for theme in eps:
         assert theme.dist is not None
 
-        if theme.name in builtins and theme.dist.name != "mkdocs":
+        if theme.name in builtins and theme.dist.name not in _BUILTIN_THEME_DISTS:
             raise exceptions.ConfigurationError(
                 f"The theme '{theme.name}' is a builtin theme but the package '{theme.dist.name}' "
                 "attempts to provide a theme with the same name."
             )
+        elif theme.name in builtins and theme.name in themes:
+            # Provided by both MkDocs NG and upstream MkDocs: same theme.
+            continue
         elif theme.name in themes:
             other_dist = themes[theme.name].dist
             assert other_dist is not None

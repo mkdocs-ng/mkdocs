@@ -63,7 +63,7 @@ You should now have the `mkdocs` command installed on your system. Run `mkdocs
 
 ```console
 $ mkdocs --version
-mkdocs, version 1.7.0 from /usr/local/lib/python3.12/site-packages/mkdocs (Python 3.12)
+mkdocs, version 2.0.0 from /usr/local/lib/python3.12/site-packages/mkdocs_ng/mkdocs (Python 3.12)
 ```
 
 > NOTE:
@@ -98,6 +98,84 @@ mkdocs, version 1.7.0 from /usr/local/lib/python3.12/site-packages/mkdocs (Pytho
 > clicking on it. Alternatively, you can download the [script][a2p] and run it
 > (`python win_add2path.py`).
 
+## Plugins, themes and the `mkdocs` package
+
+Almost every third-party plugin and theme, including Material for MkDocs,
+depends on the `mkdocs` package, so installing one also installs upstream
+MkDocs next to MkDocs NG:
+
+```console
+$ pip install mkdocs-ng mkdocs-material
+$ pip list | grep -E '^mkdocs( |-ng )'
+mkdocs                     1.6.1
+mkdocs-ng                  2.0.0
+```
+
+This is expected and harmless. MkDocs NG installs its `mkdocs` package to
+`site-packages/mkdocs_ng/mkdocs/` instead of `site-packages/mkdocs/`, so the two
+don't overwrite each other's files, and a small startup hook (`mkdocs_ng.pth`)
+makes `import mkdocs` load MkDocs NG. Whatever order the packages were installed
+in, the `mkdocs` command, `python -m mkdocs`, your plugins and themes, and
+`import mkdocs` in your own scripts all use MkDocs NG. `mkdocs --version` shows
+the `mkdocs_ng/mkdocs` path above.
+
+Leave the upstream package installed. Both packages provide the `mkdocs`
+command, so `pip uninstall mkdocs` removes it. MkDocs NG itself keeps working
+(`python -m mkdocs build` still does), and reinstalling it brings the command
+back:
+
+```bash
+pip install --force-reinstall --no-deps mkdocs-ng
+```
+
+> NOTE:
+> The startup hook relies on Python processing `.pth` files in
+> `site-packages`, which it does by default. The `mkdocs` command doesn't need
+> it, but where `.pth` files are skipped (`python -S`, or packages installed with
+> `pip install --target` and added to `PYTHONPATH`), `import mkdocs` in your own
+> code may find upstream MkDocs instead.
+
+### Keeping upstream MkDocs out
+
+Upstream MkDocs is never used, so you may prefer not to install it at all. [uv]
+can drop it from the dependencies of all plugins and themes. In a uv project,
+add an override with an environment marker that never matches to your
+`pyproject.toml`:
+
+```toml
+[tool.uv]
+# Plugins and themes depend on "mkdocs"; mkdocs-ng already provides it.
+override-dependencies = ["mkdocs; sys_platform == 'never'"]
+```
+
+With uv 0.9.8 or newer, `exclude-dependencies = ["mkdocs"]` does the same.
+Older versions of uv ignore that setting with a warning.
+
+With a requirements file, or with `uvx` and `uv tool`, put the same line in an
+overrides file and pass it with `--overrides`:
+
+```bash
+echo "mkdocs; sys_platform == 'never'" > overrides.txt
+uv pip install -r requirements.txt --overrides overrides.txt
+uvx --from mkdocs-ng --with mkdocs-material --overrides overrides.txt mkdocs build
+```
+
+pip has no equivalent, but with pip the upstream package does no harm either.
+
+### Switching from upstream MkDocs
+
+Install MkDocs NG. You don't need to uninstall `mkdocs` first, and your
+configuration, plugins and themes keep working unchanged:
+
+```bash
+pip install -U mkdocs-ng
+```
+
+Then replace `mkdocs` with `mkdocs-ng` in your requirements file or
+`pyproject.toml`. The same command upgrades from MkDocs NG 1.x, which still
+installed its package to `site-packages/mkdocs/`.
+
+[uv]: https://docs.astral.sh/uv/
 [Python]: https://www.python.org/
 [python.org]: https://www.python.org/downloads/
 [pip]: https://pip.readthedocs.io/en/stable/installing/

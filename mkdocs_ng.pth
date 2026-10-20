@@ -1,0 +1,3 @@
+# MkDocs NG: make `import mkdocs` load MkDocs NG. See mkdocs_ng/__init__.py.
+mkdocs_ng
+import mkdocs_ng; mkdocs_ng.install()
