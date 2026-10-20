@@ -18,7 +18,7 @@ pip uninstall mkdocs && pip install -U mkdocs-ng
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
-[#2624] | `INHERIT` accepted a single parent file, so splitting a configuration into several files required chaining them one after another. It now accepts a list of files. | 2.0.0 (#107)
+[#2624] | `INHERIT` accepted a single parent file, so splitting a configuration into several files required chaining them one after another. It now accepts a list of files. | 1.9.0 (#107)
 
 ## Development server
 
@@ -41,23 +41,23 @@ Upstream issue | Symptom | Fixed in
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
 [#4167] | Searching for words that happen to be English stop words — `while`, `if`, `for`, `from` and many more — returned no results, even though they are meaningful keywords in technical documentation. Stop words are now indexed by default; a `stop_words` plugin option restores the old behavior. | 1.8.0 (#80)
-[#4106] | In browsers without Web Worker support, search replaced the page's global `window.postMessage` function, breaking other scripts that rely on it. The fallback now leaves it alone (and no longer depends on jQuery or on the site being served from the domain root). | 2.0.0 (#106)
+[#4106] | In browsers without Web Worker support, search replaced the page's global `window.postMessage` function, breaking other scripts that rely on it. The fallback now leaves it alone (and no longer depends on jQuery or on the site being served from the domain root). | 1.9.0 (#106)
 
 ## Navigation
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
-[#3710] | When the same page was listed more than once in `nav` under different titles, every entry showed the title of the first one. Each entry now keeps its own title. | 2.0.0 (#103)
-[#4026] | A `nav` entry that links to a section of a page (`page.md#anchor` or `page/#anchor`) was reported as "not found in the documentation files", failing `strict` builds; the `page.md#anchor` form also produced a broken link. Both forms now work without a warning. | 2.0.0 (#104)
+[#3710] | When the same page was listed more than once in `nav` under different titles, every entry showed the title of the first one. Each entry now keeps its own title. | 1.9.0 (#103)
+[#4026] | A `nav` entry that links to a section of a page (`page.md#anchor` or `page/#anchor`) was reported as "not found in the documentation files", failing `strict` builds; the `page.md#anchor` form also produced a broken link. Both forms now work without a warning. | 1.9.0 (#104)
 
 ## Validation
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
 [#3690] | Anchor validation reported false positives for anchors generated late by Markdown extensions, e.g. `pymdownx.tabbed` with `combine_header_slug`. | 1.7.1 (#34)
-[#3696] | Using a deprecated configuration option — including deprecated options of plugins — emitted a WARNING, so `strict` builds failed although the option still worked or was harmless. Deprecation notices are now logged at INFO level. | 2.0.0 (#102)
+[#3696] | Using a deprecated configuration option — including deprecated options of plugins — emitted a WARNING, so `strict` builds failed although the option still worked or was harmless. Deprecation notices are now logged at INFO level. | 1.9.0 (#102)
 [#3703] | The "does not contain an anchor" warning gave no hint when the only problem was letter case; it now suggests the correct anchor (`did you mean '#conflicts'?`). | 1.8.0 (#83)
-[#4126] | `mkdocs build --quiet --strict` exited successfully even when there were warnings, because `--quiet` stopped warnings from being counted. Warnings are now still counted in `strict` mode; only their output is silenced. | 2.0.0 (#101)
+[#4126] | `mkdocs build --quiet --strict` exited successfully even when there were warnings, because `--quiet` stopped warnings from being counted. Warnings are now still counted in `strict` mode; only their output is silenced. | 1.9.0 (#101)
 
 ## Python API
 
@@ -69,7 +69,7 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
-[#3973] | No way to publish the documentation's Markdown for LLMs and coding agents; converting the HTML back to Markdown loses precision. The built-in `llms_txt` plugin publishes each page's Markdown and an `llms.txt` index. | 2.0.0 (#105)
+[#3973] | No way to publish the documentation's Markdown for LLMs and coding agents; converting the HTML back to Markdown loses precision. The built-in `llms_txt` plugin publishes each page's Markdown and an `llms.txt` index. | 1.9.0 (#105)
 
 ## Also worth knowing
 
