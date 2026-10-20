@@ -44,12 +44,17 @@ Install with pip:
 pip install mkdocs-ng
 ```
 
-Switching from `mkdocs`? Uninstall it first — the command, imports and
+Switching from `mkdocs`? Just install MkDocs NG — the command, imports and
 configuration stay exactly the same:
 
 ```bash
-pip uninstall mkdocs && pip install -U mkdocs-ng
+pip install -U mkdocs-ng
 ```
+
+Plugins and themes depend on the `mkdocs` package, so upstream MkDocs gets
+installed alongside. That's fine: MkDocs NG installs its files separately and
+always takes precedence, so leave the upstream package installed. See
+[Plugins, themes and the `mkdocs` package][plugins-install] for details.
 
 ## Support
 
@@ -97,6 +102,7 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [Discussions]: https://github.com/orgs/mkdocs-ng/discussions
 [release-notes]: https://mkdocs-ng.github.io/mkdocs/about/release-notes/
 [fixed-upstream]: https://mkdocs-ng.github.io/mkdocs/about/fixed-upstream-issues/
+[plugins-install]: https://mkdocs-ng.github.io/mkdocs/user-guide/installation/#plugins-themes-and-the-mkdocs-package
 [Contributing Guide]: https://mkdocs-ng.github.io/mkdocs/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [catalog]: https://github.com/mkdocs-ng/catalog
