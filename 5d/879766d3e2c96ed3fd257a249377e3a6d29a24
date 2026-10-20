@@ -1,0 +1,19 @@
+mkdocs/utils/__init__.py
+  s_ec4c29e172d507::t_b9bc4babf3f88a 252-258,260,263-264,266,274-275
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5d879766d3e2c96ed3fd257a249377e3a6d29a24",
+  "prompts": {},
+  "sessions": {
+    "s_ec4c29e172d507": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "32280e36-5c41-4fb7-9447-691e5f9de45b",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Xianpeng Shen <xianpeng.shen@gmail.com>"
+    }
+  }
+}
