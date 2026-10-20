@@ -11,8 +11,14 @@ package name on PyPI is `mkdocs-ng`, while the `mkdocs` command and all
 configuration stay the same:
 
 ```bash
-pip uninstall mkdocs && pip install -U mkdocs-ng
+pip install -U mkdocs-ng
+pip uninstall -y mkdocs
+pip install --force-reinstall --no-deps mkdocs-ng
 ```
+
+See [Switching from upstream MkDocs](../user-guide/installation.md#switching-from-upstream-mkdocs)
+for why MkDocs NG is reinstalled, and how to keep plugins and themes from
+installing upstream MkDocs again.
 
 ## Configuration
 

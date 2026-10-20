@@ -66,6 +66,9 @@ def build(
     """
     from mkdocs.commands.build import build as _build
     from mkdocs.config import load_config
+    from mkdocs.utils.dist_conflict import warn_if_upstream_installed
+
+    warn_if_upstream_installed()
 
     if isinstance(config_file, Path):
         config_file = str(config_file)
@@ -134,6 +137,9 @@ def serve(
             the config file, for example `site_name`, `nav` or `plugins`.
     """
     from mkdocs.commands.serve import serve as _serve
+    from mkdocs.utils.dist_conflict import warn_if_upstream_installed
+
+    warn_if_upstream_installed()
 
     if isinstance(config_file, Path):
         config_file = str(config_file)

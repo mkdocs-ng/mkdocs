@@ -44,11 +44,35 @@ Install with pip:
 pip install mkdocs-ng
 ```
 
-Switching from `mkdocs`? Uninstall it first — the command, imports and
-configuration stay exactly the same:
+> [!IMPORTANT]
+> Almost every plugin and theme (Material for MkDocs included) depends on the
+> `mkdocs` package, so installing one also installs upstream MkDocs, which
+> overwrites MkDocs NG's files. With [uv], prevent this in your
+> `pyproject.toml`:
+>
+> ```toml
+> [tool.uv]
+> override-dependencies = ["mkdocs; sys_platform == 'never'"]
+> ```
+>
+> With pip, remove the upstream package and reinstall MkDocs NG after
+> installing plugins or themes:
+>
+> ```bash
+> pip uninstall -y mkdocs
+> pip install --force-reinstall --no-deps mkdocs-ng
+> ```
+>
+> See [Installing plugins and themes][plugins-install] for requirements files,
+> `uvx`, CI and the limitations of the pip approach.
+
+Switching from `mkdocs`? The command, imports and configuration stay exactly
+the same:
 
 ```bash
-pip uninstall mkdocs && pip install -U mkdocs-ng
+pip install -U mkdocs-ng
+pip uninstall -y mkdocs
+pip install --force-reinstall --no-deps mkdocs-ng
 ```
 
 ## Support
@@ -97,6 +121,8 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [Discussions]: https://github.com/orgs/mkdocs-ng/discussions
 [release-notes]: https://mkdocs-ng.github.io/mkdocs/about/release-notes/
 [fixed-upstream]: https://mkdocs-ng.github.io/mkdocs/about/fixed-upstream-issues/
+[plugins-install]: https://mkdocs-ng.github.io/mkdocs/user-guide/installation/#installing-plugins-and-themes
+[uv]: https://docs.astral.sh/uv/
 [Contributing Guide]: https://mkdocs-ng.github.io/mkdocs/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [catalog]: https://github.com/mkdocs-ng/catalog

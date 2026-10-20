@@ -272,6 +272,9 @@ PKG_DIR = os.path.dirname(os.path.abspath(__file__))
 @color_option
 def cli():
     """MkDocs - Project documentation with Markdown."""
+    from mkdocs.utils.dist_conflict import warn_if_upstream_installed
+
+    warn_if_upstream_installed()
 
 
 @cli.command(name="serve")
