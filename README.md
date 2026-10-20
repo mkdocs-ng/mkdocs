@@ -18,7 +18,7 @@ third-party themes, plugins, and Markdown extensions.
 > `mkdocs-ng` while keeping the `mkdocs` command, imports and configuration
 > unchanged — a drop-in replacement.
 >
-> Highlights beyond the last upstream release: Python 3.10–3.14 support,
+> Highlights beyond the last upstream release: Python 3.10–3.15 support,
 > search that finds programming keywords like `while` and `for`, faster
 > builds with smaller site output, a stable Python API (`mkdocs.build()` /
 > `mkdocs.serve()`), fully offline syntax highlighting with no CDNs or
