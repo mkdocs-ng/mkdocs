@@ -92,7 +92,7 @@ path = "mkdocs/__init__.py"
 [tool.hatch.build]
 artifacts = ["/mkdocs/**/*.mo"]
 [tool.hatch.build.targets.sdist]
-include = ["/mkdocs", "/mkdocs_ng", "/mkdocs_ng.pth"]
+include = ["/mkdocs", "/mkdocs_ng", "/mkdocs_ng.pth", "/mkdocs_ng.start"]
 [tool.hatch.build.targets.wheel]
 packages = ["mkdocs", "mkdocs_ng"]
 exclude = ["/mkdocs/tests", "*.po", "*.pot", "babel.cfg"]
@@ -100,10 +100,11 @@ exclude = ["/mkdocs/tests", "*.po", "*.pot", "babel.cfg"]
 # of the upstream `mkdocs` distribution; see mkdocs_ng/__init__.py.
 sources = {"mkdocs" = "mkdocs_ng/mkdocs"}
 # Hatch can't map that rewrite for editable installs, so they add the repository
-# root to sys.path instead (and mkdocs_ng.pth still installs the import hook).
+# root to sys.path instead (and mkdocs_ng.pth/.start still install the import hook).
 dev-mode-dirs = ["."]
 [tool.hatch.build.targets.wheel.force-include]
 "mkdocs_ng.pth" = "mkdocs_ng.pth"
+"mkdocs_ng.start" = "mkdocs_ng.start"
 [tool.hatch.build.hooks.custom]
 dependencies = [
     "babel",

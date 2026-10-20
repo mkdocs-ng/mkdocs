@@ -15,6 +15,7 @@ from mkdocs.tests.base import tempdir
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PTH_FILE = REPO_ROOT / "mkdocs_ng.pth"
+START_FILE = REPO_ROOT / "mkdocs_ng.start"
 
 
 class FindRootTests(unittest.TestCase):
@@ -77,6 +78,20 @@ class FinderTests(unittest.TestCase):
         self.assertEqual(len(meta_path), 1)
 
 
+@unittest.skipUnless(START_FILE.is_file(), "needs a source checkout")
+class StartupFilesTests(unittest.TestCase):
+    def test_start_file_names_install(self):
+        # PEP 829: Python 3.15+ runs these entry points instead of .pth import lines.
+        entries = START_FILE.read_text(encoding="utf-8").split()
+        self.assertEqual(entries, ["mkdocs_ng:install"])
+        module, _, attr = entries[0].partition(":")
+        self.assertIs(getattr(sys.modules[module], attr), mkdocs_ng.install)
+
+    def test_pth_file_runs_the_same_hook(self):
+        lines = PTH_FILE.read_text(encoding="utf-8").splitlines()
+        self.assertIn("import mkdocs_ng; mkdocs_ng.install()", lines)
+
+
 @unittest.skipUnless(PTH_FILE.is_file(), "needs a source checkout")
 class SitePackagesTests(unittest.TestCase):
     """Run a fresh interpreter on a fake site-packages that has both packages."""
@@ -102,6 +117,7 @@ class SitePackagesTests(unittest.TestCase):
             path.write_text(content, encoding="utf-8")
         shutil.copy(mkdocs_ng.__file__, self.site / "mkdocs_ng" / "__init__.py")
         shutil.copy(PTH_FILE, self.site / "mkdocs_ng.pth")
+        shutil.copy(START_FILE, self.site / "mkdocs_ng.start")
 
     def run_python(self, code):
         # -S: don't load the real site-packages. -I: ignore PYTHONPATH and cwd.

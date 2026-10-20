@@ -113,8 +113,8 @@ mkdocs-ng                  2.0.0
 
 This is expected and harmless. MkDocs NG installs its `mkdocs` package to
 `site-packages/mkdocs_ng/mkdocs/` instead of `site-packages/mkdocs/`, so the two
-don't overwrite each other's files, and a small startup hook (`mkdocs_ng.pth`)
-makes `import mkdocs` load MkDocs NG. Whatever order the packages were installed
+don't overwrite each other's files, and a small startup hook makes
+`import mkdocs` load MkDocs NG. Whatever order the packages were installed
 in, the `mkdocs` command, `python -m mkdocs`, your plugins and themes, and
 `import mkdocs` in your own scripts all use MkDocs NG. `mkdocs --version` shows
 the `mkdocs_ng/mkdocs` path above.
@@ -129,9 +129,10 @@ pip install --force-reinstall --no-deps mkdocs-ng
 ```
 
 > NOTE:
-> The startup hook relies on Python processing `.pth` files in
-> `site-packages`, which it does by default. The `mkdocs` command doesn't need
-> it, but where `.pth` files are skipped (`python -S`, or packages installed with
+> The startup hook relies on Python processing the startup files in
+> `site-packages` (`mkdocs_ng.start` on Python 3.15 and newer, `mkdocs_ng.pth`
+> before that), which it does by default. The `mkdocs` command doesn't need it,
+> but where they are skipped (`python -S`, or packages installed with
 > `pip install --target` and added to `PYTHONPATH`), `import mkdocs` in your own
 > code may find upstream MkDocs instead.
 

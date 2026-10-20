@@ -5,9 +5,10 @@ MkDocs NG provides the `mkdocs` package, but almost every plugin and theme
 depends on the upstream `mkdocs` distribution, which installs a package of the
 same name. To keep the two from overwriting each other's files, MkDocs NG
 installs its package to `site-packages/mkdocs_ng/mkdocs/` instead of
-`site-packages/mkdocs/`, and `mkdocs_ng.pth` runs `install()` at interpreter
-startup. From then on `import mkdocs` finds MkDocs NG first, whether or not the
-upstream package is installed too.
+`site-packages/mkdocs/`, and runs `install()` at interpreter startup: from
+`mkdocs_ng.start` on Python 3.15+ (PEP 829), and from the import line in
+`mkdocs_ng.pth` on older versions. From then on `import mkdocs` finds MkDocs
+NG first, whether or not the upstream package is installed too.
 
 This module is imported by every Python process in the environment, so it must
 stay small and must not import MkDocs itself.
