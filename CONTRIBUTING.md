@@ -66,6 +66,19 @@ with [CodSpeed], and can be run locally with:
 hatch run bench:run
 ```
 
+Changes that could affect plugins or themes are covered by the plugin
+compatibility matrix in `compat/`. It builds a small site with each of about 30
+popular plugins from the [catalog], once on upstream MkDocs 1.6.1 and once on
+this checkout, and fails if a plugin builds on upstream but not here. It runs on
+every pull request that touches `mkdocs/`, and can be run locally with:
+
+```bash
+hatch run compat:run
+hatch run compat:run --only mkdocs-material,mike
+```
+
+To cover another plugin, add a case to `compat/cases.yaml`.
+
 If you changed documentation, preview it locally:
 
 ```bash
@@ -95,6 +108,7 @@ Everyone interacting in MkDocs NG spaces is expected to follow the
 [PyPA Code of Conduct].
 
 [CodSpeed]: https://app.codspeed.io/mkdocs-ng/mkdocs
+[catalog]: https://github.com/mkdocs-ng/catalog
 [GitHub Discussions]: https://github.com/orgs/mkdocs-ng/discussions
 [GitHub issues]: https://github.com/mkdocs-ng/mkdocs/issues
 [Hatch]: https://hatch.pypa.io/

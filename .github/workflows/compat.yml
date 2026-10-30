@@ -1,0 +1,48 @@
+name: Plugin compatibility
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'mkdocs/**'
+      - 'compat/**'
+      - 'pyproject.toml'
+      - '.github/workflows/compat.yml'
+  pull_request:
+    paths:
+      - 'mkdocs/**'
+      - 'compat/**'
+      - 'pyproject.toml'
+      - '.github/workflows/compat.yml'
+  schedule:
+    # Weekly, to catch new plugin releases that break on mkdocs-ng.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  compat:
+    name: Build popular plugins on upstream MkDocs and mkdocs-ng
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - name: Install dependencies
+        run: python -m pip install --upgrade uv PyYAML
+      - name: Run compatibility matrix
+        run: python -m compat --jobs 8 --markdown compat-report.md --json compat-report.json
+      - name: Publish report
+        if: always()
+        run: |
+          if [ -f compat-report.md ]; then cat compat-report.md >> "$GITHUB_STEP_SUMMARY"; fi

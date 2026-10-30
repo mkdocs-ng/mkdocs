@@ -158,6 +158,17 @@ dependencies = [
 run = "pytest benchmarks {args}"
 codspeed = "pytest benchmarks --codspeed {args}"
 
+[tool.hatch.envs.compat]
+# The matrix builds its own virtual environments with uv, one per plugin and
+# engine, so this environment only needs the runner's own dependencies.
+detached = true
+dependencies = [
+    "PyYAML",
+    "uv",
+]
+[tool.hatch.envs.compat.scripts]
+run = "python -m compat {args}"
+
 [tool.hatch.envs.types]
 dependencies = [
     "mypy",
