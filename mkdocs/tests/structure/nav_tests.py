@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import copy
 import sys
 import unittest
 
@@ -662,6 +663,26 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertTrue(alias.active)
         page.active = False
         self.assertFalse(alias.active)
+
+    def test_nav_duplicate_page_copy(self):
+        nav_cfg = [
+            {"First": "page.md"},
+            {"Second": "page.md"},
+        ]
+        cfg = load_config(nav=nav_cfg, site_url="http://example.com/")
+        files = Files(
+            [File("page.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)]
+        )
+        site_navigation = get_navigation(files, cfg)
+
+        for copy_func in (copy.copy, copy.deepcopy):
+            with self.subTest(copy_func=copy_func.__name__):
+                alias = copy_func(site_navigation.items[1])
+                self.assertIsInstance(alias, PageAlias)
+                self.assertEqual(alias.title, "Second")
+                self.assertEqual(alias.url, "page/")
+        nav_copy = copy.deepcopy(site_navigation)
+        self.assertIs(nav_copy.items[1].page, nav_copy.items[0])
 
     def test_nav_duplicate_page_subclass(self):
         class PageSubclass(Page):
