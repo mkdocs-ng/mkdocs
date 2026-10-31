@@ -135,6 +135,11 @@ matrix.type.scripts = [
 path = "mkdocs.yml"
 [tool.hatch.envs.integration]
 detached = false
+# mkdocstrings dropped Python 3.10 after 1.0.6, which can't use pymdown-extensions
+# 12.2+ (`Highlight.__init__()` requires `md` since then).
+dependencies = [
+    "pymdown-extensions <12.2; python_version < '3.11'",
+]
 # Same shadowing hazard as the docs env - the integration tests shell out to
 # the 'mkdocs' console script, which would otherwise run the upstream
 # distribution instead of this checkout.
