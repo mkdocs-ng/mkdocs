@@ -15,10 +15,13 @@ from mkdocs import utils
 from mkdocs.config import base
 from mkdocs.config import config_options as c
 from mkdocs.plugins import BasePlugin
+from mkdocs.structure.files import File
 from mkdocs.structure.nav import Section
 from mkdocs.structure.pages import Page
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
+
     from mkdocs.config.defaults import MkDocsConfig
     from mkdocs.structure import StructureItem
     from mkdocs.structure.files import Files
@@ -35,9 +38,21 @@ class LlmsTxtPlugin(BasePlugin[_PluginConfig]):
 
     Writes a Markdown version of every page to the site, at the page's source
     path (e.g. `about.md`), and an `llms.txt` index at the site root that links
-    to them, grouped by navigation section. With `full_output`, also writes
-    `llms-full.txt` with the content of all pages in navigation order.
+    to them, grouped by navigation section, followed by pages that are not in
+    the navigation. With `full_output`, also writes `llms-full.txt` with the
+    content of all pages in navigation order.
     """
+
+    def on_files(self, files: Files, *, config: MkDocsConfig) -> None:
+        self._files = files
+        # Register the index files, so that pages can link to them without a
+        # warning. They are placeholders here and written in `on_post_build`.
+        names = (
+            ["llms.txt", "llms-full.txt"] if self.config.full_output else ["llms.txt"]
+        )
+        for name in names:
+            if files.get_file_from_path(name) is None:
+                files.append(File.generated(config, name, content=""))
 
     def on_nav(self, nav: Navigation, *, config: MkDocsConfig, files: Files) -> None:
         self._nav = nav
@@ -53,8 +68,15 @@ class LlmsTxtPlugin(BasePlugin[_PluginConfig]):
 
     def on_post_build(self, *, config: MkDocsConfig) -> None:
         pages = [p for p in self._nav.pages if not p.file.inclusion.is_excluded()]
+        in_nav = {p.file.src_uri for p in self._nav.pages}
+        # Pages that are built but not in the navigation, such as blog posts.
+        others = [
+            f.page
+            for f in self._files.documentation_pages()
+            if f.page is not None and f.src_uri not in in_nav
+        ]
         utils.write_file(
-            llms_txt(self._nav.items, config).encode("utf-8"),
+            llms_txt(self._nav.items, config, others).encode("utf-8"),
             os.path.join(config.site_dir, "llms.txt"),
         )
         if self.config.full_output:
@@ -83,11 +105,17 @@ def page_markdown(page: Page) -> str:
     return markdown.strip() + "\n"
 
 
-def llms_txt(items: list[StructureItem], config: MkDocsConfig) -> str:
-    """Build the llms.txt index, with one list of links per nav section."""
+def llms_txt(
+    items: list[StructureItem], config: MkDocsConfig, others: Sequence[Page] = ()
+) -> str:
+    """
+    Build the llms.txt index, with one list of links per nav section.
+
+    Pages in `others`, which aren't in the nav, are listed last.
+    """
     sections: dict[str, list[str]] = {}
 
-    def add_items(items: list[StructureItem], path: tuple[str, ...]) -> None:
+    def add_items(items: Sequence[StructureItem], path: tuple[str, ...]) -> None:
         for item in items:
             if isinstance(item, Section):
                 add_items(item.children, (*path, item.title))
@@ -96,6 +124,8 @@ def llms_txt(items: list[StructureItem], config: MkDocsConfig) -> str:
                 sections.setdefault(heading, []).append(_link(item, config))
 
     add_items(items, ())
+    others = sorted(others, key=lambda page: page.file.src_uri)
+    add_items(others, ("Other pages",))
     output = _header(config)
     for heading, links in sections.items():
         output += f"## {heading}\n\n" + "\n".join(links) + "\n\n"

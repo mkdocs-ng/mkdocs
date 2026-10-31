@@ -22,6 +22,7 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 ### Added
 
 * New built-in `llms_txt` plugin that publishes your documentation for LLMs and coding agents, following the [llms.txt](https://llmstxt.org/) proposal: a Markdown version of every page (the page's Markdown after plugins have processed it, at its source path) and an `llms.txt` index at the site root. Set `full_output: true` to also write `llms-full.txt` with all pages in one file. Enable it with `plugins: [search, llms_txt]`. See [LLMs.txt](../user-guide/configuration.md#llmstxt). #105
+* `llms.txt` also lists pages that are built but not in `nav`, such as blog posts, under "Other pages", and pages can link to `llms.txt` and `llms-full.txt` without the link being reported as not found.
 * `INHERIT` accepts a list of files, so a configuration can be split into several files without chaining them. Later files override earlier ones, and the primary file overrides all of them. A file that inherits from itself is reported as an error instead of crashing. See [Configuration Inheritance](../user-guide/configuration.md#configuration-inheritance). #107
 * Add Python 3.15 to the tested and declared supported versions. #99
 

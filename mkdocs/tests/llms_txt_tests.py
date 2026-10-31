@@ -146,6 +146,45 @@ class LlmsTxtPluginTests(PathAssertionMixin, unittest.TestCase):
         )
         self.assertPathIsFile(site_dir, "my page.md")
 
+    @tempdir(
+        files={
+            "index.md": "# Home\n\nRead [llms.txt](llms.txt).\n",
+            "blog/post.md": "---\ndescription: News.\n---\n# A post\n",
+        }
+    )
+    @tempdir()
+    def test_build_pages_not_in_nav(self, site_dir, docs_dir):
+        cfg = load_config(
+            docs_dir=docs_dir,
+            site_dir=site_dir,
+            nav=["index.md"],
+            not_in_nav="blog/",
+            strict=True,
+            plugins=["llms_txt"],
+        )
+        # Linking to llms.txt from a page is not reported as a broken link.
+        with self.assertNoLogs("mkdocs", level="WARNING"):
+            build.build(cfg)
+
+        self.assertEqual(
+            _read(site_dir, "llms.txt"),
+            dedent(
+                """
+                # Example
+
+                ## Pages
+
+                - [Home](index.md)
+
+                ## Other pages
+
+                - [A post](blog/post.md): News.
+                """
+            )
+            + "\n",
+        )
+        self.assertPathIsFile(site_dir, "blog/post.md")
+
     def test_markdown_path(self):
         cfg = load_config()
         for src_uri, expected in [
