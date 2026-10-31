@@ -1,0 +1,4 @@
+# MkDocs NG: make `import mkdocs` load MkDocs NG. See mkdocs_ng/__init__.py.
+# Python 3.15+ runs mkdocs_ng.start instead of the import line (PEP 829).
+mkdocs_ng
+import mkdocs_ng; mkdocs_ng.install()
