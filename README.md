@@ -19,6 +19,7 @@ third-party themes, plugins, and Markdown extensions.
 > unchanged — a drop-in replacement.
 >
 > Highlights beyond the last upstream release: Python 3.10–3.15 support,
+> built-in `llms.txt` and per-page Markdown output for LLMs and coding agents,
 > search that finds programming keywords like `while` and `for`, faster
 > builds with smaller site output, a stable Python API (`mkdocs.build()` /
 > `mkdocs.serve()`), fully offline syntax highlighting with no CDNs or
