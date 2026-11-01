@@ -249,11 +249,11 @@ class MyPlugin(BasePlugin):
 There are three kinds of events: [Global Events], [Page Events] and
 [Template Events].
 
-<details class="card">
+<details>
   <summary>
     See a diagram with relations between all the plugin events
   </summary>
-  <div class="card-body">
+  <div>
     <ul>
       <li>The events themselves are shown in yellow, with their parameters.
       <li>Arrows show the flow of arguments and outputs of each event.
@@ -265,7 +265,6 @@ There are three kinds of events: [Global Events], [Page Events] and
 --8<-- "docs/img/plugin-events.svg"
   </div>
 </details>
-<br>
 
 #### One-time Events
 

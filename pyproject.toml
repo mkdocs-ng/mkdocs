@@ -196,6 +196,10 @@ check = "mypy mkdocs mkdocs_ng"
 path = "mkdocs.yml"
 [tool.hatch.envs.docs]
 detached = false
+# The docs site uses the Sumi theme, which the collector above can't look up.
+dependencies = [
+    "mkdocs-sumi >=0.1.1",
+]
 [tool.hatch.envs.docs.scripts]
 build = "mkdocs build"
 serve = "mkdocs serve"

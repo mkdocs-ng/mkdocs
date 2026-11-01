@@ -21,16 +21,9 @@ theme:
 The default theme, which was built as a custom [Bootstrap] theme, supports almost
 every feature of MkDocs.
 
-<div id="mkdocs-theme-images" class="carousel slide carousel-fade" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="../../img/mkdocs_theme_light_mode.png" class="d-block w-100" alt="MkDocs theme in light mode">
-    </div>
-    <div class="carousel-item">
-      <img src="../../img/mkdocs_theme_dark_mode.png" class="d-block w-100" alt="MkDocs theme in dark mode">
-    </div>
-  </div>
-</div>
+![MkDocs theme in light mode](../img/mkdocs_theme_light_mode.png)
+
+![MkDocs theme in dark mode](../img/mkdocs_theme_dark_mode.png)
 
 In addition to the default [theme configuration options][theme], the `mkdocs` theme
 supports the following options:
