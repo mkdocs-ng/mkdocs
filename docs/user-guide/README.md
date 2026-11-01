@@ -10,6 +10,7 @@ page listed below, or use the *next* and *previous* buttons in the navigation
 bar at the top of the page to move through the documentation in order.
 
 - [Installation](installation.md)
+- [Switching to MkDocs NG](migrating.md)
 - [Writing Your Docs](writing-your-docs.md)
 - [Choosing Your Theme](choosing-your-theme.md)
 - [Customizing Your Theme](customizing-your-theme.md)

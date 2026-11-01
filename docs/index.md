@@ -10,8 +10,14 @@ source files are written in Markdown, and configured with a single YAML
 configuration file. Start by reading the [introductory tutorial], then check the
 [User Guide] for more information.
 
+Already have a site built with MkDocs? [Switching to MkDocs NG] is a package
+change: your configuration, plugins and themes stay the same. See how it
+[compares] to the alternatives.
+
 [introductory tutorial]: getting-started.md
 [User Guide]: user-guide/README.md
+[Switching to MkDocs NG]: user-guide/migrating.md
+[compares]: about/comparison.md
 
 <div class="text-center">
 <a href="getting-started/" class="btn btn-primary" role="button">Getting Started</a>

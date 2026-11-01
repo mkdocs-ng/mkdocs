@@ -173,8 +173,10 @@ pip install -U mkdocs-ng
 ```
 
 Then replace `mkdocs` with `mkdocs-ng` in your requirements file or
-`pyproject.toml`. The same command upgrades from MkDocs NG 1.x, which still
-installed its package to `site-packages/mkdocs/`.
+`pyproject.toml`. The same command upgrades from MkDocs NG 1.9 and earlier,
+which still installed its package to `site-packages/mkdocs/`. See
+[Switching to MkDocs NG](migrating.md) for more, including what behaves
+differently from upstream MkDocs.
 
 [uv]: https://docs.astral.sh/uv/
 [Python]: https://www.python.org/
