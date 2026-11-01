@@ -11,7 +11,7 @@ package name on PyPI is `mkdocs-ng`, while the `mkdocs` command and all
 configuration stay the same:
 
 ```bash
-pip uninstall mkdocs && pip install -U mkdocs-ng
+pip install -U mkdocs-ng
 ```
 
 ## Configuration
