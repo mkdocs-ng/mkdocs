@@ -27,7 +27,7 @@ Changes since 1.10.0rc1:
     2.0 pre-releases (such as `mkdocs==2.0.dev6`). Their `mkdocs` launcher
     replaces ours and runs `from mkdocs import cli`, which failed with
     `ImportError`. `mkdocs.cli` now points to the MkDocs NG command line, so
-    that launcher runs MkDocs NG. #PR
+    that launcher runs MkDocs NG. #127
 
 ## Version 1.10.0rc1 (2026-11-01)
 
