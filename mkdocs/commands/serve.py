@@ -11,6 +11,7 @@ from urllib.parse import urlsplit
 from mkdocs.commands.build import build
 from mkdocs.config import load_config
 from mkdocs.livereload import LiveReloadServer, _serve_url
+from mkdocs.structure import render_cache
 
 if TYPE_CHECKING:
     from mkdocs.config.defaults import MkDocsConfig
@@ -69,6 +70,8 @@ def serve(
             config = get_config()
             config.site_url = serve_url
 
+        if render_cache.active is not None:
+            render_cache.active.start_build()
         build(config, serve_url=None if is_clean else serve_url, dirty=is_dirty)
 
     server = LiveReloadServer(
@@ -89,6 +92,8 @@ def serve(
         raise _ShutdownRequested
 
     previous_sigterm_handler = signal.signal(signal.SIGTERM, handle_sigterm)
+    # Reuse Markdown conversions of unchanged pages between rebuilds.
+    render_cache.active = render_cache.RenderCache()
 
     try:
         try:
@@ -122,6 +127,7 @@ def serve(
         except _ShutdownRequested:
             log.info("Shutting down...")
     finally:
+        render_cache.active = None
         signal.signal(signal.SIGTERM, previous_sigterm_handler)
         config.plugins.on_shutdown()
         if isdir(site_dir):
