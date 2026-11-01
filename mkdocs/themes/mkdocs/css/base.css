@@ -235,7 +235,8 @@ details.note h4, details.note h5, details.note h6 {
     color: var(--bs-primary-text-emphasis);
 }
 
-.admonition.info, details.info {
+.admonition.info, details.info,
+.admonition.important, details.important {
     color: var(--bs-info-text-emphasis);
     background-color: var(--bs-info-bg-subtle);
     border-color: var(--bs-info-border-subtle);
@@ -244,7 +245,9 @@ details.note h4, details.note h5, details.note h6 {
 .admonition.info h1, .admonition.info h2, .admonition.info h3,
 .admonition.info h4, .admonition.info h5, .admonition.info h6,
 details.info h1, details.info h2, details.info h3,
-details.info h4, details.info h5, details.info h6 {
+details.info h4, details.info h5, details.info h6,
+.admonition.important h1, .admonition.important h2, .admonition.important h3,
+.admonition.important h4, .admonition.important h5, .admonition.important h6 {
     color: var(--bs-info-text-emphasis);
 }
 
@@ -261,7 +264,8 @@ details.warning h4, details.warning h5, details.warning h6 {
     color: var(--bs-warning-text-emphasis);
 }
 
-.admonition.danger, details.danger {
+.admonition.danger, details.danger,
+.admonition.caution, details.caution {
     color: var(--bs-danger-text-emphasis);
     background-color: var(--bs-danger-bg-subtle);
     border-color: var(--bs-danger-border-subtle);
@@ -270,8 +274,23 @@ details.warning h4, details.warning h5, details.warning h6 {
 .admonition.danger h1, .admonition.danger h2, .admonition.danger h3,
 .admonition.danger h4, .admonition.danger h5, .admonition.danger h6,
 details.danger h1, details.danger h2, details.danger h3,
-details.danger h4, details.danger h5, details.danger h6 {
+details.danger h4, details.danger h5, details.danger h6,
+.admonition.caution h1, .admonition.caution h2, .admonition.caution h3,
+.admonition.caution h4, .admonition.caution h5, .admonition.caution h6 {
     color: var(--bs-danger-text-emphasis);
+}
+
+.admonition.tip, details.tip {
+    color: var(--bs-success-text-emphasis);
+    background-color: var(--bs-success-bg-subtle);
+    border-color: var(--bs-success-border-subtle);
+}
+
+.admonition.tip h1, .admonition.tip h2, .admonition.tip h3,
+.admonition.tip h4, .admonition.tip h5, .admonition.tip h6,
+details.tip h1, details.tip h2, details.tip h3,
+details.tip h4, details.tip h5, details.tip h6 {
+    color: var(--bs-success-text-emphasis);
 }
 
 .admonition, details {

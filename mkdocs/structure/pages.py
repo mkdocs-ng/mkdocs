@@ -3,10 +3,12 @@ from __future__ import annotations
 import enum
 import logging
 import posixpath
+import re
 import warnings
 from typing import TYPE_CHECKING, Any
 from urllib.parse import unquote as urlunquote
 from urllib.parse import urljoin, urlsplit, urlunsplit
+from xml.etree import ElementTree as etree
 
 import markdown
 import markdown.extensions.toc
@@ -29,7 +31,6 @@ from mkdocs.utils.rendering import get_heading_text
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterator, MutableMapping, Sequence
-    from xml.etree import ElementTree as etree
 
     from mkdocs.config.defaults import MkDocsConfig
     from mkdocs.structure.files import File, Files
@@ -312,6 +313,8 @@ class Page(StructureItem):
         raw_html_ext = _RawHTMLPreprocessor()
         raw_html_ext._register(md)
 
+        _AlertsTreeprocessor()._register(md)
+
         extract_anchors_ext = _ExtractAnchorsTreeprocessor(self.file, files, config)
         extract_anchors_ext._register(md)
 
@@ -376,6 +379,73 @@ class Page(StructureItem):
                     log_level,
                     f"Doc file '{self.file.src_uri}' contains a link '{original_link}', but {problem}.{context}",
                 )
+
+
+_ALERT_RE = re.compile(
+    r"\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\][ \t]*(?:\n|$)", re.IGNORECASE
+)
+
+
+class _AlertsTreeprocessor(markdown.treeprocessors.Treeprocessor):
+    """
+    Turn GitHub-style alerts into admonitions.
+
+    A blockquote whose first line is `[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`,
+    `[!WARNING]` or `[!CAUTION]` becomes the same HTML as the `admonition`
+    extension produces, which themes already style.
+    """
+
+    def run(self, root: etree.Element) -> None:
+        quotes = [
+            (parent, child)
+            for parent in root.iter()
+            for child in parent
+            if child.tag == "blockquote"
+        ]
+        for parent, quote in quotes:
+            self._convert(parent, quote)
+
+    @staticmethod
+    def _marker(element: etree.Element) -> re.Match[str] | None:
+        if element.tag != "p" or not element.text:
+            return None
+        return _ALERT_RE.match(element.text)
+
+    def _convert(self, parent: etree.Element, quote: etree.Element) -> None:
+        if not len(quote) or not self._marker(quote[0]):
+            return
+        # Python-Markdown merges blockquotes that are only separated by a blank
+        # line, so split them again at each alert marker.
+        segments: list[list[etree.Element]] = []
+        for child in quote:
+            if self._marker(child):
+                segments.append([])
+            segments[-1].append(child)
+
+        index = list(parent).index(quote)
+        parent.remove(quote)
+        boxes = []
+        for segment in segments:
+            first = segment[0]
+            match = self._marker(first)
+            assert match is not None and first.text is not None
+            kind = match[1].lower()
+            box = etree.Element("div", {"class": f"admonition {kind}"})
+            title = etree.SubElement(box, "p", {"class": "admonition-title"})
+            title.text = kind.title()
+            first.text = first.text[match.end() :]
+            if first.text or len(first):
+                box.append(first)
+            box.extend(segment[1:])
+            boxes.append(box)
+        for offset, box in enumerate(boxes):
+            parent.insert(index + offset, box)
+        boxes[-1].tail = quote.tail
+
+    def _register(self, md: markdown.Markdown) -> None:
+        # After extensions that handle these alerts themselves (such as Sumi's
+        # callouts, at 25), before inline Markdown (at 20).
+        md.treeprocessors.register(self, "mkdocs_alerts", priority=22)
 
 
 class _ExtractAnchorsTreeprocessor(markdown.treeprocessors.Treeprocessor):

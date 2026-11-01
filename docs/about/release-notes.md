@@ -44,6 +44,10 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
     example by another `mkdocs serve`. It serves on the next free port, up to
     8010, and says which one. A port you set yourself with `--dev-addr` or
     `dev_addr` is still used as given.
+*   GitHub-style [alerts](../user-guide/writing-your-docs.md#alerts), such
+    as `> [!NOTE]` or `> [!WARNING]`, render as admonitions instead of a
+    quote starting with `[!NOTE]`, so docs written for GitHub look right on
+    your site. The built-in themes style all five types.
 
 ### Fixed
 
