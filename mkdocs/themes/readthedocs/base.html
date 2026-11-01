@@ -101,6 +101,7 @@
           {%- set navlevel = 1 %}
           {%- for nav_item in nav %}
             {%- if nav_item.is_section %}
+              {%- call nav_fragment(nav_item) %}
               {%- if nav_item.is_page %}
                 <ul><li{% if nav_item == page %} class="current-section"{% endif %}>
                     <a href="{% if nav_item == page %}#{% else %}{{ nav_item.url|url }}{% endif %}" style="padding: 0; font-size: inherit; line-height: inherit">
@@ -117,6 +118,7 @@
                   </li>
                 {%- endfor %}
               </ul>
+              {%- endcall %}
             {%- elif config.theme.include_homepage_in_sidebar or (not nav_item == nav.homepage) %}
               <ul{% if nav_item.active %} class="current"{% endif %}>
                 <li class="toctree-l{{ navlevel }}{% if nav_item.active %} current{% endif %}">
