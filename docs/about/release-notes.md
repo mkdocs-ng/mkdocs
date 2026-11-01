@@ -37,6 +37,11 @@ Changes since 1.10.0rc1:
     New [comparison](comparison.md) of MkDocs NG with MkDocs 1.6, the 2.0
     pre-releases, ProperDocs and Zensical. #128
 
+### Maintenance
+
+*   The plugin compatibility matrix also covers
+    `mkdocs-awesome-pages-plugin` and `mkdocs-markdownextradata-plugin`. #PR
+
 ## Version 1.10.0rc1 (2026-11-01)
 
 MkDocs NG 1.10.0 makes sure MkDocs NG is what runs, however you install your
