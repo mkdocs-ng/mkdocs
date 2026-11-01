@@ -41,6 +41,7 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
+[#3914] | Links to other sites couldn't be told apart from internal links in the HTML, so themes couldn't mark them. They now get `rel="external"`. | 1.11.0
 [#3997] | GitHub-style alerts (`> [!NOTE]`, `> [!WARNING]` and so on) showed up as a quote starting with `[!NOTE]`. They now render as admonitions. | 1.11.0
 
 ## Search
@@ -97,6 +98,7 @@ Upstream issue | Symptom | Fixed in
 [#3696]: https://github.com/mkdocs/mkdocs/issues/3696
 [#3703]: https://github.com/mkdocs/mkdocs/issues/3703
 [#3710]: https://github.com/mkdocs/mkdocs/issues/3710
+[#3914]: https://github.com/mkdocs/mkdocs/issues/3914
 [#3952]: https://github.com/mkdocs/mkdocs/issues/3952
 [#3973]: https://github.com/mkdocs/mkdocs/issues/3973
 [#3997]: https://github.com/mkdocs/mkdocs/issues/3997
