@@ -351,7 +351,11 @@ class Page(StructureItem):
                     continue
                 if page.present_anchor_ids is None:  # Page was somehow not rendered.
                     continue
-                if anchor in page.present_anchor_ids:
+                # A fragment directive such as a text fragment (`#:~:text=foo`
+                # or `#section:~:text=foo`) is read by the browser, not matched
+                # against an element ID. Only the part before it is an anchor.
+                anchor = anchor.partition(":~:")[0]
+                if not anchor or anchor in page.present_anchor_ids:
                     continue
                 context = ""
                 case_matches = sorted(

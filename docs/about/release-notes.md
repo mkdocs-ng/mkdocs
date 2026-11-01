@@ -38,6 +38,13 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
     rebuild as before. With 400 pages and Material for MkDocs, a rebuild went
     from 7.6 to 4.0 seconds.
 
+### Fixed
+
+*   Links with a [text fragment](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments),
+    such as `page.md#:~:text=some%20words`, are no longer reported as
+    pointing to a missing anchor. When the link also names an anchor
+    (`page.md#heading:~:text=some%20words`), only that anchor is checked.
+
 ## Version 1.10.0 (2026-xx-xx)
 
 Changes since 1.10.0rc1:

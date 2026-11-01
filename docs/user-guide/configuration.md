@@ -465,6 +465,8 @@ Full list of values and examples of log messages that they can hide or make more
 *   `validation.links.anchors`
     * > Doc file 'example.md' contains a link '../foo/bar.md#some-heading', but the doc 'foo/bar.md' does not contain an anchor '#some-heading'.
     * > Doc file 'example.md' contains a link '#some-heading', but there is no such anchor on this page.
+
+    [Text fragments](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments) such as `bar.md#:~:text=some%20words` aren't anchors and are not reported. In `bar.md#some-heading:~:text=some%20words`, only `#some-heading` is checked.
 *   `validation.links.absolute_links`
     * > Doc file 'example.md' contains an absolute link '/foo/bar.html', it was left as is. Did you mean 'foo/bar.md'?
 *   `validation.links.unrecognized_links`
