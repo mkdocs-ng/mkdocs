@@ -938,3 +938,47 @@ class ServerTests(unittest.TestCase):
             # Paths outside of the current directory are kept as they are.
             outside = os.path.join(tmp_dir, "elsewhere")
             self.assertEqual(_try_relativize_path(outside), outside)
+
+
+class BindTests(unittest.TestCase):
+    def _server(self, port):
+        return LiveReloadServer(
+            lambda: None, host="127.0.0.1", port=port, root=".", mount_path="/docs/"
+        )
+
+    def _busy_port(self):
+        busy = socket.socket()
+        self.addCleanup(busy.close)
+        busy.bind(("127.0.0.1", 0))
+        busy.listen()
+        return busy.getsockname()[1]
+
+    def test_bind_free_port(self):
+        server = self._server(0)
+        self.addCleanup(server.server_close)
+        port = server.bind()
+        self.assertNotEqual(port, 0)
+        self.assertEqual(server.url, f"http://127.0.0.1:{port}/docs/")
+
+    def test_bind_busy_port_tries_next_ones(self):
+        busy_port = self._busy_port()
+        server = self._server(busy_port)
+        self.addCleanup(server.server_close)
+        with self.assertLogs("mkdocs.livereload", level="WARNING") as cm:
+            try:
+                port = server.bind(try_next_ports=10)
+            except OSError:  # pragma: no cover
+                self.skipTest("the following ports are busy too")
+        self.assertGreater(port, busy_port)
+        self.assertLessEqual(port, busy_port + 10)
+        self.assertEqual(server.url, f"http://127.0.0.1:{port}/docs/")
+        self.assertIn(
+            f"Port {busy_port} is in use, so serving on port {port} instead.",
+            cm.output[0],
+        )
+
+    def test_bind_busy_port_without_fallback_fails(self):
+        busy_port = self._busy_port()
+        server = self._server(busy_port)
+        with self.assertRaises(OSError):
+            server.bind()

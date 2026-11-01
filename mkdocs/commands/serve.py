@@ -19,6 +19,11 @@ if TYPE_CHECKING:
 log = logging.getLogger(__name__)
 
 
+_DEFAULT_PORT = 8000
+# How many ports after the default one to try when it is already in use.
+_PORT_FALLBACKS = 10
+
+
 class _ShutdownRequested(KeyboardInterrupt):
     pass
 
@@ -62,7 +67,6 @@ def serve(
 
     host, port = config.dev_addr
     mount_path = urlsplit(config.site_url or "/").path
-    config.site_url = serve_url = _serve_url(host, port, mount_path)
 
     def builder(config: MkDocsConfig | None = None):
         log.info("Building documentation...")
@@ -97,6 +101,13 @@ def serve(
 
     try:
         try:
+            # Bind before the first build, so that the site is built for the
+            # port it is served on. A busy default port falls back to the next.
+            port = server.bind(
+                try_next_ports=_PORT_FALLBACKS if port == _DEFAULT_PORT else 0
+            )
+            config.site_url = serve_url = _serve_url(host, port, mount_path)
+
             # Perform the initial build
             builder(config)
 
@@ -127,6 +138,7 @@ def serve(
         except _ShutdownRequested:
             log.info("Shutting down...")
     finally:
+        server.server_close()
         render_cache.active = None
         signal.signal(signal.SIGTERM, previous_sigterm_handler)
         config.plugins.on_shutdown()

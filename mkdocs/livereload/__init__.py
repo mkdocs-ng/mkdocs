@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import errno
 import functools
 import io
 import ipaddress
@@ -115,6 +116,8 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
         except Exception:
             pass
         self.root = os.path.abspath(root)
+        self._host = host
+        self._bound = False
         self.mount_path = _normalize_mount_path(mount_path)
         self.url = _serve_url(host, port, mount_path)
         self.build_delay = 0.1
@@ -197,8 +200,44 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
             self._watched_paths.pop(path)
             self.observer.unschedule(self._watch_refs.pop(path))
 
+    def server_bind(self) -> None:
+        if hasattr(socket, "SO_EXCLUSIVEADDRUSE"):  # pragma: no cover
+            # On Windows, SO_REUSEADDR lets a second server bind a port that is
+            # already in use, so it would never notice the port is busy.
+            self.allow_reuse_address = False
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
+        self._bound = True
+        self.url = _serve_url(self._host, self.server_address[1], self.mount_path)
+
+    def bind(self, *, try_next_ports: int = 0) -> int:
+        """
+        Bind the server's address and return the port it got.
+
+        If the port is in use, try up to `try_next_ports` following ports.
+        """
+        port = self.server_address[1]
+        for attempt in range(try_next_ports + 1):
+            self.server_address = (self._host, port + attempt)
+            try:
+                self.server_bind()
+            except OSError as e:
+                if e.errno != errno.EADDRINUSE or attempt == try_next_ports:
+                    self.server_close()
+                    raise
+                self.socket.close()
+                self.socket = socket.socket(self.address_family, self.socket_type)
+            else:
+                if attempt:
+                    log.warning(
+                        f"Port {port} is in use, so serving on port {port + attempt} instead."
+                    )
+                break
+        return self.server_address[1]
+
     def serve(self, *, open_in_browser=False):
-        self.server_bind()
+        if not self._bound:
+            self.server_bind()
         self.server_activate()
 
         if self._watched_paths:

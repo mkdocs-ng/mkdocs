@@ -139,6 +139,7 @@ class ServeTests(unittest.TestCase):
         config = self.make_config(temp_dir)
         fresh_config = self.make_config(temp_dir)
         server = mock.Mock()
+        server.bind.return_value = 8000
 
         with contextlib.ExitStack() as stack:
             mock_load_config = stack.enter_context(
@@ -335,6 +336,42 @@ class ServeTests(unittest.TestCase):
         server.serve.assert_not_called()
         config.plugins.on_shutdown.assert_called_once_with()
         self.assertFalse(site_dir.exists())
+
+    def _serve_with_port(self, temp_dir, dev_addr, bound_port):
+        config = self.make_config(temp_dir, dev_addr=dev_addr)
+        server = mock.Mock()
+        server.bind.return_value = bound_port
+
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(
+                mock.patch("mkdocs.commands.serve.load_config", return_value=config)
+            )
+            mock_build = stack.enter_context(mock.patch("mkdocs.commands.serve.build"))
+            stack.enter_context(
+                mock.patch(
+                    "mkdocs.commands.serve.LiveReloadServer", return_value=server
+                )
+            )
+            serve.serve()
+        return config, server, mock_build
+
+    @tempdir()
+    def test_default_port_falls_back_to_next_ports(self, temp_dir):
+        config, server, mock_build = self._serve_with_port(
+            temp_dir, ("127.0.0.1", 8000), 8001
+        )
+        server.bind.assert_called_once_with(try_next_ports=serve._PORT_FALLBACKS)
+        # The site is built for the port it is actually served on.
+        self.assertEqual(config.site_url, "http://127.0.0.1:8001/")
+        mock_build.assert_called_once_with(
+            config, serve_url="http://127.0.0.1:8001/", dirty=False
+        )
+
+    @tempdir()
+    def test_custom_port_does_not_fall_back(self, temp_dir):
+        config, server, _ = self._serve_with_port(temp_dir, ("127.0.0.1", 9000), 9000)
+        server.bind.assert_called_once_with(try_next_ports=0)
+        self.assertEqual(config.site_url, "http://127.0.0.1:9000/")
 
 
 if __name__ == "__main__":

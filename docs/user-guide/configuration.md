@@ -746,6 +746,11 @@ Determines the address used when running `mkdocs serve`. Must be of the format
 Allows a custom default to be set without the need to pass it through the
 `--dev-addr` option every time the `mkdocs serve` command is called.
 
+If the port is the default `8000` and another program is already using it,
+`mkdocs serve` uses the next free port, up to `8010`, and says so in its
+output. Any other port is used as given: if it is busy, `mkdocs serve` stops
+with an error.
+
 **default**: `'127.0.0.1:8000'`
 
 See also: [site_url](#site_url).
