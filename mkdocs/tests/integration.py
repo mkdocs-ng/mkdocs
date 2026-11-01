@@ -57,16 +57,16 @@ def builtin_theme_config(theme: str, directory: str) -> str:
         f.write(SUMI_TEMPLATES_HOOK)
 
     config["theme"] = {"name": theme}
-    config["docs_dir"] = os.path.join(root, config.get("docs_dir", "docs"))
-    config["hooks"] = [os.path.join(root, h) for h in config.get("hooks", [])] + [hook]
+    config["hooks"] = [*config.get("hooks", []), hook]
     config["plugins"] = [
         p
         for p in config.get("plugins", [])
         if p != "sumi" and not (isinstance(p, dict) and "sumi" in p)
     ]
-    config.pop("watch", None)
 
-    path = os.path.join(directory, f"mkdocs-{theme}.yml")
+    # Next to mkdocs.yml, because plugins such as mkdocstrings resolve paths
+    # relative to the configuration file.
+    path = os.path.join(root, f".mkdocs-integration-{theme}.yml")
     with open(path, "w", encoding="utf-8") as f:
         yaml.safe_dump(config, f, allow_unicode=True, sort_keys=False)
     return path
@@ -131,7 +131,10 @@ def main(output=None):
         out = os.path.join(output, theme)
         config_file = builtin_theme_config(theme, configs.name)
         command = [*base_cmd, out, "--config-file", config_file]
-        subprocess.check_call(command, cwd=project_dir)
+        try:
+            subprocess.check_call(command, cwd=project_dir)
+        finally:
+            os.remove(config_file)
 
     log.debug("Building test projects.")
     for project in os.listdir(TEST_PROJECTS):
