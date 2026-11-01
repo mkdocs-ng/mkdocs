@@ -10,7 +10,9 @@
 <h1 align="center">MkDocs NG</h1>
 
 <p align="center">
-  <strong>Project documentation with Markdown. The maintained MkDocs that keeps your plugins working.</strong>
+  <strong>Write Markdown. Ship docs.</strong>
+  <br>
+  The maintained MkDocs that keeps your plugins working.
 </p>
 
 <p align="center">
