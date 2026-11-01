@@ -868,6 +868,30 @@ class BuildTests(PathAssertionMixin, unittest.TestCase):
 
     @tempdir(
         files={
+            "test/foo.md": (
+                "## page1 heading\n\n"
+                "[a](bar.md#:~:text=page2)\n"
+                "[b](bar.md#page2-heading:~:text=page2)\n"
+                "[c](#:~:text=heading,-start&text=end)\n"
+                "[d](bar.md#missing:~:text=page2)"
+            ),
+            "test/bar.md": "## page2 heading",
+        }
+    )
+    @tempdir()
+    def test_anchor_text_fragments(self, site_dir, docs_dir):
+        cfg = load_config(
+            docs_dir=docs_dir, site_dir=site_dir, validation={"anchors": "warn"}
+        )
+
+        expected_logs = """
+            WARNING:Doc file 'test/foo.md' contains a link 'bar.md#missing:~:text=page2', but the doc 'test/bar.md' does not contain an anchor '#missing'.
+        """
+        with self._assert_build_logs(expected_logs):
+            build.build(cfg)
+
+    @tempdir(
+        files={
             "index.md": "[missing anchor](#missing)",
         }
     )
