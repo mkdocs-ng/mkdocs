@@ -37,6 +37,12 @@ Upstream issue | Symptom | Fixed in
 [#3630] | The long-dead Universal Analytics (`analytics.js`) snippet was hardcoded into the themes. It is removed; use `analytics.gtag` (GA4) or override the `analytics` template block. | 1.8.0 (#84)
 [#4045] | Disabling `highlightjs` broke switching between light and dark mode in the mkdocs theme. | 1.7.1 (#39)
 
+## Markdown
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3997] | GitHub-style alerts (`> [!NOTE]`, `> [!WARNING]` and so on) showed up as a quote starting with `[!NOTE]`. They now render as admonitions. | 1.11.0
+
 ## Search
 
 Upstream issue | Symptom | Fixed in
@@ -93,6 +99,7 @@ Upstream issue | Symptom | Fixed in
 [#3710]: https://github.com/mkdocs/mkdocs/issues/3710
 [#3952]: https://github.com/mkdocs/mkdocs/issues/3952
 [#3973]: https://github.com/mkdocs/mkdocs/issues/3973
+[#3997]: https://github.com/mkdocs/mkdocs/issues/3997
 [#4001]: https://github.com/mkdocs/mkdocs/issues/4001
 [#4014]: https://github.com/mkdocs/mkdocs/issues/4014
 [#4026]: https://github.com/mkdocs/mkdocs/issues/4026

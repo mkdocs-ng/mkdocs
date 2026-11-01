@@ -538,3 +538,24 @@ Note that fenced code blocks can not be indented. Therefore, they cannot be
 nested inside list items, blockquotes, etc.
 
 [fenced code blocks]: https://python-markdown.github.io/extensions/fenced_code_blocks/
+
+### Alerts
+
+NEW: **New in version 1.11.**
+
+MkDocs understands the [alerts] that GitHub renders, so a callout written for
+GitHub looks right on your site too. Start a blockquote with one of
+`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]` or `[!CAUTION]`, alone on its
+first line:
+
+```markdown
+> [!TIP]
+> Run `mkdocs serve` while you write to see your changes right away.
+```
+
+The alert becomes the same HTML as an admonition (`<div class="admonition tip">`
+with a `Tip` title), so the built-in themes and most third-party themes style it
+without any setup. To show a literal `[!NOTE]` at the start of a quote, escape
+it: `> \[!NOTE]`.
+
+[alerts]: https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts

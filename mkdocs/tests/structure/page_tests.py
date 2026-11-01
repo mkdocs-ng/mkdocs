@@ -1553,3 +1553,73 @@ class PageEdgeCaseTests(unittest.TestCase):
                 with mock.patch.object(_HTMLHandler, "feed", side_effect=error):
                     self.assertEqual(proc.run(lines), lines)
                 self.assertEqual(proc.present_anchor_ids, set())
+
+
+class AlertsTests(unittest.TestCase):
+    def render(self, source):
+        cfg = load_config()
+        fl = File("testing.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+        pg = Page("Foo", fl, cfg)
+        pg.markdown = source
+        pg.render(cfg, Files([fl]))
+        return pg.content
+
+    def test_alert_becomes_admonition(self):
+        self.assertEqual(
+            self.render("> [!NOTE]\n> Useful *information*.\n> More."),
+            '<div class="admonition note">\n'
+            '<p class="admonition-title">Note</p>\n'
+            "<p>Useful <em>information</em>.\nMore.</p>\n"
+            "</div>",
+        )
+
+    def test_all_alert_types(self):
+        for kind in ("NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION", "tip"):
+            with self.subTest(kind=kind):
+                self.assertIn(
+                    f'<div class="admonition {kind.lower()}">\n'
+                    f'<p class="admonition-title">{kind.title()}</p>',
+                    self.render(f"> [!{kind}]\n> Text."),
+                )
+
+    def test_alert_with_several_paragraphs(self):
+        self.assertEqual(
+            self.render("> [!TIP]\n>\n> One.\n>\n> Two."),
+            '<div class="admonition tip">\n'
+            '<p class="admonition-title">Tip</p>\n'
+            "<p>One.</p>\n"
+            "<p>Two.</p>\n"
+            "</div>",
+        )
+
+    def test_consecutive_alerts_stay_separate(self):
+        html = self.render("> [!WARNING]\n> A.\n\n> [!CAUTION]\n> B.\n\nAfter.")
+        self.assertEqual(
+            html,
+            '<div class="admonition warning">\n'
+            '<p class="admonition-title">Warning</p>\n'
+            "<p>A.</p>\n"
+            "</div>\n"
+            '<div class="admonition caution">\n'
+            '<p class="admonition-title">Caution</p>\n'
+            "<p>B.</p>\n"
+            "</div>\n"
+            "<p>After.</p>",
+        )
+
+    def test_nested_alert(self):
+        html = self.render("- Item\n\n    > [!IMPORTANT]\n    > Nested.")
+        self.assertIn('<li>\n<p>Item</p>\n<div class="admonition important">', html)
+
+    def test_not_an_alert(self):
+        for source in (
+            "> Plain quote.",
+            "> [!NOTE] text on the same line\n> More.",
+            "> [!UNKNOWN]\n> Text.",
+            "> \\[!NOTE]\n> Escaped.",
+            "> Text first.\n>\n> [!NOTE]\n> Later.",
+        ):
+            with self.subTest(source=source):
+                html = self.render(source)
+                self.assertTrue(html.startswith("<blockquote>"), html)
+                self.assertNotIn("admonition", html)
