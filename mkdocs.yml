@@ -25,6 +25,7 @@ nav:
   - About:
     - Release Notes: about/release-notes.md
     - Fixed Upstream Issues: about/fixed-upstream-issues.md
+    - Comparison: about/comparison.md
     - Contributing: about/contributing.md
     - License: about/license.md
 

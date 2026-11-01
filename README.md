@@ -55,7 +55,9 @@ pip install -U mkdocs-ng
 Plugins and themes depend on the `mkdocs` package, so upstream MkDocs gets
 installed alongside. That's fine: MkDocs NG installs its files separately and
 always takes precedence, so leave the upstream package installed. See
-[Plugins, themes and the `mkdocs` package][plugins-install] for details.
+[Plugins, themes and the `mkdocs` package][plugins-install] for details, and
+[Switching to MkDocs NG][migrating] for what behaves differently from upstream
+MkDocs.
 
 ## Support
 
@@ -73,6 +75,8 @@ first, but they are still welcome in [Discussions].
 - [Official Documentation][mkdocs]
 - [Latest Release Notes][release-notes]
 - [Fixed Upstream Issues][fixed-upstream]
+- [Switching to MkDocs NG][migrating]
+- [Comparison with upstream MkDocs 2.0, ProperDocs and Zensical][comparison]
 - [Catalog of third-party plugins, themes and recipes][catalog]
 
 ## Contributing to MkDocs
@@ -104,6 +108,8 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [release-notes]: https://mkdocs-ng.github.io/mkdocs/about/release-notes/
 [fixed-upstream]: https://mkdocs-ng.github.io/mkdocs/about/fixed-upstream-issues/
 [plugins-install]: https://mkdocs-ng.github.io/mkdocs/user-guide/installation/#plugins-themes-and-the-mkdocs-package
+[migrating]: https://mkdocs-ng.github.io/mkdocs/user-guide/migrating/
+[comparison]: https://mkdocs-ng.github.io/mkdocs/about/comparison/
 [Contributing Guide]: https://mkdocs-ng.github.io/mkdocs/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [catalog]: https://github.com/mkdocs-ng/catalog

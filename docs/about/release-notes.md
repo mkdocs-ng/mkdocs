@@ -29,6 +29,14 @@ Changes since 1.10.0rc1:
     `ImportError`. `mkdocs.cli` now points to the MkDocs NG command line, so
     that launcher runs MkDocs NG. #127
 
+### Documentation
+
+*   New [Switching to MkDocs NG](../user-guide/migrating.md) page: how to
+    switch from upstream MkDocs, ProperDocs or the MkDocs 2.0 pre-releases,
+    what behaves differently from MkDocs 1.6.1, and how to switch back.
+    New [comparison](comparison.md) of MkDocs NG with MkDocs 1.6, the 2.0
+    pre-releases, ProperDocs and Zensical. #128
+
 ## Version 1.10.0rc1 (2026-11-01)
 
 MkDocs NG 1.10.0 makes sure MkDocs NG is what runs, however you install your
