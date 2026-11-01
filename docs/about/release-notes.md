@@ -19,6 +19,17 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 
 ## Version 1.10.0 (2026-xx-xx)
 
+### Changed
+
+*   The `mkdocs` command no longer shows the "switch to ProperDocs" warning
+    that some plugins print, such as `mkdocs-redirects`, `mkdocs-gen-files`,
+    `mkdocs-literate-nav`, `mkdocs-section-index` and `mkdocs-rss-plugin`. It
+    warns that "MkDocs 2.0" could replace what `pip install mkdocs` installs,
+    which doesn't apply to MkDocs NG. MkDocs NG sets
+    `DISABLE_MKDOCS_2_WARNING=true`, the variable the warning itself
+    suggests, unless you have already set it; set it to `false` to see the
+    warning again. #123
+
 ### Fixed
 
 *   Installing a plugin or theme no longer overwrites MkDocs NG. Almost every

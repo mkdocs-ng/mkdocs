@@ -272,6 +272,12 @@ PKG_DIR = os.path.dirname(os.path.abspath(__file__))
 @color_option
 def cli():
     """MkDocs - Project documentation with Markdown."""
+    # Some plugins (mkdocs-redirects, mkdocs-gen-files, mkdocs-literate-nav, ...)
+    # print a warning when run by the `mkdocs` command: "MkDocs 2.0" could replace
+    # what `pip install mkdocs` installs, so switch to ProperDocs. That doesn't
+    # apply to MkDocs NG, so turn it off with the variable the warning names,
+    # unless the user has set it.
+    os.environ.setdefault("DISABLE_MKDOCS_2_WARNING", "true")
 
 
 @cli.command(name="serve")
