@@ -17,6 +17,18 @@ $ mkdocs --version
 mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 ```
 
+## Version 1.10.0 (2026-xx-xx)
+
+Changes since 1.10.0rc1:
+
+### Fixed
+
+*   The `mkdocs` command keeps working when a plugin pulls in upstream MkDocs
+    2.0 pre-releases (such as `mkdocs==2.0.dev6`). Their `mkdocs` launcher
+    replaces ours and runs `from mkdocs import cli`, which failed with
+    `ImportError`. `mkdocs.cli` now points to the MkDocs NG command line, so
+    that launcher runs MkDocs NG. #127
+
 ## Version 1.10.0rc1 (2026-11-01)
 
 MkDocs NG 1.10.0 makes sure MkDocs NG is what runs, however you install your
