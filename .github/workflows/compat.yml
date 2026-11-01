@@ -5,12 +5,18 @@ on:
       - main
     paths:
       - 'mkdocs/**'
+      - 'mkdocs_ng/**'
+      - 'mkdocs_ng.pth'
+      - 'mkdocs_ng.start'
       - 'compat/**'
       - 'pyproject.toml'
       - '.github/workflows/compat.yml'
   pull_request:
     paths:
       - 'mkdocs/**'
+      - 'mkdocs_ng/**'
+      - 'mkdocs_ng.pth'
+      - 'mkdocs_ng.start'
       - 'compat/**'
       - 'pyproject.toml'
       - '.github/workflows/compat.yml'

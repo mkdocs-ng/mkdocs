@@ -160,6 +160,11 @@ def init_git(site: Path) -> None:
         subprocess.run(cmd, cwd=site, env=env, check=True, capture_output=True)
 
 
+def mkdocs_command(py: Path) -> Path:
+    """The `mkdocs` launcher next to a venv's python."""
+    return py.with_name("mkdocs.exe" if os.name == "nt" else "mkdocs")
+
+
 def install(case: Case, engine: str, work: Path, python: str) -> tuple[Path, str]:
     """Create a venv with the plugin and the engine. Return its python and a log."""
     venv = work / "venv"
@@ -173,28 +178,33 @@ def install(case: Case, engine: str, work: Path, python: str) -> tuple[Path, str
     py = venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
 
     base = ["uv", "pip", "install", "-q", "--python", str(py)]
-    engine_req = UPSTREAM_REQUIREMENT if engine == "upstream" else str(ROOT)
-    steps = [[*base, *case.install, engine_req]]
-    if engine == "ng":
-        # Plugins depend on the upstream 'mkdocs' distribution, which ships a
-        # package of the same name. Reinstall this checkout last so its files
-        # are the ones that get imported.
-        steps.append(
-            [*base, "--reinstall-package", "mkdocs-ng", "--no-deps", str(ROOT)]
-        )
+    if engine == "upstream":
+        steps = [[*base, *case.install, UPSTREAM_REQUIREMENT]]
+    else:
+        # Install the way users do: MkDocs NG first, then the plugin, which
+        # pulls in the upstream 'mkdocs' distribution and its 'mkdocs' package
+        # and launcher. MkDocs NG has to keep winning without being reinstalled.
+        steps = [[*base, str(ROOT)], [*base, *case.install]]
     for cmd in steps:
         proc = _run(cmd, work, INSTALL_TIMEOUT)
         log.append(proc.stdout)
         if proc.returncode:
             raise RuntimeError("".join(log))
 
-    proc = _run([str(py), "-c", "import mkdocs; print(mkdocs.__version__)"], work, 60)
-    version = proc.stdout.strip().splitlines()[-1] if proc.stdout.strip() else ""
     expected = UPSTREAM_VERSION if engine == "upstream" else ng_version()
-    if proc.returncode or version != expected:
-        raise RuntimeError(
-            f"expected mkdocs {expected}, imported {version!r}\n{proc.stdout}"
-        )
+    checks = {
+        "import mkdocs": [str(py), "-c", "import mkdocs; print(mkdocs.__version__)"],
+        "mkdocs --version": [str(mkdocs_command(py)), "--version"],
+    }
+    version = ""
+    for what, cmd in checks.items():
+        proc = _run(cmd, work, 60)
+        found = re.findall(r"\d+\.\d+\S*", proc.stdout)
+        version = found[0] if found else ""
+        if proc.returncode or version != expected:
+            raise RuntimeError(
+                f"{what}: expected mkdocs {expected}, got {version!r}\n{proc.stdout}"
+            )
     return py, version
 
 

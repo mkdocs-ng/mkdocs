@@ -69,8 +69,10 @@ hatch run bench:run
 Changes that could affect plugins or themes are covered by the plugin
 compatibility matrix in `compat/`. It builds a small site with each of about 30
 popular plugins from the [catalog], once on upstream MkDocs 1.6.1 and once on
-this checkout, and fails if a plugin builds on upstream but not here. It runs on
-every pull request that touches `mkdocs/`, and can be run locally with:
+this checkout, and fails if a plugin builds on upstream but not here. MkDocs NG
+is installed first and the plugin after it, as users do, and each case also
+checks that `import mkdocs` and the `mkdocs` command still run MkDocs NG. It runs
+on every pull request that touches `mkdocs/`, and can be run locally with:
 
 ```bash
 hatch run compat:run
