@@ -28,7 +28,24 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
     which doesn't apply to MkDocs NG. MkDocs NG sets
     `DISABLE_MKDOCS_2_WARNING=true`, the variable the warning itself
     suggests, unless you have already set it; set it to `false` to see the
-    warning again.
+    warning again. #123
+
+### Fixed
+
+*   Installing a plugin or theme no longer overwrites MkDocs NG. Almost every
+    plugin and theme depends on the `mkdocs` package, so upstream MkDocs got
+    installed into the same `site-packages/mkdocs/` directory: whichever
+    package was installed last won, and `pip uninstall mkdocs` deleted most of
+    MkDocs NG. MkDocs NG now installs its package to
+    `site-packages/mkdocs_ng/mkdocs/`, and a startup hook (`mkdocs_ng.start`,
+    or `mkdocs_ng.pth` before Python 3.15) makes `import mkdocs` load it, so
+    the `mkdocs` command, plugins and themes always run MkDocs NG, in any
+    install order. Switching from upstream MkDocs is now just
+    `pip install -U mkdocs-ng`, with no need to uninstall `mkdocs`. A
+    third-party package can no longer replace the builtin `mkdocs` and
+    `readthedocs` themes when upstream MkDocs isn't installed. See
+    [Plugins, themes and the `mkdocs` package](../user-guide/installation.md#plugins-themes-and-the-mkdocs-package).
+    #115
 
 ## Version 1.9.0 (2026-10-31)
 

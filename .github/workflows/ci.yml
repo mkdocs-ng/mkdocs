@@ -137,7 +137,11 @@ jobs:
       - name: Check packaged files
         shell: bash -e -x {0}
         run: |
-          expected_wheel=(-emkdocs/{templates/sitemap.xml,config/base.py,py.typed,contrib/search/lunr-language/lunr.nl.js,themes/{mkdocs,readthedocs}/{base.html,locales/{de,es}/LC_MESSAGES/messages.mo}})
-          expected_sdist=("${expected_wheel[@]}" -e{pyproject.toml,hatch_build.py})
+          package_files=({templates/sitemap.xml,config/base.py,py.typed,contrib/search/lunr-language/lunr.nl.js,themes/{mkdocs,readthedocs}/{base.html,locales/{de,es}/LC_MESSAGES/messages.mo}})
+          bootstrap_files=(-emkdocs_ng/__init__.py -emkdocs_ng.pth -emkdocs_ng.start)
+          expected_sdist=("${package_files[@]/#/-emkdocs/}" "${bootstrap_files[@]}" -e{pyproject.toml,hatch_build.py})
+          # The wheel installs the package to mkdocs_ng/mkdocs/, out of the upstream package's way.
+          expected_wheel=("${package_files[@]/#/-emkdocs_ng/mkdocs/}" "${bootstrap_files[@]}")
           test "$(tar -ztf dist/mkdocs_ng-*.tar.gz | grep -F "${expected_sdist[@]}" | tee /dev/stderr | wc -l)" -eq "${#expected_sdist[@]}"
-          test "$(unzip -l dist/mkdocs_ng-*any.whl | grep -F "${expected_wheel[@]}" | tee /dev/stderr | wc -l)" -eq "${#expected_wheel[@]}"
+          test "$(unzip -Z1 dist/mkdocs_ng-*any.whl | grep -F "${expected_wheel[@]}" | tee /dev/stderr | wc -l)" -eq "${#expected_wheel[@]}"
+          ! unzip -Z1 dist/mkdocs_ng-*any.whl | grep '^mkdocs/'
