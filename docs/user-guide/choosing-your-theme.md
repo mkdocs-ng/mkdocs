@@ -38,7 +38,7 @@ supports the following options:
     default selection of the toggle menu on first page load is the value set to
     `color_mode`. Default: `false`.
 
-    ![color mode toggle menu](../img/color_mode_toggle_menu.png)
+    ![color mode toggle menu](../img/color_mode_toggle_menu.png){ width="315" }
 
 *   **`nav_style`**: Adjust the visual style of the top navigation bar. Set to
     one of `primary`, `dark` or `light`. Default: `primary`. This option is
@@ -137,7 +137,7 @@ A clone of the default theme used by the [Read the Docs] service, which offers
 the same restricted feature set as its parent theme. Like its parent theme, only
 two levels of navigation are supported.
 
-![ReadTheDocs](../img/readthedocs.png)
+![The readthedocs theme](../img/readthedocs.png)
 
 In addition to the default [theme configuration options][theme], the `readthedocs`
 theme supports the following options:
@@ -214,6 +214,31 @@ theme supports the following options:
 
 ## Third Party Themes
 
+### Sumi
+
+[Sumi] is the theme made for MkDocs NG, and the one this documentation site
+uses. It bundles its fonts, icons and search, so it works offline, and adds a
+command palette search, light and dark modes, landing pages, a blog and a
+Markdown copy of every page for coding agents.
+
+```bash
+pip install mkdocs-sumi
+```
+
+```yaml
+theme:
+  name: sumi
+plugins:
+  - search
+  - sumi
+```
+
+![The Sumi theme](../img/sumi.png)
+
+See the [Sumi documentation][Sumi] for its options and components.
+
+### More themes
+
 A list of third party themes can be found at the [community wiki] page and [the ranked catalog][catalog]. If you have created your own, please add them there.
 
 WARNING: Installing an MkDocs theme means installing a Python package and executing any code that the author has put in there. So, exercise the usual caution; there's no attempt at sandboxing.
@@ -228,4 +253,5 @@ WARNING: Installing an MkDocs theme means installing a Python package and execut
 [Read the Docs]: https://readthedocs.org/
 [community wiki]: https://github.com/mkdocs-ng/mkdocs/wiki/MkDocs-Themes
 [catalog]: https://github.com/mkdocs-ng/catalog#-theming
+[Sumi]: https://mkdocs-ng.github.io/mkdocs-sumi/
 [localizing your theme]: localizing-your-theme.md

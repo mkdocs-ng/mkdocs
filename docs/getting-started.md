@@ -24,9 +24,14 @@ mkdocs new my-project
 cd my-project
 ```
 
-Take a moment to review the initial project that has been created for you.
+Take a moment to review the initial project that has been created for you:
 
-![The initial MkDocs layout](img/initial-layout.png)
+```text
+my-project/
+    mkdocs.yml    # The configuration file.
+    docs/
+        index.md  # The documentation homepage.
+```
 
 There's a single configuration file named `mkdocs.yml`, and a folder named
 `docs` that will contain your documentation source files (`docs` is
@@ -70,7 +75,7 @@ site_name: MkLorum
 Your browser should immediately reload, and you'll see your new site name take
 effect.
 
-![The site_name setting](img/site-name.png)
+![The site_name setting](img/site-name.png){ width="410" }
 
 NOTE:
 The [`site_name`][site_name] configuration
@@ -100,7 +105,7 @@ Save your changes and you'll now see a navigation bar with `Home` and `About`
 items on the left as well as `Search`, `Previous`, and `Next` items on the
 right.
 
-![Screenshot](img/multipage.png)
+![A navigation bar with Home and About](img/multipage.png)
 
 Try the menu items and navigate back and forth between pages. Then click on
 `Search`. A search dialog will appear, allowing you to search for any text on
@@ -109,7 +114,7 @@ term on the site and links directly to the section of the page in which the
 search term appears. You get all of that with no effort or configuration on your
 part!
 
-![Screenshot](img/search.png)
+![The search dialog](img/search.png)
 
 ## Theming our documentation
 
@@ -126,7 +131,30 @@ theme: readthedocs
 
 Save your changes, and you'll see the ReadTheDocs theme being used.
 
-![Screenshot](img/readthedocs.png)
+![The ReadTheDocs theme](img/readthedocs.png)
+
+Themes can also be installed as packages. [Sumi], the theme made for MkDocs
+NG, adds a command palette search, light and dark modes and a Markdown copy of
+every page. Install it, then select it and enable its plugin:
+
+```bash
+pip install mkdocs-sumi
+```
+
+```yaml
+site_name: MkLorum
+nav:
+  - Home: index.md
+  - About: about.md
+theme: sumi
+plugins:
+  - search
+  - sumi
+```
+
+![The Sumi theme](img/sumi-tutorial.png)
+
+See [Choosing your Theme] for more themes.
 
 ## Changing the Favicon Icon
 
@@ -204,6 +232,8 @@ For help with MkDocs, use [GitHub Discussions] for questions and general help,
 and [GitHub issues] to report bugs or request features.
 
 [Installation Guide]: user-guide/installation.md
+[Choosing your Theme]: user-guide/choosing-your-theme.md
+[Sumi]: https://mkdocs-ng.github.io/mkdocs-sumi/
 [docs_dir]: user-guide/configuration.md#docs_dir
 [deploy]: user-guide/deploying-your-docs.md
 [GitHub Discussions]: https://github.com/orgs/mkdocs-ng/discussions
