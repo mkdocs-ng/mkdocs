@@ -281,6 +281,49 @@ class CLITests(unittest.TestCase):
 
     @mock.patch("mkdocs.config.load_config", autospec=True)
     @mock.patch("mkdocs.commands.build.build", autospec=True)
+    def test_build_disables_properdocs_warning(self, mock_build, mock_load_config):
+        seen = []
+
+        def load_config(**kwargs):
+            seen.append(os.environ.get("DISABLE_MKDOCS_2_WARNING"))
+            return mock.MagicMock()
+
+        mock_load_config.side_effect = load_config
+        # `None` unsets the variable while the command runs.
+        result = self.runner.invoke(
+            cli.cli,
+            ["build"],
+            env={"DISABLE_MKDOCS_2_WARNING": None},
+            catch_exceptions=False,
+        )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(seen, ["true"])
+
+    @mock.patch("mkdocs.config.load_config", autospec=True)
+    @mock.patch("mkdocs.commands.build.build", autospec=True)
+    def test_build_keeps_user_properdocs_warning_setting(
+        self, mock_build, mock_load_config
+    ):
+        seen = []
+
+        def load_config(**kwargs):
+            seen.append(os.environ.get("DISABLE_MKDOCS_2_WARNING"))
+            return mock.MagicMock()
+
+        mock_load_config.side_effect = load_config
+        result = self.runner.invoke(
+            cli.cli,
+            ["build"],
+            env={"DISABLE_MKDOCS_2_WARNING": "false"},
+            catch_exceptions=False,
+        )
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(seen, ["false"])
+
+    @mock.patch("mkdocs.config.load_config", autospec=True)
+    @mock.patch("mkdocs.commands.build.build", autospec=True)
     def test_build_clean(self, mock_build, mock_load_config):
         result = self.runner.invoke(
             cli.cli, ["build", "--clean"], catch_exceptions=False
