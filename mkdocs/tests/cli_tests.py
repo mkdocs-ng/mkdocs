@@ -19,6 +19,18 @@ class CLITests(unittest.TestCase):
     def setUp(self):
         self.runner = CliRunner()
 
+    def test_cli_importable_from_package(self):
+        # Upstream MkDocs 2.0's `mkdocs` launcher runs `from mkdocs import cli`.
+        from mkdocs import cli as package_cli
+
+        self.assertIs(package_cli, cli.cli)
+
+    def test_package_getattr_raises_for_unknown_names(self):
+        import mkdocs
+
+        with self.assertRaises(AttributeError):
+            mkdocs.no_such_attribute  # noqa: B018
+
     def test_unset_default_source_values_restores_default_values(self):
         kwargs = {"build_type": "False", "strict": False, "use_directory_urls": False}
         ctx = mock.Mock()

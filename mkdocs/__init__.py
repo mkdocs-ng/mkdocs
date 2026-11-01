@@ -151,3 +151,15 @@ def serve(
         use_directory_urls=use_directory_urls,
         **kwargs,
     )
+
+
+def __getattr__(name: str) -> Any:
+    # The `mkdocs` launcher of upstream MkDocs 2.0 runs `from mkdocs import cli`.
+    # Plugins can pull that release in next to MkDocs NG, and its launcher then
+    # replaces ours. Providing `cli` keeps the `mkdocs` command working, and
+    # running MkDocs NG.
+    if name == "cli":
+        from mkdocs.__main__ import cli
+
+        return cli
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
