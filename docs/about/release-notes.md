@@ -28,6 +28,10 @@ Changes since 1.10.0rc1:
     replaces ours and runs `from mkdocs import cli`, which failed with
     `ImportError`. `mkdocs.cli` now points to the MkDocs NG command line, so
     that launcher runs MkDocs NG. #127
+*   The blog plugin of Material for MkDocs no longer crashes with
+    `TypeError: _data_to_navigation() missing 1 required positional argument`
+    on posts that set `links`. MkDocs NG 1.9.0 added a parameter to that
+    private function, which the plugin calls directly. #129
 
 ### Documentation
 

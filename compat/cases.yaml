@@ -32,6 +32,9 @@
     docs/blog/posts/hello.md: |
       ---
       date: 2024-01-01
+      links:
+        - guide/page.md
+        - Example: https://example.com/
       ---
 
       # Hello

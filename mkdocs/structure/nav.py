@@ -241,7 +241,14 @@ def get_navigation(files: Files, config: MkDocsConfig) -> Navigation:
     return Navigation(items, pages)
 
 
-def _data_to_navigation(data, files: Files, config: MkDocsConfig, seen: set[int]):
+def _data_to_navigation(
+    data, files: Files, config: MkDocsConfig, seen: set[int] | None = None
+):
+    # Plugins call this private function too, with only three arguments (the
+    # blog plugin of Material for MkDocs builds post links with it), so `seen`
+    # must stay optional.
+    if seen is None:
+        seen = set()
     if isinstance(data, dict):
         return [
             (

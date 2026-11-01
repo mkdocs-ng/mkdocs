@@ -7,8 +7,10 @@ import unittest
 from mkdocs.exceptions import BuildError
 from mkdocs.structure.files import File, Files, set_exclusions
 from mkdocs.structure.nav import (
+    Link,
     PageAlias,
     Section,
+    _data_to_navigation,
     _get_by_type,
     get_navigation,
     set_section_titles_from_index_pages,
@@ -705,6 +707,19 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertIs(second.page, page)
         self.assertEqual(second.title, "Second")
         self.assertEqual(site_navigation.pages, [page])
+
+    def test_data_to_navigation_without_seen(self):
+        # The blog plugin of Material for MkDocs builds post links this way.
+        items = _data_to_navigation(
+            [{"Example": "https://example.com/"}, {"Section": [{"Docs": "docs.md"}]}],
+            Files([]),
+            None,
+        )
+        link, section = items
+        self.assertIsInstance(link, Link)
+        self.assertEqual(link.url, "https://example.com/")
+        self.assertIsInstance(section, Section)
+        self.assertEqual(section.children[0].url, "docs.md")
 
     def test_active(self):
         nav_cfg = [
