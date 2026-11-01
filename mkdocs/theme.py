@@ -165,5 +165,8 @@ class Theme(MutableMapping[str, Any]):
         env = jinja2.Environment(loader=loader, auto_reload=False)
         env.filters["url"] = templates.url_filter
         env.filters["script_tag"] = templates.script_tag_filter
+        nav_fragments = templates.NavFragmentCache()
+        env._mkdocs_nav_fragments = nav_fragments  # type: ignore[attr-defined]
+        env.globals["nav_fragment"] = nav_fragments
         localization.install_translations(env, self.locale, self.dirs)
         return env

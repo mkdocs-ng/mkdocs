@@ -81,6 +81,7 @@
                         <ul class="nav navbar-nav">
                         {%- for nav_item in nav %}
                         {%- if nav_item.children %}
+                            {%- call nav_fragment(nav_item) %}
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle{% if nav_item.active %} active" aria-current="page{% endif %}" role="button" data-bs-toggle="dropdown"  aria-expanded="false">{{ nav_item.title }}</a>
                                 <ul class="dropdown-menu">
@@ -89,6 +90,7 @@
                                 {%- endfor %}
                                 </ul>
                             </li>
+                            {%- endcall %}
                         {%- else %}
                             <li class="nav-item">
                                 <a href="{{ nav_item.url|url }}" class="nav-link{% if nav_item.active %} active" aria-current="page{% endif %}">{{ nav_item.title }}</a>

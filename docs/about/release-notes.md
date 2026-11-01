@@ -17,6 +17,19 @@ $ mkdocs --version
 mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 ```
 
+## Version 1.11.0 (unreleased)
+
+### Performance
+
+*   Large sites build much faster. Each page used to render the whole
+    navigation again, so build time grew with the square of the number of
+    pages. Now a nav section that doesn't contain the current page is rendered
+    once per build, and later pages only fill in their own relative links. The
+    built pages are byte for byte the same. With 1,600 pages, a build with the
+    `mkdocs` theme went from 53 to 24 seconds. Themes opt in with the new
+    [`nav_fragment`](../dev-guide/themes.md#rendering-the-navigation-quickly)
+    block; the built-in `mkdocs` and `readthedocs` themes use it.
+
 ## Version 1.10.0 (2026-xx-xx)
 
 Changes since 1.10.0rc1:

@@ -695,6 +695,51 @@ Convert an item from `extra_javascript` to a `<script>` tag that takes into acco
 
 See how to use it in the [base example above](#basic-theme)
 
+## Rendering the navigation quickly
+
+NEW: **New in version 1.11.**
+
+Every page shows the whole navigation, so a theme that renders the full nav
+tree on every page does work proportional to the number of pages, on every
+page: build time grows with the square of the site size. Yet a nav section that
+doesn't contain the current page looks the same on every page, except for its
+URLs, which are relative to the page.
+
+The `nav_fragment` global lets a theme render such a section once per build.
+Wrap the markup of a nav item in a call block:
+
+```django
+{% for nav_item in nav %}
+  {% call nav_fragment(nav_item) %}
+    <li>
+      <a href="{{ nav_item.url|url }}">{{ nav_item.title }}</a>
+      {# ... render nav_item.children ... #}
+    </li>
+  {% endcall %}
+{% endfor %}
+```
+
+The first time a section that doesn't contain the current page is rendered,
+MkDocs keeps its markup, with placeholders for the URLs that went through the
+[`url`](#url) filter. Later pages reuse that markup and fill in their own
+relative URLs, so the output is the same as without the block. Sections that
+contain the current page, and sections that repeat a page listed elsewhere in
+the nav, are rendered as usual.
+
+The markup inside the block must not depend on `page`, other than through the
+`url` filter, because it is shared between pages. Pass anything else it depends
+on as extra arguments, which become part of the cache key:
+
+```django
+{% call nav_fragment(nav_item, level, parent.active) %}
+```
+
+The built-in `mkdocs` and `readthedocs` themes use it. A theme that should also
+work with older versions of MkDocs can check `{% if nav_fragment is defined %}`
+first. A plugin that changes nav items while pages are being built, rather than
+in [`on_nav`](plugins.md#on_nav), should give each page its own `nav` object,
+or call `env.globals["nav_fragment"].clear()` after the change.
+
 ## Search and themes
 
 As of MkDocs version *0.17* client side search support has been added to MkDocs
