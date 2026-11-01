@@ -46,11 +46,18 @@ jobs:
       - name: Create or update draft release with GitHub CLI
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ steps.notes.outputs.release_tag }}
           RELEASE_NAME: ${{ steps.notes.outputs.release_name }}
           RELEASE_BODY_PATH: ${{ steps.notes.outputs.body_path }}
         run: |
-          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+          state=$(gh release view "$RELEASE_TAG" --json isDraft --jq 'if .isDraft then "draft" else "published" end' 2>/dev/null || echo none)
+          if [ "$state" = published ]; then
+            # Editing the notes of a released version must not turn it back into a draft.
+            echo "${RELEASE_TAG} is already published; nothing to draft." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if [ "$state" = draft ]; then
             gh release edit "$RELEASE_TAG" \
               --draft \
               --title "$RELEASE_NAME" \
