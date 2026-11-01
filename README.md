@@ -1,11 +1,33 @@
-# MkDocs
+<p align="center">
+  <a href="https://mkdocs-ng.github.io/mkdocs/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/logo-dark.svg">
+      <img src="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/logo.svg" width="160" alt="MkDocs NG">
+    </picture>
+  </a>
+</p>
 
-> *Project documentation with Markdown*
+<h1 align="center">MkDocs NG</h1>
 
-[![PyPI Version][pypi-v-image]][pypi-v-link]
-[![Build Status][GHAction-image]][GHAction-link]
-[![Coverage Status][codecov-image]][codecov-link]
-[![CodSpeed][codspeed-image]][codspeed-link]
+<p align="center">
+  <strong>Project documentation with Markdown. The maintained MkDocs that keeps your plugins working.</strong>
+</p>
+
+<p align="center">
+  <a href="https://pypi.org/project/mkdocs-ng/"><img src="https://img.shields.io/pypi/v/mkdocs-ng.svg" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/mkdocs-ng/"><img src="https://img.shields.io/pypi/pyversions/mkdocs-ng.svg" alt="Python versions"></a>
+  <a href="https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml"><img src="https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://codecov.io/github/mkdocs-ng/mkdocs?branch=main"><img src="https://codecov.io/github/mkdocs-ng/mkdocs/coverage.svg?branch=main" alt="Coverage"></a>
+  <a href="https://app.codspeed.io/mkdocs-ng/mkdocs?utm_source=badge"><img src="https://img.shields.io/endpoint?url=https://codspeed.io/badge.json" alt="CodSpeed"></a>
+  <a href="https://github.com/mkdocs-ng/mkdocs/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/mkdocs-ng.svg" alt="License"></a>
+</p>
+
+<p align="center">
+  <a href="https://mkdocs-ng.github.io/mkdocs/">Documentation</a> ·
+  <a href="https://mkdocs-ng.github.io/mkdocs/user-guide/migrating/">Switching from MkDocs</a> ·
+  <a href="https://mkdocs-ng.github.io/mkdocs/about/release-notes/">Release notes</a> ·
+  <a href="https://github.com/mkdocs-ng/catalog">Plugin catalog</a>
+</p>
 
 MkDocs is a **fast**, **simple**, and **downright gorgeous** static site
 generator that's geared towards building project documentation. Documentation
@@ -78,6 +100,8 @@ first, but they are still welcome in [Discussions].
 - [Switching to MkDocs NG][migrating]
 - [Comparison with upstream MkDocs 2.0, ProperDocs and Zensical][comparison]
 - [Catalog of third-party plugins, themes and recipes][catalog]
+- [Sumi][sumi], a local-first documentation theme from the MkDocs NG project
+- [MkDocs NG Material][ng-material], Material for MkDocs maintained for MkDocs NG
 
 ## Contributing to MkDocs
 
@@ -90,15 +114,6 @@ information on how you can help.
 Everyone interacting in the MkDocs project's codebases, issue trackers, and
 discussion forums are expected to follow the [PyPA Code of Conduct].
 
-<!-- Badges -->
-[codecov-image]: https://codecov.io/github/mkdocs-ng/mkdocs/coverage.svg?branch=main
-[codecov-link]: https://codecov.io/github/mkdocs-ng/mkdocs?branch=main
-[pypi-v-image]: https://img.shields.io/pypi/v/mkdocs-ng.svg
-[pypi-v-link]: https://pypi.org/project/mkdocs-ng/
-[GHAction-image]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml/badge.svg
-[GHAction-link]: https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml
-[codspeed-image]: https://img.shields.io/endpoint?url=https://codspeed.io/badge.json
-[codspeed-link]: https://app.codspeed.io/mkdocs-ng/mkdocs?utm_source=badge
 <!-- Links -->
 [mkdocs]: https://mkdocs-ng.github.io/mkdocs/
 [mkdocs/mkdocs]: https://github.com/mkdocs/mkdocs
@@ -113,6 +128,8 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [Contributing Guide]: https://mkdocs-ng.github.io/mkdocs/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [catalog]: https://github.com/mkdocs-ng/catalog
+[sumi]: https://github.com/mkdocs-ng/mkdocs-sumi
+[ng-material]: https://github.com/mkdocs-ng/mkdocs-material
 
 ## License
 
