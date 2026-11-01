@@ -52,3 +52,14 @@ jobs:
         if: always()
         run: |
           if [ -f compat-report.md ]; then cat compat-report.md >> "$GITHUB_STEP_SUMMARY"; fi
+      # mkdocs-ng/catalog reads this to mark the plugins that build on mkdocs-ng.
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: compat-report
+          path: |
+            compat-report.json
+            compat-report.md
+          if-no-files-found: ignore
+          retention-days: 30
