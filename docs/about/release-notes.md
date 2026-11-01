@@ -17,23 +17,99 @@ $ mkdocs --version
 mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 ```
 
-## Version 2.0.0 (2026-xx-xx)
-
-### Added
-
-* New built-in `llms_txt` plugin that publishes your documentation for LLMs and coding agents, following the [llms.txt](https://llmstxt.org/) proposal: a Markdown version of every page (the page's Markdown after plugins have processed it, at its source path) and an `llms.txt` index at the site root. Set `full_output: true` to also write `llms-full.txt` with all pages in one file. Enable it with `plugins: [search, llms_txt]`. See [LLMs.txt](../user-guide/configuration.md#llmstxt). #105
-* `INHERIT` accepts a list of files, so a configuration can be split into several files without chaining them. Later files override earlier ones, and the primary file overrides all of them. A file that inherits from itself is reported as an error instead of crashing. See [Configuration Inheritance](../user-guide/configuration.md#configuration-inheritance). #107
-* Add Python 3.15 to the tested and declared supported versions. #99
+## Version 1.10.0 (2026-xx-xx)
 
 ### Fixed
 
-* Installing a plugin or theme no longer overwrites MkDocs NG. Almost every plugin and theme depends on the `mkdocs` package, so upstream MkDocs got installed into the same `site-packages/mkdocs/` directory: whichever package was installed last won, and `pip uninstall mkdocs` deleted most of MkDocs NG. MkDocs NG now installs its package to `site-packages/mkdocs_ng/mkdocs/`, and a startup hook (`mkdocs_ng.start`, or `mkdocs_ng.pth` before Python 3.15) makes `import mkdocs` load it, so the `mkdocs` command, plugins and themes always run MkDocs NG, in any install order. Switching from upstream MkDocs is now just `pip install -U mkdocs-ng`, with no need to uninstall `mkdocs`. A third-party package can no longer replace the builtin `mkdocs` and `readthedocs` themes when upstream MkDocs isn't installed. See [Plugins, themes and the `mkdocs` package](../user-guide/installation.md#plugins-themes-and-the-mkdocs-package).
-* `--quiet` no longer disables `strict` mode. Previously, `mkdocs build --quiet --strict` (or `--quiet` with `strict: true` in the config) exited successfully even when there were warnings, letting broken links slip through CI. Warnings are now still counted and the build aborts, while the output stays quiet. #101
-* Using a deprecated configuration option no longer fails the build in `strict` mode. Deprecation notices, from MkDocs itself or from plugins, are now logged at INFO level instead of WARNING, so upgrading doesn't break strict builds of sites that still set, for example, `google_analytics`. Removed options remain an error. #102
-* When the same page is listed more than once in `nav`, each entry shows the title given to it instead of all entries using the first one. Such a page also appears only once in previous/next links. #103
-* `nav` entries can link to a section of a page, such as `about.md#license`. The link now points to the page's URL (`about/#license`, or `about.html#license` without directory URLs) instead of the Markdown file, and isn't reported as not found. Links that use a page's URL directly, such as `about/#license`, are no longer reported as not found either. #104
-* Built-in search no longer replaces the page's global `window.postMessage` function in browsers without Web Worker support, which broke other scripts that use it. That fallback also works again: it no longer needs jQuery (which the `mkdocs` theme doesn't include) and finds its files when the site is served from a subdirectory. #106
-* `mkdocs serve` now rebuilds the site when an inherited configuration file (see `INHERIT`) changes, not only the primary one. #107
+*   Installing a plugin or theme no longer overwrites MkDocs NG. Almost every
+    plugin and theme depends on the `mkdocs` package, so upstream MkDocs got
+    installed into the same `site-packages/mkdocs/` directory: whichever
+    package was installed last won, and `pip uninstall mkdocs` deleted most of
+    MkDocs NG. MkDocs NG now installs its package to
+    `site-packages/mkdocs_ng/mkdocs/`, and a startup hook (`mkdocs_ng.start`,
+    or `mkdocs_ng.pth` before Python 3.15) makes `import mkdocs` load it, so
+    the `mkdocs` command, plugins and themes always run MkDocs NG, in any
+    install order. Switching from upstream MkDocs is now just
+    `pip install -U mkdocs-ng`, with no need to uninstall `mkdocs`. A
+    third-party package can no longer replace the builtin `mkdocs` and
+    `readthedocs` themes when upstream MkDocs isn't installed. See
+    [Plugins, themes and the `mkdocs` package](../user-guide/installation.md#plugins-themes-and-the-mkdocs-package).
+    #115
+
+## Version 1.9.0 (2026-10-31)
+
+MkDocs NG 1.9.0 publishes your docs for LLMs and coding agents, lets you
+split configuration across several files, and fixes long-standing `nav` and
+`strict` mode annoyances. There are no breaking changes: configuration,
+themes and plugins that work with 1.8 keep working.
+
+### Highlights
+
+*   **Docs for LLMs and coding agents.** The new built-in `llms_txt` plugin
+    follows the [llms.txt](https://llmstxt.org/) proposal: it writes the
+    Markdown of every page (after plugins have processed it, at its source
+    path) and an `llms.txt` index at the site root. Pages that are built but
+    not in `nav`, such as blog posts, are listed under "Other pages". Set
+    `full_output: true` to also write `llms-full.txt` with all pages in one
+    file. Enable it with `plugins: [search, llms_txt]`. See
+    [LLMs.txt](../user-guide/configuration.md#llmstxt). #105 #119
+*   **Split configuration into several files.** `INHERIT` accepts a list of
+    files, so you no longer need to chain them. Later files override earlier
+    ones, and the primary file overrides all of them. `mkdocs serve` now also
+    rebuilds when an inherited file changes. See
+    [Configuration Inheritance](../user-guide/configuration.md#configuration-inheritance). #107
+*   **`nav` links to a section of a page.** Entries such as `about.md#license`
+    now point to the page's URL (`about/#license`) instead of the Markdown
+    file, and aren't reported as not found. #104
+*   **Python 3.15** is tested and declared supported. #99
+
+### Fixed
+
+*   `--quiet` no longer disables `strict` mode. Previously,
+    `mkdocs build --quiet --strict` (or `--quiet` with `strict: true` in the
+    config) exited successfully even when there were warnings, letting broken
+    links slip through CI. Warnings are now still counted and the build
+    aborts, while the output stays quiet. #101
+*   Using a deprecated configuration option no longer fails the build in
+    `strict` mode. Deprecation notices, from MkDocs itself or from plugins,
+    are now logged at INFO level instead of WARNING, so upgrading doesn't
+    break strict builds of sites that still set, for example,
+    `google_analytics`. Removed options remain an error. #102
+*   When the same page is listed more than once in `nav`, each entry shows
+    the title given to it instead of all entries using the first one. Such a
+    page also appears only once in previous/next links. #103
+*   Links in `nav` that use a page's URL directly, such as `about/#license`,
+    are no longer reported as not found. #104
+*   A configuration file that inherits from itself, directly or indirectly,
+    is reported as an error instead of crashing with `RecursionError`. #107
+*   Built-in search no longer replaces the page's global `window.postMessage`
+    function in browsers without Web Worker support, which broke other
+    scripts that use it. That fallback also works again: it no longer needs
+    jQuery (which the `mkdocs` theme doesn't include) and finds its files
+    when the site is served from a subdirectory. #106
+
+### Upgrade notes
+
+*   CI jobs that run `mkdocs build --quiet --strict` will now fail when the
+    build has warnings, as `--strict` always intended. Run without `--quiet`
+    to see the warnings. #101
+*   For plugin and theme authors: when a page is listed more than once in
+    `nav`, the repeated entries are now `PageAlias` objects. They have their
+    own `title` and `parent` and forward everything else to the page, and
+    `is_page` is `True`, so templates keep working. Code that checks
+    `isinstance(item, Page)` on navigation items should also accept
+    `PageAlias` (or check `item.is_page`). `Navigation.pages` lists such a
+    page once. #103
+
+### Maintenance
+
+*   New plugin compatibility matrix: every change to MkDocs is checked by
+    building sites with 30 popular plugins, themes and Markdown extensions,
+    on upstream MkDocs and on MkDocs NG. #118
+*   Test coverage raised to almost 100%, GitHub Actions pinned to commit
+    SHAs, and checkout credentials no longer persisted in jobs that don't
+    push. #108
+*   Dependency and GitHub Actions updates.
 
 ## Version 1.8.0 (2026-08-13)
 

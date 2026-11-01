@@ -1121,8 +1121,11 @@ to read, following the [llms.txt] proposal:
     keep working.
 *   An `llms.txt` file at the root of the site, with the `site_name` as its
     title, the `site_description` as its summary, and links to the Markdown
-    pages grouped by navigation section. A page's `description`
-    [meta-data][Meta-Data] becomes the note of its link. Links are absolute when `site_url` is set.
+    pages grouped by navigation section. Pages that are built but not in the
+    navigation, such as blog posts, are listed last under "Other pages". A
+    page's `description` [meta-data][Meta-Data] becomes the note of its link.
+    Links are absolute when `site_url` is set. Pages can link to `llms.txt`
+    (and `llms-full.txt`) like to any other file in `docs_dir`.
 
 ```yaml
 site_url: https://example.com/

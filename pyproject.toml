@@ -144,6 +144,11 @@ matrix.type.scripts = [
 path = "mkdocs.yml"
 [tool.hatch.envs.integration]
 detached = false
+# mkdocstrings dropped Python 3.10 after 1.0.6, which can't use pymdown-extensions
+# 12.2+ (`Highlight.__init__()` requires `md` since then).
+dependencies = [
+    "pymdown-extensions <12.2; python_version < '3.11'",
+]
 [tool.hatch.envs.integration.scripts]
 test = "python -m mkdocs.tests.integration"
 [[tool.hatch.envs.integration.matrix]]
@@ -162,6 +167,17 @@ dependencies = [
 [tool.hatch.envs.bench.scripts]
 run = "pytest benchmarks {args}"
 codspeed = "pytest benchmarks --codspeed {args}"
+
+[tool.hatch.envs.compat]
+# The matrix builds its own virtual environments with uv, one per plugin and
+# engine, so this environment only needs the runner's own dependencies.
+detached = true
+dependencies = [
+    "PyYAML",
+    "uv",
+]
+[tool.hatch.envs.compat.scripts]
+run = "python -m compat {args}"
 
 [tool.hatch.envs.types]
 dependencies = [

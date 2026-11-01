@@ -151,6 +151,10 @@ class PageAlias(StructureItem):
         return f"{name}(title={title}, url={url!r})"
 
     def __getattr__(self, name: str):
+        # Don't forward `page` itself (it isn't set yet while `copy` or `pickle`
+        # rebuild the object) or special names, so that aliases can be copied.
+        if name == "page" or name.startswith("__"):
+            raise AttributeError(name)
         return getattr(self.page, name)
 
     page: Page

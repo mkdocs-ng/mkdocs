@@ -1,0 +1,475 @@
+# Plugin compatibility cases.
+#
+# Each case builds a small site with one popular plugin, theme or Markdown
+# extension, once on upstream MkDocs and once on this checkout. The list is the
+# top of the mkdocs-ng catalog (https://github.com/mkdocs-ng/catalog) by
+# project score, skipping projects that cannot build offline (they clone
+# repositories, call the GitHub API or need system PDF libraries).
+#
+# Keys:
+#   name     - display name, also used with --only
+#   rank     - catalog project score, for sorting the report
+#   install  - pip requirements for the plugin under test
+#   config   - merged over the base mkdocs.yml (top-level keys replace)
+#   files    - extra files to write, relative to the site root
+#   git      - commit the site to a git repository before building
+#   note     - shown in the report
+
+- name: mkdocs-material
+  rank: 42
+  install: [mkdocs-material]
+  config:
+    theme:
+      name: material
+    plugins:
+      - search
+      - tags
+      - blog
+  files:
+    docs/blog/index.md: |
+      # Blog
+    docs/blog/posts/hello.md: |
+      ---
+      date: 2024-01-01
+      ---
+
+      # Hello
+
+      First post.
+
+- name: mkdocstrings-python
+  rank: 33
+  install: ["mkdocstrings[python]"]
+  config:
+    plugins:
+      - search
+      - mkdocstrings:
+          handlers:
+            python:
+              paths: [src]
+  files:
+    src/demo/__init__.py: |
+      """Demo package."""
+
+
+      def greet(name: str) -> str:
+          """Return a greeting.
+
+          Args:
+              name: Who to greet.
+
+          Returns:
+              The greeting.
+          """
+          return f"Hello {name}"
+    docs/api.md: |
+      # API
+
+      ::: demo
+
+- name: pymdown-extensions
+  rank: 32
+  install: [pymdown-extensions]
+  config:
+    markdown_extensions:
+      - admonition
+      - pymdownx.details
+      - pymdownx.highlight
+      - pymdownx.inlinehilite
+      - pymdownx.superfences
+      - pymdownx.tabbed
+      - pymdownx.tasklist
+      - pymdownx.snippets:
+          base_path: [snippets]
+  files:
+    snippets/part.md: |
+      Included by snippets.
+    docs/pymdown.md: |
+      # PyMdown
+
+      === "One"
+
+          First tab.
+
+      === "Two"
+
+          Second tab.
+
+      ??? note "Details"
+
+          Hidden text.
+
+      - [x] done
+      - [ ] todo
+
+      --8<-- "part.md"
+
+- name: mkdocs-macros-plugin
+  rank: 29
+  install: [mkdocs-macros-plugin]
+  config:
+    extra:
+      project: Compat
+    plugins:
+      - search
+      - macros
+  files:
+    docs/macros.md: |
+      # Macros
+
+      Site {{ config.site_name }}, project {{ project }}.
+
+- name: mkdocs-git-revision-date-localized-plugin
+  rank: 29
+  install: [mkdocs-git-revision-date-localized-plugin]
+  git: true
+  config:
+    plugins:
+      - search
+      - git-revision-date-localized
+
+- name: mkdocs-glightbox
+  rank: 28
+  install: [mkdocs-glightbox]
+  config:
+    plugins:
+      - search
+      - glightbox
+
+- name: mike
+  rank: 27
+  install: [mike]
+  config:
+    plugins:
+      - search
+      - mike
+
+- name: mkdocs-redirects
+  rank: 26
+  install: [mkdocs-redirects]
+  config:
+    plugins:
+      - search
+      - redirects:
+          redirect_maps:
+            old.md: guide/page.md
+
+- name: plantuml-markdown
+  rank: 26
+  install: [plantuml-markdown]
+  note: Loads the extension only; rendering needs a PlantUML server.
+  config:
+    markdown_extensions:
+      - plantuml_markdown
+
+- name: mkdocs-techdocs-core
+  rank: 26
+  install: [mkdocs-techdocs-core]
+  config:
+    plugins:
+      - techdocs-core
+
+- name: mkdocs-jupyter
+  rank: 25
+  install: [mkdocs-jupyter]
+  config:
+    plugins:
+      - search
+      - mkdocs-jupyter
+  files:
+    docs/notebook.ipynb: |
+      {
+        "cells": [
+          {"cell_type": "markdown", "metadata": {}, "source": ["# Notebook"]},
+          {
+            "cell_type": "code",
+            "execution_count": 1,
+            "metadata": {},
+            "outputs": [{"name": "stdout", "output_type": "stream", "text": ["2\n"]}],
+            "source": ["print(1 + 1)"]
+          }
+        ],
+        "metadata": {},
+        "nbformat": 4,
+        "nbformat_minor": 5
+      }
+
+- name: mkdocs-rss-plugin
+  rank: 25
+  install: [mkdocs-rss-plugin]
+  git: true
+  config:
+    plugins:
+      - search
+      - rss
+
+- name: mkdocs-monorepo-plugin
+  rank: 24
+  install: [mkdocs-monorepo-plugin]
+  config:
+    nav:
+      - Home: index.md
+      - Guide: guide/page.md
+      - Sub: "!include ./sub/mkdocs.yml"
+    plugins:
+      - search
+      - monorepo
+  files:
+    sub/mkdocs.yml: |
+      site_name: sub
+    sub/docs/index.md: |
+      # Sub project
+
+- name: mkdocs-mermaid2-plugin
+  rank: 24
+  install: [mkdocs-mermaid2-plugin]
+  config:
+    plugins:
+      - search
+      - mermaid2:
+          # A local path skips the plugin's online check of the CDN URL.
+          javascript: js/mermaid.min.js
+  files:
+    docs/js/mermaid.min.js: |
+      // Placeholder: the build does not run the library.
+    docs/diagram.md: |
+      # Diagram
+
+      ```mermaid
+      graph LR
+        A --> B
+      ```
+
+- name: mkdocs-minify-plugin
+  rank: 24
+  install: [mkdocs-minify-plugin]
+  config:
+    plugins:
+      - search
+      - minify:
+          minify_html: true
+          minify_js: true
+          minify_css: true
+
+- name: markdown-exec
+  rank: 24
+  install: [markdown-exec]
+  config:
+    markdown_extensions:
+      - pymdownx.superfences
+    plugins:
+      - search
+      - markdown-exec
+  files:
+    docs/exec.md: |
+      # Exec
+
+      ```python exec="on"
+      print("**generated**")
+      ```
+
+- name: mkdocs-include-markdown-plugin
+  rank: 24
+  install: [mkdocs-include-markdown-plugin]
+  config:
+    plugins:
+      - search
+      - include-markdown
+  files:
+    snippets/part.md: |
+      Included text.
+    docs/included.md: |
+      # Included
+
+      {% include-markdown "../snippets/part.md" %}
+
+- name: mkdocs-git-authors-plugin
+  rank: 24
+  install: [mkdocs-git-authors-plugin]
+  git: true
+  config:
+    plugins:
+      - search
+      - git-authors
+
+- name: mkdocs-awesome-nav
+  rank: 23
+  install: [mkdocs-awesome-nav]
+  config:
+    plugins:
+      - search
+      - awesome-nav
+  files:
+    docs/.nav.yml: |
+      nav:
+        - index.md
+        - guide
+
+- name: mkdocs-encryptcontent-plugin
+  rank: 23
+  install: [mkdocs-encryptcontent-plugin]
+  config:
+    plugins:
+      - search
+      - encryptcontent:
+          # A weak password logs a warning, which fails a strict build.
+          global_password: correct-horse-battery-staple-compat-2024
+
+- name: mkdocs-static-i18n
+  rank: 22
+  install: [mkdocs-static-i18n]
+  config:
+    plugins:
+      - search
+      - i18n:
+          docs_structure: suffix
+          languages:
+            - locale: en
+              default: true
+              name: English
+              build: true
+            - locale: fr
+              name: Français
+              build: true
+  files:
+    docs/index.fr.md: |
+      # Accueil
+
+      Bonjour.
+
+- name: mkdocs-cinder
+  rank: 22
+  install: [mkdocs-cinder]
+  config:
+    theme:
+      name: cinder
+
+- name: mkdocs-bibtex
+  rank: 22
+  install: [mkdocs-bibtex]
+  config:
+    markdown_extensions:
+      - footnotes
+    plugins:
+      - search
+      - bibtex:
+          bib_file: refs.bib
+  files:
+    refs.bib: |
+      @book{demo,
+        title = {Demo Book},
+        author = {Doe, Jane},
+        year = {2020},
+        publisher = {Example},
+      }
+    docs/cite.md: |
+      # Citation
+
+      As shown in [@demo].
+
+- name: mkdocs-kroki-plugin
+  rank: 22
+  install: [mkdocs-kroki-plugin]
+  note: Loads the plugin only; rendering needs a Kroki server.
+  config:
+    plugins:
+      - search
+      - kroki
+
+- name: neoteroi-mkdocs
+  rank: 21
+  install: [neoteroi-mkdocs]
+  config:
+    markdown_extensions:
+      - neoteroi.timeline
+      - neoteroi.cards
+  files:
+    docs/timeline.md: |
+      # Timeline
+
+      ::timeline::
+
+      [
+        {"title": "Start", "content": "First step", "sub_title": "2024"}
+      ]
+
+      ::/timeline::
+
+- name: mkdocs-click
+  rank: 21
+  install: [mkdocs-click]
+  config:
+    markdown_extensions:
+      - mkdocs-click
+  files:
+    demo_cli.py: |
+      import click
+
+
+      @click.command()
+      @click.option("--name", default="world", help="Who to greet.")
+      def cli(name):
+          """Greet someone."""
+          click.echo(f"Hello {name}")
+    docs/cli.md: |
+      # CLI
+
+      ::: mkdocs-click
+          :module: demo_cli
+          :command: cli
+
+- name: mkdocs-swagger-ui-tag
+  rank: 21
+  install: [mkdocs-swagger-ui-tag]
+  config:
+    plugins:
+      - search
+      - swagger-ui-tag
+  files:
+    docs/openapi.json: |
+      {"openapi": "3.0.0", "info": {"title": "Demo", "version": "1.0"}, "paths": {}}
+    docs/api.md: |
+      # API
+
+      <swagger-ui src="openapi.json"/>
+
+- name: mkdocs-gen-files
+  rank: 20
+  install: [mkdocs-gen-files]
+  config:
+    plugins:
+      - search
+      - gen-files:
+          scripts: [gen_pages.py]
+  files:
+    gen_pages.py: |
+      import mkdocs_gen_files
+
+      with mkdocs_gen_files.open("generated.md", "w") as f:
+          print("# Generated\n\nWritten at build time.", file=f)
+
+- name: mkdocs-literate-nav
+  rank: 20
+  install: [mkdocs-literate-nav]
+  config:
+    plugins:
+      - search
+      - literate-nav:
+          nav_file: SUMMARY.md
+  files:
+    docs/SUMMARY.md: |
+      * [Home](index.md)
+      * [Guide](guide/page.md)
+
+- name: mkdocs-autorefs
+  rank: 19
+  install: [mkdocs-autorefs]
+  config:
+    plugins:
+      - search
+      - autorefs
+  files:
+    docs/refs.md: |
+      # Refs
+
+      See [the section][section].
