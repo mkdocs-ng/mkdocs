@@ -467,6 +467,15 @@ class _ExtractAnchorsTreeprocessor(markdown.treeprocessors.Treeprocessor):
         )  # Run after extensions have added their final IDs.
 
 
+def _is_external_url(url: str) -> bool:
+    """Whether a link goes to another site: `https://…`, `http://…` or `//…`."""
+    try:
+        scheme, netloc, *_ = urlsplit(url)
+    except ValueError:
+        return False
+    return bool(netloc) and scheme.lower() in ("", "http", "https")
+
+
 class _RelativePathTreeprocessor(markdown.treeprocessors.Treeprocessor):
     def __init__(self, file: File, files: Files, config: MkDocsConfig) -> None:
         self.file = file
@@ -493,6 +502,10 @@ class _RelativePathTreeprocessor(markdown.treeprocessors.Treeprocessor):
             assert url is not None
             new_url = self.path_to_url(url)
             element.set(key, new_url)
+            if key == "href" and _is_external_url(url):
+                rel = element.get("rel", "").split()
+                if "external" not in rel:
+                    element.set("rel", " ".join([*rel, "external"]))
 
         return root
 

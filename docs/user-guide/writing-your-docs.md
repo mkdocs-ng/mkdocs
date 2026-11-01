@@ -346,6 +346,22 @@ not able to validate or convert links contained in raw HTML. When including
 internal links within raw HTML, you will need to manually format the link
 appropriately for the rendered document.
 
+### External links
+
+NEW: **New in version 1.11.**
+
+Markdown links to another site (`https://…`, `http://…` or `//…`) get
+`rel="external"` in the HTML, so themes and your own CSS can style them, for
+example with an icon:
+
+```css
+a[rel~="external"]::after { content: " ↗"; }
+```
+
+A `rel` value you set yourself, for example with the `attr_list` extension
+(`[text](https://example.com){rel="nofollow"}`), is kept and `external` is
+added to it. Links in raw HTML are left as they are.
+
 ### Meta-Data
 
 MkDocs includes support for both YAML and MultiMarkdown style meta-data (often

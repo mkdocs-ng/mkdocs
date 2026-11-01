@@ -1166,8 +1166,48 @@ class RelativePathExtensionTests(unittest.TestCase):
             self.get_rendered_result(
                 content="[external](http://example.com/index.md)", files=["index.md"]
             ),
-            '<a href="http://example.com/index.md">external</a>',
+            '<a href="http://example.com/index.md" rel="external">external</a>',
         )
+
+    def test_external_link_rel(self):
+        for content, expected in (
+            (
+                "[a](https://example.com/)",
+                '<a href="https://example.com/" rel="external">a</a>',
+            ),
+            (
+                "[a](HTTPS://example.com/)",
+                '<a href="HTTPS://example.com/" rel="external">a</a>',
+            ),
+            (
+                "[a](//example.com/page)",
+                '<a href="//example.com/page" rel="external">a</a>',
+            ),
+            ("[a](mailto:me@example.com)", None),
+            ("[a](#anchor)", '<a href="#anchor">a</a>'),
+            ("![img](https://example.com/a.png)", None),
+        ):
+            with self.subTest(content=content):
+                result = self.get_rendered_result(content=content, files=["index.md"])
+                if expected is None:
+                    self.assertNotIn("rel=", result)
+                else:
+                    self.assertEqual(result, expected)
+
+    def test_external_link_keeps_existing_rel(self):
+        for rel, expected in (
+            ("nofollow", "nofollow external"),
+            ("external nofollow", "external nofollow"),
+        ):
+            with self.subTest(rel=rel):
+                self.assertEqual(
+                    self.get_rendered_result(
+                        markdown_extensions=["attr_list"],
+                        content=f'[a](https://example.com/){{rel="{rel}"}}',
+                        files=["index.md"],
+                    ),
+                    f'<a href="https://example.com/" rel="{expected}">a</a>',
+                )
 
     def test_absolute_link_with_suggestion(self):
         self.assertEqual(

@@ -48,6 +48,9 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
     as `> [!NOTE]` or `> [!WARNING]`, render as admonitions instead of a
     quote starting with `[!NOTE]`, so docs written for GitHub look right on
     your site. The built-in themes style all five types.
+*   Markdown links to other sites get `rel="external"`, so themes and custom
+    CSS can mark them, for example with an icon. A `rel` you set yourself is
+    kept. See [External links](../user-guide/writing-your-docs.md#external-links).
 
 ### Fixed
 
