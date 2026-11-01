@@ -40,7 +40,7 @@ Changes since 1.10.0rc1:
 ### Maintenance
 
 *   The plugin compatibility matrix also covers
-    `mkdocs-awesome-pages-plugin` and `mkdocs-markdownextradata-plugin`. #PR
+    `mkdocs-awesome-pages-plugin` and `mkdocs-markdownextradata-plugin`. #129
 
 ## Version 1.10.0rc1 (2026-11-01)
 
