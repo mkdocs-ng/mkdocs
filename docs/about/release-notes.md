@@ -17,25 +17,24 @@ $ mkdocs --version
 mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 ```
 
-## Version 1.10.0 (2026-xx-xx)
+## Version 1.10.0rc1 (2026-11-01)
 
-### Changed
+MkDocs NG 1.10.0 makes sure MkDocs NG is what runs, however you install your
+plugins and themes. Until now, installing a plugin could silently swap it for
+upstream MkDocs 1.6.1. There are no breaking changes: configuration, themes
+and plugins that work with 1.9 keep working.
 
-*   The `mkdocs` command no longer shows the "switch to ProperDocs" warning
-    that some plugins print, such as `mkdocs-redirects`, `mkdocs-gen-files`,
-    `mkdocs-literate-nav`, `mkdocs-section-index` and `mkdocs-rss-plugin`. It
-    warns that "MkDocs 2.0" could replace what `pip install mkdocs` installs,
-    which doesn't apply to MkDocs NG. MkDocs NG sets
-    `DISABLE_MKDOCS_2_WARNING=true`, the variable the warning itself
-    suggests, unless you have already set it; set it to `false` to see the
-    warning again. #123
+This is a release candidate. Install it with `pip install -U --pre mkdocs-ng`
+and please [report](https://github.com/mkdocs-ng/mkdocs/issues) anything that
+breaks.
 
-### Fixed
+### Highlights
 
-*   Installing a plugin or theme no longer overwrites MkDocs NG. Almost every
-    plugin and theme depends on the `mkdocs` package, so upstream MkDocs got
+*   **MkDocs NG runs no matter what else you install.** Almost every plugin
+    and theme depends on the `mkdocs` package, so upstream MkDocs got
     installed into the same `site-packages/mkdocs/` directory: whichever
-    package was installed last won, and `pip uninstall mkdocs` deleted most of
+    package was installed last won, so `pip install mkdocs-ng mkdocs-material`
+    often ran upstream 1.6.1, and `pip uninstall mkdocs` deleted most of
     MkDocs NG. MkDocs NG now installs its package to
     `site-packages/mkdocs_ng/mkdocs/`, and a startup hook (`mkdocs_ng.start`,
     or `mkdocs_ng.pth` before Python 3.15) makes `import mkdocs` load it, so
@@ -46,6 +45,33 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
     `readthedocs` themes when upstream MkDocs isn't installed. See
     [Plugins, themes and the `mkdocs` package](../user-guide/installation.md#plugins-themes-and-the-mkdocs-package).
     #115
+*   **No more "switch to ProperDocs" warning.** Some plugins, such as
+    `mkdocs-redirects`, `mkdocs-gen-files`, `mkdocs-literate-nav`,
+    `mkdocs-section-index` and `mkdocs-rss-plugin`, print a long warning
+    when run by the `mkdocs` command: "MkDocs 2.0" could replace what
+    `pip install mkdocs` installs. That doesn't apply to MkDocs NG, so it now
+    sets `DISABLE_MKDOCS_2_WARNING=true`, the variable the warning itself
+    suggests, unless you have already set it. Set it to `false` to see the
+    warning again. #123
+
+### Upgrade notes
+
+*   Upgrading from 1.9 or earlier works in place with pip and uv, including
+    environments where upstream MkDocs had already overwritten MkDocs NG:
+    `pip install -U --pre mkdocs-ng`. Afterwards `mkdocs --version` shows a
+    path ending in `mkdocs_ng/mkdocs`.
+*   `pip list` now shows both `mkdocs` and `mkdocs-ng` when you use plugins.
+    That's expected; leave the upstream package installed. Both packages
+    provide the `mkdocs` command, so `pip uninstall mkdocs` removes it. If you
+    did that, `pip install --force-reinstall --no-deps mkdocs-ng` brings it
+    back.
+
+### Maintenance
+
+*   The plugin compatibility matrix installs MkDocs NG first and each plugin
+    after it, as users do, instead of reinstalling MkDocs NG last, and checks
+    that both `import mkdocs` and the `mkdocs` command run MkDocs NG. That
+    reinstall is what hid the install-order bug above. #124
 
 ## Version 1.9.0 (2026-10-31)
 
