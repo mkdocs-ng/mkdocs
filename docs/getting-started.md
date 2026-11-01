@@ -135,7 +135,7 @@ an `img` subdirectory in the `docs` directory and copy your custom `favicon.ico`
 file to that directory. MkDocs will automatically detect and use that file as your
 favicon icon.
 
-[MkDocs favicon]: img/favicon.ico
+[MkDocs favicon]: https://github.com/mkdocs-ng/mkdocs/blob/main/mkdocs/themes/mkdocs/img/favicon.ico
 
 ## Building the site
 
