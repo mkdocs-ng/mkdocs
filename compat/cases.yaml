@@ -4,7 +4,8 @@
 # extension, once on upstream MkDocs and once on this checkout. The list is the
 # top of the mkdocs-ng catalog (https://github.com/mkdocs-ng/catalog) by
 # project score, skipping projects that cannot build offline (they clone
-# repositories, call the GitHub API or need system PDF libraries).
+# repositories, call the GitHub API or need system PDF libraries), plus a few
+# older plugins that large sites still depend on.
 #
 # Keys:
 #   name     - display name, also used with --only
@@ -31,6 +32,9 @@
     docs/blog/posts/hello.md: |
       ---
       date: 2024-01-01
+      links:
+        - guide/page.md
+        - Example: https://example.com/
       ---
 
       # Hello
@@ -305,6 +309,20 @@
         - index.md
         - guide
 
+# Version 2 of mkdocs-awesome-nav, still widely used under its old name.
+- name: mkdocs-awesome-pages-plugin
+  rank: 23
+  install: [mkdocs-awesome-pages-plugin]
+  config:
+    plugins:
+      - search
+      - awesome-pages
+  files:
+    docs/.pages: |
+      nav:
+        - index.md
+        - guide
+
 - name: mkdocs-encryptcontent-plugin
   rank: 23
   install: [mkdocs-encryptcontent-plugin]
@@ -460,6 +478,21 @@
     docs/SUMMARY.md: |
       * [Home](index.md)
       * [Guide](guide/page.md)
+
+- name: mkdocs-markdownextradata-plugin
+  rank: 20
+  install: [mkdocs-markdownextradata-plugin]
+  config:
+    extra:
+      project: Compat
+    plugins:
+      - search
+      - markdownextradata
+  files:
+    docs/extradata.md: |
+      # Extra data
+
+      Project {{ project }}, site {{ site_name }}.
 
 - name: mkdocs-autorefs
   rank: 19

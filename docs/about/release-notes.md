@@ -28,6 +28,10 @@ Changes since 1.10.0rc1:
     replaces ours and runs `from mkdocs import cli`, which failed with
     `ImportError`. `mkdocs.cli` now points to the MkDocs NG command line, so
     that launcher runs MkDocs NG. #127
+*   The blog plugin of Material for MkDocs no longer crashes with
+    `TypeError: _data_to_navigation() missing 1 required positional argument`
+    on posts that set `links`. MkDocs NG 1.9.0 added a parameter to that
+    private function, which the plugin calls directly. #129
 
 ### Documentation
 
@@ -36,6 +40,11 @@ Changes since 1.10.0rc1:
     what behaves differently from MkDocs 1.6.1, and how to switch back.
     New [comparison](comparison.md) of MkDocs NG with MkDocs 1.6, the 2.0
     pre-releases, ProperDocs and Zensical. #128
+
+### Maintenance
+
+*   The plugin compatibility matrix also covers
+    `mkdocs-awesome-pages-plugin` and `mkdocs-markdownextradata-plugin`. #129
 
 ## Version 1.10.0rc1 (2026-11-01)
 
