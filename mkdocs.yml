@@ -1,6 +1,6 @@
-site_name: MkDocs
+site_name: MkDocs NG
 site_url: https://mkdocs-ng.github.io/mkdocs/
-site_description: Project documentation with Markdown.
+site_description: The maintained MkDocs that keeps your plugins working.
 site_author: MkDocs NG Team
 
 repo_url: https://github.com/mkdocs-ng/mkdocs/
@@ -11,6 +11,8 @@ theme:
   logo: img/logo.svg
   logo_dark: img/logo-dark.svg
   favicon: img/favicon.svg
+  # Brand blue; docs/css/extra.css sets a lighter blue for the dark palette.
+  accent: "#0061fe"
 
 nav:
   - Home: index.md

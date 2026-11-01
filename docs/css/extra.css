@@ -1,3 +1,9 @@
+/* MkDocs NG brand blue. mkdocs.yml sets the light value; this one keeps
+   links and highlights readable on the dark palette. */
+[data-theme="dark"] {
+    --sumi-accent: #6ea8ff;
+}
+
 /* "NEW:" callouts mark features added in a release. */
 .sumi-prose :is(.admonition, details).new {
     --c: var(--c-tip);
