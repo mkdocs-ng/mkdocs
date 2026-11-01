@@ -294,6 +294,16 @@ class Page(StructureItem):
         if self.markdown is None:
             raise RuntimeError("`markdown` field hasn't been set (via `read_source`)")
 
+        from mkdocs.structure import render_cache
+
+        cache = render_cache.active
+        if cache is not None:
+            cache.render(self, config, files, lambda: self._convert(config, files))
+        else:
+            self._convert(config, files)
+
+    def _convert(self, config: MkDocsConfig, files: Files) -> None:
+        assert self.markdown is not None
         md = markdown.Markdown(
             extensions=config["markdown_extensions"],
             extension_configs=config["mdx_configs"] or {},
@@ -312,7 +322,8 @@ class Page(StructureItem):
         extract_title_ext._register(md)
 
         self.content = md.convert(self.markdown)
-        self.toc = get_toc(getattr(md, "toc_tokens", []))
+        self._toc_tokens = getattr(md, "toc_tokens", [])
+        self.toc = get_toc(self._toc_tokens)
         self._title_from_render = extract_title_ext.title
         self.present_anchor_ids = (
             extract_anchors_ext.present_anchor_ids | raw_html_ext.present_anchor_ids

@@ -381,6 +381,14 @@ Page events are called once for each Markdown page included in the site. All
 page events are called after the [post_template] event and before the
 [post_build] event.
 
+NOTE: **New in version 1.11:** during `mkdocs serve`, a rebuild may reuse the
+HTML of a page whose Markdown (after `on_page_markdown`), extensions, URL and
+site files are all unchanged, instead of converting it again. Every page event
+still runs, with the same values. This only happens when every Markdown
+extension is on a list of extensions known to depend on nothing else, so an
+extension that a plugin adds to `config.markdown_extensions` as an instance
+turns it off.
+
 ##### on_pre_page
 
 ::: mkdocs.plugins.BasePlugin.on_pre_page

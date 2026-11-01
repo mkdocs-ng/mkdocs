@@ -29,6 +29,14 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
     `mkdocs` theme went from 53 to 24 seconds. Themes opt in with the new
     [`nav_fragment`](../dev-guide/themes.md#rendering-the-navigation-quickly)
     block; the built-in `mkdocs` and `readthedocs` themes use it.
+*   `mkdocs serve` rebuilds faster after an edit. Pages whose Markdown didn't
+    change are no longer converted to HTML again; their earlier HTML and
+    warnings are reused. Plugin events still run for every page. This is used
+    only when all Markdown extensions are known not to depend on other files
+    or state (the ones from Python-Markdown and most of PyMdown Extensions);
+    sites using `pymdownx.snippets`, `mkdocstrings` or `mkdocs-autorefs`
+    rebuild as before. With 400 pages and Material for MkDocs, a rebuild went
+    from 7.6 to 4.0 seconds.
 
 ## Version 1.10.0 (2026-xx-xx)
 

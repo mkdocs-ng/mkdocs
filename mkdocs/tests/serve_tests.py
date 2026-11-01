@@ -172,6 +172,42 @@ class ServeTests(unittest.TestCase):
         config.plugins.on_startup.assert_called_once_with(command="serve", dirty=True)
 
     @tempdir()
+    def test_rebuilds_share_a_render_cache(self, temp_dir):
+        from mkdocs.structure import render_cache
+
+        config = self.make_config(temp_dir)
+        server = mock.Mock()
+        seen = []
+
+        def fake_build(*args, **kwargs):
+            seen.append(render_cache.active)
+
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(
+                mock.patch(
+                    "mkdocs.commands.serve.load_config",
+                    side_effect=[config, self.make_config(temp_dir)],
+                )
+            )
+            stack.enter_context(
+                mock.patch("mkdocs.commands.serve.build", side_effect=fake_build)
+            )
+            mock_server_cls = stack.enter_context(
+                mock.patch(
+                    "mkdocs.commands.serve.LiveReloadServer", return_value=server
+                )
+            )
+            server.serve.side_effect = lambda **kwargs: (
+                mock_server_cls.call_args.kwargs["builder"]()
+            )
+            serve.serve()
+
+        self.assertEqual(len(seen), 2)
+        self.assertIsInstance(seen[0], render_cache.RenderCache)
+        self.assertIs(seen[0], seen[1])
+        self.assertIsNone(render_cache.active)
+
+    @tempdir()
     def test_error_handler_serves_built_error_pages(self, temp_dir):
         site_dir = Path(temp_dir, "site")
         site_dir.mkdir()
