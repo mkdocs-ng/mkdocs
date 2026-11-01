@@ -271,7 +271,7 @@ PKG_DIR = os.path.dirname(os.path.abspath(__file__))
 @common_options
 @color_option
 def cli():
-    """MkDocs - Project documentation with Markdown."""
+    """MkDocs NG - Write Markdown. Ship docs."""
     # Some plugins (mkdocs-redirects, mkdocs-gen-files, mkdocs-literate-nav, ...)
     # print a warning when run by the `mkdocs` command: "MkDocs 2.0" could replace
     # what `pip install mkdocs` installs, so switch to ProperDocs. That doesn't

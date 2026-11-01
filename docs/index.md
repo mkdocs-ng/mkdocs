@@ -1,11 +1,11 @@
 ---
 template: landing.html
 title: MkDocs NG
-description: The maintained MkDocs that keeps your plugins working.
+description: Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.
 hero:
-  eyebrow: "MkDocs NG · the maintained MkDocs"
-  title: "Project documentation<br>*with Markdown*."
-  text: "The maintained MkDocs that keeps your plugins working. Write Markdown, configure one YAML file, and publish a **fast**, **simple** and **good-looking** documentation site anywhere."
+  eyebrow: "MkDocs NG"
+  title: "Write Markdown.<br>*Ship docs.*"
+  text: "The maintained MkDocs that keeps your plugins working. One YAML file turns your Markdown into a **fast**, **simple** and **good-looking** documentation site you can host anywhere."
   actions:
     - {text: Getting Started, link: getting-started/, icon: rocket, primary: true}
     - {text: Switch from MkDocs, link: user-guide/migrating/, icon: arrow-right-left}
