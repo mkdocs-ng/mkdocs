@@ -26,6 +26,7 @@ Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
 [#4032], [#4014], [#4055], [#4081] | With `click>=8.2`, `mkdocs serve` stopped watching for file changes, live reload only worked when `--livereload` was passed explicitly (often misdiagnosed as a WSL problem), and `use_directory_urls` was overridden. | 1.7.0 (#4), 1.7.3 (#60)
 [#2519] | Editor temporary files (vim swap files, `~` backups, Emacs auto-save) triggered pointless rebuilds. | 1.7.3 (#55)
+[#3496] | `mkdocs serve` failed when port 8000 was already in use, for example by another `mkdocs serve`. It now serves on the next free port (up to 8010) and says so. | 1.11.0
 [#4001] | Edge-case markup such as `<<>>` crashed the build with `AssertionError` from Python's `html.parser` (seen on Python 3.13.5+). | 1.7.3 (#51)
 
 ## Built-in themes
@@ -84,6 +85,7 @@ Upstream issue | Symptom | Fixed in
 [#2171]: https://github.com/mkdocs/mkdocs/issues/2171
 [#2519]: https://github.com/mkdocs/mkdocs/issues/2519
 [#2624]: https://github.com/mkdocs/mkdocs/issues/2624
+[#3496]: https://github.com/mkdocs/mkdocs/issues/3496
 [#3630]: https://github.com/mkdocs/mkdocs/issues/3630
 [#3690]: https://github.com/mkdocs/mkdocs/issues/3690
 [#3696]: https://github.com/mkdocs/mkdocs/issues/3696

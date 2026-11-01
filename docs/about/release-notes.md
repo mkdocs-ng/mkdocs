@@ -38,6 +38,13 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
     rebuild as before. With 400 pages and Material for MkDocs, a rebuild went
     from 7.6 to 4.0 seconds.
 
+### Added
+
+*   `mkdocs serve` no longer fails when port 8000 is already in use, for
+    example by another `mkdocs serve`. It serves on the next free port, up to
+    8010, and says which one. A port you set yourself with `--dev-addr` or
+    `dev_addr` is still used as given.
+
 ### Fixed
 
 *   Links with a [text fragment](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments),
