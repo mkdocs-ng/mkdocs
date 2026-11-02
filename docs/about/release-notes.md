@@ -120,6 +120,10 @@ Changes since 1.10.0rc1:
     compatibility test builds. New [versioning and support](#versioning-and-support)
     rules: what patch, minor and major releases may change, and when a Python
     version is dropped.
+*   The [comparison](comparison.md) page says which tool fits which
+    situation. This documentation site publishes its own `llms.txt` and
+    Markdown pages, and the `llms_txt` plugin and lists in `INHERIT` are
+    marked as new in 1.9, not 2.0.
 
 ### Maintenance
 

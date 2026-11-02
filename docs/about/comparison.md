@@ -28,6 +28,24 @@ Runs MkDocs plugins | Yes | Yes | No | Yes | No; reimplements about 30 popular o
 Runs MkDocs themes | Yes | Yes | No | Yes | No; its own theme supports Material for MkDocs settings
 Python | 3.10+ | 3.8+ | 3.10+ | 3.9+ | 3.11+
 
+## Which one should I use?
+
+*   **You have an MkDocs site and want it to keep building unchanged,
+    plugins included:** MkDocs NG or ProperDocs. Both run MkDocs plugins and
+    themes. With MkDocs NG the only change is the package name: the `mkdocs`
+    command, `mkdocs.yml`, CI scripts and `.readthedocs.yaml` stay as they are.
+    ProperDocs uses its own `properdocs` command.
+*   **Your site uses Material for MkDocs, and only plugins that Zensical
+    reimplements:** Zensical is an option if you're ready to switch to a new
+    generator. Check its plugin support first, since other plugins are
+    ignored.
+*   **You're starting new documentation and want the MkDocs plugin
+    ecosystem:** MkDocs NG. `mkdocs new` creates a site to start from.
+*   **Staying on MkDocs 1.6.1** keeps working for now, but bugs stay unfixed
+    and it declares support only for Python 3.8 to 3.12.
+*   **The MkDocs 2.0 pre-releases** can't build existing sites. Avoid
+    installing them with `pip install --pre` or `uv --prerelease allow`.
+
 ## MkDocs 1.6
 
 The last release of upstream MkDocs 1.x is 1.6.1, from August 2024. Sites and

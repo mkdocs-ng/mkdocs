@@ -55,6 +55,7 @@ hooks:
 plugins:
   - search
   - sumi
+  - llms_txt
   - redirects:
       redirect_maps:
         user-guide/plugins.md: dev-guide/plugins.md
