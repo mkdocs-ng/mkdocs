@@ -39,6 +39,25 @@ class DocsHooksTests(unittest.TestCase):
         self.assertIn(f"mkdocs, version {mkdocs.__version__} from", result)
         self.assertNotIn("version 0.0.0", result)
 
+    def test_compat_cases_list_links_each_case_to_pypi(self):
+        cases = [
+            {"name": "mkdocstrings-python", "install": ["mkdocstrings[python]"]},
+            {"name": "mike", "install": ["mike>=2"]},
+        ]
+        self.assertEqual(
+            self.hooks._compat_cases_list(cases),
+            "[mike](https://pypi.org/project/mike/), "
+            "[mkdocstrings-python](https://pypi.org/project/mkdocstrings/).",
+        )
+
+    def test_compat_cases_marker_lists_every_case(self):
+        result = self.hooks._insert_compat_cases("Tested:\n\n<!-- compat-cases -->\n")
+        self.assertNotIn("<!-- compat-cases -->", result)
+        self.assertIn(
+            "[mkdocs-material](https://pypi.org/project/mkdocs-material/)", result
+        )
+        self.assertEqual(self.hooks._insert_compat_cases("no marker"), "no marker")
+
     def test_release_notes_links_switch_repo_after_fork(self):
         markdown = dedent(
             """

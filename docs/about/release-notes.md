@@ -17,6 +17,24 @@ $ mkdocs --version
 mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 ```
 
+## Versioning and support
+
+From version 1.10 on, MkDocs NG follows these rules, so that you can upgrade
+without checking every plugin first:
+
+*   **Patch releases**, such as 1.10.1, only fix bugs.
+*   **Minor releases**, such as 1.11.0, add features and fixes. They keep the
+    plugin events, configuration options, theme template variables and Python
+    API that plugins and themes use. Anything that is going away logs a
+    deprecation warning for at least one minor release first.
+*   **Breaking changes** wait for a major release, and its release notes say
+    how to upgrade.
+*   **Python versions**: MkDocs NG supports Python 3.10 and newer. A Python
+    version is dropped only in a minor release after it reaches its upstream
+    end of life, and the release notes of the release before announce it.
+*   **Security fixes** go into the latest release. See the
+    [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
+
 ## Version 1.11.0 (unreleased)
 
 ### Performance
@@ -96,6 +114,12 @@ Changes since 1.10.0rc1:
     what behaves differently from MkDocs 1.6.1, and how to switch back.
     New [comparison](comparison.md) of MkDocs NG with MkDocs 1.6, the 2.0
     pre-releases, ProperDocs and Zensical. #128
+*   [Switching to MkDocs NG](../user-guide/migrating.md) shows how to try
+    MkDocs NG with `uvx` before changing anything, how to switch with Poetry,
+    Read the Docs and GitHub Actions, and which plugins and themes the
+    compatibility test builds. New [versioning and support](#versioning-and-support)
+    rules: what patch, minor and major releases may change, and when a Python
+    version is dropped.
 
 ### Maintenance
 
