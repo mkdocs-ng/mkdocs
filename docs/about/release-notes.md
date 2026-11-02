@@ -55,6 +55,20 @@ without checking every plugin first:
     sites using `pymdownx.snippets`, `mkdocstrings` or `mkdocs-autorefs`
     rebuild as before. With 400 pages and Material for MkDocs, a rebuild went
     from 7.6 to 4.0 seconds.
+*   The Sumi theme's Markdown extension is on the list of extensions whose
+    HTML `mkdocs serve` reuses, so Sumi sites rebuild faster too. Other
+    extensions can join with `mkdocs_cacheable = True`
+    ([details](../dev-guide/plugins.md#page-events)).
+*   `mkdocs serve` no longer empties the site directory and writes every file
+    again after an edit. Files whose content didn't change are left as they
+    are, and files that the new build no longer produces (a deleted or renamed
+    page) are removed at the end. The search plugin also reuses the index
+    entries of unchanged pages. During `mkdocs serve`, the build date that
+    themes show is when the server started. With 1,000 pages, showing an
+    edited page took 5.1 seconds with the `mkdocs` theme and now takes 2.2;
+    with Sumi it went from 14.6 to 3.1 seconds.
+*   The search plugin reads the text of each page about three times faster,
+    with exactly the same index as before.
 
 ### Added
 

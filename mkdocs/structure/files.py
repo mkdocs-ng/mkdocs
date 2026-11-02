@@ -20,6 +20,7 @@ import pathspec.gitignore
 import pathspec.util
 
 from mkdocs import utils
+from mkdocs.utils import output
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
@@ -547,6 +548,9 @@ class File:
             return
         log.debug(f"Copying media file: '{self.src_uri}'")
         output_path = self.abs_dest_path
+        site_output = output.active
+        if site_output is not None and site_output.building:
+            site_output.copied(output_path)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         content = self._content
         if content is None:

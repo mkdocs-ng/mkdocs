@@ -27,7 +27,7 @@ from mkdocs.structure.nav import (
 )
 from mkdocs.structure.pages import Page
 from mkdocs.utils import DuplicateFilter  # noqa: F401 - legacy re-export
-from mkdocs.utils import templates
+from mkdocs.utils import output, templates
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -354,6 +354,12 @@ def _build(
 
     inclusion = InclusionLevel.is_in_serve if serve_url else InclusionLevel.is_included
 
+    # During `mkdocs serve`, keep the site directory between rebuilds. A build
+    # that a plugin runs inside another one cleans it as usual.
+    site_output = None if dirty else output.active
+    keep_site_dir = site_output is not None and site_output.start_build(config.site_dir)
+    success = False
+
     try:
         start = time.monotonic()
 
@@ -363,7 +369,10 @@ def _build(
         # Run `pre_build` plugin events.
         config.plugins.on_pre_build(config=config)
 
-        if not dirty:
+        if not dirty and keep_site_dir:
+            # Unchanged files are kept, stale ones removed at the end.
+            pass
+        elif not dirty:
             log.info("Cleaning site directory")
             utils.clean_directory(config.site_dir)
         else:  # pragma: no cover
@@ -461,6 +470,7 @@ def _build(
             msg = ", ".join(f"{v} {k.lower()}s" for k, v in counts)
             raise Abort(f"Aborted with {msg} in strict mode!")
 
+        success = True
         log.info(f"Documentation built in {time.monotonic() - start:.2f} seconds")
 
     except Exception as e:
@@ -473,6 +483,8 @@ def _build(
 
     finally:
         logger.removeHandler(warning_counter)
+        if site_output is not None:
+            site_output.end_build(success=success)
 
 
 def site_directory_contains_stale_files(site_directory: str) -> bool:

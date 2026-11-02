@@ -13,6 +13,7 @@ from mkdocs.commands.build import build
 from mkdocs.config import load_config
 from mkdocs.livereload import LiveReloadServer, _serve_url
 from mkdocs.structure import render_cache
+from mkdocs.utils import output
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -101,8 +102,10 @@ def serve(
         raise _ShutdownRequested
 
     previous_sigterm_handler = signal.signal(signal.SIGTERM, handle_sigterm)
-    # Reuse Markdown conversions of unchanged pages between rebuilds.
+    # Reuse Markdown conversions of unchanged pages between rebuilds, and don't
+    # write files again that didn't change.
     render_cache.active = render_cache.RenderCache()
+    output.active = output.SiteOutput()
 
     try:
         try:
@@ -148,6 +151,7 @@ def serve(
     finally:
         server.server_close()
         render_cache.active = None
+        output.active = None
         signal.signal(signal.SIGTERM, previous_sigterm_handler)
         config.plugins.on_shutdown()
         if isdir(site_dir):

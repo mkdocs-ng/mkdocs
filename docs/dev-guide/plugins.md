@@ -384,9 +384,29 @@ NOTE: **New in version 1.11:** during `mkdocs serve`, a rebuild may reuse the
 HTML of a page whose Markdown (after `on_page_markdown`), extensions, URL and
 site files are all unchanged, instead of converting it again. Every page event
 still runs, with the same values. This only happens when every Markdown
-extension is on a list of extensions known to depend on nothing else, so an
-extension that a plugin adds to `config.markdown_extensions` as an instance
-turns it off.
+extension is known to depend on nothing else: it is on MkDocs' own list (the
+extensions of Python-Markdown and most of PyMdown Extensions), or it says so
+itself. An extension that a plugin adds to `config.markdown_extensions` turns
+the reuse off, unless it says so too.
+
+An extension says so with `mkdocs_cacheable = True`, on its Extension class
+or, when it is loaded by module name, on its module. Only set it when the HTML
+depends on nothing but the page's Markdown and the extension's config: no other
+files, no state kept from one page to the next, and nothing a plugin reads from
+the extension after the conversion.
+
+```python
+class MyExtension(markdown.Extension):
+    mkdocs_cacheable = True
+```
+
+NOTE: **New in version 1.11:** during `mkdocs serve`, the site directory isn't
+emptied before a rebuild. Files written with `mkdocs.utils.write_file` or copied
+as a `File` are left alone when their content didn't change, and the ones that
+the rebuild doesn't produce any more are removed after the `post_build` event.
+Files that a plugin writes another way are never removed, so a plugin that
+writes files with a name that changes from one build to the next should use
+`mkdocs.utils.write_file`.
 
 ##### on_pre_page
 

@@ -67,6 +67,14 @@ def get_build_datetime() -> datetime:
     """
     source_date_epoch = os.environ.get("SOURCE_DATE_EPOCH")
     if source_date_epoch is None:
+        from mkdocs.utils import output
+
+        if output.active is not None:
+            # During `mkdocs serve`, keep one date, so that unchanged pages
+            # stay the same and don't have to be written again.
+            if output.active.build_datetime is None:
+                output.active.build_datetime = datetime.now(timezone.utc)
+            return output.active.build_datetime
         return datetime.now(timezone.utc)
 
     return datetime.fromtimestamp(int(source_date_epoch), timezone.utc)
@@ -104,10 +112,21 @@ def copy_file(source_path: str, output_path: str) -> None:
 
 def write_file(content: bytes, output_path: str) -> None:
     """Write content to output_path, making sure any parent directories exist."""
-    output_dir = os.path.dirname(output_path)
-    os.makedirs(output_dir, exist_ok=True)
-    with open(output_path, "wb") as f:
-        f.write(content)
+
+    def write() -> None:
+        output_dir = os.path.dirname(output_path)
+        os.makedirs(output_dir, exist_ok=True)
+        with open(output_path, "wb") as f:
+            f.write(content)
+
+    from mkdocs.utils import output
+
+    site_output = output.active
+    if site_output is not None and site_output.building:
+        # During `mkdocs serve`, skip writing what is already there.
+        site_output.write(content, output_path, write)
+    else:
+        write()
 
 
 def clean_directory(directory: str) -> None:
