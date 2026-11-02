@@ -40,6 +40,13 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 
 ### Added
 
+*   A [JSON Schema](../user-guide/configuration.md#editor-and-agent-support)
+    of `mkdocs.yml`, published at
+    <https://mkdocs-ng.github.io/mkdocs/schema.json>, lets editors complete
+    and check settings as you type and lets coding agents check the
+    configuration they write. It is generated from the definitions of the
+    settings and the built-in plugins, so it stays in step with MkDocs NG.
+    New projects refer to it in the first line of `mkdocs.yml`.
 *   `mkdocs serve` no longer fails when port 8000 is already in use, for
     example by another `mkdocs serve`. It serves on the next free port, up to
     8010, and says which one. A port you set yourself with `--dev-addr` or

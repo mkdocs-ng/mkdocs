@@ -1,0 +1,706 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkdocs-ng.github.io/mkdocs/schema.json",
+  "title": "MkDocs NG configuration (mkdocs.yml)",
+  "description": "See https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/",
+  "type": "object",
+  "properties": {
+    "site_name": {
+      "description": "The title to use for the documentation.",
+      "type": "string",
+      "markdownDescription": "The title to use for the documentation.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#site_name)"
+    },
+    "nav": {
+      "description": "Defines the structure of the navigation.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/navItem"
+      },
+      "markdownDescription": "Defines the structure of the navigation.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#nav)"
+    },
+    "pages": {
+      "deprecated": true,
+      "description": "The configuration option 'pages' was removed from MkDocs. Use 'nav' instead."
+    },
+    "exclude_docs": {
+      "description": "Gitignore-like patterns of files (relative to docs dir) to exclude from the site.",
+      "type": "string",
+      "markdownDescription": "Gitignore-like patterns of files (relative to docs dir) to exclude from the site.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#exclude_docs)"
+    },
+    "draft_docs": {
+      "description": "Gitignore-like patterns of files (relative to docs dir) to mark as draft.",
+      "type": "string",
+      "markdownDescription": "Gitignore-like patterns of files (relative to docs dir) to mark as draft.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#draft_docs)"
+    },
+    "not_in_nav": {
+      "description": "Gitignore-like patterns of files (relative to docs dir) that are not intended to be in the nav. This marks doc files that are expected not to be in the nav, otherwise they will cause a log message (see also `validation.nav.omitted_files`).",
+      "type": "string",
+      "markdownDescription": "Gitignore-like patterns of files (relative to docs dir) that are not intended to be in the nav. This marks doc files that are expected not to be in the nav, otherwise they will cause a log message (see also `validation.nav.omitted_files`).\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#not_in_nav)"
+    },
+    "site_url": {
+      "description": "The full URL to where the documentation will be hosted.",
+      "type": "string",
+      "markdownDescription": "The full URL to where the documentation will be hosted.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#site_url)"
+    },
+    "site_description": {
+      "description": "A description for the documentation project that will be added to the HTML meta tags.",
+      "type": "string",
+      "markdownDescription": "A description for the documentation project that will be added to the HTML meta tags.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#site_description)"
+    },
+    "site_author": {
+      "description": "The name of the author to add to the HTML meta tags.",
+      "type": "string",
+      "markdownDescription": "The name of the author to add to the HTML meta tags.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#site_author)"
+    },
+    "theme": {
+      "description": "The MkDocs theme for the documentation.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/themeName"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/themeName"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The name of an installed theme, or null to use only custom_dir."
+            },
+            "custom_dir": {
+              "type": "string",
+              "description": "A directory of templates and files that override the theme's own."
+            },
+            "static_templates": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "locale": {
+              "type": "string",
+              "description": "The language of the theme's text, e.g. en or zh_CN."
+            }
+          },
+          "additionalProperties": true
+        }
+      ],
+      "markdownDescription": "The MkDocs theme for the documentation.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#theme)"
+    },
+    "docs_dir": {
+      "description": "The directory containing the documentation markdown.",
+      "type": "string",
+      "default": "docs",
+      "markdownDescription": "The directory containing the documentation markdown.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#docs_dir)"
+    },
+    "site_dir": {
+      "description": "The directory where the site will be built to",
+      "type": "string",
+      "default": "site",
+      "markdownDescription": "The directory where the site will be built to\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#site_dir)"
+    },
+    "copyright": {
+      "description": "A copyright notice to add to the footer of documentation.",
+      "type": "string",
+      "markdownDescription": "A copyright notice to add to the footer of documentation.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#copyright)"
+    },
+    "google_analytics": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "deprecated": true,
+      "description": "The configuration option google_analytics is deprecated and no longer has any effect: Google shut down Universal Analytics, and the built-in themes no longer include the legacy 'analytics.js' snippet. Use your theme's 'analytics' options (e.g. 'analytics.gtag' for Google Analytics 4) or override the 'analytics' template block instead."
+    },
+    "dev_addr": {
+      "description": "The address on which to serve the live reloading docs server.",
+      "type": "string",
+      "pattern": "^.+:\\d+$",
+      "default": "127.0.0.1:8000",
+      "markdownDescription": "The address on which to serve the live reloading docs server.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#dev_addr)"
+    },
+    "use_directory_urls": {
+      "description": "If `True`, use `<page_name>/index.html` style files with hyperlinks to the directory. If `False`, use `<page_name>.html style file with hyperlinks to the file. True generates nicer URLs, but False is useful if browsing the output on a filesystem.",
+      "type": "boolean",
+      "default": true,
+      "markdownDescription": "If `True`, use `<page_name>/index.html` style files with hyperlinks to the directory. If `False`, use `<page_name>.html style file with hyperlinks to the file. True generates nicer URLs, but False is useful if browsing the output on a filesystem.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#use_directory_urls)"
+    },
+    "repo_url": {
+      "description": "Specify a link to the project source repo to be included in the documentation pages.",
+      "type": "string",
+      "markdownDescription": "Specify a link to the project source repo to be included in the documentation pages.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#repo_url)"
+    },
+    "repo_name": {
+      "description": "A name to use for the link to the project source repo. Default, If repo_url is unset then None, otherwise \"GitHub\", \"Bitbucket\" or \"GitLab\" for known url or Hostname for unknown urls.",
+      "type": "string",
+      "markdownDescription": "A name to use for the link to the project source repo. Default, If repo_url is unset then None, otherwise \"GitHub\", \"Bitbucket\" or \"GitLab\" for known url or Hostname for unknown urls.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#repo_name)"
+    },
+    "edit_uri_template": {
+      "description": "A template for the edit link of each page, e.g. 'blob/main/docs/{path}'. Use instead of edit_uri when the URL needs more than a prefix.",
+      "type": "string",
+      "markdownDescription": "A template for the edit link of each page, e.g. 'blob/main/docs/{path}'. Use instead of edit_uri when the URL needs more than a prefix.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#edit_uri_template)"
+    },
+    "edit_uri": {
+      "description": "Specify a URI to the docs dir in the project source repo, relative to the repo_url. When set, a link directly to the page in the source repo will be added to the generated HTML. If repo_url is not set also, this option is ignored.",
+      "type": "string",
+      "markdownDescription": "Specify a URI to the docs dir in the project source repo, relative to the repo_url. When set, a link directly to the page in the source repo will be added to the generated HTML. If repo_url is not set also, this option is ignored.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#edit_uri)"
+    },
+    "extra_css": {
+      "description": "CSS files from the docs directory (or URLs) to include in every page.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "markdownDescription": "CSS files from the docs directory (or URLs) to include in every page.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#extra_css)"
+    },
+    "extra_javascript": {
+      "description": "JavaScript files from the docs directory (or URLs) to include in every page.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/extraScript"
+      },
+      "markdownDescription": "JavaScript files from the docs directory (or URLs) to include in every page.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#extra_javascript)"
+    },
+    "extra_templates": {
+      "description": "Similar to the above, but each template (HTML or XML) will be build with Jinja2 and the global context.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "markdownDescription": "Similar to the above, but each template (HTML or XML) will be build with Jinja2 and the global context.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#extra_templates)"
+    },
+    "markdown_extensions": {
+      "description": "PyMarkdown extension names.",
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/markdownExtension"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        }
+      ],
+      "markdownDescription": "PyMarkdown extension names.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#markdown_extensions)"
+    },
+    "strict": {
+      "description": "Enabling strict mode causes MkDocs to stop the build when a problem is encountered rather than display an error.",
+      "type": "boolean",
+      "default": false,
+      "markdownDescription": "Enabling strict mode causes MkDocs to stop the build when a problem is encountered rather than display an error.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#strict)"
+    },
+    "remote_branch": {
+      "description": "The remote branch to commit to when using gh-deploy.",
+      "type": "string",
+      "default": "gh-pages",
+      "markdownDescription": "The remote branch to commit to when using gh-deploy.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#remote_branch)"
+    },
+    "remote_name": {
+      "description": "The remote name to push to when using gh-deploy.",
+      "type": "string",
+      "default": "origin",
+      "markdownDescription": "The remote name to push to when using gh-deploy.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#remote_name)"
+    },
+    "extra": {
+      "description": "extra is a mapping/dictionary of data that is passed to the template. This allows template authors to require extra configuration that not relevant to all themes and doesn't need to be explicitly supported by MkDocs itself. A good example here would be including the current project version.",
+      "type": "object",
+      "markdownDescription": "extra is a mapping/dictionary of data that is passed to the template. This allows template authors to require extra configuration that not relevant to all themes and doesn't need to be explicitly supported by MkDocs itself. A good example here would be including the current project version.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#extra)"
+    },
+    "plugins": {
+      "description": "A list of plugins. Each item may contain a string name or a key value pair. A key value pair should be the string name (as the key) and a dict of config options (as the value).",
+      "$ref": "#/$defs/plugins",
+      "markdownDescription": "A list of plugins. Each item may contain a string name or a key value pair. A key value pair should be the string name (as the key) and a dict of config options (as the value).\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#plugins)"
+    },
+    "hooks": {
+      "description": "A list of filenames that will be imported as Python modules and used as an instance of a plugin each.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "markdownDescription": "A list of filenames that will be imported as Python modules and used as an instance of a plugin each.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#hooks)"
+    },
+    "watch": {
+      "description": "A list of extra paths to watch while running `mkdocs serve`.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "markdownDescription": "A list of extra paths to watch while running `mkdocs serve`.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#watch)"
+    },
+    "validation": {
+      "description": "Log levels for problems found in links and the navigation: warn, info or ignore.",
+      "type": "object",
+      "properties": {
+        "omitted_files": {
+          "description": "Warning level for when a doc file is never mentioned in the navigation. For granular configuration, see `not_in_nav`.",
+          "type": "string",
+          "enum": [
+            "warn",
+            "info",
+            "ignore"
+          ],
+          "default": "info"
+        },
+        "not_found": {
+          "description": "Warning level for when the navigation links to a relative path that isn't an existing page on the site.",
+          "type": "string",
+          "enum": [
+            "warn",
+            "info",
+            "ignore"
+          ],
+          "default": "warn"
+        },
+        "absolute_links": {
+          "description": "Warning level for when the navigation links to an absolute path (starting with `/`).",
+          "type": "string",
+          "enum": [
+            "warn",
+            "info",
+            "ignore",
+            "relative_to_docs"
+          ],
+          "default": "info"
+        },
+        "unrecognized_links": {
+          "description": "Warning level for when a Markdown doc links to a relative path that doesn't look like it could be a valid internal link. For example, if the link ends with `/`.",
+          "type": "string",
+          "enum": [
+            "warn",
+            "info",
+            "ignore"
+          ],
+          "default": "info"
+        },
+        "anchors": {
+          "description": "Warning level for when a Markdown doc links to an anchor that's not present on the target page.",
+          "type": "string",
+          "enum": [
+            "warn",
+            "info",
+            "ignore"
+          ],
+          "default": "info"
+        },
+        "nav": {
+          "type": "object",
+          "properties": {
+            "omitted_files": {
+              "description": "Warning level for when a doc file is never mentioned in the navigation. For granular configuration, see `not_in_nav`.",
+              "type": "string",
+              "enum": [
+                "warn",
+                "info",
+                "ignore"
+              ],
+              "default": "info"
+            },
+            "not_found": {
+              "description": "Warning level for when the navigation links to a relative path that isn't an existing page on the site.",
+              "type": "string",
+              "enum": [
+                "warn",
+                "info",
+                "ignore"
+              ],
+              "default": "warn"
+            },
+            "absolute_links": {
+              "description": "Warning level for when the navigation links to an absolute path (starting with `/`).",
+              "type": "string",
+              "enum": [
+                "warn",
+                "info",
+                "ignore",
+                "relative_to_docs"
+              ],
+              "default": "info"
+            }
+          },
+          "additionalProperties": false
+        },
+        "links": {
+          "type": "object",
+          "properties": {
+            "not_found": {
+              "description": "Warning level for when a Markdown doc links to a relative path that isn't an existing document on the site.",
+              "type": "string",
+              "enum": [
+                "warn",
+                "info",
+                "ignore"
+              ],
+              "default": "warn"
+            },
+            "absolute_links": {
+              "description": "Warning level for when a Markdown doc links to an absolute path (starting with `/`).",
+              "type": "string",
+              "enum": [
+                "warn",
+                "info",
+                "ignore",
+                "relative_to_docs"
+              ],
+              "default": "info"
+            },
+            "unrecognized_links": {
+              "description": "Warning level for when a Markdown doc links to a relative path that doesn't look like it could be a valid internal link. For example, if the link ends with `/`.",
+              "type": "string",
+              "enum": [
+                "warn",
+                "info",
+                "ignore"
+              ],
+              "default": "info"
+            },
+            "anchors": {
+              "description": "Warning level for when a Markdown doc links to an anchor that's not present on the target page.",
+              "type": "string",
+              "enum": [
+                "warn",
+                "info",
+                "ignore"
+              ],
+              "default": "info"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "markdownDescription": "Log levels for problems found in links and the navigation: warn, info or ignore.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#validation)"
+    },
+    "INHERIT": {
+      "description": "A config file, or a list of them, to inherit options from.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "site_name"
+  ],
+  "$defs": {
+    "navItem": {
+      "description": "A page path or URL, or a single-key mapping of a title to a page path, URL or list of nav items.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 1,
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/navItem"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "extraScript": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "async": {
+              "type": "boolean"
+            },
+            "defer": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "path"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "markdownExtension": {
+      "description": "A Python-Markdown extension name, or a single-key mapping of an extension name to its options.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 1,
+          "additionalProperties": {
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        }
+      ]
+    },
+    "themeName": {
+      "anyOf": [
+        {
+          "enum": [
+            "mkdocs",
+            "readthedocs",
+            "sumi",
+            "material"
+          ]
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "plugins": {
+      "description": "Plugins, as a list of names or of single-key mappings of a name to its options.",
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "search",
+                      "llms_txt"
+                    ]
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "maxProperties": 1,
+                "properties": {
+                  "search": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "lang": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            ]
+                          },
+                          "separator": {
+                            "type": "string",
+                            "default": "[\\s\\-]+"
+                          },
+                          "stop_words": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "min_search_length": {
+                            "type": "integer",
+                            "default": 3
+                          },
+                          "prebuild_index": {
+                            "enum": [
+                              false,
+                              true,
+                              "node",
+                              "python"
+                            ],
+                            "default": false
+                          },
+                          "indexing": {
+                            "enum": [
+                              "full",
+                              "sections",
+                              "titles"
+                            ],
+                            "default": "full"
+                          },
+                          "enabled": {
+                            "type": "boolean",
+                            "default": true,
+                            "description": "Set to false to turn the plugin off."
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "llms_txt": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "full_output": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "enabled": {
+                            "type": "boolean",
+                            "default": true,
+                            "description": "Set to false to turn the plugin off."
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "additionalProperties": {
+                  "type": [
+                    "object",
+                    "null"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "search": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "lang": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    },
+                    "separator": {
+                      "type": "string",
+                      "default": "[\\s\\-]+"
+                    },
+                    "stop_words": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "min_search_length": {
+                      "type": "integer",
+                      "default": 3
+                    },
+                    "prebuild_index": {
+                      "enum": [
+                        false,
+                        true,
+                        "node",
+                        "python"
+                      ],
+                      "default": false
+                    },
+                    "indexing": {
+                      "enum": [
+                        "full",
+                        "sections",
+                        "titles"
+                      ],
+                      "default": "full"
+                    },
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "Set to false to turn the plugin off."
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "llms_txt": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "full_output": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "Set to false to turn the plugin off."
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": {
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

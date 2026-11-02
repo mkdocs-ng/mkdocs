@@ -12,6 +12,32 @@ by using the `-f`/`--config-file` option (see `mkdocs build --help`).
 
 At a minimum, this configuration file must contain the `site_name`. All other settings are optional.
 
+### Editor and agent support
+
+MkDocs NG publishes a [JSON Schema](https://json-schema.org/) of `mkdocs.yml`
+at <https://mkdocs-ng.github.io/mkdocs/schema.json>. It describes every
+setting on this page and the options of the built-in plugins, so editors can
+complete settings, show their documentation and flag typos and wrong values
+before you build, and coding agents can check a configuration they write.
+Settings of other plugins and themes are accepted without being checked.
+
+Projects created with `mkdocs new` refer to the schema in their first line,
+which editors using the [YAML language server](https://github.com/redhat-developer/yaml-language-server)
+(such as VS Code with the YAML extension) pick up without any setup:
+
+```yaml
+# yaml-language-server: $schema=https://mkdocs-ng.github.io/mkdocs/schema.json
+site_name: My Docs
+```
+
+Add the same line to an existing `mkdocs.yml` to use it there. If you use the
+[special YAML tags](#special-yaml-tags) `!ENV` or `!relative`, also tell the
+YAML extension about them in your editor settings:
+
+```json
+"yaml.customTags": ["!ENV scalar", "!ENV sequence", "!relative scalar"]
+```
+
 ## Project information
 
 ### site_name

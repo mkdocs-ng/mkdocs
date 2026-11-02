@@ -120,6 +120,8 @@ dependencies = [
     "coverage",
     # Optional dependency of the search plugin's `prebuild_index: python`.
     "lunr",
+    # Checks configs against the generated mkdocs.yml JSON Schema.
+    "jsonschema",
 ]
 [tool.hatch.envs.test.scripts]
 test = 'python -m unittest discover -s mkdocs -p "*tests.py"'
