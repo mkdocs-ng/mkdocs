@@ -437,3 +437,26 @@ class PageCacheTests(unittest.TestCase):
             self.assertEqual(self.build(hooks=["hooks.py"]), ["index.md", "other.md"])
 
         self.run_in_tempdir(test)
+
+    def test_output_file_changed_on_disk_is_rendered_again(self):
+        def test():
+            self.build()
+            before = self.read("index.html")
+            path = os.path.join(self.tdir, "site", "index.html")
+            with open(path, "w", encoding="utf-8") as f:
+                f.write("edited by hand")
+            self.assertEqual(self.build(), ["index.md"])
+            self.assertEqual(self.read("index.html"), before)
+
+        self.run_in_tempdir(test)
+
+    def test_not_used_without_site_output(self):
+        from mkdocs.utils import output
+
+        def test():
+            with mock.patch.object(output, "active", None):
+                self.build()
+                self.assertEqual(self.build(), ["index.md", "other.md"])
+            self.assertEqual(self.cache._pages, {})
+
+        self.run_in_tempdir(test)

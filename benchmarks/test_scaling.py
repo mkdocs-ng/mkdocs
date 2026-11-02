@@ -93,10 +93,12 @@ def test_serve_rebuild(benchmark, sized_site_factory, tmp_path) -> None:
     """
     The `mkdocs serve` inner loop: a full rebuild after one page changed.
 
-    Serve keeps a cache of Markdown conversions between rebuilds, so only the
-    changed page is converted again.
+    Serve keeps a cache of Markdown conversions and page HTML between
+    rebuilds, so only the changed page is converted and rendered again. As in
+    serve, the site output tracks what was written and the build date stays put.
     """
     from mkdocs.structure import render_cache
+    from mkdocs.utils import output
 
     config_file = sized_site_factory(SIZES[len(SIZES) // 2])
     site_dir = str(tmp_path / "site")
@@ -108,6 +110,7 @@ def test_serve_rebuild(benchmark, sized_site_factory, tmp_path) -> None:
 
     cache = render_cache.RenderCache()
     old_cache, render_cache.active = render_cache.active, cache
+    old_output, output.active = output.active, output.SiteOutput()
     try:
         cache.start_build()
         build(load_config(config_file, site_dir=site_dir))
@@ -121,6 +124,7 @@ def test_serve_rebuild(benchmark, sized_site_factory, tmp_path) -> None:
         benchmark.pedantic(build, setup=setup, rounds=1, warmup_rounds=0)
     finally:
         render_cache.active = old_cache
+        output.active = old_output
         with open(changed, "w", encoding="utf-8") as f:
             f.write(original)
 

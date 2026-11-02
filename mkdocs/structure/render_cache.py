@@ -23,9 +23,11 @@ import copy
 import dataclasses
 import datetime
 import enum
+import functools
 import hashlib
 import importlib
 import logging
+import marshal
 import os
 import zlib
 from typing import TYPE_CHECKING, Any
@@ -213,11 +215,9 @@ class _Unstable(Exception):
 _SCALARS = (str, int, float, bool, type(None))
 
 
-def _stable(value: Any) -> Any:
-    """
-    A description of a template variable that is the same in two rebuilds
-    exactly when the value is the same. Raises `_Unstable` for anything else.
-    """
+@functools.cache
+def _types() -> tuple:
+    # Imported on first use: these modules import this one.
     from mkdocs.config.base import Config as BaseConfig
     from mkdocs.structure.files import File
     from mkdocs.structure.nav import Link, Section
@@ -225,6 +225,23 @@ def _stable(value: Any) -> Any:
     from mkdocs.structure.toc import AnchorLink, TableOfContents
     from mkdocs.utils.templates import NavFragmentCache
 
+    return (
+        BaseConfig,
+        File,
+        Link,
+        Section,
+        Page,
+        AnchorLink,
+        TableOfContents,
+        NavFragmentCache,
+    )
+
+
+def _stable(value: Any) -> Any:
+    """
+    A description of a template variable that is the same in two rebuilds
+    exactly when the value is the same. Raises `_Unstable` for anything else.
+    """
     if isinstance(value, _SCALARS):
         return value
     if isinstance(value, (list, tuple)):
@@ -233,6 +250,16 @@ def _stable(value: Any) -> Any:
         return ("set", sorted(repr(_stable(v)) for v in value))
     if isinstance(value, dict):
         return ("dict", [(_stable(k), _stable(v)) for k, v in value.items()])
+    (
+        BaseConfig,
+        File,
+        Link,
+        Section,
+        Page,
+        AnchorLink,
+        TableOfContents,
+        NavFragmentCache,
+    ) = _types()
     # Items of the navigation: the navigation itself is described once per build.
     if isinstance(value, Page):
         return ("page", value.url)
@@ -352,18 +379,23 @@ class _RecordingLoader(jinja2.BaseLoader):
 
 
 class PageHTML:
-    """The theme's HTML of a page, kept compressed: it holds the whole navigation."""
+    """
+    The theme's HTML of a page: kept compressed, since it holds the whole
+    navigation, or only as the digest of the output file that holds it.
+    """
 
-    def __init__(self, html: str) -> None:
-        from mkdocs.utils import output
-
-        data = html.encode("utf-8", errors="xmlcharrefreplace")
-        # What `mkdocs.utils.output` compares, to leave the file alone.
-        self.digest = output._digest(data)
-        self._data = zlib.compress(data, 1)
+    def __init__(self, html: str | None = None, digest: bytes | None = None) -> None:
+        self.digest = digest
+        self._data = (
+            None
+            if html is None
+            else zlib.compress(html.encode("utf-8", errors="xmlcharrefreplace"), 1)
+        )
 
     @property
-    def html(self) -> str:
+    def html(self) -> str | None:
+        if self._data is None:
+            return None
         return zlib.decompress(self._data).decode("utf-8")
 
 
@@ -521,6 +553,7 @@ class RenderCache:
             return None
         try:
             parts = (
+                build,
                 template.name,
                 _describe_page(page),
                 _stable(context),
@@ -529,7 +562,8 @@ class RenderCache:
         except _Unstable as e:
             log.debug(f"Rendering '{page.file.src_uri}' again: {e} in its context")
             return None
-        key = hashlib.sha256(f"{build}\0{parts!r}".encode()).hexdigest()
+        # Much faster than repr(). Version 2 writes equal values as equal bytes.
+        key = hashlib.sha256(marshal.dumps(parts, 2)).hexdigest()
         self._pages_used.add(key)
         return key
 
@@ -537,8 +571,11 @@ class RenderCache:
         """The HTML of a page that the previous rebuild rendered with this key."""
         return self._pages.get(key)
 
-    def set_page(self, key: str, html: str) -> None:
-        self._pages[key] = PageHTML(html)
+    def set_page(
+        self, key: str, html: str | None = None, digest: bytes | None = None
+    ) -> None:
+        """Keep the HTML of a page, or the digest of the output file holding it."""
+        self._pages[key] = PageHTML(html, digest)
 
     def render(
         self,
