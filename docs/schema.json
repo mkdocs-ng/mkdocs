@@ -146,7 +146,7 @@
         ]
       },
       "minProperties": 1,
-      "markdownDescription": "The languages of a multi-language site. The first one is the default. Each key is a language code, and its value is the name shown in the language switcher, or a mapping with `name` and any config option to override for that language.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#languages)"
+      "markdownDescription": "The languages of a multi-language site. The first one is the default. Each key is a language code, and its value is the name shown in the language switcher, or a mapping with `name` and any config option to override for that language.\n\n[Documentation](https://mkdocs-ng.org/user-guide/configuration/#languages)"
     },
     "copyright": {
       "description": "A copyright notice to add to the footer of documentation.",
