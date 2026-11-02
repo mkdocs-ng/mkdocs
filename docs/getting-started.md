@@ -29,6 +29,7 @@ Take a moment to review the initial project that has been created for you:
 ```text
 my-project/
     mkdocs.yml    # The configuration file.
+    AGENTS.md     # Instructions for coding agents.
     docs/
         index.md  # The documentation homepage.
 ```
@@ -37,6 +38,21 @@ There's a single configuration file named `mkdocs.yml`, and a folder named
 `docs` that will contain your documentation source files (`docs` is
 the default value for the [docs_dir] configuration setting). Right now the `docs`
 folder just contains a single documentation page, named `index.md`.
+
+The new `mkdocs.yml` turns on the [`llms_txt`](user-guide/configuration.md#llmstxt)
+plugin, so every build also writes a Markdown copy of each page and an
+`llms.txt` that lists them, for chat assistants and coding agents. Its first
+line points editors to the [JSON Schema](user-guide/configuration.md#editor-and-agent-support)
+of `mkdocs.yml`, which gives completion and checks as you type. `AGENTS.md`
+tells coding agents such as Claude Code or Codex how to build the site and
+write pages for it; edit it to describe your own conventions.
+
+> TIP:
+> If the [Sumi](https://mkdocs-ng.github.io/mkdocs-sumi/) theme is installed,
+> `mkdocs new` creates a Sumi site instead of one with the default `mkdocs`
+> theme. Install both at once with `pip install "mkdocs-ng[sumi]"`. This
+> tutorial uses the default theme, so its screenshots look different from a
+> Sumi site.
 
 MkDocs comes with a built-in dev-server that lets you preview your documentation
 as you work on it. Make sure you're in the same directory as the `mkdocs.yml`

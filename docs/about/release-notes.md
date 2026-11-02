@@ -40,6 +40,20 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 
 ### Added
 
+*   `mkdocs new` creates a site that is ready for AI tools: its `mkdocs.yml`
+    turns on the [`llms_txt`](../user-guide/configuration.md#llmstxt) plugin,
+    and a new `AGENTS.md` tells coding agents how to build the site and write
+    pages for it. When the [Sumi](https://mkdocs-ng.github.io/mkdocs-sumi/)
+    theme is installed, the new site uses it. Install both with the new
+    `sumi` extra: `pip install "mkdocs-ng[sumi]"`. Existing sites and the
+    default theme of a `mkdocs.yml` without `theme` don't change.
+*   A [JSON Schema](../user-guide/configuration.md#editor-and-agent-support)
+    of `mkdocs.yml`, published at
+    <https://mkdocs-ng.github.io/mkdocs/schema.json>, lets editors complete
+    and check settings as you type and lets coding agents check the
+    configuration they write. It is generated from the definitions of the
+    settings and the built-in plugins, so it stays in step with MkDocs NG.
+    New projects refer to it in the first line of `mkdocs.yml`.
 *   `mkdocs serve` no longer fails when port 8000 is already in use, for
     example by another `mkdocs serve`. It serves on the next free port, up to
     8010, and says which one. A port you set yourself with `--dev-addr` or
