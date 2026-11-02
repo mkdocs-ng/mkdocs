@@ -1868,6 +1868,96 @@ class NestedSubConfigTest(TestCase):
             )
 
 
+class PythonPathTest(TestCase):
+    class Schema(Config):
+        markdown_extensions_path = c.PythonPath()
+        markdown_extensions = c.MarkdownExtensions()
+        mdx_configs = c.Private[dict[str, dict]]()
+
+    def setUp(self) -> None:
+        old_path = sys.path.copy()
+        old_modules = set(sys.modules)
+
+        def restore():
+            sys.path[:] = old_path
+            for name in set(sys.modules) - old_modules:
+                del sys.modules[name]
+
+        self.addCleanup(restore)
+
+    @tempdir(
+        files={
+            "extensions/project_ext.py": textwrap.dedent(
+                """
+                from markdown.extensions import Extension
+
+                class ProjectExtension(Extension):
+                    def extendMarkdown(self, md):
+                        pass
+
+                def makeExtension(**kwargs):
+                    return ProjectExtension(**kwargs)
+                """
+            ),
+        }
+    )
+    def test_loads_extensions_from_the_path(self, src_dir) -> None:
+        conf = self.get_config(
+            self.Schema,
+            {
+                "markdown_extensions_path": ["extensions"],
+                "markdown_extensions": [
+                    "project_ext",
+                    {"project_ext:ProjectExtension": {}},
+                ],
+            },
+            config_file_path=os.path.join(src_dir, "mkdocs.yml"),
+        )
+        ext_dir = os.path.join(src_dir, "extensions")
+        assert_type(conf.markdown_extensions_path, list[str])
+        self.assertEqual(conf.markdown_extensions_path, [ext_dir])
+        self.assertEqual(sys.path[0], ext_dir)
+        self.assertEqual(
+            conf.markdown_extensions, ["project_ext", "project_ext:ProjectExtension"]
+        )
+
+    @tempdir(files={"a/.keep": "", "b/.keep": ""})
+    def test_keeps_order_and_is_not_added_twice(self, src_dir) -> None:
+        cfg = {"markdown_extensions_path": ["a", "b"]}
+        config_file_path = os.path.join(src_dir, "mkdocs.yml")
+        self.get_config(self.Schema, cfg, config_file_path=config_file_path)
+        # A rebuild of `mkdocs serve` loads the config again.
+        self.get_config(self.Schema, cfg, config_file_path=config_file_path)
+        a, b = os.path.join(src_dir, "a"), os.path.join(src_dir, "b")
+        self.assertEqual(sys.path[:2], [a, b])
+        self.assertEqual(sys.path.count(a), 1)
+
+    def test_extension_not_found_without_the_path(self) -> None:
+        with self.expect_error(
+            markdown_extensions=re.compile(
+                r"Failed to load extension 'project_ext'.\nModuleNotFoundError: .*"
+            )
+        ):
+            self.get_config(self.Schema, {"markdown_extensions": ["project_ext"]})
+
+    @tempdir()
+    def test_missing_dir(self, src_dir) -> None:
+        missing = os.path.join(src_dir, "extensions")
+        with self.expect_error(
+            markdown_extensions_path=f"The path '{missing}' isn't an existing directory."
+        ):
+            self.get_config(
+                self.Schema,
+                {"markdown_extensions_path": ["extensions"]},
+                config_file_path=os.path.join(src_dir, "mkdocs.yml"),
+            )
+        self.assertNotIn(missing, sys.path)
+
+    def test_default(self) -> None:
+        conf = self.get_config(self.Schema, {})
+        self.assertEqual(conf.markdown_extensions_path, [])
+
+
 class MarkdownExtensionsTest(TestCase):
     @mock.patch("markdown.Markdown", mock.Mock())
     def test_simple_list(self) -> None:

@@ -138,6 +138,11 @@ class MkDocsConfig(base.Config):
     """Similar to the above, but each template (HTML or XML) will be build with
     Jinja2 and the global context."""
 
+    markdown_extensions_path = c.PythonPath(default=[])
+    """Directories with Python modules to load Markdown extensions from, for
+    example your own extensions kept next to the docs. Relative paths are
+    relative to the config file."""
+
     markdown_extensions = c.MarkdownExtensions(
         builtins=["toc", "tables", "fenced_code"], configkey="mdx_configs"
     )

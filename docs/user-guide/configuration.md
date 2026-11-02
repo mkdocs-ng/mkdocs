@@ -868,6 +868,30 @@ This alternative syntax is required if you intend to override some options via
 
 **default**: `[]` (an empty list).
 
+### markdown_extensions_path
+
+NEW: **New in version 1.11.**
+
+A list of directories (relative to `mkdocs.yml`) to load your own Markdown
+extensions from, so a small extension can live next to your docs instead of
+in an installed package.
+
+For example, with an extension in `extensions/abbreviations.py`:
+
+```yaml
+markdown_extensions_path:
+  - extensions
+markdown_extensions:
+  - abbreviations
+```
+
+The directories are added to Python's import path, like the `PYTHONPATH`
+environment variable would, before the extensions in
+[`markdown_extensions`](#markdown_extensions) are loaded. Each directory must
+exist. Use the module's name (or `module:ClassName`) as the extension name.
+
+**default**: `[]` (an empty list).
+
 ### hooks
 
 NEW: **New in version 1.4.**

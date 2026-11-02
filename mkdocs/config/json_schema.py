@@ -62,6 +62,7 @@ _DOCUMENTED = {
     "strict",
     "dev_addr",
     "markdown_extensions",
+    "markdown_extensions_path",
     "hooks",
     "plugins",
 }

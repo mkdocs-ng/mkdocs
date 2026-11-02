@@ -41,6 +41,7 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
+[#3772] | Loading your own Markdown extension from the project needed `PYTHONPATH` set by hand or a package to install. The new [`markdown_extensions_path`](../user-guide/configuration.md#markdown_extensions_path) setting names directories to load them from. | 1.11.0
 [#3914] | Links to other sites couldn't be told apart from internal links in the HTML, so themes couldn't mark them. They now get `rel="external"`. | 1.11.0
 [#3997] | GitHub-style alerts (`> [!NOTE]`, `> [!WARNING]` and so on) showed up as a quote starting with `[!NOTE]`. They now render as admonitions. | 1.11.0
 
@@ -105,6 +106,7 @@ Upstream issue | Symptom | Fixed in
 [#3703]: https://github.com/mkdocs/mkdocs/issues/3703
 [#3709]: https://github.com/mkdocs/mkdocs/issues/3709
 [#3710]: https://github.com/mkdocs/mkdocs/issues/3710
+[#3772]: https://github.com/mkdocs/mkdocs/issues/3772
 [#3914]: https://github.com/mkdocs/mkdocs/issues/3914
 [#3952]: https://github.com/mkdocs/mkdocs/issues/3952
 [#3973]: https://github.com/mkdocs/mkdocs/issues/3973

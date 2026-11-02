@@ -173,6 +173,14 @@
       },
       "markdownDescription": "Similar to the above, but each template (HTML or XML) will be build with Jinja2 and the global context.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#extra_templates)"
     },
+    "markdown_extensions_path": {
+      "description": "Directories with Python modules to load Markdown extensions from, for example your own extensions kept next to the docs. Relative paths are relative to the config file.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "markdownDescription": "Directories with Python modules to load Markdown extensions from, for example your own extensions kept next to the docs. Relative paths are relative to the config file.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#markdown_extensions_path)"
+    },
     "markdown_extensions": {
       "description": "PyMarkdown extension names.",
       "anyOf": [

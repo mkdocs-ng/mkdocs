@@ -785,6 +785,26 @@ class ListOfPaths(ListOfItems[str]):
         self.required = required
 
 
+class PythonPath(ListOfItems[str]):
+    """
+    A list of directories to import Python modules from.
+
+    The directories are added to the front of `sys.path` as soon as the option
+    is validated, so options validated after it (such as `markdown_extensions`)
+    can import modules from them. Relative paths are relative to the config file.
+    """
+
+    def __init__(self, default=[]) -> None:
+        super().__init__(Dir(exists=True), default)
+
+    def run_validation(self, value: object) -> list[str]:
+        paths = super().run_validation(value)
+        for path in reversed(paths):
+            if path not in sys.path:
+                sys.path.insert(0, path)
+        return paths
+
+
 class SiteDir(Dir):
     """
     SiteDir Config Option.
