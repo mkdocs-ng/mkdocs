@@ -15,7 +15,7 @@ At a minimum, this configuration file must contain the `site_name`. All other se
 ### Editor and agent support
 
 MkDocs NG publishes a [JSON Schema](https://json-schema.org/) of `mkdocs.yml`
-at <https://mkdocs-ng.github.io/mkdocs/schema.json>. It describes every
+at <https://mkdocs-ng.org/schema.json>. It describes every
 setting on this page and the options of the built-in plugins, so editors can
 complete settings, show their documentation and flag typos and wrong values
 before you build, and coding agents can check a configuration they write.
@@ -26,7 +26,7 @@ which editors using the [YAML language server](https://github.com/redhat-develop
 (such as VS Code with the YAML extension) pick up without any setup:
 
 ```yaml
-# yaml-language-server: $schema=https://mkdocs-ng.github.io/mkdocs/schema.json
+# yaml-language-server: $schema=https://mkdocs-ng.org/schema.json
 site_name: My Docs
 ```
 

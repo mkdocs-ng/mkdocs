@@ -24,8 +24,8 @@ from mkdocs.config import base
 from mkdocs.config import config_options as c
 from mkdocs.config.defaults import MkDocsConfig, _LogLevel
 
-SCHEMA_URL = "https://mkdocs-ng.github.io/mkdocs/schema.json"
-DOCS_URL = "https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/"
+SCHEMA_URL = "https://mkdocs-ng.org/schema.json"
+DOCS_URL = "https://mkdocs-ng.org/user-guide/configuration/"
 
 # Built-in themes and well-known third-party ones, offered as completions.
 # Any other installed theme name is still accepted.

@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://mkdocs-ng.github.io/mkdocs/">
+  <a href="https://mkdocs-ng.org/">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/logo-dark.svg">
       <img src="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/logo.svg" width="160" alt="MkDocs NG">
@@ -19,16 +19,16 @@
   <a href="https://pypi.org/project/mkdocs-ng/"><img src="https://img.shields.io/pypi/v/mkdocs-ng.svg" alt="PyPI version"></a>
   <a href="https://pypi.org/project/mkdocs-ng/"><img src="https://img.shields.io/pypi/pyversions/mkdocs-ng.svg" alt="Python versions"></a>
   <a href="https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml"><img src="https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://mkdocs-ng.github.io/mkdocs/user-guide/migrating/#plugins-and-themes"><img src="https://img.shields.io/github/actions/workflow/status/mkdocs-ng/mkdocs/compat.yml?branch=main&label=plugin%20compatibility" alt="Plugin compatibility"></a>
+  <a href="https://mkdocs-ng.org/user-guide/migrating/#plugins-and-themes"><img src="https://img.shields.io/github/actions/workflow/status/mkdocs-ng/mkdocs/compat.yml?branch=main&label=plugin%20compatibility" alt="Plugin compatibility"></a>
   <a href="https://codecov.io/github/mkdocs-ng/mkdocs?branch=main"><img src="https://codecov.io/github/mkdocs-ng/mkdocs/coverage.svg?branch=main" alt="Coverage"></a>
   <a href="https://app.codspeed.io/mkdocs-ng/mkdocs?utm_source=badge"><img src="https://img.shields.io/endpoint?url=https://codspeed.io/badge.json" alt="CodSpeed"></a>
   <a href="https://github.com/mkdocs-ng/mkdocs/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/mkdocs-ng.svg" alt="License"></a>
 </p>
 
 <p align="center">
-  <a href="https://mkdocs-ng.github.io/mkdocs/">Documentation</a> ·
-  <a href="https://mkdocs-ng.github.io/mkdocs/user-guide/migrating/">Switching from MkDocs</a> ·
-  <a href="https://mkdocs-ng.github.io/mkdocs/about/release-notes/">Release notes</a> ·
+  <a href="https://mkdocs-ng.org/">Documentation</a> ·
+  <a href="https://mkdocs-ng.org/user-guide/migrating/">Switching from MkDocs</a> ·
+  <a href="https://mkdocs-ng.org/about/release-notes/">Release notes</a> ·
   <a href="https://github.com/mkdocs-ng/catalog">Plugin catalog</a>
 </p>
 
@@ -118,17 +118,17 @@ Everyone interacting in the MkDocs project's codebases, issue trackers, and
 discussion forums are expected to follow the [PyPA Code of Conduct].
 
 <!-- Links -->
-[mkdocs]: https://mkdocs-ng.github.io/mkdocs/
+[mkdocs]: https://mkdocs-ng.org/
 [mkdocs/mkdocs]: https://github.com/mkdocs/mkdocs
 [more]: https://github.com/mkdocs-ng/mkdocs/pulls?page=1&q=is%3Apr+is%3Aclosed+is%3Amerged
 [Issue]: https://github.com/mkdocs-ng/mkdocs/issues
 [Discussions]: https://github.com/orgs/mkdocs-ng/discussions
-[release-notes]: https://mkdocs-ng.github.io/mkdocs/about/release-notes/
-[fixed-upstream]: https://mkdocs-ng.github.io/mkdocs/about/fixed-upstream-issues/
-[plugins-install]: https://mkdocs-ng.github.io/mkdocs/user-guide/installation/#plugins-themes-and-the-mkdocs-package
-[migrating]: https://mkdocs-ng.github.io/mkdocs/user-guide/migrating/
-[comparison]: https://mkdocs-ng.github.io/mkdocs/about/comparison/
-[Contributing Guide]: https://mkdocs-ng.github.io/mkdocs/about/contributing/
+[release-notes]: https://mkdocs-ng.org/about/release-notes/
+[fixed-upstream]: https://mkdocs-ng.org/about/fixed-upstream-issues/
+[plugins-install]: https://mkdocs-ng.org/user-guide/installation/#plugins-themes-and-the-mkdocs-package
+[migrating]: https://mkdocs-ng.org/user-guide/migrating/
+[comparison]: https://mkdocs-ng.org/about/comparison/
+[Contributing Guide]: https://mkdocs-ng.org/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [catalog]: https://github.com/mkdocs-ng/catalog
 [sumi]: https://github.com/mkdocs-ng/mkdocs-sumi

@@ -48,7 +48,7 @@ tells coding agents such as Claude Code or Codex how to build the site and
 write pages for it; edit it to describe your own conventions.
 
 > TIP:
-> If the [Sumi](https://mkdocs-ng.github.io/mkdocs-sumi/) theme is installed,
+> If the [Sumi](https://sumi.mkdocs-ng.org/) theme is installed,
 > `mkdocs new` creates a Sumi site instead of one with the default `mkdocs`
 > theme. Install both at once with `pip install "mkdocs-ng[sumi]"`. This
 > tutorial uses the default theme, so its screenshots look different from a
@@ -249,7 +249,7 @@ and [GitHub issues] to report bugs or request features.
 
 [Installation Guide]: user-guide/installation.md
 [Choosing your Theme]: user-guide/choosing-your-theme.md
-[Sumi]: https://mkdocs-ng.github.io/mkdocs-sumi/
+[Sumi]: https://sumi.mkdocs-ng.org/
 [docs_dir]: user-guide/configuration.md#docs_dir
 [deploy]: user-guide/deploying-your-docs.md
 [GitHub Discussions]: https://github.com/orgs/mkdocs-ng/discussions

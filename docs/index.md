@@ -70,7 +70,7 @@ sections:
       - Light and dark modes, with fonts, icons and search bundled. No CDN.
       - Landing pages, a blog and a releases page from plain Markdown.
     actions:
-      - {text: Sumi documentation, link: "https://mkdocs-ng.github.io/mkdocs-sumi/", primary: true}
+      - {text: Sumi documentation, link: "https://sumi.mkdocs-ng.org/", primary: true}
       - {text: Choosing your theme, link: user-guide/choosing-your-theme/}
     image: img/sumi.png
   - type: split

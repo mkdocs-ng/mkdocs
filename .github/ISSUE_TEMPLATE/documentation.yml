@@ -7,7 +7,7 @@ body:
     attributes:
       label: Page or section
       description: Which page or section of the docs has an issue?
-      placeholder: https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/
+      placeholder: https://mkdocs-ng.org/user-guide/configuration/
     validations:
       required: true
 
