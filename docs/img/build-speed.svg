@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="288" viewBox="0 0 720 288" role="img" aria-label="Build times" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">
+<text x="178" y="25.0" dy="0.35em" text-anchor="end" fill="#1f2328" font-weight="600">MkDocs NG</text>
+<rect x="190" y="15.0" width="38.6" height="20" rx="3" fill="#0061fe"/>
+<text x="236.6" y="25.0" dy="0.35em" fill="#1f2328" font-weight="600">9.3 s</text>
+<text x="178" y="59.0" dy="0.35em" text-anchor="end" fill="#1f2328" font-weight="600">MkDocs NG + Material</text>
+<rect x="190" y="49.0" width="55.6" height="20" rx="3" fill="#0061fe"/>
+<text x="253.6" y="59.0" dy="0.35em" fill="#1f2328" font-weight="600">13.4 s</text>
+<text x="178" y="93.0" dy="0.35em" text-anchor="end" fill="#1f2328">Zensical</text>
+<rect x="190" y="83.0" width="75.5" height="20" rx="3" fill="#d1d9e0"/>
+<text x="273.5" y="93.0" dy="0.35em" fill="#59636e">18.2 s</text>
+<text x="178" y="127.0" dy="0.35em" text-anchor="end" fill="#1f2328">MkDocs 1.6.1</text>
+<rect x="190" y="117.0" width="84.2" height="20" rx="3" fill="#d1d9e0"/>
+<text x="282.2" y="127.0" dy="0.35em" fill="#59636e">20.3 s</text>
+<text x="178" y="161.0" dy="0.35em" text-anchor="end" fill="#1f2328">Starlight</text>
+<rect x="190" y="151.0" width="89.6" height="20" rx="3" fill="#d1d9e0"/>
+<text x="287.6" y="161.0" dy="0.35em" fill="#59636e">21.6 s</text>
+<text x="178" y="195.0" dy="0.35em" text-anchor="end" fill="#1f2328">Sphinx</text>
+<rect x="190" y="185.0" width="107.0" height="20" rx="3" fill="#d1d9e0"/>
+<text x="305.0" y="195.0" dy="0.35em" fill="#59636e">25.8 s</text>
+<text x="178" y="229.0" dy="0.35em" text-anchor="end" fill="#1f2328">VitePress</text>
+<rect x="190" y="219.0" width="418.5" height="20" rx="3" fill="#d1d9e0"/>
+<text x="616.5" y="229.0" dy="0.35em" fill="#59636e">100.9 s</text>
+<text x="178" y="263.0" dy="0.35em" text-anchor="end" fill="#1f2328">Docusaurus</text>
+<rect x="190" y="253.0" width="450.0" height="20" rx="3" fill="#d1d9e0"/>
+<text x="648.0" y="263.0" dy="0.35em" fill="#59636e">108.5 s</text>
+</svg>

@@ -62,3 +62,10 @@ python -m benchmarks.compare serve /tmp/bench/1000 \
 
 A 5,000-page site with Material for MkDocs writes more than 4 GB, because every
 page holds the whole navigation; Zensical's cache for it takes another 8 GB.
+
+The bar chart in the project README is drawn from the 1,000-page build times by
+`chart.py`, which writes a light and a dark SVG:
+
+```bash
+python -m benchmarks.chart docs/img/build-speed.svg "MkDocs NG=9.3" "Zensical=18.2"
+```

@@ -38,6 +38,21 @@ source files are written in Markdown and configured with a single YAML
 configuration file. It is designed to be easy to use and can be extended with
 third-party themes, plugins, and Markdown extensions.
 
+<p align="center">
+  <a href="https://mkdocs-ng.org/about/comparison/#build-speed">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/build-speed-dark.svg">
+      <img src="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/build-speed.svg" width="720" alt="Clean build of a 1,000-page site: MkDocs NG 9.3 s, MkDocs NG with Material 13.4 s, Zensical 18.2 s, MkDocs 1.6.1 20.3 s, Starlight 21.6 s, Sphinx 25.8 s, VitePress 100.9 s, Docusaurus 108.5 s">
+    </picture>
+  </a>
+</p>
+
+<p align="center">
+  <i>Clean build of the same 1,000-page site. Zensical is faster when it reuses its cache and when <code>serve</code> shows an edit.
+  <br>
+  <a href="https://mkdocs-ng.org/about/comparison/#build-speed">How we measured</a></i>
+</p>
+
 > [!NOTE]
 > **MkDocs NG** is a maintained fork of [mkdocs/mkdocs], published on PyPI as
 > `mkdocs-ng` while keeping the `mkdocs` command, imports and configuration
