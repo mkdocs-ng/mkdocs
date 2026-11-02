@@ -1140,7 +1140,7 @@ Option | Description
 
 #### LLMs.txt
 
-NEW: **New in version 2.0.**
+NEW: **New in version 1.9.**
 
 The `llms_txt` plugin, provided with MkDocs but not enabled by default,
 publishes your documentation in a form that is easy for LLMs and coding agents
@@ -1280,7 +1280,7 @@ To define the parent for a configuration file, set the `INHERIT` (all caps) key
 to the path of the parent file. The path must be relative to the location of the
 primary file.
 
-NEW: **New in version 2.0.**
+NEW: **New in version 1.9.**
 
 `INHERIT` can also be a list of paths, to split the configuration into several
 files. The files are merged in order: each one overrides the ones before it, and

@@ -27,6 +27,8 @@ RELEASE_NOTES_SECTION_RE = re.compile(
 FENCED_CODE_BLOCK_RE = re.compile(r"(^```.*?^```[ \t]*$)", re.MULTILINE | re.DOTALL)
 ISSUE_REF_RE = re.compile(r"(?<![\w/`\[])#(?P<number>\d+)\b")
 VERSION_EXAMPLE_RE = re.compile(r"mkdocs, version \S+ from")
+COMPAT_CASES_MARKER = "<!-- compat-cases -->"
+COMPAT_CASES_PATH = Path(__file__).resolve().parents[1] / "compat" / "cases.yaml"
 
 
 def _get_language_of_translation_file(path: Path) -> str:
@@ -92,6 +94,24 @@ def _update_version_example(markdown: str) -> str:
     )
 
 
+def _compat_cases_list(cases: list[dict]) -> str:
+    """List the projects in the plugin compatibility test, linked to PyPI."""
+    links = []
+    for case in sorted(cases, key=lambda c: c["name"].lower()):
+        package = re.split(r"[\[<>=!~ ]", case["install"][0], maxsplit=1)[0]
+        links.append(f"[{case['name']}](https://pypi.org/project/{package}/)")
+    return ", ".join(links) + "."
+
+
+def _insert_compat_cases(markdown: str) -> str:
+    if COMPAT_CASES_MARKER not in markdown:
+        return markdown
+    import yaml
+
+    cases = yaml.safe_load(COMPAT_CASES_PATH.read_text(encoding="utf-8"))
+    return markdown.replace(COMPAT_CASES_MARKER, _compat_cases_list(cases))
+
+
 def _documented_default(option: click.Option) -> object:
     """
     The default to show for a CLI option, as click before 8.3 reported it.
@@ -134,6 +154,9 @@ def on_page_markdown(
 ) -> str | None:
     if page.file.src_uri == "about/release-notes.md":
         return _rewrite_release_notes_links(_update_version_example(markdown))
+
+    if page.file.src_uri == "user-guide/migrating.md":
+        return _insert_compat_cases(markdown)
 
     if page.file.src_uri == "user-guide/choosing-your-theme.md":
         here = Path(config.config_file_path).parent

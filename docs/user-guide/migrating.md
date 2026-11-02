@@ -7,7 +7,23 @@ Move an existing MkDocs site to MkDocs NG.
 MkDocs NG is a maintained fork of [MkDocs 1.x][upstream]. It keeps the
 `mkdocs` command, `mkdocs.yml`, the plugin and theme APIs and `import mkdocs`,
 so switching is a package change, not a migration of your site. Your Markdown,
-configuration, plugins and themes stay as they are.
+configuration, plugins and themes stay as they are, and
+[switching back](#switching-back) is the same one-line change.
+
+## Try it first
+
+To see whether your site builds with MkDocs NG before you change anything, run
+it once with [uv]. `uvx` installs MkDocs NG and your requirements into a
+throwaway environment and leaves your own environment and files alone:
+
+```bash
+uvx --from mkdocs-ng --with-requirements requirements.txt mkdocs build --strict
+```
+
+Point `--with-requirements` at the file that lists your plugins and themes,
+or name them with `--with`, for example
+`uvx --from mkdocs-ng --with mkdocs-material mkdocs build --strict`. Without
+them, the build fails on the first plugin or theme it can't find.
 
 ## Switch
 
@@ -81,6 +97,23 @@ pipx install mkdocs-ng
 pipx inject mkdocs-ng mkdocs-material
 ```
 
+With Poetry, swap the package in the group that lists it:
+
+```bash
+poetry remove --group docs mkdocs
+poetry add --group docs mkdocs-ng
+```
+
+On Read the Docs, nothing changes in `.readthedocs.yaml`. Its
+`python.install` step installs the requirements file you updated above.
+
+In a GitHub Actions workflow, or any CI script, change the package name in the
+install step:
+
+```yaml
+- run: pip install mkdocs-ng mkdocs-material
+```
+
 To pin a version, pin `mkdocs-ng`, for example `mkdocs-ng>=1.10,<2`.
 
 In a uv project you can keep upstream MkDocs from being installed at all. See
@@ -117,10 +150,22 @@ upstream bugs that are fixed.
 
 Plugins and themes written for MkDocs 1.x work unchanged: MkDocs NG provides
 the same plugin events, configuration classes and theme templates. Every
-change to MkDocs NG is tested by building sites with around 30 popular
-plugins, themes and Markdown extensions, installed the way users install them.
-If a plugin or theme that works with upstream MkDocs fails with MkDocs NG,
-please [open an issue].
+change to MkDocs NG is tested by building sites with these popular plugins,
+themes and Markdown extensions, installed the way users install them, and the
+test runs again every week to catch new plugin releases:
+
+<!-- compat-cases -->
+
+The [plugin catalog] marks every project in this test. If a plugin or theme
+that works with upstream MkDocs fails with MkDocs NG, please [open an issue].
+
+### Material for MkDocs
+
+Material for MkDocs works with MkDocs NG and is part of the tests above. Its
+maintainers have announced that it reaches end of life on 2027-05-05, and it
+prints a notice saying so on every build. When you want to move on, [Sumi] is
+the theme made for MkDocs NG. It reads most Material configuration and
+content as-is, and its [migration guide][sumi-migrate] lists what carries over.
 
 ## Coming from ProperDocs
 
@@ -159,3 +204,7 @@ plugin or a list of files in [`INHERIT`](configuration.md#configuration-inherita
 [Fixed Upstream Issues]: ../about/fixed-upstream-issues.md
 [open an issue]: https://github.com/mkdocs-ng/mkdocs/issues
 [ProperDocs]: https://properdocs.org/
+[uv]: https://docs.astral.sh/uv/
+[plugin catalog]: https://github.com/mkdocs-ng/catalog
+[Sumi]: https://mkdocs-ng.github.io/mkdocs-sumi/
+[sumi-migrate]: https://mkdocs-ng.github.io/mkdocs-sumi/docs/start/migrate/
