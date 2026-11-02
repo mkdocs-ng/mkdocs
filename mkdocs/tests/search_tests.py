@@ -323,6 +323,82 @@ class SearchPluginTests(unittest.TestCase):
         self.assertEqual(mock_write_file.call_count, 1)
 
 
+class FastParseTests(unittest.TestCase):
+    """The fast parser must find exactly what `ContentParser` finds, or give up."""
+
+    def assertSameAsContentParser(self, content, *, fast=True):
+        parser = search_index.ContentParser()
+        parser.feed(content)
+        parser.close()
+        parsed = search_index._fast_parse(content)
+        if not fast:
+            self.assertIsNone(parsed, content)
+            return
+        self.assertIsNotNone(parsed, content)
+        assert parsed is not None
+        self.assertEqual(parsed.stripped_html, parser.stripped_html, content)
+        self.assertEqual(
+            [(d.id, d.title, d.text) for d in parsed.data],
+            [(d.id, d.title, d.text) for d in parser.data],
+            content,
+        )
+
+    def test_markdown_output(self):
+        for content in (
+            "",
+            "Plain text",
+            '<h1 id="title">Title</h1>\n<p>Text &amp; more &lt;b&gt; &copy; &#169; &#xa9;</p>',
+            "<p>Before</p><h2>No id</h2><p>One</p><p>Two\n</p>\n",
+            '<H2 ID="Upper">Mixed <em>case</em></H2><P>x</P>',
+            '<h3 id=bare class="a b">Bare id</h3>',
+            "<h3 id='single' id=\"twice\">Last id wins</h3>",
+            '<h2 id="a&amp;b">Escaped id</h2>',
+            "<h2 id>Empty id</h2>after",
+            "<h2/>self-closing<h3 />too",
+            '<p><a href="x.md" title="a>b">link</a><br><br/><img alt="1 &lt; 2" src="i.png" /></p>',
+            '<table><tr><th>A</th></tr><tr><td>1</td></tr></table><h6 id="z">Z</h6>end',
+            "<div\nclass=\"wrapped\"\n>text</div >",
+            "<h1>Unclosed",
+            "text with &amp trailing & ampersands &",
+        ):
+            with self.subTest(content=content):
+                self.assertSameAsContentParser(content)
+
+    def test_other_html_is_left_to_content_parser(self):
+        for content in (
+            "1 < 2",
+            "a <3",
+            "<!-- comment -->",
+            "<!DOCTYPE html>",
+            "<?php ?>",
+            "<script>var a = '<h1>x</h1>';</script>",
+            "<style>h1 > p {}</style>",
+            "<textarea><h1>x</h1></textarea>",
+            "<title>T</title>",
+            '<p title="unclosed>text</p>',
+            "</ h1>",
+            "<p =x>",
+        ):
+            with self.subTest(content=content):
+                self.assertSameAsContentParser(content, fast=False)
+
+    def test_random_markup(self):
+        import random
+
+        rng = random.Random(4)
+        pieces = [
+            "<h1>", "</h1>", '<h2 id="x">', "</h2>", "<h3 id=y>", "</h3>", "<p>",
+            "</p>", "<br>", "<br/>", "<em>", "</em>", '<a href="u">', "</a>",
+            "text", " ", "\n", "&amp;", "&lt;", "&nbsp;", "&#62;", "&bogus;", "&",
+            "word\n", "<code>", "</code>", "<", ">", '"', "<!-- c -->",
+        ]
+        for _ in range(3000):
+            content = "".join(rng.choices(pieces, k=rng.randint(1, 25)))
+            parsed = search_index._fast_parse(content)
+            with self.subTest(content=content):
+                self.assertSameAsContentParser(content, fast=parsed is not None)
+
+
 class SearchIndexTests(unittest.TestCase):
     def test_html_stripping(self):
         stripper = search_index.ContentParser()

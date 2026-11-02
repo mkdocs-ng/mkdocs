@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 import json
 import logging
 import os
@@ -71,13 +72,9 @@ class SearchIndex:
             self._add_entry(title=page.title, text="", loc=page.url)
             return
 
-        # Create the content parser and feed in the HTML for the
-        # full page. This handles all the parsing and prepares
-        # us to iterate through it.
-        parser = ContentParser()
+        # Parse the HTML of the page into the text of each section.
         assert page.content is not None
-        parser.feed(page.content)
-        parser.close()
+        parser = _parse_content(page.content)
 
         # Get the absolute URL for the page, this is then
         # prepended to the urls of the sections
@@ -258,3 +255,105 @@ class ContentParser(HTMLParser):
     @property
     def stripped_html(self) -> str:
         return "\n".join(self._stripped_html)
+
+
+_HEADER_TAG_SET = frozenset(_HEADER_TAGS)
+# Elements whose content `HTMLParser` treats specially, plus comments,
+# declarations and processing instructions: HTML with any of these goes to
+# `ContentParser`.
+_SPECIAL_TAGS = frozenset(
+    "script style xmp iframe noembed noframes noscript textarea title plaintext".split()
+)
+_TAG_RE = re.compile(
+    r"""<(?:
+        (?P<end>/)(?P<endname>[a-zA-Z][^\t\n\r\f />\x00]*)\s*
+        |
+        (?P<name>[a-zA-Z][^\t\n\r\f />\x00]*)
+        (?P<attrs>(?:\s+[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'=<>`]+))?)*)
+        \s*/?
+    )>""",
+    re.VERBOSE,
+)
+_ATTR_RE = re.compile(
+    r"""\s+([^\s"'>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?"""
+)
+
+
+class _ParsedContent:
+    def __init__(self) -> None:
+        self.data: list[ContentSection] = []
+        self._stripped_html: list[str] = []
+
+    @property
+    def stripped_html(self) -> str:
+        return "\n".join(self._stripped_html)
+
+
+def _heading_id(attrs: str) -> str | None:
+    """The `id` that `HTMLParser` would report for a heading: the last one wins."""
+    id_ = None
+    for m in _ATTR_RE.finditer(attrs):
+        if m.group(1).lower() == "id":
+            value = m.group(2)
+            if value is None:
+                value = m.group(3)
+            if value is None:
+                value = m.group(4)
+            id_ = None if value is None else html.unescape(value)
+    return id_
+
+
+def _fast_parse(content: str) -> _ParsedContent | None:
+    """
+    Collect the same text and sections as `ContentParser`, much faster.
+
+    Only handles plain, well-formed tags, which is what Markdown produces.
+    Returns None for anything else, so that `ContentParser` handles it.
+    """
+    result = _ParsedContent()
+    stripped = result._stripped_html
+    section: ContentSection | None = None
+    in_header = False
+    pos = 0
+    n = len(content)
+    find = content.find
+    match = _TAG_RE.match
+    while True:
+        lt = find("<", pos)
+        end = n if lt < 0 else lt
+        if pos < end:
+            data = html.unescape(content[pos:end])
+            stripped.append(data)
+            if section is not None:
+                if in_header:
+                    section.title = data
+                else:
+                    section.text.append(data.rstrip("\n"))
+        if lt < 0:
+            return result
+        m = match(content, lt)
+        if m is None:
+            return None
+        if m.group("end"):
+            if m.group("endname").lower() in _HEADER_TAG_SET:
+                in_header = False
+        else:
+            name = m.group("name").lower()
+            if name in _SPECIAL_TAGS:
+                return None
+            if name in _HEADER_TAG_SET:
+                section = ContentSection(id_=_heading_id(m.group("attrs")))
+                result.data.append(section)
+                # A self-closing heading, `<h2/>`, ends right away.
+                in_header = not m.group(0).endswith("/>")
+        pos = m.end()
+
+
+def _parse_content(content: str) -> _ParsedContent | ContentParser:
+    parsed = _fast_parse(content)
+    if parsed is not None:
+        return parsed
+    parser = ContentParser()
+    parser.feed(content)
+    parser.close()
+    return parser
