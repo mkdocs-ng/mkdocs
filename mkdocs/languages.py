@@ -231,9 +231,15 @@ def apply_language(config: MkDocsConfig, code: str | None) -> Language | None:
             theme = {"name": theme_override}
         elif isinstance(theme_override, dict):
             theme = _deep_merge(dict(theme), theme_override)
-        sets_locale = isinstance(theme_override, dict) and "locale" in theme_override
-        if not sets_locale and (not lang.default or "locale" not in theme):
-            theme["locale"] = lang.locale
+        # Material for MkDocs names its language `language`, with the code as
+        # it is (`pt-BR`), instead of `locale`.
+        keys = {"locale": lang.locale}
+        if theme.get("name") == "material":
+            keys["language"] = lang.code
+        for key, value in keys.items():
+            sets_key = isinstance(theme_override, dict) and key in theme_override
+            if not sets_key and (not lang.default or key not in theme):
+                theme[key] = value
     _deep_merge(config, {k: v for k, v in overrides.items() if k != "theme"})
     if isinstance(theme, dict):
         config["theme"] = theme
