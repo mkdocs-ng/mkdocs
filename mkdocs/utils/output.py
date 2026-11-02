@@ -129,6 +129,23 @@ class SiteOutput:
         write()
         self._written[path] = (digest, _state(path))
 
+    def keep(self, output_path: str, digest: bytes) -> bool:
+        """
+        Whether `output_path` already holds the content with this digest from
+        our last write. If so, it counts as written by this build.
+        """
+        path = os.path.abspath(output_path)
+        entry = self._written.get(path)
+        if (
+            entry is None
+            or entry[0] != digest
+            or not self._in_site_dir(path)
+            or entry[1] != _state(path)
+        ):
+            return False
+        self._current.add(path)
+        return True
+
     def copied(self, output_path: str) -> None:
         path = os.path.abspath(output_path)
         if not self._in_site_dir(path):

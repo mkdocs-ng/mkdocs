@@ -47,6 +47,18 @@ Changes since [1.11.0rc1](#version-1110rc1-2026-11-03):
     previous rebuild. With 1,000 pages, a new page showed up after 7.4 seconds
     with the `mkdocs` theme and now after 2.2; with Material for MkDocs it went
     from 10.9 to 5.7 seconds.
+*   `mkdocs serve` no longer renders the theme template again for pages whose
+    template context didn't change: the page itself, the navigation, the
+    config, the template files and the Jinja globals. Their HTML from the
+    previous rebuild is reused, and files that already hold it aren't written
+    again. A change that shows up on every page, such as a new page title in
+    the navigation, still renders every page. The `page_context` and
+    `post_page` events run for every page as before, and a page whose context
+    holds an object that MkDocs can't compare, such as one that a plugin added,
+    is rendered as before. With 1,000 pages, showing an edited page took 2.3
+    seconds with the `mkdocs` theme and now takes 0.9; with Material for MkDocs
+    it went from 4.1 to about 1.4 seconds. See
+    [Rendering pages during `mkdocs serve`](../dev-guide/themes.md#rendering-pages-during-mkdocs-serve).
 
 ### Fixed
 
