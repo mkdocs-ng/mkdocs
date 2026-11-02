@@ -9,9 +9,10 @@ those changed, the HTML of the previous rebuild is reused.
 
 Plugin events still run for every page, with the same values as before. The
 cache is only used when every Markdown extension is known not to depend on
-anything else (such as other files) or keep state outside the conversion. Sites
-with other extensions, like those that `mkdocstrings` or `mkdocs-autorefs` add,
-convert every page as before.
+anything else (such as other files) or keep state outside the conversion: it is
+on `SAFE_EXTENSIONS`, or it sets `mkdocs_cacheable = True` on its module or its
+Extension class. Sites with other extensions, like those that `mkdocstrings` or
+`mkdocs-autorefs` add, convert every page as before.
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ from __future__ import annotations
 import copy
 import dataclasses
 import hashlib
+import importlib
 import logging
 from typing import TYPE_CHECKING, Any
 
@@ -90,8 +92,12 @@ SAFE_EXTENSIONS = frozenset(
             "blocks.tab",
         )
     ]
-    + ["material.extensions.emoji"]
+    + ["material.extensions.emoji", "mkdocs_sumi.markdown.extension"]
 )
+
+# An extension declares itself safe to cache by setting this attribute to True,
+# on its module (when it is loaded by module name) or on its Extension class.
+CACHEABLE_ATTR = "mkdocs_cacheable"
 
 
 def _extension_name(ext: object) -> str | None:
@@ -103,6 +109,22 @@ def _extension_name(ext: object) -> str | None:
     return name
 
 
+def _is_cacheable(ext: object) -> bool:
+    """Whether the conversion with this extension depends only on the Markdown and config."""
+    if not isinstance(ext, str):
+        return getattr(type(ext), CACHEABLE_ATTR, False) is True
+    if _extension_name(ext) in SAFE_EXTENSIONS:
+        return True
+    module_name, _, class_name = ext.partition(":")
+    try:
+        # Python-Markdown imports the same module to load the extension.
+        module = importlib.import_module(module_name)
+        target = getattr(module, class_name) if class_name else module
+    except Exception:
+        return False
+    return getattr(target, CACHEABLE_ATTR, False) is True
+
+
 def _describe(value: Any) -> Any:
     """A stable description of a config value, naming functions by their path."""
     if isinstance(value, dict):
@@ -112,6 +134,15 @@ def _describe(value: Any) -> Any:
     if callable(value):
         return f"{getattr(value, '__module__', '?')}.{getattr(value, '__qualname__', repr(value))}"
     return repr(value)
+
+
+def _describe_extension(ext: object) -> Any:
+    if isinstance(ext, str):
+        return _extension_name(ext)
+    # An instance: its class and the config it was created with.
+    get_configs = getattr(ext, "getConfigs", None)
+    configs = get_configs() if callable(get_configs) else None
+    return (f"{type(ext).__module__}.{type(ext).__qualname__}", _describe(configs))
 
 
 class _CapturedLogs(logging.Handler):
@@ -153,8 +184,8 @@ class RenderCache:
         if self._build_key is not None and self._build_key[:2] == cache_id:
             return self._build_key[2]
         result: str | None = None
-        names = [_extension_name(ext) for ext in config.markdown_extensions]
-        if all(name in SAFE_EXTENSIONS for name in names):
+        if all(_is_cacheable(ext) for ext in config.markdown_extensions):
+            names = [_describe_extension(ext) for ext in config.markdown_extensions]
             parts = [
                 mkdocs.__version__,
                 repr(names),

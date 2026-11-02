@@ -20,6 +20,17 @@ def makeExtension(**kwargs):
     return UnknownExtension(**kwargs)
 
 
+class CacheableExtension(markdown.Extension):
+    mkdocs_cacheable = True
+
+    def __init__(self, **kwargs):
+        self.config = {"word": ["x", "A word."]}
+        super().__init__(**kwargs)
+
+    def extendMarkdown(self, md):
+        pass
+
+
 class RenderCacheTests(unittest.TestCase):
     def setUp(self):
         self.cache = render_cache.RenderCache()
@@ -112,6 +123,34 @@ class RenderCacheTests(unittest.TestCase):
         self.build("# One", add_extension=TocExtension())
         _, calls, _ = self.build("# One", add_extension=TocExtension())
         self.assertEqual(calls, 1)
+
+    def test_extension_module_can_opt_in(self):
+        ext = [__name__]
+        with mock.patch(f"{__name__}.mkdocs_cacheable", True, create=True):
+            self.build("# One", markdown_extensions=ext)
+            _, calls, _ = self.build("# One", markdown_extensions=ext)
+        self.assertEqual(calls, 0)
+
+    def test_extension_class_can_opt_in(self):
+        ext = [f"{__name__}:CacheableExtension"]
+        self.build("# One", markdown_extensions=ext)
+        _, calls, _ = self.build("# One", markdown_extensions=ext)
+        self.assertEqual(calls, 0)
+
+    def test_cacheable_extension_instance(self):
+        self.build("# One", add_extension=CacheableExtension(word="a"))
+        _, calls, _ = self.build("# One", add_extension=CacheableExtension(word="a"))
+        self.assertEqual(calls, 0)
+        # Its config is part of the key.
+        _, calls, _ = self.build("# One", add_extension=CacheableExtension(word="b"))
+        self.assertEqual(calls, 1)
+
+    def test_missing_extension_module_disables_the_cache(self):
+        self.assertFalse(render_cache._is_cacheable("no_such_module_for_mkdocs"))
+        self.assertFalse(render_cache._is_cacheable(f"{__name__}:NoSuchClass"))
+
+    def test_sumi_extension_is_known(self):
+        self.assertTrue(render_cache._is_cacheable("mkdocs_sumi.markdown.extension"))
 
     def test_unused_entries_are_dropped(self):
         self.build("# One")

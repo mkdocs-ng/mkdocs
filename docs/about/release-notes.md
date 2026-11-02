@@ -55,6 +55,10 @@ without checking every plugin first:
     sites using `pymdownx.snippets`, `mkdocstrings` or `mkdocs-autorefs`
     rebuild as before. With 400 pages and Material for MkDocs, a rebuild went
     from 7.6 to 4.0 seconds.
+*   The Sumi theme's Markdown extension is on the list of extensions whose
+    HTML `mkdocs serve` reuses, so Sumi sites rebuild faster too. Other
+    extensions can join with `mkdocs_cacheable = True`
+    ([details](../dev-guide/plugins.md#page-events)).
 
 ### Added
 
