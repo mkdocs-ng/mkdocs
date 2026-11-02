@@ -12,6 +12,10 @@ kept between rebuilds:
   produced in an earlier build but not in this one are removed, so that a
   deleted or renamed page doesn't stay around.
 
+On a multi-language site, the languages are built one after the other into
+the same site directory. They count as one build, so that building one language
+doesn't remove the files of the others.
+
 Files that plugins write some other way are left alone. The build date that
 themes show is the time the server started, so that it doesn't change every
 page on each rebuild.
@@ -52,6 +56,10 @@ class SiteOutput:
         self._site_dir: str | None = None
         # How deep in nested builds we are: a plugin may run a build of its own.
         self._depth = 0
+        # Set while the languages of a multi-language site are built, and
+        # whether all of them were built so far.
+        self._languages = False
+        self._languages_ok = True
         # The build date that pages show: when the server started.
         self.build_datetime: datetime | None = None
 
@@ -68,16 +76,41 @@ class SiteOutput:
         self._depth += 1
         if self._depth > 1:
             return False
-        self._site_dir = os.path.abspath(site_dir)
-        # Also keep what a build that failed halfway produced.
-        self._previous |= self._current
-        self._current = set()
+        if not self._languages:
+            self._start(site_dir)
         return True
 
     def end_build(self, *, success: bool) -> None:
         self._depth -= 1
-        if self._depth == 0 and success:
+        if self._depth == 0:
+            if self._languages:
+                self._languages_ok = self._languages_ok and success
+            elif success:
+                self._remove_stale()
+
+    def start_languages(self, site_dir: str) -> None:
+        """
+        Start building the languages of a multi-language site into `site_dir`.
+        Stale files are removed once all of them are built, in `end_languages`.
+        Inside another build, the languages are nested builds, as usual.
+        """
+        if self._depth == 0:
+            self._start(site_dir)
+            self._languages = True
+            self._languages_ok = True
+
+    def end_languages(self, *, success: bool) -> None:
+        if not self._languages or self._depth != 0:
+            return
+        self._languages = False
+        if success and self._languages_ok:
             self._remove_stale()
+
+    def _start(self, site_dir: str) -> None:
+        self._site_dir = os.path.abspath(site_dir)
+        # Also keep what a build that failed halfway produced.
+        self._previous |= self._current
+        self._current = set()
 
     def _in_site_dir(self, path: str) -> bool:
         return self._site_dir is not None and path.startswith(self._site_dir + os.sep)

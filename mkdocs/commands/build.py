@@ -309,6 +309,23 @@ def build(
         _build(config, serve_url=serve_url, dirty=dirty)
         return
 
+    # During `mkdocs serve`, the languages count as one build of the site
+    # directory, so that building one doesn't remove the files of the others.
+    site_output = None if dirty else output.active
+    if site_output is not None:
+        site_output.start_languages(config.site_dir)
+    success = False
+    try:
+        _build_languages(config, serve_url=serve_url, dirty=dirty)
+        success = True
+    finally:
+        if site_output is not None:
+            site_output.end_languages(success=success)
+
+
+def _build_languages(
+    config: MkDocsConfig, *, serve_url: str | None, dirty: bool
+) -> None:
     selected = config._build_languages
     for lang in config["languages"]:
         if selected and lang.code not in selected:

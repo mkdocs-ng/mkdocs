@@ -8,6 +8,7 @@ from unittest import mock
 
 from mkdocs import utils
 from mkdocs.commands import build
+from mkdocs.config.base import load_config as load_config_file
 from mkdocs.tests.base import load_config, tempdir
 from mkdocs.utils import output
 
@@ -113,6 +114,22 @@ class SiteOutputTests(unittest.TestCase):
         self.site_output.end_build(success=True)
         self.assertFalse(self.site_output.building)
 
+    @tempdir()
+    def test_languages_count_as_one_build(self, site_dir):
+        def build_languages(pages):
+            self.site_output.start_languages(site_dir)
+            for name, content in pages.items():
+                self.run_build(
+                    os.path.dirname(os.path.join(site_dir, name)),
+                    {os.path.basename(name): content},
+                )
+            self.site_output.end_languages(success=True)
+
+        build_languages({"index.html": b"en", "zh/index.html": b"zh", "old.html": b"o"})
+        build_languages({"index.html": b"en", "zh/index.html": b"zh"})
+        self.assertEqual(sorted(os.listdir(site_dir)), ["index.html", "zh"])
+        self.assertTrue(os.path.isfile(os.path.join(site_dir, "zh", "index.html")))
+
 
 class ServeBuildTests(unittest.TestCase):
     def setUp(self):
@@ -161,6 +178,36 @@ class ServeBuildTests(unittest.TestCase):
         self.assertIn(os.path.join(site_dir, "search", "search_index.json"), before)
         build.build(load_config(**cfg))
         self.assertEqual(written_files(), before)
+
+    @tempdir(
+        files={
+            "mkdocs.yml": "site_name: Test\nplugins: []\nlanguages:\n  en: English\n  zh: 中文\n",
+            "docs/index.md": "# Home",
+            "docs/index.zh.md": "# 首页",
+            "docs/guide.md": "# Guide",
+        }
+    )
+    @tempdir()
+    def test_rebuild_of_multi_language_site_keeps_every_language(self, site_dir, tdir):
+        def rebuild():
+            build.build(
+                load_config_file(os.path.join(tdir, "mkdocs.yml"), site_dir=site_dir)
+            )
+
+        rebuild()
+        rebuild()
+        for path in (
+            "index.html",
+            "guide/index.html",
+            "zh/index.html",
+            "zh/guide/index.html",
+        ):
+            self.assertTrue(os.path.isfile(os.path.join(site_dir, path)), path)
+        os.remove(os.path.join(tdir, "docs", "guide.md"))
+        rebuild()
+        self.assertFalse(os.path.exists(os.path.join(site_dir, "guide")))
+        self.assertFalse(os.path.exists(os.path.join(site_dir, "zh", "guide")))
+        self.assertTrue(os.path.isfile(os.path.join(site_dir, "zh", "index.html")))
 
     @tempdir(files={"index.md": "# Home"})
     @tempdir()
