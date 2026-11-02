@@ -22,6 +22,7 @@ def build(
     strict: bool | None = None,
     theme: str | None = None,
     use_directory_urls: bool | None = None,
+    language: str | Sequence[str] | None = None,
     **kwargs: Any,
 ) -> MkDocsConfig:
     """
@@ -46,6 +47,8 @@ def build(
             the `theme` value from the config file.
         use_directory_urls: Use directory URLs when building pages.
             Overrides the `use_directory_urls` value from the config file.
+        language: For a multi-language site, build only this language (a code
+            from `languages`), or only these languages. All by default.
         **kwargs: Any other configuration option to override the values from
             the config file, for example `site_name`, `nav` or `plugins`.
 
@@ -80,6 +83,7 @@ def build(
         use_directory_urls=use_directory_urls,
         **kwargs,
     )
+    _select_languages(config, language)
     config.plugins.on_startup(command="build", dirty=dirty)
     try:
         _build(config, dirty=dirty)
@@ -100,6 +104,7 @@ def serve(
     strict: bool | None = None,
     theme: str | None = None,
     use_directory_urls: bool | None = None,
+    language: str | Sequence[str] | None = None,
     **kwargs: Any,
 ) -> None:
     """
@@ -130,6 +135,8 @@ def serve(
             the `theme` value from the config file.
         use_directory_urls: Use directory URLs when building pages.
             Overrides the `use_directory_urls` value from the config file.
+        language: For a multi-language site, serve only this language (a code
+            from `languages`), or only these languages. All by default.
         **kwargs: Any other configuration option to override the values from
             the config file, for example `site_name`, `nav` or `plugins`.
     """
@@ -149,8 +156,29 @@ def serve(
         strict=strict,
         theme=theme,
         use_directory_urls=use_directory_urls,
+        **({"language": language} if language else {}),
         **kwargs,
     )
+
+
+def _select_languages(
+    config: MkDocsConfig, language: str | Sequence[str] | None
+) -> None:
+    """Limit the build of a multi-language site to some of its languages."""
+    from mkdocs.exceptions import Abort
+
+    codes = [language] if isinstance(language, str) else list(language or ())
+    if not codes:
+        return
+    known = [lang.code for lang in config.languages or ()]
+    if not known:
+        raise Abort("--language: the config has no 'languages'.")
+    for code in codes:
+        if code not in known:
+            raise Abort(
+                f"--language: unknown language '{code}'. The config has: {', '.join(known)}."
+            )
+    config._build_languages = codes
 
 
 def __getattr__(name: str) -> Any:

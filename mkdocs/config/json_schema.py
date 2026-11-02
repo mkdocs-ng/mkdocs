@@ -53,6 +53,7 @@ _DOCUMENTED = {
     "theme",
     "docs_dir",
     "site_dir",
+    "languages",
     "extra_css",
     "extra_javascript",
     "extra_templates",
@@ -221,6 +222,35 @@ def _option_schema(option: c.BaseConfigOption, docs_hint: str | None = None) -> 
                     "additionalProperties": True,
                 },
             ]
+        }
+    if isinstance(option, c.Languages):
+        language = {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name shown in the language switcher.",
+                },
+                "path": {
+                    "type": "string",
+                    "description": "Where the language is built, relative to the site root. Defaults to the language code.",
+                },
+                "fallback": {
+                    "type": "boolean",
+                    "description": "Build pages that have no translation from the default language's version.",
+                    "default": True,
+                },
+                "nav": {"type": "array", "items": {"$ref": "#/$defs/navItem"}},
+            },
+            "additionalProperties": True,
+        }
+        return {
+            "type": "object",
+            "propertyNames": {"pattern": r"^[A-Za-z]{2,3}([-_][A-Za-z0-9]{2,8})*$"},
+            "additionalProperties": {
+                "anyOf": [{"type": "string"}, {"type": "null"}, language]
+            },
+            "minProperties": 1,
         }
     if isinstance(option, c.Nav):
         return {"type": "array", "items": {"$ref": "#/$defs/navItem"}}

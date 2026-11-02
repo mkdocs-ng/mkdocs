@@ -11,7 +11,7 @@ import jinja2
 from jinja2.exceptions import TemplateNotFound
 
 import mkdocs
-from mkdocs import utils
+from mkdocs import languages, utils
 from mkdocs.exceptions import Abort, BuildError
 from mkdocs.structure.files import (
     File,
@@ -58,6 +58,7 @@ def get_context(
     if isinstance(files, Files):
         files = files.documentation_pages()
 
+    switcher = getattr(config, "_language_switcher", None)
     return templates.TemplateContext(
         nav=nav,
         pages=files,
@@ -68,7 +69,15 @@ def get_context(
         build_date_utc=utils.get_build_datetime(),
         config=config,
         page=page,
+        i18n=switcher.context(page) if switcher is not None else None,
     )
+
+
+def _set_alternate(config: MkDocsConfig, i18n: dict | None) -> None:
+    """Point `extra.alternate` at this page in each language, unless the config sets it."""
+    switcher = getattr(config, "_language_switcher", None)
+    if switcher is not None and switcher.auto_alternate and i18n is not None:
+        config.extra["alternate"] = switcher.alternate(i18n)
 
 
 def _build_template(
@@ -95,6 +104,7 @@ def _build_template(
         base_url = utils.get_relative_url(".", name)
 
     context = get_context(nav, files, config, base_url=base_url)
+    _set_alternate(config, context.get("i18n"))
 
     # Run `template_context` plugin events.
     context = config.plugins.on_template_context(
@@ -240,6 +250,7 @@ def _build_page(
         page.active = True
 
         context = get_context(nav, doc_files, config, page)
+        _set_alternate(config, context.get("i18n"))
 
         # Allow 'template:' override in md source files.
         template = env.get_template(page.meta.get("template", "main.html"))
@@ -287,7 +298,52 @@ def _build_page(
 def build(
     config: MkDocsConfig, *, serve_url: str | None = None, dirty: bool = False
 ) -> None:
-    """Perform a full site build."""
+    """
+    Perform a full site build.
+
+    For a multi-language site, `config` is the config of the default language,
+    and every language is built: each with its own config, loaded from the
+    same source with the overrides of that language.
+    """
+    if not config.get("languages"):
+        _build(config, serve_url=serve_url, dirty=dirty)
+        return
+
+    selected = config._build_languages
+    for lang in config["languages"]:
+        if selected and lang.code not in selected:
+            continue
+        lang_serve_url = (
+            languages.language_site_url(serve_url, lang) if serve_url else None
+        )
+        if lang.code == config._language_code:
+            log.info(f"Building language: {lang.code}")
+            _build(config, serve_url=lang_serve_url, dirty=dirty)
+            continue
+        lang_config = languages.load_language_config(config, lang.code)
+        if lang_serve_url:
+            lang_config.site_url = lang_serve_url
+        # Plugins shared with the default language's config (the ones that
+        # have `on_startup`) are already started.
+        started = {id(p) for p in config.plugins.values()}
+        new_plugins = [p for p in lang_config.plugins.values() if id(p) not in started]
+        command = "serve" if serve_url else "build"
+        for plugin in new_plugins:
+            if hasattr(plugin, "on_startup"):
+                plugin.on_startup(command=command, dirty=dirty)
+        try:
+            log.info(f"Building language: {lang.code}")
+            _build(lang_config, serve_url=lang_serve_url, dirty=dirty)
+        finally:
+            for plugin in new_plugins:
+                if hasattr(plugin, "on_shutdown"):
+                    plugin.on_shutdown()
+
+
+def _build(
+    config: MkDocsConfig, *, serve_url: str | None = None, dirty: bool = False
+) -> None:
+    """Build one site: a single-language site, or one language of a multi-language site."""
     logger = logging.getLogger("mkdocs")
 
     # Add CountHandler for strict mode
@@ -326,6 +382,8 @@ def build(
 
         # First gather all data from all files/pages to ensure all data is consistent across all pages.
 
+        if config.get("languages"):
+            config._language_switcher = languages.Switcher(config)
         files = get_files(config)
         env = config.theme.get_env()
         files.add_files_from_theme(env, config)

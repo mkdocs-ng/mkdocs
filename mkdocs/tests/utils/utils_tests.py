@@ -173,6 +173,14 @@ class UtilsTests(unittest.TestCase):
         test(path, "foo/bar.html", "../../some/dir/")
         test(path, "foo/bar/", "../../../some/dir/")
 
+        # A path above the site root that repeats the page's own path, such as
+        # the same page in another language of the site.
+        path = "../foo/bar/"
+        test(path, "", "../foo/bar/")
+        test(path, "foo/bar/", "../../../foo/bar/")
+        test(path, "foo/bar.html", "../../foo/bar/")
+        test("../", "foo/bar/", "../../../")
+
         path = "image.png"
         test(path, "", "image.png")
         test(path, "index.html", "image.png")

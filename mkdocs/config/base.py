@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import functools
+import io
 import logging
 import os
 import sys
@@ -359,6 +360,7 @@ def load_config(
     config_file: str | IO | None = None,
     *,
     config_file_path: str | None = None,
+    _language: str | None = None,
     **kwargs,
 ) -> MkDocsConfig:
     """
@@ -369,7 +371,12 @@ def load_config(
 
     Extra kwargs are passed to the configuration to replace any default values
     unless they themselves are None.
+
+    For a multi-language site, the config of the default language is returned,
+    unless `_language` names another one.
     """
+    from mkdocs import languages
+
     options = kwargs.copy()
 
     # Filter None values from the options. This usually happens with optional
@@ -386,12 +393,26 @@ def load_config(
             if sys.stdin and fd is not sys.stdin.buffer:
                 config_file_path = getattr(fd, "name", None)
         cfg = MkDocsConfig(config_file_path=config_file_path)
+        # Keep what was read, so that the configs of other languages can be
+        # loaded from the same source.
+        data = fd.read()
+        if isinstance(data, str):
+            data = data.encode("utf-8")
+        name = getattr(fd, "name", None)
+        source = io.BytesIO(data)
+        if isinstance(name, str):
+            source.name = name  # type: ignore[misc]
         # load the config file
-        cfg.load_file(fd)
+        cfg.load_file(source)
+    language = languages.apply_language(cfg, _language)
+    if language is not None:
+        cfg._source = (data, name if isinstance(name, str) else None, kwargs.copy())
     configured_site_dir = cfg.get("site_dir")
 
     # Then load the options to overwrite anything in the config.
     cfg.load_dict(options)
+    if language is not None:
+        languages.place_language(cfg, language)
 
     errors, warnings = cfg.validate()
 

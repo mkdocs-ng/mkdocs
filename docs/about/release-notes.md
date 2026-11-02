@@ -98,8 +98,31 @@ without checking every plugin first:
     `env` keyword parameter to the handler. It is passed only to handlers
     that accept it, so existing plugins keep working unchanged.
 
+### Multi-language sites
+
+*   One `mkdocs.yml` can now hold every language of a site. List them under
+    the new [`languages`](../user-guide/configuration.md#languages) setting:
+    the first is built at the root of the site, and the others into `/zh/`,
+    `/de/` and so on. Each language can change any setting, such as
+    `site_name` or `nav`. Translated pages sit next to the original as
+    `page.zh.md`, or in a `docs_dir` of the language's own. A page that isn't
+    translated yet is built from the default language's version, so no link
+    breaks. Each page's language switcher links to the same page in the other
+    languages, through `extra.alternate` for themes such as Sumi and Material,
+    and through the new `i18n` template variable. `mkdocs serve` and
+    `mkdocs build` take `--language` to work on one language only. Every
+    language is an ordinary build with its own plugin instances, so plugins
+    work without changes. See [Multi-language Sites](../user-guide/multi-language-sites.md).
+
 ### Fixed
 
+*   Themes that translate their text without gettext catalogs, such as Sumi
+    and Material for MkDocs, no longer log "No translations could be found for
+    the locale" for a non-English `theme.locale` when Babel is installed. This
+    warning failed `--strict` builds.
+*   The `url` template filter returns the right link for a path above the site
+    root that repeats part of the current page's path, such as `../guide/`
+    on the page `guide/`. It used to point back to the current page.
 *   Links with a [text fragment](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments),
     such as `page.md#:~:text=some%20words`, are no longer reported as
     pointing to a missing anchor. When the link also names an anchor
