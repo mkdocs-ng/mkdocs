@@ -9,7 +9,9 @@ first (see `benchmarks/README.md`), then:
     python -m benchmarks.compare corpus /tmp/bench/1000 --pages 1000
     python -m benchmarks.compare build /tmp/bench/1000 \
         --tool "ng=/venvs/ng/bin/mkdocs build -q -f mkdocs-mkdocs.yml -d {out}" \
-        --tool "zensical=/venvs/zs/bin/zensical build -c -f zensical.yml"
+        --tool "mkdocs=/venvs/up/bin/mkdocs build -q -f mkdocs-mkdocs.yml -d {out}"
+    python -m benchmarks.compare build /tmp/bench/1000 --before "rm -rf site .cache" \
+        --tool "zensical=/venvs/zs/bin/zensical build -f zensical.yml"
     python -m benchmarks.compare serve /tmp/bench/1000 \
         --tool "ng=/venvs/ng/bin/mkdocs serve -f mkdocs-mkdocs.yml -a 127.0.0.1:{port}"
 
@@ -18,9 +20,10 @@ first (see `benchmarks/README.md`), then:
 as Sphinx, VitePress, Docusaurus and Starlight projects under `other/`.
 
 `build` times clean builds: `{out}` is an empty output directory for each run.
-Tools that build into their own directory must clean it themselves (such as
-`zensical build -c`). `serve` starts each server, edits one page and times how
-long the server takes to return the new text.
+`--before` runs an untimed command before each run, to remove a tool's cache
+or the output of a tool that builds into its own directory. `serve` starts
+each server, edits one page and times how long the server takes to return the
+new text.
 """
 
 from __future__ import annotations
@@ -248,13 +251,22 @@ def _env() -> dict[str, str]:
     )
 
 
-def build(root: str, tools: list[tuple[str, str]], runs: int, cwd: str | None) -> dict:
+def build(
+    root: str,
+    tools: list[tuple[str, str]],
+    runs: int,
+    cwd: str | None,
+    before: str | None = None,
+) -> dict:
     results = {}
     for label, command in tools:
         times = []
         for _ in range(runs):
             out = tempfile.mkdtemp(prefix="bench-out-")
             shutil.rmtree(out)
+            if before:
+                # Untimed, such as removing a tool's cache or last output.
+                subprocess.run(before, shell=True, cwd=cwd or root, check=True)
             start = time.perf_counter()
             proc = subprocess.run(
                 command.format(out=out),
@@ -365,6 +377,10 @@ def main() -> None:
     p.add_argument(
         "--cwd", help="directory to run in, relative to root (default: root)"
     )
+    p.add_argument(
+        "--before",
+        help="untimed command to run before each run, such as clearing a cache",
+    )
     p.add_argument("--json", help="also write the times to this file")
     p = sub.add_parser("serve", help="time how long an edit takes to show")
     p.add_argument("root")
@@ -382,7 +398,7 @@ def main() -> None:
     tools = _parse_tools(args.tool)
     if args.command == "build":
         cwd = os.path.join(args.root, args.cwd) if args.cwd else None
-        results = build(args.root, tools, args.runs, cwd)
+        results = build(args.root, tools, args.runs, cwd, args.before)
     else:
         results = serve(args.root, tools, args.edits, args.port)
     if args.json:

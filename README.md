@@ -42,7 +42,7 @@ third-party themes, plugins, and Markdown extensions.
   <a href="https://mkdocs-ng.org/about/comparison/#build-speed">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/build-speed-dark.svg">
-      <img src="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/build-speed.svg" width="720" alt="Clean build of a 1,000-page site: MkDocs NG 9.3 s, MkDocs NG with Material 13.4 s, Zensical 18.2 s, MkDocs 1.6.1 20.3 s, Starlight 21.6 s, Sphinx 25.8 s, VitePress 100.9 s, Docusaurus 108.5 s">
+      <img src="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/build-speed.svg" width="720" alt="Clean build of a 1,000-page site: MkDocs NG with Material 11.5 s, Zensical 17.4 s, Sphinx with 4 processes 25.5 s, Starlight 30.3 s, MkDocs 1.6.1 with Material 34.8 s, VitePress 90.3 s, Docusaurus 109.6 s">
     </picture>
   </a>
 </p>
