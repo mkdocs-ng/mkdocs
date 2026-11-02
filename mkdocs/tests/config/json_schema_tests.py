@@ -85,6 +85,12 @@ class JSONSchemaValidationTests(unittest.TestCase):
             with self.subTest(case["name"]):
                 self.assertValid({"site_name": "Test", **case.get("config", {})})
 
+    def test_new_project_configs(self):
+        from mkdocs.commands import new
+
+        for text in (new.config_text, new.sumi_config_text):
+            self.assertValid(yaml.safe_load(text))
+
     def test_typical_configs(self):
         self.assertValid({"site_name": "Docs"})
         self.assertValid(

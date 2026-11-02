@@ -3,7 +3,37 @@ from __future__ import annotations
 import logging
 import os
 
-config_text = "site_name: My Docs\n"
+from mkdocs import utils
+
+SCHEMA_COMMENT = (
+    "# yaml-language-server: $schema=https://mkdocs-ng.github.io/mkdocs/schema.json\n"
+)
+
+# Written when the Sumi theme is installed (`pip install "mkdocs-ng[sumi]"`).
+sumi_config_text = (
+    SCHEMA_COMMENT
+    + """site_name: My Docs
+
+theme:
+  name: sumi
+
+plugins:
+  - search
+  - llms_txt  # llms.txt and a Markdown copy of every page, for AI tools
+  - sumi
+"""
+)
+
+config_text = (
+    SCHEMA_COMMENT
+    + """site_name: My Docs
+
+plugins:
+  - search
+  - llms_txt  # llms.txt and a Markdown copy of every page, for AI tools
+"""
+)
+
 index_text = """# Welcome to MkDocs
 
 For full documentation visit [mkdocs-ng.github.io/mkdocs](https://mkdocs-ng.github.io/mkdocs/).
@@ -18,17 +48,60 @@ For full documentation visit [mkdocs-ng.github.io/mkdocs](https://mkdocs-ng.gith
 ## Project layout
 
     mkdocs.yml    # The configuration file.
+    AGENTS.md     # Instructions for coding agents.
     docs/
         index.md  # The documentation homepage.
         ...       # Other markdown pages, images and other files.
+
+## For AI tools
+
+Next to each page, the build writes a Markdown copy of it, and an `llms.txt`
+that lists them all, so chat assistants and coding agents can read your
+documentation. `AGENTS.md` tells coding agents how to work on this project.
+"""
+
+agents_text = """# AGENTS.md
+
+This project is a documentation site built with
+[MkDocs NG](https://mkdocs-ng.github.io/mkdocs/).
+
+## Commands
+
+- `mkdocs serve`: preview the site at http://127.0.0.1:8000/, rebuilt on every change.
+- `mkdocs build --strict`: build the site into `site/`. It fails on broken
+  links and other warnings; run it before you finish a change.
+
+## Layout
+
+- `mkdocs.yml`: the configuration. Its options are described by the JSON
+  Schema at https://mkdocs-ng.github.io/mkdocs/schema.json.
+- `docs/`: the pages, one Markdown file each. `docs/index.md` is the home page.
+- `site/`: the build output. Don't edit or commit it.
+
+## Writing pages
+
+- Write plain Markdown and start each page with one `# Title`.
+- Link to other pages by their relative `.md` path, such as `[Install](install.md)`,
+  not by the URL of the built page.
+- Write notes and warnings as GitHub alerts: `> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`.
+- Keep images under `docs/`, next to the pages that use them, and give them alt text.
+- If `mkdocs.yml` has a `nav`, add new pages to it. Without one, pages are
+  listed in the order of their file names.
 """
 
 log = logging.getLogger(__name__)
 
 
+def _write(path: str, text: str) -> None:
+    log.info(f"Writing {os.path.basename(path)}: {path}")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+
+
 def new(output_dir: str) -> None:
     docs_dir = os.path.join(output_dir, "docs")
     config_path = os.path.join(output_dir, "mkdocs.yml")
+    agents_path = os.path.join(output_dir, "AGENTS.md")
     index_path = os.path.join(docs_dir, "index.md")
 
     if os.path.exists(config_path):
@@ -39,15 +112,19 @@ def new(output_dir: str) -> None:
         log.info(f"Creating project directory: {output_dir}")
         os.mkdir(output_dir)
 
-    log.info(f"Writing config file: {config_path}")
-    with open(config_path, "w", encoding="utf-8") as f:
-        f.write(config_text)
+    sumi = "sumi" in utils.get_theme_names()
+    _write(config_path, sumi_config_text if sumi else config_text)
 
-    if os.path.exists(index_path):
-        return
+    if not os.path.exists(agents_path):
+        _write(agents_path, agents_text)
 
-    log.info(f"Writing initial docs: {index_path}")
-    if not os.path.exists(docs_dir):
-        os.mkdir(docs_dir)
-    with open(index_path, "w", encoding="utf-8") as f:
-        f.write(index_text)
+    if not os.path.exists(index_path):
+        if not os.path.exists(docs_dir):
+            os.mkdir(docs_dir)
+        _write(index_path, index_text)
+
+    if not sumi:
+        log.info(
+            "To start from the modern Sumi theme instead, run "
+            "`pip install mkdocs-sumi` and create the project again."
+        )

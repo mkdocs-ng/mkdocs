@@ -52,6 +52,9 @@ dependencies = [
 i18n = [
     "babel >=2.9.0",
 ]
+sumi = [
+    "mkdocs-sumi >=0.1.2",
+]
 min-versions = [
     "click ==8.5.0",
     "Jinja2 ==3.1.6",

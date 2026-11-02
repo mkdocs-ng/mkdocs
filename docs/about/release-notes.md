@@ -40,6 +40,13 @@ mkdocs, version 1.8.0 from /path/to/mkdocs (Python 3.12)
 
 ### Added
 
+*   `mkdocs new` creates a site that is ready for AI tools: its `mkdocs.yml`
+    turns on the [`llms_txt`](../user-guide/configuration.md#llmstxt) plugin,
+    and a new `AGENTS.md` tells coding agents how to build the site and write
+    pages for it. When the [Sumi](https://mkdocs-ng.github.io/mkdocs-sumi/)
+    theme is installed, the new site uses it. Install both with the new
+    `sumi` extra: `pip install "mkdocs-ng[sumi]"`. Existing sites and the
+    default theme of a `mkdocs.yml` without `theme` don't change.
 *   A [JSON Schema](../user-guide/configuration.md#editor-and-agent-support)
     of `mkdocs.yml`, published at
     <https://mkdocs-ng.github.io/mkdocs/schema.json>, lets editors complete

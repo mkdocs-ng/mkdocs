@@ -58,6 +58,14 @@ Install the `mkdocs-ng` package using pip:
 pip install mkdocs-ng
 ```
 
+To install MkDocs NG together with [Sumi](https://mkdocs-ng.github.io/mkdocs-sumi/),
+a modern theme from the same team, use the `sumi` extra. `mkdocs new` then
+creates Sumi sites:
+
+```bash
+pip install "mkdocs-ng[sumi]"
+```
+
 You should now have the `mkdocs` command installed on your system. Run `mkdocs
 --version` to check that everything worked okay.
 
