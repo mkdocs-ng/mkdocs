@@ -35,6 +35,19 @@ without checking every plugin first:
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
 
+## Version 1.11.0 (unreleased)
+
+### Fixed
+
+*   `mkdocs serve` on a [multi-language site](../user-guide/multi-language-sites.md)
+    no longer answers 404 for the pages of the default language. Each rebuild
+    removed the pages of every language but the last one built, as stale
+    files.
+*   On a multi-language site with Material for MkDocs, each language now gets
+    its own `theme.language`, so its pages say `lang="zh"` (or the language's
+    code) and show Material's interface in that language. It used to be
+    English in every language.
+
 ## Version 1.11.0rc1 (2026-11-03)
 
 MkDocs NG 1.11.0 builds every language of a site from one `mkdocs.yml`,
