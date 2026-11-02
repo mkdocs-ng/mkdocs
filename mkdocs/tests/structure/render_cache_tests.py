@@ -1,13 +1,17 @@
 from __future__ import annotations
 
+import os
+import tempfile
 import unittest
 from unittest import mock
 
+import jinja2
 import markdown
 
 from mkdocs.structure import render_cache
 from mkdocs.structure.files import File, Files
 from mkdocs.structure.pages import Page
+from mkdocs.tests.base import load_config as load_site_config
 from mkdocs.tests.structure.page_tests import DOCS_DIR, load_config
 
 
@@ -277,3 +281,159 @@ class RenderCacheBuildTests(unittest.TestCase):
             self.assertEqual(warm, plain)
 
         run(self)
+
+
+class PageCacheTests(unittest.TestCase):
+    """The theme's HTML of a page is reused by serve rebuilds when its context is the same."""
+
+    def setUp(self):
+        from mkdocs.utils import output
+
+        self.cache = render_cache.RenderCache()
+        self.site_output = output.SiteOutput()
+        for target, value in (
+            (render_cache, self.cache),
+            (output, self.site_output),
+        ):
+            patcher = mock.patch.object(target, "active", value)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def write(self, path, text):
+        full = os.path.join(self.tdir, path)
+        os.makedirs(os.path.dirname(full), exist_ok=True)
+        with open(full, "w", encoding="utf-8") as f:
+            f.write(text)
+        # A different mtime even on file systems with a coarse clock.
+        st = os.stat(full)
+        os.utime(full, ns=(st.st_atime_ns, st.st_mtime_ns + 10**9 * len(self.renders)))
+
+    def read(self, path):
+        with open(os.path.join(self.tdir, "site", path), encoding="utf-8") as f:
+            return f.read()
+
+    def build(self, **cfg):
+        """One serve rebuild; returns the source files of the pages that were rendered."""
+        from mkdocs.commands.build import build
+
+        self.cache.start_build()
+        config = load_site_config(
+            config_file_path=os.path.join(self.tdir, "mkdocs.yml"),
+            docs_dir=os.path.join(self.tdir, "docs"),
+            site_dir=os.path.join(self.tdir, "site"),
+            **cfg,
+        )
+        rendered = []
+        real_render = jinja2.Template.render
+
+        def render(template, *args, **kwargs):
+            context = args[0] if args else kwargs
+            if template.name == "main.html" and context.get("page") is not None:
+                rendered.append(context["page"].file.src_uri)
+            return real_render(template, *args, **kwargs)
+
+        with mock.patch.object(jinja2.Template, "render", render):
+            build(config, serve_url="http://127.0.0.1:8000/")
+        self.renders.append(sorted(rendered))
+        return sorted(rendered)
+
+    def run_in_tempdir(self, test):
+        with tempfile.TemporaryDirectory(prefix="mkdocs_test-") as tdir:
+            self.tdir = tdir
+            self.renders = []
+            self.write("docs/index.md", "# Home\n\nWelcome")
+            self.write("docs/other.md", "# Other\n\nText")
+            test()
+
+    def test_unchanged_pages_are_not_rendered_again(self):
+        def test():
+            self.assertEqual(self.build(), ["index.md", "other.md"])
+            before = self.read("index.html")
+            self.write("docs/other.md", "# Other\n\nNew text")
+            self.assertEqual(self.build(), ["other.md"])
+            self.assertEqual(self.read("index.html"), before)
+            self.assertIn("New text", self.read("other/index.html"))
+
+        self.run_in_tempdir(test)
+
+    def test_title_change_renders_every_page(self):
+        def test():
+            self.build()
+            self.write("docs/other.md", "# Renamed\n\nText")
+            self.assertEqual(self.build(), ["index.md", "other.md"])
+            self.assertIn("Renamed", self.read("index.html"))
+
+        self.run_in_tempdir(test)
+
+    def test_changed_template_renders_every_page(self):
+        def test():
+            self.write("theme/main.html", "{% extends 'base.html' %}")
+            theme = {"name": "mkdocs", "custom_dir": os.path.join(self.tdir, "theme")}
+            self.build(theme=theme)
+            self.assertEqual(self.build(theme=theme), [])
+            self.write(
+                "theme/main.html",
+                "{% extends 'base.html' %}{% block footer %}NEW FOOTER{% endblock %}",
+            )
+            self.assertEqual(self.build(theme=theme), ["index.md", "other.md"])
+            self.assertIn("NEW FOOTER", self.read("index.html"))
+
+        self.run_in_tempdir(test)
+
+    def test_new_template_override_renders_every_page(self):
+        def test():
+            os.makedirs(os.path.join(self.tdir, "theme"))
+            theme = {"name": "mkdocs", "custom_dir": os.path.join(self.tdir, "theme")}
+            self.build(theme=theme)
+            self.write("theme/main.html", "OVERRIDDEN {{ page.title }}")
+            self.assertEqual(self.build(theme=theme), ["index.md", "other.md"])
+            self.assertEqual(self.read("index.html"), "OVERRIDDEN Home")
+
+        self.run_in_tempdir(test)
+
+    def test_unknown_objects_in_the_context_disable_the_reuse(self):
+        def test():
+            self.write(
+                "hooks.py",
+                "class Thing:\n"
+                "    pass\n"
+                "def on_page_context(context, page, **kwargs):\n"
+                "    context['thing'] = Thing()\n",
+            )
+            self.build(hooks=["hooks.py"])
+            self.assertEqual(self.build(hooks=["hooks.py"]), ["index.md", "other.md"])
+
+        self.run_in_tempdir(test)
+
+    def test_plugin_events_run_for_reused_pages(self):
+        def test():
+            self.write(
+                "hooks.py",
+                "import itertools\n"
+                "counter = itertools.count()\n"
+                "def on_page_context(context, page, **kwargs):\n"
+                "    page.meta['seen'] = True\n"
+                "def on_post_page(output, page, **kwargs):\n"
+                "    return output + f'<!-- {next(counter)} -->'\n",
+            )
+            self.build(hooks=["hooks.py"])
+            first = self.read("index.html")
+            self.assertEqual(self.build(hooks=["hooks.py"]), [])
+            # `post_page` ran again on the reused HTML.
+            self.assertNotEqual(self.read("index.html"), first)
+
+        self.run_in_tempdir(test)
+
+    def test_attributes_set_by_plugins_are_part_of_the_key(self):
+        def test():
+            self.write(
+                "hooks.py",
+                "import itertools\n"
+                "counter = itertools.count()\n"
+                "def on_page_content(html, page, **kwargs):\n"
+                "    page.custom = next(counter)\n",
+            )
+            self.build(hooks=["hooks.py"])
+            self.assertEqual(self.build(hooks=["hooks.py"]), ["index.md", "other.md"])
+
+        self.run_in_tempdir(test)

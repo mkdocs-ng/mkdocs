@@ -702,6 +702,26 @@ Convert an item from `extra_javascript` to a `<script>` tag that takes into acco
 
 See how to use it in the [base example above](#basic-theme)
 
+## Rendering pages during `mkdocs serve`
+
+NEW: **New in version 1.11.**
+
+After an edit, `mkdocs serve` rebuilds the whole site, but it doesn't render
+the template again for a page whose template context is the same as in the
+previous rebuild. It compares everything a template can see: every attribute
+of the page (its HTML, title, metadata, table of contents and any attribute a
+plugin set), the navigation with the titles, URLs and metadata of its pages,
+the list of pages, the config (including `extra` and the theme options), the
+other context variables, the template files that were loaded and the names of
+the Jinja globals, filters and tests. When one of them holds an object that
+MkDocs can't compare from one rebuild to the next, such as an instance of a
+class that a plugin added, the page is rendered as usual.
+
+So a template must give the same HTML for the same context. Don't output
+values that change by themselves, like the current time (use
+`build_date_utc`, which stays the same while the server runs) or random
+numbers. `mkdocs build` always renders every page.
+
 ## Rendering the navigation quickly
 
 NEW: **New in version 1.11.**

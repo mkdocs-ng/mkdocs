@@ -401,6 +401,16 @@ class MyExtension(markdown.Extension):
     mkdocs_cacheable = True
 ```
 
+NOTE: **New in version 1.11:** during `mkdocs serve`, a rebuild may also reuse
+the theme's HTML of a page whose template context didn't change, instead of
+rendering the template again (see
+[Rendering pages during `mkdocs serve`](themes.md#rendering-pages-during-mkdocs-serve)).
+The `page_context` and `post_page` events still run for every page. A plugin
+that passes something to the template through an object MkDocs can't compare,
+such as an instance of its own class, turns the reuse off for that page. When
+no plugin has a `post_page` event and the file already holds the HTML, it isn't
+written again.
+
 NOTE: **New in version 1.11:** during `mkdocs serve`, the site directory isn't
 emptied before a rebuild. Files written with `mkdocs.utils.write_file` or copied
 as a `File` are left alone when their content didn't change, and the ones that

@@ -25,6 +25,7 @@ from mkdocs.structure.nav import (
     get_navigation,
     set_section_titles_from_index_pages,
 )
+from mkdocs.structure import render_cache
 from mkdocs.structure.pages import Page
 from mkdocs.utils import DuplicateFilter  # noqa: F401 - legacy re-export
 from mkdocs.utils import output, templates
@@ -267,8 +268,29 @@ def _build_page(
                 "</div>" + (page.content or "")
             )
 
+        # During `mkdocs serve`, reuse the HTML of a page whose template context
+        # is the same as in the previous rebuild.
+        cache = render_cache.active if not dirty else None
+        key = cache.page_key(page, context, template, env) if cache else None
+        cached = cache.get_page(key) if cache and key else None
+        site_output = utils.output.active
+        if (
+            cached is not None
+            and not config.plugins.events["post_page"]
+            and site_output is not None
+            and site_output.building
+            and site_output.keep(page.file.abs_dest_path, cached.digest)
+        ):
+            # The file already holds this HTML.
+            return
+
         # Render the template.
-        output = template.render(context)
+        if cached is not None:
+            output = cached.html
+        else:
+            output = template.render(context)
+            if cache and key:
+                cache.set_page(key, output)
 
         # Run `post_page` plugin events.
         output = config.plugins.on_post_page(output, page=page, config=config)
@@ -395,6 +417,8 @@ def _build(
             config._language_switcher = languages.Switcher(config)
         files = get_files(config)
         env = config.theme.get_env()
+        if render_cache.active is not None and not dirty:
+            render_cache.active.watch_templates(env, config.theme.dirs)
         files.add_files_from_theme(env, config)
 
         # Run `files` plugin events.
