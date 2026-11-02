@@ -20,7 +20,7 @@ If something here is wrong or out of date, please
 &nbsp; | MkDocs NG | MkDocs 1.6 | MkDocs 2.0 pre-releases | ProperDocs | Zensical
 --- | --- | --- | --- | --- | ---
 What it is | Maintained fork of MkDocs 1.x | Last upstream 1.x release | Upstream rewrite | Fork of MkDocs 1.6 | New generator by the Material for MkDocs team
-Latest release | 1.10.0rc1 (2026-11-01) | 1.6.1 (2024-08-30) | 2.0.dev6 (2026-09-15) | 1.6.7 (2026-03-20) | 0.0.74 (2026-10-30)
+Latest release | 1.11.0rc1 (2026-11-03) | 1.6.1 (2024-08-30) | 2.0.dev6 (2026-09-15) | 1.6.7 (2026-03-20) | 0.0.74 (2026-10-30)
 PyPI package | `mkdocs-ng` | `mkdocs` | `mkdocs` (`--pre`) | `properdocs` | `zensical`
 Command | `mkdocs` | `mkdocs` | `mkdocs` | `properdocs` | `zensical`
 Configuration | `mkdocs.yml` | `mkdocs.yml` | None; refuses to run when `mkdocs.yml` exists | `properdocs.yml`, falls back to `mkdocs.yml` | `mkdocs.yml` or `zensical.toml`

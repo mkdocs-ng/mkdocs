@@ -42,7 +42,7 @@ them, the build fails on the first plugin or theme it can't find.
 
     ```console
     $ mkdocs --version
-    mkdocs, version 1.10.0 from /path/to/site-packages/mkdocs_ng/mkdocs (Python 3.12)
+    mkdocs, version 1.11.0 from /path/to/site-packages/mkdocs_ng/mkdocs (Python 3.12)
     ```
 
 3.  Build your site as usual, ideally with `--strict` so that anything that
@@ -60,9 +60,9 @@ That's it. Commands such as `mkdocs serve` and `mkdocs gh-deploy` work as
 before.
 
 > NOTE:
-> MkDocs NG 1.10.0 and newer install alongside upstream MkDocs. With MkDocs NG
+> MkDocs NG 1.11 and newer install alongside upstream MkDocs. With MkDocs NG
 > 1.9 and earlier, run `pip uninstall mkdocs` before installing it, and again
-> after installing a plugin or theme. Upgrading to 1.10.0 fixes that, even in
+> after installing a plugin or theme. Upgrading to 1.11 fixes that, even in
 > an environment where upstream MkDocs had already overwritten MkDocs NG.
 
 ## Updating your dependencies
@@ -114,7 +114,7 @@ install step:
 - run: pip install mkdocs-ng mkdocs-material
 ```
 
-To pin a version, pin `mkdocs-ng`, for example `mkdocs-ng>=1.10,<2`.
+To pin a version, pin `mkdocs-ng`, for example `mkdocs-ng>=1.11,<2`.
 
 In a uv project you can keep upstream MkDocs from being installed at all. See
 [Keeping upstream MkDocs out](installation.md#keeping-upstream-mkdocs-out).
@@ -181,7 +181,7 @@ part of its compatibility tests.
 The upstream MkDocs 2.0 pre-releases (`pip install --pre mkdocs`) are a
 rewrite. As of 2.0.dev6 they don't read `mkdocs.yml`, refuse to run when one
 exists, and don't support plugins or themes. If one got installed, for example
-by `pip install --pre` or `uv --prerelease allow`, install MkDocs NG 1.10.0 or
+by `pip install --pre` or `uv --prerelease allow`, install MkDocs NG 1.11 or
 newer and the `mkdocs` command runs MkDocs NG again. To remove the
 pre-release, pin `mkdocs<2` next to `mkdocs-ng`.
 

@@ -71,7 +71,7 @@ You should now have the `mkdocs` command installed on your system. Run `mkdocs
 
 ```console
 $ mkdocs --version
-mkdocs, version 1.10.0 from /usr/local/lib/python3.12/site-packages/mkdocs_ng/mkdocs (Python 3.12)
+mkdocs, version 1.11.0 from /usr/local/lib/python3.12/site-packages/mkdocs_ng/mkdocs (Python 3.12)
 ```
 
 > NOTE:
@@ -116,7 +116,7 @@ MkDocs next to MkDocs NG:
 $ pip install mkdocs-ng mkdocs-material
 $ pip list | grep -E '^mkdocs( |-ng )'
 mkdocs                     1.6.1
-mkdocs-ng                  1.10.0
+mkdocs-ng                  1.11.0
 ```
 
 This is expected and harmless. MkDocs NG installs its `mkdocs` package to

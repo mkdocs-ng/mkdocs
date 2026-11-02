@@ -35,7 +35,51 @@ without checking every plugin first:
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
 
-## Version 1.11.0 (unreleased)
+## Version 1.11.0rc1 (2026-11-03)
+
+MkDocs NG 1.11.0 builds every language of a site from one `mkdocs.yml`,
+rebuilds much faster while you write, and makes sure MkDocs NG is what runs
+however you install your plugins and themes. There are no breaking changes:
+configuration, themes and plugins that work with 1.9 keep working.
+
+There is no final 1.10.0. 1.11.0 is the next release after 1.9.0 and includes
+everything in [1.10.0rc1](#version-1100rc1-2026-11-01), so read its notes too
+when you upgrade from 1.9.
+
+This is a release candidate. Install it with `pip install -U --pre mkdocs-ng`
+and please [report](https://github.com/mkdocs-ng/mkdocs/issues) anything that
+breaks, especially on multi-language sites and with `mkdocs serve`.
+
+### Highlights
+
+*   **One `mkdocs.yml` for every language.** List the languages of a site
+    under the new [`languages`](../user-guide/configuration.md#languages)
+    setting: the first is built at the root of the site, and the others into
+    `/zh/`, `/de/` and so on. Each language can change any setting, such as
+    `site_name` or `nav`. Translated pages sit next to the original as
+    `page.zh.md`, or in a `docs_dir` of the language's own. A page that isn't
+    translated yet is built from the default language's version, so no link
+    breaks. Each page's language switcher links to the same page in the other
+    languages, through `extra.alternate` for themes such as Sumi and Material,
+    and through the new `i18n` template variable. `mkdocs serve` and
+    `mkdocs build` take `--language` to work on one language only. Every
+    language is an ordinary build with its own plugin instances, so plugins
+    work without changes. See [Multi-language Sites](../user-guide/multi-language-sites.md).
+    #146
+*   **Faster builds and `mkdocs serve`.** Large sites no longer render the
+    whole navigation for every page, and `mkdocs serve` reuses the HTML and
+    output files of pages that didn't change. With 1,000 pages, showing an
+    edited page in `mkdocs serve` went from 5.1 to 2.2 seconds with the
+    `mkdocs` theme, and from 14.6 to 3.1 seconds with Sumi. See
+    [Performance](#performance). #130 #131 #145
+*   **MkDocs NG runs no matter what else you install.** New in 1.10.0rc1:
+    installing a plugin or theme no longer swaps MkDocs NG for upstream
+    MkDocs 1.6.1, and the "switch to ProperDocs" warning is gone. See the
+    [1.10.0rc1 notes](#version-1100rc1-2026-11-01). #115 #123
+*   **Ready for editors and coding agents.** `mkdocs new` creates a site with
+    `llms.txt` and an `AGENTS.md`, and a
+    [JSON Schema](../user-guide/configuration.md#editor-and-agent-support) of
+    `mkdocs.yml` lets editors complete and check settings as you type. #141
 
 ### Performance
 
@@ -112,22 +156,6 @@ without checking every plugin first:
     `env` keyword parameter to the handler. It is passed only to handlers
     that accept it, so existing plugins keep working unchanged.
 
-### Multi-language sites
-
-*   One `mkdocs.yml` can now hold every language of a site. List them under
-    the new [`languages`](../user-guide/configuration.md#languages) setting:
-    the first is built at the root of the site, and the others into `/zh/`,
-    `/de/` and so on. Each language can change any setting, such as
-    `site_name` or `nav`. Translated pages sit next to the original as
-    `page.zh.md`, or in a `docs_dir` of the language's own. A page that isn't
-    translated yet is built from the default language's version, so no link
-    breaks. Each page's language switcher links to the same page in the other
-    languages, through `extra.alternate` for themes such as Sumi and Material,
-    and through the new `i18n` template variable. `mkdocs serve` and
-    `mkdocs build` take `--language` to work on one language only. Every
-    language is an ordinary build with its own plugin instances, so plugins
-    work without changes. See [Multi-language Sites](../user-guide/multi-language-sites.md).
-
 ### Fixed
 
 *   Themes that translate their text without gettext catalogs, such as Sumi
@@ -141,21 +169,6 @@ without checking every plugin first:
     such as `page.md#:~:text=some%20words`, are no longer reported as
     pointing to a missing anchor. When the link also names an anchor
     (`page.md#heading:~:text=some%20words`), only that anchor is checked.
-
-### Documentation
-
-*   The documentation moved to <https://mkdocs-ng.org/>. Old links under
-    `mkdocs-ng.github.io/mkdocs/` redirect to the same page there. The
-    [JSON Schema](../user-guide/configuration.md#editor-and-agent-support) is
-    now published at <https://mkdocs-ng.org/schema.json>, and `mkdocs new`
-    and the footers of the built-in themes link to the new address.
-
-## Version 1.10.0 (2026-xx-xx)
-
-Changes since 1.10.0rc1:
-
-### Fixed
-
 *   The `mkdocs` command keeps working when a plugin pulls in upstream MkDocs
     2.0 pre-releases (such as `mkdocs==2.0.dev6`). Their `mkdocs` launcher
     replaces ours and runs `from mkdocs import cli`, which failed with
@@ -168,6 +181,11 @@ Changes since 1.10.0rc1:
 
 ### Documentation
 
+*   The documentation moved to <https://mkdocs-ng.org/>. Old links under
+    `mkdocs-ng.github.io/mkdocs/` redirect to the same page there. The
+    [JSON Schema](../user-guide/configuration.md#editor-and-agent-support) is
+    now published at <https://mkdocs-ng.org/schema.json>, and `mkdocs new`
+    and the footers of the built-in themes link to the new address.
 *   New [Switching to MkDocs NG](../user-guide/migrating.md) page: how to
     switch from upstream MkDocs, ProperDocs or the MkDocs 2.0 pre-releases,
     what behaves differently from MkDocs 1.6.1, and how to switch back.
@@ -188,6 +206,20 @@ Changes since 1.10.0rc1:
 
 *   The plugin compatibility matrix also covers
     `mkdocs-awesome-pages-plugin` and `mkdocs-markdownextradata-plugin`. #129
+
+### Upgrade notes
+
+*   Upgrading from 1.9 or earlier: see the upgrade notes of
+    [1.10.0rc1](#version-1100rc1-2026-11-01). In short, upgrade in place
+    with `pip install -U --pre mkdocs-ng`, and expect `pip list` to show both
+    `mkdocs` and `mkdocs-ng` when you use plugins.
+*   `mkdocs serve` no longer empties the site directory before each rebuild.
+    A plugin that writes files to `site_dir` with its own code, not through
+    MkDocs, keeps whatever it wrote in an earlier rebuild until the server
+    restarts. `mkdocs build` works as before.
+*   Sites that kept a translation in a second config file with `INHERIT`,
+    such as `mkdocs.zh.yml`, keep working. To move to one `mkdocs.yml`, see
+    [Multi-language Sites](../user-guide/multi-language-sites.md).
 
 ## Version 1.10.0rc1 (2026-11-01)
 
