@@ -35,6 +35,19 @@ without checking every plugin first:
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
 
+## Version 1.11.0 (unreleased)
+
+Changes since [1.11.0rc1](#version-1110rc1-2026-11-03):
+
+### Performance
+
+*   Adding, removing or renaming a page during `mkdocs serve` no longer
+    converts every page from Markdown again. Only the pages whose links now
+    point somewhere else are converted; the others keep the HTML of the
+    previous rebuild. With 1,000 pages, a new page showed up after 7.4 seconds
+    with the `mkdocs` theme and now after 2.2; with Material for MkDocs it went
+    from 10.9 to 5.7 seconds.
+
 ## Version 1.11.0rc1 (2026-11-03)
 
 MkDocs NG 1.11.0 builds every language of a site from one `mkdocs.yml`,

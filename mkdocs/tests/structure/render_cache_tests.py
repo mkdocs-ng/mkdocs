@@ -89,6 +89,48 @@ class RenderCacheTests(unittest.TestCase):
         self.assertIn('href="new/"', second.content)
         self.assertNotIn('href="new/"', first.content)
 
+    def test_unrelated_files_keep_the_cache(self):
+        md = "[x](other.md)"
+        self.build(md)
+        # A page added, then one removed: the link resolves as before.
+        _, calls, _ = self.build(md, files=("index.md", "other.md", "new.md"))
+        self.assertEqual(calls, 0)
+        page, calls, _ = self.build(md, files=("index.md", "other.md"))
+        self.assertEqual(calls, 0)
+        self.assertIn('href="other/"', page.content)
+
+    def test_removed_link_target_is_converted(self):
+        self.build("[x](other.md)")
+        with self.assertLogs("mkdocs.structure.pages") as cm:
+            page, calls, _ = self.build("[x](other.md)", files=("index.md",))
+        self.assertEqual(calls, 1)
+        self.assertIn("other.md", cm.output[0])
+        self.assertNotIn('href="other/"', page.content)
+
+    def test_moved_link_target_is_converted(self):
+        self.build("[x](other.md)", use_directory_urls=False)
+        files = [
+            File("index.md", "/docs", "/site", False),
+            File("other.md", "/docs", "/site", False, dest_uri="moved.html"),
+        ]
+        self.cache.start_build()
+        config = load_config(docs_dir=DOCS_DIR, use_directory_urls=False)
+        fs = Files(files)
+        page = Page(None, fs.get_file_from_path("index.md"), config)
+        page.markdown = "[x](other.md)"
+        page.render(config, fs)
+        self.assertIn('href="moved.html"', page.content)
+
+    def test_new_suggestion_is_converted(self):
+        # The warning for a broken link suggests a file that exists.
+        with self.assertLogs("mkdocs.structure.pages") as cm:
+            self.build("[x](new)", files=("index.md",))
+        self.assertNotIn("Did you mean", cm.output[0])
+        with self.assertLogs("mkdocs.structure.pages") as cm:
+            _, calls, _ = self.build("[x](new)", files=("index.md", "new.md"))
+        self.assertEqual(calls, 1)
+        self.assertIn("Did you mean 'new.md'?", cm.output[0])
+
     def test_changed_config_is_converted(self):
         self.build("# One")
         _, calls, _ = self.build("# One", use_directory_urls=False)
