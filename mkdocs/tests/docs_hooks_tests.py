@@ -111,7 +111,9 @@ class DocsHooksTests(unittest.TestCase):
 
     def test_cli_page_has_no_unset_defaults(self):
         try:
-            from mkdocs_click._docs import make_command_docs
+            from mkdocs_click._docs import (  # type: ignore[import-not-found]
+                make_command_docs,
+            )
         except ImportError:
             self.skipTest("mkdocs-click is only installed in the docs environment")
 

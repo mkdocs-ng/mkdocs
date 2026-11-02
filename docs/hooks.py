@@ -5,7 +5,6 @@ import re
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import click
 from packaging.version import Version
 
 try:
@@ -14,6 +13,8 @@ except ImportError:  # click < 8.3
     CLICK_UNSET = None
 
 if TYPE_CHECKING:
+    import click
+
     from mkdocs.config.defaults import MkDocsConfig
     from mkdocs.structure.nav import Page
 
