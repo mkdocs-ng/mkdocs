@@ -299,7 +299,7 @@ class Page(StructureItem):
 
         cache = render_cache.active
         if cache is not None:
-            cache.render(self, config, files, lambda: self._convert(config, files))
+            cache.render(self, config, files, lambda f: self._convert(config, f))
         else:
             self._convert(config, files)
 

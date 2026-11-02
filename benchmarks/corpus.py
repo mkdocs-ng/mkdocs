@@ -105,8 +105,10 @@ def make_markdown(seed: int, *, headings: int = 8, links: tuple[str, ...] = ()) 
             target = links[i % len(links)]
             parts += [
                 "",
-                f"See [{rng.choice(WORDS)}]({target}) and "
-                f"[{rng.choice(WORDS)}]({target}#{rng.choice(WORDS)}) for details.",
+                (
+                    f"See [{rng.choice(WORDS)}]({target}) and "
+                    f"[{rng.choice(WORDS)}]({target}#{rng.choice(WORDS)}) for details."
+                ),
             ]
     return "\n".join(parts) + "\n"
 
