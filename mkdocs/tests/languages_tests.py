@@ -9,6 +9,7 @@ import mkdocs
 from mkdocs import languages
 from mkdocs.commands.build import build
 from mkdocs.config.base import load_config
+from mkdocs.config.defaults import MkDocsConfig
 from mkdocs.exceptions import Abort, ConfigurationError
 from mkdocs.tests.base import tempdir
 
@@ -145,6 +146,26 @@ class LanguageConfigTests(unittest.TestCase):
         de = languages.load_language_config(cfg, "de")
         self.assertEqual(str(de.theme.locale), "de_AT")
         self.assertEqual(de.theme.name, "mkdocs")
+
+    def test_material_theme_language(self):
+        def theme_of(theme, code, overrides=None):
+            cfg = MkDocsConfig()
+            zh = {"name": "中文", **(overrides or {})}
+            cfg.load_dict({"theme": theme, "languages": {"en": None, "pt-BR": zh}})
+            languages.apply_language(cfg, code)
+            return cfg["theme"]
+
+        self.assertEqual(theme_of("material", "pt-BR")["language"], "pt-BR")
+        self.assertEqual(theme_of("material", "pt-BR")["locale"], "pt_BR")
+        self.assertEqual(theme_of("material", None)["language"], "en")
+        # An explicit language is kept: the default language's, or the override.
+        material_de = {"name": "material", "language": "de"}
+        self.assertEqual(theme_of(material_de, None)["language"], "de")
+        self.assertEqual(theme_of(material_de, "pt-BR")["language"], "pt-BR")
+        override = {"theme": {"language": "pt"}}
+        self.assertEqual(theme_of("material", "pt-BR", override)["language"], "pt")
+        # Other themes only get `locale`.
+        self.assertNotIn("language", theme_of("mkdocs", "pt-BR"))
 
 
 class LanguageBuildTests(unittest.TestCase):

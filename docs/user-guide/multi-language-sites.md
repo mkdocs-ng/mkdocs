@@ -105,7 +105,8 @@ These are set for you:
 
 *   **`theme.locale`** is the language code, unless the language sets
     `theme.locale` itself. The default language keeps a `theme.locale` that
-    `mkdocs.yml` sets.
+    `mkdocs.yml` sets. With Material for MkDocs, `theme.language` is set the
+    same way.
 *   **`site_url`** gets the language's path added, such as
     `https://example.com/zh/`.
 *   **`site_dir`** gets the language's path added, such as `site/zh`. It

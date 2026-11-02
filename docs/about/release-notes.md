@@ -48,6 +48,17 @@ Changes since [1.11.0rc1](#version-1110rc1-2026-11-03):
     with the `mkdocs` theme and now after 2.2; with Material for MkDocs it went
     from 10.9 to 5.7 seconds.
 
+### Fixed
+
+*   `mkdocs serve` on a [multi-language site](../user-guide/multi-language-sites.md)
+    no longer answers 404 for the pages of the default language. Each rebuild
+    removed the pages of every language but the last one built, as stale
+    files.
+*   On a multi-language site with Material for MkDocs, each language now gets
+    its own `theme.language`, so its pages say `lang="zh"` (or the language's
+    code) and show Material's interface in that language. It used to be
+    English in every language.
+
 ## Version 1.11.0rc1 (2026-11-03)
 
 MkDocs NG 1.11.0 builds every language of a site from one `mkdocs.yml`,
