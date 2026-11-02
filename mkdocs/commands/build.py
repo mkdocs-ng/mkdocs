@@ -246,7 +246,7 @@ def _build_page(
 
         # Run `page_context` plugin events.
         context = config.plugins.on_page_context(
-            context, page=page, config=config, nav=nav
+            context, page=page, config=config, nav=nav, env=env
         )
 
         if excluded:

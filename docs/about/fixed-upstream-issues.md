@@ -41,6 +41,7 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
+[#3772] | Loading your own Markdown extension from the project needed `PYTHONPATH` set by hand or a package to install. The new [`markdown_extensions_path`](../user-guide/configuration.md#markdown_extensions_path) setting names directories to load them from. | 1.11.0
 [#3914] | Links to other sites couldn't be told apart from internal links in the HTML, so themes couldn't mark them. They now get `rel="external"`. | 1.11.0
 [#3997] | GitHub-style alerts (`> [!NOTE]`, `> [!WARNING]` and so on) showed up as a quote starting with `[!NOTE]`. They now render as admonitions. | 1.11.0
 
@@ -55,6 +56,7 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
+[#3450] | The project's root directory couldn't be the `docs_dir`, so a small project couldn't keep its Markdown files next to `mkdocs.yml`. `docs_dir: .` now works; the config file and the `site_dir` are left out of the site. | 1.11.0
 [#3710] | When the same page was listed more than once in `nav` under different titles, every entry showed the title of the first one. Each entry now keeps its own title. | 1.9.0 (#103)
 [#4026] | A `nav` entry that links to a section of a page (`page.md#anchor` or `page/#anchor`) was reported as "not found in the documentation files", failing `strict` builds; the `page.md#anchor` form also produced a broken link. Both forms now work without a warning. | 1.9.0 (#104)
 
@@ -67,6 +69,12 @@ Upstream issue | Symptom | Fixed in
 [#3703] | The "does not contain an anchor" warning gave no hint when the only problem was letter case; it now suggests the correct anchor (`did you mean '#conflicts'?`). | 1.8.0 (#83)
 [#3952] | Links with a text fragment (`page.md#:~:text=some%20words`) were reported as pointing to a missing anchor. The text fragment is now ignored; only an anchor before it is checked. | 1.11.0
 [#4126] | `mkdocs build --quiet --strict` exited successfully even when there were warnings, because `--quiet` stopped warnings from being counted. Warnings are now still counted in `strict` mode; only their output is silenced. | 1.9.0 (#101)
+
+## Plugins
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3709] | `on_page_context` got no access to the Jinja environment that renders the page, so plugins couldn't add filters or globals for one page. Handlers that take an `env` keyword now receive it; others are called as before. | 1.11.0
 
 ## Python API
 
@@ -92,12 +100,15 @@ Upstream issue | Symptom | Fixed in
 [#2171]: https://github.com/mkdocs/mkdocs/issues/2171
 [#2519]: https://github.com/mkdocs/mkdocs/issues/2519
 [#2624]: https://github.com/mkdocs/mkdocs/issues/2624
+[#3450]: https://github.com/mkdocs/mkdocs/issues/3450
 [#3496]: https://github.com/mkdocs/mkdocs/issues/3496
 [#3630]: https://github.com/mkdocs/mkdocs/issues/3630
 [#3690]: https://github.com/mkdocs/mkdocs/issues/3690
 [#3696]: https://github.com/mkdocs/mkdocs/issues/3696
 [#3703]: https://github.com/mkdocs/mkdocs/issues/3703
+[#3709]: https://github.com/mkdocs/mkdocs/issues/3709
 [#3710]: https://github.com/mkdocs/mkdocs/issues/3710
+[#3772]: https://github.com/mkdocs/mkdocs/issues/3772
 [#3914]: https://github.com/mkdocs/mkdocs/issues/3914
 [#3952]: https://github.com/mkdocs/mkdocs/issues/3952
 [#3973]: https://github.com/mkdocs/mkdocs/issues/3973

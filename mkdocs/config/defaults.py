@@ -48,6 +48,10 @@ class MkDocsConfig(base.Config):
     config_file_path: str = c.Type(str)  # type: ignore[assignment]
     """The path to the mkdocs.yml config file. Can't be populated from the config."""
 
+    _configured_site_dir: str | None = None
+    """The `site_dir` set in the config file, when a command builds into another
+    directory (`mkdocs serve` builds into a temporary one). Not a config option."""
+
     site_name = c.Type(str)
     """The title to use for the documentation."""
 
@@ -137,6 +141,11 @@ class MkDocsConfig(base.Config):
     extra_templates = c.Type(list, default=[])
     """Similar to the above, but each template (HTML or XML) will be build with
     Jinja2 and the global context."""
+
+    markdown_extensions_path = c.PythonPath(default=[])
+    """Directories with Python modules to load Markdown extensions from, for
+    example your own extensions kept next to the docs. Relative paths are
+    relative to the config file."""
 
     markdown_extensions = c.MarkdownExtensions(
         builtins=["toc", "tables", "fenced_code"], configkey="mdx_configs"

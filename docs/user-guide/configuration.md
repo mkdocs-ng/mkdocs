@@ -590,6 +590,25 @@ either be a relative directory, in which case it is resolved relative to the
 directory containing your configuration file, or it can be an absolute directory
 path from the root of your local file system.
 
+NEW: **New in version 1.11.**
+It can also be the directory of the configuration file itself, for a small
+project whose Markdown files sit next to `mkdocs.yml`, with `README.md` as
+the home page:
+
+```yaml
+docs_dir: .
+exclude_docs: |
+  venv/
+  *.py
+  pyproject.toml
+```
+
+The configuration file and the [`site_dir`](#site_dir) are then left out of
+the documentation. Every other file in the directory is published, like in
+any `docs_dir`, so list the files that aren't docs in
+[`exclude_docs`](#exclude_docs). Hidden files and directories, such as
+`.git`, are always left out.
+
 **default**: `'docs'`
 
 ### site_dir
@@ -598,6 +617,9 @@ The directory where the output HTML and other files are created. This can either
 be a relative directory, in which case it is resolved relative to the directory
 containing your configuration file, or it can be an absolute directory path from
 the root of your local file system.
+
+It can't contain the [`docs_dir`](#docs_dir). It can be inside the
+`docs_dir`; it is then left out of the documentation.
 
 **default**: `'site'`
 
@@ -865,6 +887,30 @@ This alternative syntax is required if you intend to override some options via
 > You may also install and use various third party extensions ([Python-Markdown wiki], [MkDocs project catalog][catalog]). Consult
 > the documentation provided by those extensions for installation instructions
 > and available configuration options.
+
+**default**: `[]` (an empty list).
+
+### markdown_extensions_path
+
+NEW: **New in version 1.11.**
+
+A list of directories (relative to `mkdocs.yml`) to load your own Markdown
+extensions from, so a small extension can live next to your docs instead of
+in an installed package.
+
+For example, with an extension in `extensions/abbreviations.py`:
+
+```yaml
+markdown_extensions_path:
+  - extensions
+markdown_extensions:
+  - abbreviations
+```
+
+The directories are added to Python's import path, like the `PYTHONPATH`
+environment variable would, before the extensions in
+[`markdown_extensions`](#markdown_extensions) are loaded. Each directory must
+exist. Use the module's name (or `module:ClassName`) as the extension name.
 
 **default**: `[]` (an empty list).
 

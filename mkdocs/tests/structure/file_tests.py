@@ -775,6 +775,50 @@ class TestFiles(PathAssertionMixin, unittest.TestCase):
         self.assertIsInstance(files, Files)
         self.assertEqual([f.src_uri for f in files], ["index.md", "foo.md"])
 
+    @tempdir(
+        files=[
+            "mkdocs.yml",
+            "README.md",
+            "guide.md",
+            "site/index.html",
+            "site/guide.md",
+            "other/mkdocs.yml",
+        ]
+    )
+    def test_get_files_project_root_as_docs_dir(self, tdir):
+        config = load_config(
+            config_file_path=os.path.join(tdir, "mkdocs.yml"),
+            docs_dir=".",
+            site_dir="site",
+        )
+        files = get_files(config)
+        self.assertEqual(
+            [f.src_uri for f in files], ["README.md", "guide.md", "other/mkdocs.yml"]
+        )
+
+    @tempdir(
+        files={
+            "mkdocs.yml": "site_name: Example\ndocs_dir: .\nsite_dir: public\n",
+            "index.md": "",
+            "public/index.html": "",
+            "public/index.md": "",
+        }
+    )
+    @tempdir()
+    def test_get_files_skips_configured_site_dir_when_building_elsewhere(
+        self, site_dir, tdir
+    ):
+        # `mkdocs serve` builds into a temporary directory. A site built
+        # earlier into the configured `site_dir` must still be left out.
+        from mkdocs.config import load_config as load_config_file
+
+        config = load_config_file(
+            os.path.join(tdir, "mkdocs.yml"), site_dir=site_dir, plugins=[]
+        )
+        self.assertEqual(config.site_dir, site_dir)
+        files = get_files(config)
+        self.assertEqual([f.src_uri for f in files], ["index.md"])
+
     @tempdir()
     @tempdir(files={"test.txt": "source content"})
     def test_copy_file(self, src_dir, dest_dir):

@@ -83,6 +83,20 @@ without checking every plugin first:
 *   Markdown links to other sites get `rel="external"`, so themes and custom
     CSS can mark them, for example with an icon. A `rel` you set yourself is
     kept. See [External links](../user-guide/writing-your-docs.md#external-links).
+*   Keep your own Markdown extensions next to your docs: list their
+    directories in the new
+    [`markdown_extensions_path`](../user-guide/configuration.md#markdown_extensions_path)
+    setting and name them in `markdown_extensions`, without setting
+    `PYTHONPATH` or installing a package.
+*   The project's root directory can be the `docs_dir`: set `docs_dir: .`
+    to keep Markdown files next to `mkdocs.yml`, with `README.md` as the home
+    page. The config file and the `site_dir` are left out of the site, and
+    the `site_dir` may now be inside the `docs_dir`. See
+    [`docs_dir`](../user-guide/configuration.md#docs_dir).
+*   Plugins and hooks can get the Jinja environment that renders a page in
+    [`on_page_context`](../dev-guide/plugins.md#on_page_context): add an
+    `env` keyword parameter to the handler. It is passed only to handlers
+    that accept it, so existing plugins keep working unchanged.
 
 ### Fixed
 
