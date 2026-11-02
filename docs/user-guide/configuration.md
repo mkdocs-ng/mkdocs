@@ -590,6 +590,25 @@ either be a relative directory, in which case it is resolved relative to the
 directory containing your configuration file, or it can be an absolute directory
 path from the root of your local file system.
 
+NEW: **New in version 1.11.**
+It can also be the directory of the configuration file itself, for a small
+project whose Markdown files sit next to `mkdocs.yml`, with `README.md` as
+the home page:
+
+```yaml
+docs_dir: .
+exclude_docs: |
+  venv/
+  *.py
+  pyproject.toml
+```
+
+The configuration file and the [`site_dir`](#site_dir) are then left out of
+the documentation. Every other file in the directory is published, like in
+any `docs_dir`, so list the files that aren't docs in
+[`exclude_docs`](#exclude_docs). Hidden files and directories, such as
+`.git`, are always left out.
+
 **default**: `'docs'`
 
 ### site_dir
@@ -598,6 +617,9 @@ The directory where the output HTML and other files are created. This can either
 be a relative directory, in which case it is resolved relative to the directory
 containing your configuration file, or it can be an absolute directory path from
 the root of your local file system.
+
+It can't contain the [`docs_dir`](#docs_dir). It can be inside the
+`docs_dir`; it is then left out of the documentation.
 
 **default**: `'site'`
 

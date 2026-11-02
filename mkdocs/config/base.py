@@ -388,6 +388,7 @@ def load_config(
         cfg = MkDocsConfig(config_file_path=config_file_path)
         # load the config file
         cfg.load_file(fd)
+    configured_site_dir = cfg.get("site_dir")
 
     # Then load the options to overwrite anything in the config.
     cfg.load_dict(options)
@@ -414,6 +415,13 @@ def load_config(
     elif cfg.strict and len(warnings) > 0:
         raise exceptions.Abort(
             f"Aborted with {len(warnings)} configuration warnings in 'strict' mode!"
+        )
+
+    if "site_dir" in options and isinstance(configured_site_dir, str):
+        # Remember the usual build directory, so that it is still left out of
+        # the docs when it is inside the `docs_dir`.
+        cfg._configured_site_dir = os.path.abspath(
+            os.path.join(os.path.dirname(cfg.config_file_path), configured_site_dir)
         )
 
     return cfg

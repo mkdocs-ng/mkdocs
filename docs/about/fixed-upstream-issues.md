@@ -56,6 +56,7 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
+[#3450] | The project's root directory couldn't be the `docs_dir`, so a small project couldn't keep its Markdown files next to `mkdocs.yml`. `docs_dir: .` now works; the config file and the `site_dir` are left out of the site. | 1.11.0
 [#3710] | When the same page was listed more than once in `nav` under different titles, every entry showed the title of the first one. Each entry now keeps its own title. | 1.9.0 (#103)
 [#4026] | A `nav` entry that links to a section of a page (`page.md#anchor` or `page/#anchor`) was reported as "not found in the documentation files", failing `strict` builds; the `page.md#anchor` form also produced a broken link. Both forms now work without a warning. | 1.9.0 (#104)
 
@@ -99,6 +100,7 @@ Upstream issue | Symptom | Fixed in
 [#2171]: https://github.com/mkdocs/mkdocs/issues/2171
 [#2519]: https://github.com/mkdocs/mkdocs/issues/2519
 [#2624]: https://github.com/mkdocs/mkdocs/issues/2624
+[#3450]: https://github.com/mkdocs/mkdocs/issues/3450
 [#3496]: https://github.com/mkdocs/mkdocs/issues/3496
 [#3630]: https://github.com/mkdocs/mkdocs/issues/3630
 [#3690]: https://github.com/mkdocs/mkdocs/issues/3690

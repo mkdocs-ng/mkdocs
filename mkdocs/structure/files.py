@@ -620,15 +620,30 @@ def get_files(config: MkDocsConfig) -> Files:
     """Walk the `docs_dir` and return a Files collection."""
     files: list[File] = []
     conflicting_files: list[tuple[File, File]] = []
+    # The build output and the config file can be inside the `docs_dir`, for
+    # example when it is the project's root directory. They aren't docs.
+    skipped = {
+        os.path.abspath(path)
+        for path in (
+            config["site_dir"],
+            getattr(config, "_configured_site_dir", None),
+            config.get("config_file_path"),
+        )
+        if path
+    }
     for source_dir, dirnames, filenames in os.walk(
         config["docs_dir"], followlinks=True
     ):
         relative_dir = os.path.relpath(source_dir, config["docs_dir"])
-        dirnames.sort()
+        dirnames[:] = sorted(
+            d for d in dirnames if os.path.join(source_dir, d) not in skipped
+        )
         filenames.sort(key=_file_sort_key)
 
         files_by_dest: dict[str, File] = {}
         for filename in filenames:
+            if os.path.join(source_dir, filename) in skipped:
+                continue
             file = File(
                 os.path.join(relative_dir, filename),
                 config["docs_dir"],

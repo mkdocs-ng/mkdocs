@@ -739,17 +739,12 @@ class Dir(FilesystemObject):
 
 
 class DocsDir(Dir):
-    def post_validation(self, config: Config, key_name: str):
-        if not config.config_file_path:
-            return
+    """
+    DocsDir Config Option.
 
-        # Validate that the dir is not the parent dir of the config file.
-        if os.path.dirname(config.config_file_path) == config[key_name]:
-            raise ValidationError(
-                f"The '{key_name}' should not be the parent directory of the"
-                f" config file. Use a child directory instead so that the"
-                f" '{key_name}' is a sibling of the config file."
-            )
+    The directory may also be the one that contains the config file. The config
+    file and the `site_dir` are then left out of the documentation files.
+    """
 
 
 class File(FilesystemObject):
@@ -809,7 +804,8 @@ class SiteDir(Dir):
     """
     SiteDir Config Option.
 
-    Validates the site_dir and docs_dir directories do not contain each other.
+    Validates that the docs_dir is not inside the site_dir. The site_dir may be
+    inside the docs_dir: it is left out of the documentation files.
     """
 
     def post_validation(self, config: Config, key_name: str):
@@ -817,21 +813,13 @@ class SiteDir(Dir):
         docs_dir = config["docs_dir"]
         site_dir = config["site_dir"]
 
-        # Validate that the docs_dir and site_dir don't contain the
-        # other as this will lead to copying back and forth on each
-        # and eventually make a deep nested mess.
+        # Building would overwrite the docs_dir, or delete it with --clean.
+        # A site_dir inside the docs_dir is fine: `get_files` skips it.
         if (docs_dir + os.sep).startswith(site_dir.rstrip(os.sep) + os.sep):
             raise ValidationError(
                 f"The 'docs_dir' should not be within the 'site_dir' as this "
                 f"can mean the source files are overwritten by the output or "
                 f"it will be deleted if --clean is passed to mkdocs build. "
-                f"(site_dir: '{site_dir}', docs_dir: '{docs_dir}')"
-            )
-        elif (site_dir + os.sep).startswith(docs_dir.rstrip(os.sep) + os.sep):
-            raise ValidationError(
-                f"The 'site_dir' should not be within the 'docs_dir' as this "
-                f"leads to the build directory being copied into itself and "
-                f"duplicate nested files in the 'site_dir'. "
                 f"(site_dir: '{site_dir}', docs_dir: '{docs_dir}')"
             )
 

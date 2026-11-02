@@ -48,6 +48,10 @@ class MkDocsConfig(base.Config):
     config_file_path: str = c.Type(str)  # type: ignore[assignment]
     """The path to the mkdocs.yml config file. Can't be populated from the config."""
 
+    _configured_site_dir: str | None = None
+    """The `site_dir` set in the config file, when a command builds into another
+    directory (`mkdocs serve` builds into a temporary one). Not a config option."""
+
     site_name = c.Type(str)
     """The title to use for the documentation."""
 

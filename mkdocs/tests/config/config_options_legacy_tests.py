@@ -859,19 +859,16 @@ class FilesystemObjectTest(TestCase):
                 )
                 self.assertEqual(conf["dir"], os.path.join(base_path, "foo"))
 
-    def test_site_dir_is_config_dir_fails(self):
+    def test_docs_dir_can_be_config_dir(self):
         class Schema:
             dir = c.DocsDir()
 
-        with self.expect_error(
-            dir="The 'dir' should not be the parent directory of the config file. "
-            "Use a child directory instead so that the 'dir' is a sibling of the config file."
-        ):
-            self.get_config(
-                Schema,
-                {"dir": "."},
-                config_file_path=os.path.join(os.path.abspath("."), "mkdocs.yml"),
-            )
+        conf = self.get_config(
+            Schema,
+            {"dir": "."},
+            config_file_path=os.path.join(os.path.abspath("."), "mkdocs.yml"),
+        )
+        self.assertEqual(conf["dir"], os.path.abspath("."))
 
 
 class ListOfPathsTest(TestCase):
@@ -987,14 +984,10 @@ class SiteDirTest(TestCase):
             {"docs_dir": "/", "site_dir": "site"},
         )
 
+        # Allowed: `get_files` leaves the site_dir out of the docs.
         for test_config in test_configs:
             with self.subTest(test_config):
-                with self.expect_error(
-                    site_dir=re.compile(
-                        r"The 'site_dir' should not be within the 'docs_dir'.*"
-                    )
-                ):
-                    self.get_config(self.Schema, test_config)
+                self.get_config(self.Schema, test_config)
 
     def test_common_prefix(self):
         """Legitimate settings with common prefixes should not fail validation."""
