@@ -5,9 +5,7 @@ import os
 
 from mkdocs import utils
 
-SCHEMA_COMMENT = (
-    "# yaml-language-server: $schema=https://mkdocs-ng.org/schema.json\n"
-)
+SCHEMA_COMMENT = "# yaml-language-server: $schema=https://mkdocs-ng.org/schema.json\n"
 
 # Written when the Sumi theme is installed (`pip install "mkdocs-ng[sumi]"`).
 sumi_config_text = (
