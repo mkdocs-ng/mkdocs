@@ -496,7 +496,13 @@ class TestPluginCollectionEvents(unittest.TestCase):
         self.assertEqual(seen["kwargs"], ["config", "nav", "page"])
 
     def test_accepts_keyword_with_unusual_callables(self):
-        self.assertFalse(plugins._accepts_keyword(max, "env"))  # No signature.
+        class NoSignature:
+            __signature__ = "not a signature"  # Makes `inspect.signature` raise.
+
+            def __call__(self, context, env=None):
+                pass
+
+        self.assertFalse(plugins._accepts_keyword(NoSignature(), "env"))
         collection = plugins.PluginCollection()
 
         class Unhashable:
