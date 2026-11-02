@@ -253,5 +253,5 @@ WARNING: Installing an MkDocs theme means installing a Python package and execut
 [Read the Docs]: https://readthedocs.org/
 [community wiki]: https://github.com/mkdocs-ng/mkdocs/wiki/MkDocs-Themes
 [catalog]: https://github.com/mkdocs-ng/catalog#-theming
-[Sumi]: https://mkdocs-ng.github.io/mkdocs-sumi/
+[Sumi]: https://sumi.mkdocs-ng.org/
 [localizing your theme]: localizing-your-theme.md

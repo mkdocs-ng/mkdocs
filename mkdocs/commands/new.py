@@ -5,9 +5,7 @@ import os
 
 from mkdocs import utils
 
-SCHEMA_COMMENT = (
-    "# yaml-language-server: $schema=https://mkdocs-ng.github.io/mkdocs/schema.json\n"
-)
+SCHEMA_COMMENT = "# yaml-language-server: $schema=https://mkdocs-ng.org/schema.json\n"
 
 # Written when the Sumi theme is installed (`pip install "mkdocs-ng[sumi]"`).
 sumi_config_text = (
@@ -36,7 +34,7 @@ plugins:
 
 index_text = """# Welcome to MkDocs
 
-For full documentation visit [mkdocs-ng.github.io/mkdocs](https://mkdocs-ng.github.io/mkdocs/).
+For full documentation visit [mkdocs-ng.org](https://mkdocs-ng.org/).
 
 ## Commands
 
@@ -63,7 +61,7 @@ documentation. `AGENTS.md` tells coding agents how to work on this project.
 agents_text = """# AGENTS.md
 
 This project is a documentation site built with
-[MkDocs NG](https://mkdocs-ng.github.io/mkdocs/).
+[MkDocs NG](https://mkdocs-ng.org/).
 
 ## Commands
 
@@ -74,7 +72,7 @@ This project is a documentation site built with
 ## Layout
 
 - `mkdocs.yml`: the configuration. Its options are described by the JSON
-  Schema at https://mkdocs-ng.github.io/mkdocs/schema.json.
+  Schema at https://mkdocs-ng.org/schema.json.
 - `docs/`: the pages, one Markdown file each. `docs/index.md` is the home page.
 - `site/`: the build output. Don't edit or commit it.
 

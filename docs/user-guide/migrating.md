@@ -206,5 +206,5 @@ plugin or a list of files in [`INHERIT`](configuration.md#configuration-inherita
 [ProperDocs]: https://properdocs.org/
 [uv]: https://docs.astral.sh/uv/
 [plugin catalog]: https://github.com/mkdocs-ng/catalog
-[Sumi]: https://mkdocs-ng.github.io/mkdocs-sumi/
-[sumi-migrate]: https://mkdocs-ng.github.io/mkdocs-sumi/docs/start/migrate/
+[Sumi]: https://sumi.mkdocs-ng.org/
+[sumi-migrate]: https://sumi.mkdocs-ng.org/docs/start/migrate/

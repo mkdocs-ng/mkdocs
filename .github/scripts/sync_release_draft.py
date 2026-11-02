@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 RELEASE_NOTES_PATH = Path("docs/about/release-notes.md")
-CANONICAL_URL = "https://mkdocs-ng.github.io/mkdocs/about/release-notes/"
+CANONICAL_URL = "https://mkdocs-ng.org/about/release-notes/"
 VERSION_RE = re.compile(
     r"^## Version (?P<version>\S+) \((?P<date>[^)]+)\)\s*$", re.MULTILINE
 )

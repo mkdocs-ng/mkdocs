@@ -61,13 +61,13 @@ without checking every plugin first:
 *   `mkdocs new` creates a site that is ready for AI tools: its `mkdocs.yml`
     turns on the [`llms_txt`](../user-guide/configuration.md#llmstxt) plugin,
     and a new `AGENTS.md` tells coding agents how to build the site and write
-    pages for it. When the [Sumi](https://mkdocs-ng.github.io/mkdocs-sumi/)
+    pages for it. When the [Sumi](https://sumi.mkdocs-ng.org/)
     theme is installed, the new site uses it. Install both with the new
     `sumi` extra: `pip install "mkdocs-ng[sumi]"`. Existing sites and the
     default theme of a `mkdocs.yml` without `theme` don't change.
 *   A [JSON Schema](../user-guide/configuration.md#editor-and-agent-support)
     of `mkdocs.yml`, published at
-    <https://mkdocs-ng.github.io/mkdocs/schema.json>, lets editors complete
+    <https://mkdocs-ng.org/schema.json>, lets editors complete
     and check settings as you type and lets coding agents check the
     configuration they write. It is generated from the definitions of the
     settings and the built-in plugins, so it stays in step with MkDocs NG.
@@ -104,6 +104,14 @@ without checking every plugin first:
     such as `page.md#:~:text=some%20words`, are no longer reported as
     pointing to a missing anchor. When the link also names an anchor
     (`page.md#heading:~:text=some%20words`), only that anchor is checked.
+
+### Documentation
+
+*   The documentation moved to <https://mkdocs-ng.org/>. Old links under
+    `mkdocs-ng.github.io/mkdocs/` redirect to the same page there. The
+    [JSON Schema](../user-guide/configuration.md#editor-and-agent-support) is
+    now published at <https://mkdocs-ng.org/schema.json>, and `mkdocs new`
+    and the footers of the built-in themes link to the new address.
 
 ## Version 1.10.0 (2026-xx-xx)
 
@@ -317,7 +325,7 @@ no longer supported; pip keeps installing 1.7.x on those versions. #77
 *   Every pull request now runs a performance benchmark suite under
     [CodSpeed](https://codspeed.io), guarding against build-speed
     regressions. #88 #89
-*   New [Fixed Upstream Issues](https://mkdocs-ng.github.io/mkdocs/about/fixed-upstream-issues/)
+*   New [Fixed Upstream Issues](https://mkdocs-ng.org/about/fixed-upstream-issues/)
     page tracking notable upstream issues already resolved in MkDocs NG. #85
 *   Documentation link fixes. #62
 
@@ -1252,7 +1260,7 @@ Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/c
     * New option `anonymize_ip` for Google Analytics.
     * Dependencies were upgraded: jQuery upgraded to 3.6.0, Modernizr.js dropped, and others.
 
-    See [documentation of config options for the theme](https://mkdocs-ng.github.io/mkdocs/user-guide/choosing-your-theme/#readthedocs)
+    See [documentation of config options for the theme](https://mkdocs-ng.org/user-guide/choosing-your-theme/#readthedocs)
 
 *   Built-in themes now also support these languages:
     * German (#2633)
@@ -1264,7 +1272,7 @@ Other small improvements; see [commit log](https://github.com/mkdocs-ng/mkdocs/c
 
     Normally MkDocs never reaches into any other directories (so this feature shouldn't be necessary), but some plugins and extensions may do so.
 
-    See [documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#watch).
+    See [documentation](https://mkdocs-ng.org/user-guide/configuration/#watch).
 
 *   New `--no-history` option for `gh_deploy` (#2594)
 

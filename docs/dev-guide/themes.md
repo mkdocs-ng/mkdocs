@@ -644,7 +644,7 @@ extra:
   links:
     - https://github.com/mkdocs-ng
     - https://docs.readthedocs.org/en/latest/builds.html#mkdocs
-    - https://mkdocs-ng.github.io/mkdocs/
+    - https://mkdocs-ng.org/
 ```
 
 And then displayed with this HTML in the custom theme.

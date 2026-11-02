@@ -58,7 +58,7 @@ Install the `mkdocs-ng` package using pip:
 pip install mkdocs-ng
 ```
 
-To install MkDocs NG together with [Sumi](https://mkdocs-ng.github.io/mkdocs-sumi/),
+To install MkDocs NG together with [Sumi](https://sumi.mkdocs-ng.org/),
 a modern theme from the same team, use the `sumi` extra. `mkdocs new` then
 creates Sumi sites:
 
