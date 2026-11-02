@@ -11,6 +11,7 @@ unchanged, and whether your plugins keep running.
 
 Facts on this page were checked on 2026-11-01 against each project's PyPI
 release history, documentation and source code; see [Sources](#sources).
+Build times were measured on 2026-11-02.
 Projects change quickly, so check their documentation for the current state.
 If something here is wrong or out of date, please
 [open an issue](https://github.com/mkdocs-ng/mkdocs/issues).
@@ -27,6 +28,9 @@ Configuration | `mkdocs.yml` | `mkdocs.yml` | None; refuses to run when `mkdocs.
 Runs MkDocs plugins | Yes | Yes | No | Yes | No; reimplements about 30 popular ones
 Runs MkDocs themes | Yes | Yes | No | Yes | No; its own theme supports Material for MkDocs settings
 Python | 3.10+ | 3.8+ | 3.10+ | 3.9+ | 3.11+
+Build of a 1,000-page site | 9.3 s | 20.3 s | Can't build it | 19.9 s | 18.2 s; 6.4 s with its cache
+
+See [Build speed](#build-speed) for how this was measured.
 
 ## Which one should I use?
 
@@ -96,6 +100,72 @@ such as `llms.txt` output for LLMs and coding agents, a stable Python API, and
 built-in themes that load nothing from CDNs. Every change is tested by
 building sites with around 30 popular plugins, themes and Markdown
 extensions. See [Switching to MkDocs NG](../user-guide/migrating.md).
+
+## Build speed
+
+We built the same generated site with each tool: Markdown pages with
+headings, lists, tables, code blocks and links between pages, in sections of
+49 pages. Times are for a clean build, one tool after another, on a 4-core
+Linux machine with 16 GB of memory, Python 3.13 and Node.js 22, measured on
+2026-11-02. Python tools are the median of 3 runs, the others of 1. The
+script is [`benchmarks/compare.py`](https://github.com/mkdocs-ng/mkdocs/tree/main/benchmarks),
+so you can repeat it on your own machine.
+
+### Clean build of 1,000 pages
+
+Tool | Theme | Time
+--- | --- | ---
+MkDocs NG 1.11.0rc1 | `mkdocs` | 9.3 s
+MkDocs NG 1.11.0rc1 | [Sumi](https://sumi.mkdocs-ng.org/) 0.2.0 | 12.7 s
+MkDocs NG 1.11.0rc1 | Material for MkDocs (`mkdocs-ng-material` 9.8.0) | 13.4 s
+Zensical 0.0.74 | Its own | 18.2 s; 6.4 s when its cache is kept
+ProperDocs 1.6.7 | `mkdocs` | 19.9 s
+MkDocs 1.6.1 | `mkdocs` | 20.3 s
+Astro Starlight 0.42.8 | Its own | 21.6 s
+Sphinx 9.2, 4 processes | Alabaster | 25.8 s
+ProperDocs 1.6.7 | Material for MkDocs 9.8.0 | 35.0 s
+MkDocs 1.6.1 | Material for MkDocs 9.8.0 | 37.1 s
+VitePress 1.6.4 | Its own | 100.9 s
+Docusaurus 3.10.2 | Its own | 108.5 s
+
+Each tool ran with its default settings and built-in search. Zensical keeps a
+cache of earlier builds in `.cache`; its first time is with that cache
+cleared (`zensical build -c`), the second with it kept, after a build with no
+changes.
+
+### Clean build of 5,000 pages
+
+Tool | Theme | Time
+--- | --- | ---
+Zensical 0.0.74, cache kept | Its own | 59.2 s
+MkDocs NG 1.11.0rc1 | `mkdocs` | 59.6 s
+MkDocs NG 1.11.0rc1 | Sumi 0.2.0 | 67.6 s
+MkDocs NG 1.11.0rc1 | Material for MkDocs (`mkdocs-ng-material` 9.8.0) | 134.5 s
+Zensical 0.0.74, cache cleared | Its own | 185.5 s
+MkDocs 1.6.1 | `mkdocs` | 340.0 s
+
+With Material for MkDocs every page holds the whole navigation, so this site
+is more than 4 GB of HTML, which is most of the time it takes. Zensical's
+cache for it takes another 8 GB.
+
+### Showing an edit in `serve`
+
+How long after saving a page of the 1,000-page site the development server
+serves the changed page, median of 5 edits:
+
+Tool | Theme | Time
+--- | --- | ---
+Zensical 0.0.74 | Its own | 0.8 s
+MkDocs NG 1.11.0rc1 | `mkdocs` | 2.4 s
+MkDocs NG 1.11.0rc1 | Sumi 0.2.0 | 3.3 s
+MkDocs NG 1.11.0rc1 | Material for MkDocs (`mkdocs-ng-material` 9.8.0) | 6.0 s
+MkDocs 1.6.1 | `mkdocs` | 19.6 s
+MkDocs 1.6.1 | Material for MkDocs 9.8.0 | 36.1 s
+
+Zensical rebuilds only the pages that changed, while MkDocs NG rebuilds the
+whole site, because plugins can change any page when one changes. It
+reuses the rendered Markdown of unchanged pages and doesn't rewrite files
+whose content stays the same.
 
 ## Sources
 
