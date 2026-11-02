@@ -113,6 +113,11 @@ class SiteOutput:
         self._current.add(path)
         return True
 
+    def digest(self, output_path: str) -> bytes | None:
+        """The digest of what our last write put in `output_path`."""
+        entry = self._written.get(os.path.abspath(output_path))
+        return None if entry is None else entry[0]
+
     def copied(self, output_path: str) -> None:
         path = os.path.abspath(output_path)
         if not self._in_site_dir(path):
