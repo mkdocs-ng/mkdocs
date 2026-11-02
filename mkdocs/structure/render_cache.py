@@ -21,9 +21,9 @@ from __future__ import annotations
 
 import copy
 import dataclasses
-import hashlib
 import datetime
 import enum
+import hashlib
 import importlib
 import logging
 import os
@@ -38,8 +38,8 @@ if TYPE_CHECKING:
     from collections.abc import Callable, Mapping
 
     from mkdocs.config.defaults import MkDocsConfig
-    from mkdocs.structure.nav import Navigation
     from mkdocs.structure.files import File, Files
+    from mkdocs.structure.nav import Navigation
     from mkdocs.structure.pages import Page
 
 
@@ -337,12 +337,12 @@ class _RecordingLoader(jinja2.BaseLoader):
         self.seen = seen
 
     def get_source(self, environment, template):
-        source, filename, uptodate = self.loader.get_source(environment, template)
+        source, filename, is_current = self.loader.get_source(environment, template)
         if filename is not None:
             self.seen[template] = (filename, _template_state(filename))
         else:
             self.seen[template] = None
-        return source, filename, uptodate
+        return source, filename, is_current
 
     def list_templates(self):
         return self.loader.list_templates()

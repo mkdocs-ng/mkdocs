@@ -13,6 +13,7 @@ from jinja2.exceptions import TemplateNotFound
 import mkdocs
 from mkdocs import languages, utils
 from mkdocs.exceptions import Abort, BuildError
+from mkdocs.structure import render_cache
 from mkdocs.structure.files import (
     File,
     Files,
@@ -25,7 +26,6 @@ from mkdocs.structure.nav import (
     get_navigation,
     set_section_titles_from_index_pages,
 )
-from mkdocs.structure import render_cache
 from mkdocs.structure.pages import Page
 from mkdocs.utils import DuplicateFilter  # noqa: F401 - legacy re-export
 from mkdocs.utils import output, templates
