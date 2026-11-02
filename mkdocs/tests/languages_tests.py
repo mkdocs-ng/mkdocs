@@ -153,7 +153,7 @@ class LanguageBuildTests(unittest.TestCase):
         cfg = load_config(os.path.join(tdir, "mkdocs.yml"))
         build(cfg)
         site = os.path.join(tdir, "site")
-        self.assertIn("<h1 id=\"home\">Home</h1>", _read(site, "index.html"))
+        self.assertIn('<h1 id="home">Home</h1>', _read(site, "index.html"))
         self.assertIn("首页</h1>", _read(site, "zh", "index.html"))
         self.assertIn("指南</h1>", _read(site, "zh", "guide", "index.html"))
         # Untranslated pages fall back to the default language.
@@ -193,9 +193,7 @@ class LanguageBuildTests(unittest.TestCase):
             [(x["code"], x["link"], x["current"]) for x in i18n["languages"]],
             [("en", "../guide/", False), ("zh", "guide/", True)],
         )
-        self.assertEqual(
-            i18n["languages"][0]["url"], "https://example.com/proj/guide/"
-        )
+        self.assertEqual(i18n["languages"][0]["url"], "https://example.com/proj/guide/")
         self.assertEqual(
             alternate,
             [

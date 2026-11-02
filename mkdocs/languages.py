@@ -136,7 +136,9 @@ def parse_languages(value: object) -> list[Language]:
         overrides = {k: v for k, v in entry.items() if k not in _OWN_KEYS}
         for key in _NOT_PER_LANGUAGE:
             if key in overrides:
-                raise ValueError(f"Language '{code}': '{key}' can't be set per language.")
+                raise ValueError(
+                    f"Language '{code}': '{key}' can't be set per language."
+                )
 
         name = entry.get("name", code)
         if not isinstance(name, str):
@@ -382,7 +384,8 @@ def _walk_names(src_dir: str, skipped: set[str]) -> Iterator[str]:
 
 
 def docs_dirs(config: MkDocsConfig) -> set[str]:
-    """The docs directories of all languages.
+    """
+    The docs directories of all languages.
 
     When one is inside another, its files belong only to its own language.
     (A walk doesn't skip the directory it starts from.)
@@ -439,7 +442,9 @@ class Switcher:
         languages = []
         for lang in self.languages:
             available = file is not None and (
-                not known or lang is self.language or file.src_uri in self.pages_of(lang)
+                not known
+                or lang is self.language
+                or file.src_uri in self.pages_of(lang)
             )
             link = _link(self.language.path, lang.path, url if available else "")
             site_url = self.config.get("site_url")
@@ -462,7 +467,9 @@ class Switcher:
                 "default": self.language.default,
             },
             "default_language": self.languages[0].code,
-            "fallback": bool(file is not None and getattr(file, "language_fallback", False)),
+            "fallback": bool(
+                file is not None and getattr(file, "language_fallback", False)
+            ),
             "languages": languages,
         }
 

@@ -94,7 +94,7 @@ languages:
   de:
     name: Deutsch
     site_name: Mein Projekt
-    copyright: Alle Rechte vorbehalten
+    copyright: Mein Projekt GmbH
     theme:
       logo: img/logo-de.svg
     extra:
