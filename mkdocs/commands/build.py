@@ -270,27 +270,34 @@ def _build_page(
 
         # During `mkdocs serve`, reuse the HTML of a page whose template context
         # is the same as in the previous rebuild.
-        cache = render_cache.active if not dirty else None
+        site_output = utils.output.active
+        cache = render_cache.active if site_output is not None and not dirty else None
         key = cache.page_key(page, context, template, env) if cache else None
         cached = cache.get_page(key) if cache and key else None
-        site_output = utils.output.active
+        # Without `post_page` events, the output file holds the theme's HTML.
+        keep = (
+            site_output.keep
+            if site_output is not None
+            and site_output.building
+            and not config.plugins.events["post_page"]
+            else None
+        )
         if (
             cached is not None
-            and not config.plugins.events["post_page"]
-            and site_output is not None
-            and site_output.building
-            and site_output.keep(page.file.abs_dest_path, cached.digest)
+            and cached.digest is not None
+            and keep is not None
+            and keep(page.file.abs_dest_path, cached.digest)
         ):
             # The file already holds this HTML.
             return
 
         # Render the template.
-        if cached is not None:
-            output = cached.html
-        else:
+        output = cached.html if cached is not None else None
+        rendered = output is None
+        if output is None:
             output = template.render(context)
-            if cache and key:
-                cache.set_page(key, output)
+            if cache and key and keep is None:
+                cache.set_page(key, html=output)
 
         # Run `post_page` plugin events.
         output = config.plugins.on_post_page(output, page=page, config=config)
@@ -301,6 +308,11 @@ def _build_page(
                 output.encode("utf-8", errors="xmlcharrefreplace"),
                 page.file.abs_dest_path,
             )
+            if rendered and cache and key and keep and site_output is not None:
+                # Next time, the file itself is the cached HTML.
+                digest = site_output.digest(page.file.abs_dest_path)
+                if digest is not None:
+                    cache.set_page(key, digest=digest)
         else:
             log.info(f"Page skipped: '{page.file.src_uri}'. Generated empty output.")
 
