@@ -87,3 +87,45 @@ class DocsHooksTests(unittest.TestCase):
             "```text\n#9999\nhttps://github.com/mkdocs-ng/mkdocs/issues/9999\n```",
             rendered,
         )
+
+    def test_cli_page_defaults(self):
+        import click
+
+        @click.command()
+        @click.option("--flag", is_flag=True)
+        @click.option("--name")
+        @click.option("--mode", "mode", flag_value="dirty")
+        @click.option("--count", default=3)
+        @click.option("--on/--off", default=True)
+        def command(**kwargs):
+            pass
+
+        defaults = {
+            param.name: self.hooks._documented_default(param)
+            for param in command.params
+        }
+        self.assertEqual(
+            defaults,
+            {"flag": False, "name": None, "mode": None, "count": 3, "on": True},
+        )
+
+    def test_cli_page_has_no_unset_defaults(self):
+        try:
+            from mkdocs_click._docs import make_command_docs
+        except ImportError:
+            self.skipTest("mkdocs-click is only installed in the docs environment")
+
+        from mkdocs.__main__ import cli
+
+        self.hooks._fix_cli_page_defaults()
+        self.hooks._fix_cli_page_defaults()  # Patching twice is harmless.
+        lines = list(
+            make_command_docs(
+                prog_name="mkdocs", command=cli, style="table", list_subcommands=True
+            )
+        )
+        text = "\n".join(lines)
+        self.assertNotIn("UNSET", text)
+        self.assertIn(
+            "| `-q`, `--quiet` | boolean | Silence warnings | `False` |", text
+        )
