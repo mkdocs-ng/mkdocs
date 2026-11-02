@@ -209,8 +209,8 @@ breaks, especially on multi-language sites and with `mkdocs serve`.
 
 ### Upgrade notes
 
-*   Upgrading from 1.9 or earlier: see the
-    [upgrade notes of 1.10.0rc1](#upgrade-notes_1). In short, upgrade in place
+*   Upgrading from 1.9 or earlier: see the upgrade notes of
+    [1.10.0rc1](#version-1100rc1-2026-11-01). In short, upgrade in place
     with `pip install -U --pre mkdocs-ng`, and expect `pip list` to show both
     `mkdocs` and `mkdocs-ng` when you use plugins.
 *   `mkdocs serve` no longer empties the site directory before each rebuild.
