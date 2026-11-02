@@ -8,12 +8,15 @@ from os.path import isdir, isfile, join
 from typing import IO, TYPE_CHECKING
 from urllib.parse import urlsplit
 
+from mkdocs import _select_languages
 from mkdocs.commands.build import build
 from mkdocs.config import load_config
 from mkdocs.livereload import LiveReloadServer, _serve_url
 from mkdocs.structure import render_cache
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
+
     from mkdocs.config.defaults import MkDocsConfig
 
 log = logging.getLogger(__name__)
@@ -36,6 +39,7 @@ def serve(
     watch: list[str] = [],
     *,
     open_in_browser: bool = False,
+    language: str | Sequence[str] | None = None,
     **kwargs,
 ) -> None:
     """
@@ -55,6 +59,7 @@ def serve(
             **kwargs,
         )
         config.watch.extend(watch)
+        _select_languages(config, language)
         return config
 
     is_clean = build_type == "clean"
@@ -114,6 +119,9 @@ def serve(
             if livereload:
                 # Watch the documentation files, the config files and the theme files.
                 server.watch(config.docs_dir)
+                for lang in getattr(config, "languages", None) or ():
+                    if lang.docs_dir != config.docs_dir:
+                        server.watch(lang.docs_dir)
                 if config.config_file_path:
                     server.watch(config.config_file_path)
                 for path in config._inherited_config_files:

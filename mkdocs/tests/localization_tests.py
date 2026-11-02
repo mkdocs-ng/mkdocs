@@ -33,7 +33,7 @@ class LocalizationTests(unittest.TestCase):
     def test_invalid_locale(self):
         self.assertRaises(ValidationError, parse_locale, "42")
 
-    @tempdir()
+    @tempdir({"locales/de/LC_MESSAGES/messages.mo": ""})
     def test_no_translations_found(self, dir_without_translations):
         with self.assertLogs("mkdocs") as cm:
             install_translations(
@@ -44,6 +44,12 @@ class LocalizationTests(unittest.TestCase):
             "WARNING:mkdocs.localization:No translations could be found for the locale 'fr_CA'. "
             "Defaulting to English.",
         )
+        self.env.install_null_translations.assert_called_once()
+
+    @tempdir()
+    def test_no_warning_for_themes_without_catalogs(self, theme_dir):
+        with self.assertNoLogs("mkdocs"):
+            install_translations(self.env, parse_locale("fr_CA"), [theme_dir])
         self.env.install_null_translations.assert_called_once()
 
     @tempdir()

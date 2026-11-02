@@ -636,6 +636,31 @@ It can't contain the [`docs_dir`](#docs_dir). It can be inside the
 > If you're using another source code control tool, you'll want to check its
 > documentation on how to ignore specific directories.
 
+### languages
+
+> NEW: **New in MkDocs NG 1.11.**
+
+The languages of a multi-language site. Each key is a language code, such as
+`en`, `zh` or `pt-BR`. Its value is the name shown in the language switcher, or
+a mapping with that `name` and any setting of `mkdocs.yml` to change for that
+language. The first language is the default one, built at the root of the site;
+the others are built into a sub-directory named after their code.
+
+```yaml
+languages:
+  en: English
+  zh:
+    name: 简体中文
+    site_name: 我的项目
+```
+
+Translated pages sit next to the default language's, as `page.zh.md`, or in a
+`docs_dir` of the language's own. See [Multi-language Sites] for the details.
+
+**default**: `null` (a single-language site)
+
+[Multi-language Sites]: multi-language-sites.md
+
 ### extra_css
 
 Set a list of CSS files (relative to `docs_dir`) to be included by the theme, typically as `<link>` tags.

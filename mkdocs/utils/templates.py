@@ -36,6 +36,7 @@ class TemplateContext(TypedDict):
     build_date_utc: datetime.datetime
     config: MkDocsConfig
     page: Page | None
+    i18n: dict[str, Any] | None
 
 
 @contextfilter

@@ -27,7 +27,7 @@ import markdown
 import pathspec
 import pathspec.gitignore
 
-from mkdocs import plugins, theme, utils
+from mkdocs import languages, plugins, theme, utils
 from mkdocs.config.base import (
     BaseConfigOption,
     Config,
@@ -886,6 +886,26 @@ class Theme(BaseConfigOption[theme.Theme]):
             raise ValidationError("'locale' must be a string.")
 
         return theme.Theme(**theme_config)
+
+
+class Languages(BaseConfigOption["list[languages.Language]"]):
+    """
+    Languages Config Option.
+
+    A mapping of language codes to a name, or to a mapping of config overrides
+    for that language. The first language is the default one.
+    """
+
+    def run_validation(self, value: object) -> list[languages.Language]:
+        try:
+            return languages.parse_languages(value)
+        except ValueError as e:
+            raise ValidationError(str(e))
+
+    def post_validation(self, config: Config, key_name: str):
+        value = config[key_name]
+        if value:
+            languages.resolve_docs_dirs(config, value)  # type: ignore[arg-type]
 
 
 class Nav(OptionallyRequired):

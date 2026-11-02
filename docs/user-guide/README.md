@@ -15,6 +15,7 @@ bar at the top of the page to move through the documentation in order.
 - [Choosing Your Theme](choosing-your-theme.md)
 - [Customizing Your Theme](customizing-your-theme.md)
 - [Localizing Your Theme](localizing-your-theme.md)
+- [Multi-language Sites](multi-language-sites.md)
 - [Configuration](configuration.md)
 - [Command Line Interface](cli.md)
 - [Python API](python-api.md)

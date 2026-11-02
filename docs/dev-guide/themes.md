@@ -325,6 +325,13 @@ A Python datetime object that represents the date and time the documentation
 was built in UTC. This is useful for showing how recently the documentation
 was updated.
 
+#### i18n
+
+On a [multi-language site](../user-guide/multi-language-sites.md), information
+about the language being built and the same page in the other languages, for a
+language switcher and `hreflang` links. `None` on other sites. See
+[For theme authors](../user-guide/multi-language-sites.md#for-theme-authors).
+
 #### pages
 
 A flat list of `File` objects for *all* pages in the project. This list can

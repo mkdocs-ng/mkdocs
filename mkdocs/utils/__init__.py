@@ -187,10 +187,18 @@ def normalize_url(path: str, page: Page | None = None, base: str = "") -> str:
     if relative_level == -1:
         return path
     if page is not None:
-        result = get_relative_url(path, page.url)
         if relative_level > 0:
-            result = "../" * relative_level + result
-        return result
+            # The path goes above the site root: work it out from the page's
+            # place under the root's parents ("\0" can't be a path component).
+            page_url = "\0/" * relative_level + page.url
+            rest = posixpath.normpath(path)[3 * relative_level :]
+            if rest and path.endswith("/"):
+                rest += "/"
+            result = get_relative_url(rest or ".", page_url)
+            if path.endswith("/") and not result.endswith("/"):
+                result += "/"
+            return result
+        return get_relative_url(path, page.url)
 
     return posixpath.join(base, path)
 

@@ -104,6 +104,50 @@
       "default": "site",
       "markdownDescription": "The directory where the site will be built to\n\n[Documentation](https://mkdocs-ng.org/user-guide/configuration/#site_dir)"
     },
+    "languages": {
+      "description": "The languages of a multi-language site. The first one is the default. Each key is a language code, and its value is the name shown in the language switcher, or a mapping with `name` and any config option to override for that language.",
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z]{2,3}([-_][A-Za-z0-9]{2,8})*$"
+      },
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name shown in the language switcher."
+              },
+              "path": {
+                "type": "string",
+                "description": "Where the language is built, relative to the site root. Defaults to the language code."
+              },
+              "fallback": {
+                "type": "boolean",
+                "description": "Build pages that have no translation from the default language's version.",
+                "default": true
+              },
+              "nav": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/navItem"
+                }
+              }
+            },
+            "additionalProperties": true
+          }
+        ]
+      },
+      "minProperties": 1,
+      "markdownDescription": "The languages of a multi-language site. The first one is the default. Each key is a language code, and its value is the name shown in the language switcher, or a mapping with `name` and any config option to override for that language.\n\n[Documentation](https://mkdocs-ng.github.io/mkdocs/user-guide/configuration/#languages)"
+    },
     "copyright": {
       "description": "A copyright notice to add to the footer of documentation.",
       "type": "string",

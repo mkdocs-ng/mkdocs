@@ -122,6 +122,10 @@ strict_help = (
 theme_help = "The theme to use when building your documentation."
 theme_choices = sorted(utils.get_theme_names())
 site_dir_help = "The directory to output the result of the documentation build."
+language_help = (
+    "Build only this language of a multi-language site (the code from 'languages'). "
+    "Can be given more than once."
+)
 use_directory_urls_help = "Use directory URLs when building pages (the default)."
 reload_help = (
     "Enable the live reloading in the development server (this is the default)"
@@ -289,6 +293,9 @@ def cli():
 @click.option("--dirtyreload", "build_type", flag_value="dirty", hidden=True)
 @click.option("--dirty", "build_type", flag_value="dirty", help=serve_dirty_help)
 @click.option("-c", "--clean", "build_type", flag_value="clean", help=serve_clean_help)
+@click.option(
+    "-L", "--language", "language", multiple=True, metavar="<CODE>", help=language_help
+)
 @click.option("--watch-theme", help=watch_theme_help, is_flag=True)
 @click.option(
     "-w",
@@ -309,6 +316,9 @@ def serve_command(**kwargs):
 
 @cli.command(name="build")
 @click.option("-c", "--clean/--dirty", is_flag=True, default=True, help=clean_help)
+@click.option(
+    "-L", "--language", "language", multiple=True, metavar="<CODE>", help=language_help
+)
 @common_config_options
 @click.option("-d", "--site-dir", type=click.Path(), help=site_dir_help)
 @common_options

@@ -54,7 +54,12 @@ def install_translations(
             env.install_gettext_translations(translations)  # type: ignore[attr-defined]
         else:
             env.install_null_translations()  # type: ignore[attr-defined]
-            if locale.language != "en":
+            # Themes without gettext catalogs (such as Sumi or Material)
+            # translate their text in their own way, so don't warn for them.
+            uses_catalogs = any(
+                os.path.isdir(os.path.join(d, "locales")) for d in theme_dirs
+            )
+            if locale.language != "en" and uses_catalogs:
                 log.warning(
                     f"No translations could be found for the locale '{locale}'. "
                     "Defaulting to English."

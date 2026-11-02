@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import IO, TYPE_CHECKING
+from typing import IO, TYPE_CHECKING, Any
 
 from mkdocs.config import base
 from mkdocs.config import config_options as c
@@ -89,6 +89,13 @@ class MkDocsConfig(base.Config):
 
     site_dir = c.SiteDir(default="site")
     """The directory where the site will be built to"""
+
+    languages = c.Optional(c.Languages())
+    """The languages of a multi-language site. The first one is the default.
+
+    Each key is a language code, and its value is the name shown in the language
+    switcher, or a mapping with `name` and any config option to override for
+    that language."""
 
     copyright = c.Optional(c.Type(str))
     """A copyright notice to add to the footer of documentation."""
@@ -219,6 +226,21 @@ class MkDocsConfig(base.Config):
     _current_page: Page | None = None
     """The currently rendered page. Please do not access this and instead
     rely on the `page` argument to event handlers."""
+
+    _language_code: str | None = None
+    """The code of the language this config builds, for a multi-language site."""
+
+    _base_docs_dir: str | None = None
+    """`docs_dir` as set in the config file, before the overrides of a language."""
+
+    _source: tuple[bytes, str | None, dict] | None = None
+    """What `load_config` loaded this config from, to load other languages the same way."""
+
+    _language_switcher: Any = None
+    """The `mkdocs.languages.Switcher` of the build in progress."""
+
+    _build_languages: Sequence[str] | None = None
+    """If set, only these languages are built (`--language`)."""
 
     _inherited_config_files: Sequence[str] = ()
     """Absolute paths of the config files inherited via `INHERIT`, if any."""

@@ -330,6 +330,10 @@ class File:
 
     page: Page | None = None
 
+    language_fallback: bool = False
+    """For a multi-language site: whether this page is the default language's
+    version, used because the language being built has no translation of it."""
+
     @overload
     @classmethod
     def generated(
@@ -618,6 +622,8 @@ def set_exclusions(files: Iterable[File], config: MkDocsConfig) -> None:
 
 def get_files(config: MkDocsConfig) -> Files:
     """Walk the `docs_dir` and return a Files collection."""
+    if config.get("languages"):
+        return _get_language_files(config)
     files: list[File] = []
     conflicting_files: list[tuple[File, File]] = []
     # The build output and the config file can be inside the `docs_dir`, for
@@ -675,6 +681,79 @@ def get_files(config: MkDocsConfig) -> Files:
             except ValueError:  # pragma: no cover - `b` is in only one pair
                 pass
 
+    return Files(files)
+
+
+def _skipped_paths(config: MkDocsConfig) -> set[str]:
+    return {
+        os.path.abspath(path)
+        for path in (
+            config["site_dir"],
+            getattr(config, "_configured_site_dir", None),
+            config.get("config_file_path"),
+        )
+        if path
+    }
+
+
+def _get_language_files(config: MkDocsConfig) -> Files:
+    """The files of one language of a multi-language site."""
+    from mkdocs import languages
+
+    lang = languages.current(config)
+    assert lang is not None
+    skipped = _skipped_paths(config) | languages.docs_dirs(config)
+    # The site of the default language holds the sites of the others.
+    skipped |= {
+        os.path.abspath(os.path.join(config["site_dir"], other.path))
+        for other in config["languages"]
+        if not other.default
+    }
+
+    files: list[File] = []
+    for source in languages.select_sources(
+        config, lang, lambda d: languages._walk_names(d, skipped)
+    ):
+        file = File(
+            source.src_uri,
+            source.src_dir,
+            config["site_dir"],
+            config["use_directory_urls"],
+        )
+        if file.abs_src_path != source.abs_src_path:
+            # A translation (`page.zh.md`) stands in for the untranslated file.
+            file.abs_src_path = source.abs_src_path
+        rel = PurePath(os.path.relpath(source.abs_src_path, config["docs_dir"]))
+        if rel.as_posix() != file.src_uri:
+            file.edit_uri = rel.as_posix()
+        file.language_fallback = source.is_fallback
+        files.append(file)
+    files.sort(key=file_sort_key)
+
+    set_exclusions(files, config)
+    # Skip README.md if an index file also exists in dir.
+    by_dest: dict[tuple[str, str], File] = {}
+    for file in list(files):
+        key = (posixpath.dirname(file.src_uri), file.dest_uri)
+        prev = by_dest.setdefault(key, file)
+        if prev is file:
+            continue
+        readme, index = (
+            (file, prev)
+            if file.name == "index"
+            and posixpath.basename(file.src_uri).startswith("README")
+            else (prev, file)
+        )
+        if index.inclusion.is_included():
+            if readme.inclusion.is_included():
+                log.warning(
+                    f"Excluding '{readme.src_uri}' from the site because it conflicts with '{index.src_uri}'."
+                )
+            files.remove(readme)
+            by_dest[key] = index
+        else:
+            files.remove(index)
+            by_dest[key] = readme
     return Files(files)
 
 
