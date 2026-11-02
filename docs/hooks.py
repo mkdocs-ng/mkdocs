@@ -1,12 +1,20 @@
 from __future__ import annotations
 
+import copy
 import re
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 from packaging.version import Version
 
+try:
+    from click._utils import UNSET as CLICK_UNSET
+except ImportError:  # click < 8.3
+    CLICK_UNSET = None
+
 if TYPE_CHECKING:
+    import click
+
     from mkdocs.config.defaults import MkDocsConfig
     from mkdocs.structure.nav import Page
 
@@ -82,6 +90,43 @@ def _update_version_example(markdown: str) -> str:
     return VERSION_EXAMPLE_RE.sub(
         f"mkdocs, version {mkdocs.__version__} from", markdown, count=1
     )
+
+
+def _documented_default(option: click.Option) -> object:
+    """
+    The default to show for a CLI option, as click before 8.3 reported it.
+
+    Since click 8.3, an option without a default has `click._utils.UNSET` as its
+    default, and mkdocs-click (0.9.0, the latest) prints it as `Sentinel.UNSET`.
+    """
+    if CLICK_UNSET is None or option.default is not CLICK_UNSET:
+        return option.default
+    return False if option.is_bool_flag else None
+
+
+def _fix_cli_page_defaults() -> None:
+    """Make mkdocs-click show `False` or `None` instead of `Sentinel.UNSET`."""
+    try:
+        from mkdocs_click import _docs
+    except ImportError:  # pragma: no cover
+        return
+    original = _docs._format_table_option_row
+    if getattr(original, "_shows_documented_default", False):
+        return
+
+    def format_row(option: click.Option) -> str:
+        default = _documented_default(option)
+        if default is not option.default:
+            option = copy.copy(option)
+            option.default = default
+        return original(option)
+
+    format_row._shows_documented_default = True  # type: ignore[attr-defined]
+    _docs._format_table_option_row = format_row
+
+
+def on_config(config: MkDocsConfig) -> None:
+    _fix_cli_page_defaults()
 
 
 def on_page_markdown(
