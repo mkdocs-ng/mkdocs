@@ -445,6 +445,68 @@ class TestPluginCollectionEvents(unittest.TestCase):
         # The current plugin is only set while its event handler runs.
         self.assertIsNone(collection._current_plugin)
 
+    def test_page_context_env_only_for_handlers_that_accept_it(self):
+        seen = {}
+
+        class OldPlugin(plugins.BasePlugin):
+            def on_page_context(self, context, page, config, nav):
+                seen["old"] = True
+
+        class EnvPlugin(plugins.BasePlugin):
+            def on_page_context(self, context, *, page, config, nav, env):
+                seen["env"] = env
+
+        class KwargsPlugin(plugins.BasePlugin):
+            def on_page_context(self, context, **kwargs):
+                seen["kwargs"] = sorted(kwargs)
+
+        class PositionalOnlyPlugin(plugins.BasePlugin):
+            def on_page_context(self, context, env=None, /, **kwargs):
+                seen["positional"] = env
+
+        collection = plugins.PluginCollection()
+        collection["old"] = OldPlugin()
+        collection["env"] = EnvPlugin()
+        collection["kwargs"] = KwargsPlugin()
+        collection["positional"] = PositionalOnlyPlugin()
+        env = mock.Mock()
+        for _ in range(2):  # The second run uses the cached signature checks.
+            seen.clear()
+            collection.on_page_context({}, page=None, config={}, nav=None, env=env)
+            self.assertEqual(
+                seen,
+                {
+                    "old": True,
+                    "env": env,
+                    "kwargs": ["config", "env", "nav", "page"],
+                    "positional": None,
+                },
+            )
+
+    def test_page_context_without_env(self):
+        seen = {}
+
+        class KwargsPlugin(plugins.BasePlugin):
+            def on_page_context(self, context, **kwargs):
+                seen["kwargs"] = sorted(kwargs)
+
+        collection = plugins.PluginCollection()
+        collection["kwargs"] = KwargsPlugin()
+        collection.on_page_context({}, page=None, config={}, nav=None)
+        self.assertEqual(seen["kwargs"], ["config", "nav", "page"])
+
+    def test_accepts_keyword_with_unusual_callables(self):
+        self.assertFalse(plugins._accepts_keyword(max, "env"))  # No signature.
+        collection = plugins.PluginCollection()
+
+        class Unhashable:
+            __hash__ = None  # type: ignore[assignment]
+
+            def __call__(self, context, env=None):
+                return context
+
+        self.assertTrue(collection._accepts_keyword(Unhashable(), "env"))
+
     def test_run_serve_event(self):
         class WatchingPlugin(plugins.BasePlugin):
             def on_serve(self, server, config, builder):

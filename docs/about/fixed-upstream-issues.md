@@ -68,6 +68,12 @@ Upstream issue | Symptom | Fixed in
 [#3952] | Links with a text fragment (`page.md#:~:text=some%20words`) were reported as pointing to a missing anchor. The text fragment is now ignored; only an anchor before it is checked. | 1.11.0
 [#4126] | `mkdocs build --quiet --strict` exited successfully even when there were warnings, because `--quiet` stopped warnings from being counted. Warnings are now still counted in `strict` mode; only their output is silenced. | 1.9.0 (#101)
 
+## Plugins
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3709] | `on_page_context` got no access to the Jinja environment that renders the page, so plugins couldn't add filters or globals for one page. Handlers that take an `env` keyword now receive it; others are called as before. | 1.11.0
+
 ## Python API
 
 Upstream issue | Symptom | Fixed in
@@ -97,6 +103,7 @@ Upstream issue | Symptom | Fixed in
 [#3690]: https://github.com/mkdocs/mkdocs/issues/3690
 [#3696]: https://github.com/mkdocs/mkdocs/issues/3696
 [#3703]: https://github.com/mkdocs/mkdocs/issues/3703
+[#3709]: https://github.com/mkdocs/mkdocs/issues/3709
 [#3710]: https://github.com/mkdocs/mkdocs/issues/3710
 [#3914]: https://github.com/mkdocs/mkdocs/issues/3914
 [#3952]: https://github.com/mkdocs/mkdocs/issues/3952

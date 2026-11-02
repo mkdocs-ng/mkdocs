@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import inspect
 import logging
-from collections.abc import Callable, MutableMapping
+from collections.abc import Callable, Mapping, MutableMapping
 from importlib.metadata import EntryPoint, entry_points
 from typing import (
     TYPE_CHECKING,
@@ -416,6 +417,12 @@ class BasePlugin(Generic[SomeConfig]):
             config: global configuration object
             nav: global navigation object
 
+        NEW: **New in version 1.11.** To also get the Jinja environment that
+        renders the page, add an `env: jinja2.Environment` keyword parameter. It is
+        only passed to event handlers that accept it, so existing ones keep
+        working. The environment is shared by all pages: undo per-page changes
+        in `on_post_page`, or set them again for every page.
+
         Returns:
             dict of template context variables
         """
@@ -515,6 +522,18 @@ class CombinedEvent(Generic[P, T]):
         return CombinedEvent(*(f.__get__(instance, owner) for f in self.methods))
 
 
+def _accepts_keyword(method: Callable, name: str) -> bool:
+    """Whether `method` can be called with the keyword argument `name`."""
+    try:
+        params = inspect.signature(method).parameters
+    except (TypeError, ValueError):
+        return False
+    param = params.get(name)
+    if param is not None:
+        return param.kind in (param.POSITIONAL_OR_KEYWORD, param.KEYWORD_ONLY)
+    return any(p.kind is p.VAR_KEYWORD for p in params.values())
+
+
 class PluginCollection(dict, MutableMapping[str, BasePlugin]):
     """
     A collection of plugins.
@@ -530,6 +549,18 @@ class PluginCollection(dict, MutableMapping[str, BasePlugin]):
         super().__init__(*args, **kwargs)
         self.events: dict[str, list[Callable]] = {k: [] for k in EVENTS}
         self._event_origins: dict[Callable, str] = {}
+        self._keyword_support: dict[tuple[Callable, str], bool] = {}
+
+    def _accepts_keyword(self, method: Callable, name: str) -> bool:
+        try:
+            return self._keyword_support[method, name]
+        except KeyError:
+            result = self._keyword_support[method, name] = _accepts_keyword(
+                method, name
+            )
+            return result
+        except TypeError:  # If the method is somehow not hashable.
+            return _accepts_keyword(method, name)
 
     def _register_event(
         self,
@@ -576,14 +607,22 @@ class PluginCollection(dict, MutableMapping[str, BasePlugin]):
     @overload
     def run_event(self, name: str, item: T, **kwargs) -> T: ...
 
-    def run_event(self, name: str, item=None, **kwargs):
+    def run_event(
+        self,
+        name: str,
+        item=None,
+        *,
+        _optional: Mapping[str, Any] | None = None,
+        **kwargs,
+    ):
         """
         Run all registered methods of an event.
 
         `item` is the object to be modified or replaced and returned by the event method.
         If it isn't given the event method creates a new object to be returned.
         All other keywords are variables for context, but would not generally
-        be modified by the event method.
+        be modified by the event method. Keywords in `_optional` are only passed
+        to methods that accept them, so that adding one doesn't break plugins.
         """
         pass_item = item is not None
         for method in self.events[name]:
@@ -592,10 +631,16 @@ class PluginCollection(dict, MutableMapping[str, BasePlugin]):
                 log.debug(
                     f"Running `{name}` event from plugin '{self._current_plugin}'"
                 )
+            method_kwargs = kwargs
+            if _optional:
+                method_kwargs = dict(kwargs)
+                for key, value in _optional.items():
+                    if self._accepts_keyword(method, key):
+                        method_kwargs[key] = value
             if pass_item:
-                result = method(item, **kwargs)
+                result = method(item, **method_kwargs)
             else:
-                result = method(**kwargs)
+                result = method(**method_kwargs)
             # keep item if method returned `None`
             if result is not None:
                 item = result
@@ -686,9 +731,15 @@ class PluginCollection(dict, MutableMapping[str, BasePlugin]):
         page: Page,
         config: MkDocsConfig,
         nav: Navigation,
+        env: jinja2.Environment | None = None,
     ) -> TemplateContext:
         return self.run_event(
-            "page_context", context, page=page, config=config, nav=nav
+            "page_context",
+            context,
+            page=page,
+            config=config,
+            nav=nav,
+            _optional={"env": env} if env is not None else None,
         )
 
     def on_post_page(self, output: str, *, page: Page, config: MkDocsConfig) -> str:

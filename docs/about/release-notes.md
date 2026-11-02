@@ -83,6 +83,10 @@ without checking every plugin first:
 *   Markdown links to other sites get `rel="external"`, so themes and custom
     CSS can mark them, for example with an icon. A `rel` you set yourself is
     kept. See [External links](../user-guide/writing-your-docs.md#external-links).
+*   Plugins and hooks can get the Jinja environment that renders a page in
+    [`on_page_context`](../dev-guide/plugins.md#on_page_context): add an
+    `env` keyword parameter to the handler. It is passed only to handlers
+    that accept it, so existing plugins keep working unchanged.
 
 ### Fixed
 
