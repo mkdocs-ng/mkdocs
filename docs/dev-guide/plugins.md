@@ -400,6 +400,14 @@ class MyExtension(markdown.Extension):
     mkdocs_cacheable = True
 ```
 
+NOTE: **New in version 1.11:** during `mkdocs serve`, the site directory isn't
+emptied before a rebuild. Files written with `mkdocs.utils.write_file` or copied
+as a `File` are left alone when their content didn't change, and the ones that
+the rebuild doesn't produce any more are removed after the `post_build` event.
+Files that a plugin writes another way are never removed, so a plugin that
+writes files with a name that changes from one build to the next should use
+`mkdocs.utils.write_file`.
+
 ##### on_pre_page
 
 ::: mkdocs.plugins.BasePlugin.on_pre_page

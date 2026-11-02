@@ -9,6 +9,7 @@ import subprocess
 from html.parser import HTMLParser
 from typing import TYPE_CHECKING
 
+from mkdocs.structure import render_cache
 from mkdocs.utils.rendering import _strip_tags
 
 if TYPE_CHECKING:
@@ -72,6 +73,32 @@ class SearchIndex:
             self._add_entry(title=page.title, text="", loc=page.url)
             return
 
+        assert page.content is not None
+        cache = render_cache.active
+        if cache is None:
+            self._add_entries_for_page(page)
+            return
+        # During `mkdocs serve`, reuse the entries of a page that didn't change.
+        key = (
+            "search",
+            self.config["indexing"],
+            page.url,
+            page.title,
+            page.content,
+            _toc_key(page.toc),
+        )
+
+        def compute() -> list[dict]:
+            start = len(self._entries)
+            self._add_entries_for_page(page)
+            return self._entries[start:]
+
+        before = len(self._entries)
+        entries = cache.memo(key, compute)
+        if len(self._entries) == before:
+            self._entries.extend(dict(e) for e in entries)
+
+    def _add_entries_for_page(self, page: Page) -> None:
         # Parse the HTML of the page into the text of each section.
         assert page.content is not None
         parser = _parse_content(page.content)
@@ -255,6 +282,12 @@ class ContentParser(HTMLParser):
     @property
     def stripped_html(self) -> str:
         return "\n".join(self._stripped_html)
+
+
+def _toc_key(toc) -> tuple:
+    return tuple(
+        (item.id, item.title, item.url, _toc_key(item.children)) for item in toc
+    )
 
 
 _HEADER_TAG_SET = frozenset(_HEADER_TAGS)

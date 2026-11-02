@@ -27,6 +27,8 @@ from typing import TYPE_CHECKING, Any
 import mkdocs
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from mkdocs.config.defaults import MkDocsConfig
     from mkdocs.structure.files import Files
     from mkdocs.structure.pages import Page
@@ -169,6 +171,9 @@ class RenderCache:
     def __init__(self) -> None:
         self._entries: dict[str, _Entry] = {}
         self._used: set[str] = set()
+        # Other results that only depend on their key, kept for one rebuild.
+        self._memo: dict[Any, Any] = {}
+        self._memo_used: dict[Any, Any] = {}
         self._build_key: tuple[int, int, str | None] | None = None
 
     def start_build(self) -> None:
@@ -176,6 +181,9 @@ class RenderCache:
         if self._used:
             self._entries = {k: v for k, v in self._entries.items() if k in self._used}
         self._used = set()
+        if self._memo_used:
+            self._memo = self._memo_used
+        self._memo_used = {}
         self._build_key = None
 
     def _context(self, config: MkDocsConfig, files: Files) -> str | None:
@@ -202,6 +210,21 @@ class RenderCache:
             result = hashlib.sha256("\0".join(parts).encode()).hexdigest()
         self._build_key = (cache_id[0], cache_id[1], result)
         return result
+
+    def memo(self, key: Any, compute: Callable[[], Any]) -> Any:
+        """
+        The result of `compute()`, reused from the previous rebuild when `key`
+        was the same. The key must describe everything the result depends on.
+        """
+        try:
+            value = self._memo_used[key]
+        except KeyError:
+            try:
+                value = self._memo[key]
+            except KeyError:
+                value = compute()
+            self._memo_used[key] = value
+        return value
 
     def render(self, page: Page, config: MkDocsConfig, files: Files, convert) -> None:
         context = self._context(config, files)

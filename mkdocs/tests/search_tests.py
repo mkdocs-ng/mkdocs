@@ -357,7 +357,7 @@ class FastParseTests(unittest.TestCase):
             "<h2/>self-closing<h3 />too",
             '<p><a href="x.md" title="a>b">link</a><br><br/><img alt="1 &lt; 2" src="i.png" /></p>',
             '<table><tr><th>A</th></tr><tr><td>1</td></tr></table><h6 id="z">Z</h6>end',
-            "<div\nclass=\"wrapped\"\n>text</div >",
+            '<div\nclass="wrapped"\n>text</div >',
             "<h1>Unclosed",
             "text with &amp trailing & ampersands &",
         ):
@@ -387,10 +387,36 @@ class FastParseTests(unittest.TestCase):
 
         rng = random.Random(4)
         pieces = [
-            "<h1>", "</h1>", '<h2 id="x">', "</h2>", "<h3 id=y>", "</h3>", "<p>",
-            "</p>", "<br>", "<br/>", "<em>", "</em>", '<a href="u">', "</a>",
-            "text", " ", "\n", "&amp;", "&lt;", "&nbsp;", "&#62;", "&bogus;", "&",
-            "word\n", "<code>", "</code>", "<", ">", '"', "<!-- c -->",
+            "<h1>",
+            "</h1>",
+            '<h2 id="x">',
+            "</h2>",
+            "<h3 id=y>",
+            "</h3>",
+            "<p>",
+            "</p>",
+            "<br>",
+            "<br/>",
+            "<em>",
+            "</em>",
+            '<a href="u">',
+            "</a>",
+            "text",
+            " ",
+            "\n",
+            "&amp;",
+            "&lt;",
+            "&nbsp;",
+            "&#62;",
+            "&bogus;",
+            "&",
+            "word\n",
+            "<code>",
+            "</code>",
+            "<",
+            ">",
+            '"',
+            "<!-- c -->",
         ]
         for _ in range(3000):
             content = "".join(rng.choices(pieces, k=rng.randint(1, 25)))
@@ -473,6 +499,44 @@ class SearchIndexTests(unittest.TestCase):
         self.assertEqual(toc_item3.title, "Heading 3")
 
         self.assertIsNone(index._find_toc_by_id(toc, "heading-4"))
+
+    def test_entries_of_unchanged_pages_are_reused_in_serve(self):
+        from mkdocs.structure import render_cache
+
+        cfg = load_config()
+        md = "# Heading 1\n## Heading 2\n"
+        plugin = search.SearchPlugin()
+        plugin.load_config({})
+
+        def index_page(content, title="Home"):
+            page = Page(title, File("index.md", cfg.docs_dir, cfg.site_dir, True), cfg)
+            page.markdown = md
+            page.toc = get_toc(get_markdown_toc(md))
+            page.content = content
+            index = search_index.SearchIndex(**plugin.config)
+            index.add_entry_from_context(page)
+            return index._entries
+
+        html = '<h1 id="heading-1">Heading 1</h1><p>One</p><h2 id="heading-2">Heading 2</h2><p>Two</p>'
+        with mock.patch.object(
+            render_cache, "active", render_cache.RenderCache()
+        ) as cache:
+            first = index_page(html)
+            cache.start_build()
+            with mock.patch.object(
+                search_index, "_parse_content", side_effect=AssertionError
+            ):
+                second = index_page(html)
+            self.assertEqual(second, first)
+            self.assertIsNot(second[0], first[0])
+            cache.start_build()
+            changed = index_page(html.replace("Two", "Three"))
+            self.assertIn("Three", changed[0]["text"])
+            cache.start_build()
+            retitled = index_page(html, title="Other")
+            self.assertEqual(retitled[0]["title"], "Other")
+        # Outside of serve, every page is parsed.
+        self.assertEqual(index_page(html), first)
 
     def test_create_search_index(self):
         html_content = """
