@@ -381,8 +381,9 @@ page events are called after the [post_template] event and before the
 [post_build] event.
 
 NOTE: **New in version 1.11:** during `mkdocs serve`, a rebuild may reuse the
-HTML of a page whose Markdown (after `on_page_markdown`), extensions, URL and
-site files are all unchanged, instead of converting it again. Every page event
+HTML of a page whose Markdown (after `on_page_markdown`), extensions and URL
+are unchanged, and whose links still point to the same files, instead of
+converting it again. Every page event
 still runs, with the same values. This only happens when every Markdown
 extension is known to depend on nothing else: it is on MkDocs' own list (the
 extensions of Python-Markdown and most of PyMdown Extensions), or it says so
