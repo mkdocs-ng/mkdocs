@@ -60,6 +60,15 @@ Changes since [1.11.0rc1](#version-1110rc1-2026-11-03):
     it went from 4.1 to about 1.4 seconds. See
     [Rendering pages during `mkdocs serve`](../dev-guide/themes.md#rendering-pages-during-mkdocs-serve).
 
+### Changed
+
+*   `mkdocs serve --clean` turns off the reuse of unchanged pages between
+    rebuilds, along with the other effects of `mkdocs serve`: every rebuild
+    converts and renders every page and writes the site directory from scratch,
+    as `mkdocs build` does. If a page in `mkdocs serve` ever looks out of date,
+    this is the way to check, and please
+    [report it](https://github.com/mkdocs-ng/mkdocs/issues).
+
 ### Fixed
 
 *   `mkdocs serve` on a [multi-language site](../user-guide/multi-language-sites.md)

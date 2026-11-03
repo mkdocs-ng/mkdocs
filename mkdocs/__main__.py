@@ -132,7 +132,10 @@ reload_help = (
 )
 no_reload_help = "Disable the live reloading in the development server."
 serve_dirty_help = "Only re-build files that have changed."
-serve_clean_help = "Build the site without any effects of `mkdocs serve` - pure `mkdocs build`, then serve."
+serve_clean_help = (
+    "Build the site without any effects of `mkdocs serve` - pure `mkdocs build`, then serve. "
+    "This also turns off reusing unchanged pages between rebuilds."
+)
 commit_message_help = (
     "A commit message to use when committing to the "
     "GitHub Pages remote branch. Commit {sha} and MkDocs {version} are available as expansions"
