@@ -720,7 +720,8 @@ class that a plugin added, the page is rendered as usual.
 So a template must give the same HTML for the same context. Don't output
 values that change by themselves, like the current time (use
 `build_date_utc`, which stays the same while the server runs) or random
-numbers. `mkdocs build` always renders every page.
+numbers. `mkdocs build` always renders every page, and so does
+`mkdocs serve --clean`.
 
 ## Rendering the navigation quickly
 

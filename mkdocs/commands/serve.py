@@ -103,9 +103,11 @@ def serve(
 
     previous_sigterm_handler = signal.signal(signal.SIGTERM, handle_sigterm)
     # Reuse Markdown conversions of unchanged pages between rebuilds, and don't
-    # write files again that didn't change.
-    render_cache.active = render_cache.RenderCache()
-    output.active = output.SiteOutput()
+    # write files again that didn't change. `--clean` builds as `mkdocs build`
+    # does, so it also turns these off.
+    if not is_clean:
+        render_cache.active = render_cache.RenderCache()
+        output.active = output.SiteOutput()
 
     try:
         try:

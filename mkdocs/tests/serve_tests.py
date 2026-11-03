@@ -209,6 +209,40 @@ class ServeTests(unittest.TestCase):
         self.assertIsNone(render_cache.active)
 
     @tempdir()
+    def test_clean_build_type_uses_no_caches(self, temp_dir):
+        from mkdocs.structure import render_cache
+        from mkdocs.utils import output
+
+        config = self.make_config(temp_dir)
+        server = mock.Mock()
+        seen = []
+
+        def fake_build(*args, **kwargs):
+            seen.append((render_cache.active, output.active))
+
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(
+                mock.patch(
+                    "mkdocs.commands.serve.load_config",
+                    side_effect=[config, self.make_config(temp_dir)],
+                )
+            )
+            stack.enter_context(
+                mock.patch("mkdocs.commands.serve.build", side_effect=fake_build)
+            )
+            mock_server_cls = stack.enter_context(
+                mock.patch(
+                    "mkdocs.commands.serve.LiveReloadServer", return_value=server
+                )
+            )
+            server.serve.side_effect = lambda **kwargs: (
+                mock_server_cls.call_args.kwargs["builder"]()
+            )
+            serve.serve(build_type="clean")
+
+        self.assertEqual(seen, [(None, None), (None, None)])
+
+    @tempdir()
     def test_error_handler_serves_built_error_pages(self, temp_dir):
         site_dir = Path(temp_dir, "site")
         site_dir.mkdir()

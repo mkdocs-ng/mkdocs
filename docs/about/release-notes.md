@@ -35,9 +35,19 @@ without checking every plugin first:
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
 
-## Version 1.11.0 (unreleased)
+## Version 1.11.0 (2026-11-04)
 
-Changes since [1.11.0rc1](#version-1110rc1-2026-11-03):
+MkDocs NG 1.11.0 is the first final release since 1.9.0. It builds every
+language of a site from one `mkdocs.yml`, rebuilds much faster in
+`mkdocs serve`, and makes sure MkDocs NG is what runs however you install your
+plugins and themes. There are no breaking changes: configuration, themes and
+plugins that work with 1.9 keep working. Upgrade with
+`pip install -U mkdocs-ng`.
+
+If you upgrade from 1.9, read the notes of
+[1.11.0rc1](#version-1110rc1-2026-11-03) and
+[1.10.0rc1](#version-1100rc1-2026-11-01) too: all of their changes are part
+of 1.11.0. The sections below list what changed since 1.11.0rc1.
 
 ### Performance
 
@@ -59,6 +69,15 @@ Changes since [1.11.0rc1](#version-1110rc1-2026-11-03):
     seconds with the `mkdocs` theme and now takes 0.9; with Material for MkDocs
     it went from 4.1 to about 1.4 seconds. See
     [Rendering pages during `mkdocs serve`](../dev-guide/themes.md#rendering-pages-during-mkdocs-serve).
+
+### Changed
+
+*   `mkdocs serve --clean` turns off the reuse of unchanged pages between
+    rebuilds, along with the other effects of `mkdocs serve`: every rebuild
+    converts and renders every page and writes the site directory from scratch,
+    as `mkdocs build` does. If a page in `mkdocs serve` ever looks out of date,
+    this is the way to check, and please
+    [report it](https://github.com/mkdocs-ng/mkdocs/issues).
 
 ### Fixed
 
