@@ -35,9 +35,19 @@ without checking every plugin first:
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
 
-## Version 1.11.0 (unreleased)
+## Version 1.11.0 (2026-11-04)
 
-Changes since [1.11.0rc1](#version-1110rc1-2026-11-03):
+MkDocs NG 1.11.0 is the first final release since 1.9.0. It builds every
+language of a site from one `mkdocs.yml`, rebuilds much faster in
+`mkdocs serve`, and makes sure MkDocs NG is what runs however you install your
+plugins and themes. There are no breaking changes: configuration, themes and
+plugins that work with 1.9 keep working. Upgrade with
+`pip install -U mkdocs-ng`.
+
+If you upgrade from 1.9, read the notes of
+[1.11.0rc1](#version-1110rc1-2026-11-03) and
+[1.10.0rc1](#version-1100rc1-2026-11-01) too: all of their changes are part
+of 1.11.0. The sections below list what changed since 1.11.0rc1.
 
 ### Performance
 
