@@ -80,6 +80,10 @@ class ParseLanguagesTests(unittest.TestCase):
             ({"en": None, "zh": {"site_dir": "x"}}, "can't be set per language"),
             ({"en": {"path": "en"}}, "default language"),
             ({"en": None, "zh": {"path": "a b"}}, "relative URL path"),
+            ({"en": None, "zh": {"path": ".."}}, "relative URL path"),
+            ({"en": None, "zh": {"path": "../../out"}}, "relative URL path"),
+            ({"en": None, "zh": {"path": "zh/./cn"}}, "relative URL path"),
+            ({"en": None, "zh": {"path": "."}}, "relative URL path"),
             ({"en": None, "zh": None, "cn": {"path": "zh"}}, "already used"),
             ({"en": None, "zh": {"fallback": "no"}}, "true or false"),
         ]:
