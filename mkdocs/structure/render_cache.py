@@ -242,8 +242,16 @@ def _stable(value: Any) -> Any:
     A description of a template variable that is the same in two rebuilds
     exactly when the value is the same. Raises `_Unstable` for anything else.
     """
-    if isinstance(value, _SCALARS):
+    if type(value) in _SCALARS:
         return value
+    if isinstance(value, enum.Enum):
+        return ("enum", type(value).__qualname__, value.name)
+    # A subclass, such as Jinja's `Markup`: `marshal` takes only the built-in
+    # types, so describe it as one. (`bool` and `None` have no subclasses.)
+    kind = type(value)
+    for base in (str, int, float):
+        if isinstance(value, base):
+            return ("subclass", kind.__module__, kind.__qualname__, base(value))
     if isinstance(value, (list, tuple)):
         return [_stable(v) for v in value]
     if isinstance(value, (set, frozenset)):
@@ -277,8 +285,6 @@ def _stable(value: Any) -> Any:
         return ("config", [(k, _stable(v)) for k, v in value.items()])
     if isinstance(value, (datetime.date, datetime.time)):
         return ("datetime", value.isoformat())
-    if isinstance(value, enum.Enum):
-        return ("enum", type(value).__qualname__, value.name)
     if type(value).__name__ == "Locale" and type(value).__module__ in (
         "babel.core",
         "mkdocs.utils.babel_stub",

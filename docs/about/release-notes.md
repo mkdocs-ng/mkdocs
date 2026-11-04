@@ -35,6 +35,15 @@ without checking every plugin first:
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
 
+## Version 1.11.1 (unreleased)
+
+### Fixed
+
+*   `mkdocs serve` no longer stops with "unmarshallable object" when the theme
+    or a plugin puts a subclass of `str` or `int` into the page context, such
+    as Jinja's `Markup`. This broke `mkdocs serve` with the Sumi theme in
+    1.11.0.
+
 ## Version 1.11.0 (2026-11-04)
 
 MkDocs NG 1.11.0 is the first final release since 1.9.0. It builds every
