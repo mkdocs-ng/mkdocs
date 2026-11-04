@@ -405,6 +405,29 @@ class PageCacheTests(unittest.TestCase):
 
         self.run_in_tempdir(test)
 
+    def test_str_and_int_subclasses_in_the_context(self):
+        # Themes put `Markup` in the context (Sumi does); `marshal` can't take it.
+        def test():
+            self.write(
+                "hooks.py",
+                "import enum\n"
+                "from markupsafe import Markup\n"
+                "class Level(enum.IntEnum):\n"
+                "    HIGH = 2\n"
+                "def on_page_context(context, page, **kwargs):\n"
+                "    context['data'] = Markup(open(r'"
+                + os.path.join(self.tdir, "data.txt")
+                + "').read())\n"
+                "    context['level'] = Level.HIGH\n",
+            )
+            self.write("data.txt", "<b>one</b>")
+            self.assertEqual(self.build(hooks=["hooks.py"]), ["index.md", "other.md"])
+            self.assertEqual(self.build(hooks=["hooks.py"]), [])
+            self.write("data.txt", "<b>two</b>")
+            self.assertEqual(self.build(hooks=["hooks.py"]), ["index.md", "other.md"])
+
+        self.run_in_tempdir(test)
+
     def test_plugin_events_run_for_reused_pages(self):
         def test():
             self.write(
