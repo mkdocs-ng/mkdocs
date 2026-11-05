@@ -37,12 +37,25 @@ without checking every plugin first:
 
 ## Version 1.11.1 (unreleased)
 
+### Security
+
+*   On Windows, `mkdocs serve` no longer serves files from outside the site,
+    such as `/C:/Windows/win.ini` or paths with `..\`. Anyone who could reach
+    the server could read any file on the computer. Other systems weren't
+    affected. Upgrade if you run `mkdocs serve` on Windows.
+*   `mkdocs serve` no longer redirects a request such as
+    `/%2F%2Fexample.com/..%2Fabout` to another site.
+
 ### Fixed
 
 *   `mkdocs serve` no longer stops with "unmarshallable object" when the theme
     or a plugin puts a subclass of `str` or `int` into the page context, such
     as Jinja's `Markup`. This broke `mkdocs serve` with the Sumi theme in
     1.11.0.
+*   `mkdocs serve` answers a request for a path with a null byte with "404 Not
+    Found" instead of an error.
+*   A language whose `path` has `.` or `..` in it is an error, instead of
+    being built outside the site directory.
 
 ## Version 1.11.0 (2026-11-04)
 

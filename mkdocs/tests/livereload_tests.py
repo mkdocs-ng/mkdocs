@@ -3,7 +3,9 @@
 import contextlib
 import email
 import io
+import ntpath
 import os
+import posixpath
 import socket
 import sys
 import threading
@@ -13,7 +15,7 @@ from pathlib import Path
 from unittest import mock
 
 from mkdocs.exceptions import Abort
-from mkdocs.livereload import LiveReloadServer, _try_relativize_path
+from mkdocs.livereload import LiveReloadServer, _file_in_root, _try_relativize_path
 from mkdocs.tests.base import change_dir, tempdir
 
 
@@ -384,6 +386,41 @@ class BuildTests(unittest.TestCase):
                 headers, _ = do_request(server, "GET /sub/foo/%E6%B8%AC%E8%A9%A6")
             self.assertEqual(headers["_status"], "302 Found")
             self.assertEqual(headers.get("location"), "/sub/foo/%E6%B8%AC%E8%A9%A6/")
+
+    @tempdir({"about/index.html": "<body>aaa</body>"})
+    def test_redirect_stays_on_the_server(self, site_dir):
+        with testing_server(site_dir) as server:
+            with self.assertLogs("mkdocs.livereload"):
+                headers, _ = do_request(server, "GET /%2F%2Fevil.com/..%2Fabout")
+            self.assertEqual(headers["_status"], "302 Found")
+            self.assertEqual(headers.get("location"), "/about/")
+
+    @tempdir({"index.html": "<body>aaa</body>"})
+    def test_null_byte_is_not_found(self, site_dir):
+        with testing_server(site_dir) as server:
+            with self.assertLogs("mkdocs.livereload"):
+                headers, _ = do_request(server, "GET /index.html%00")
+            self.assertEqual(headers["_status"], "404 Not Found")
+
+    def test_file_in_root_on_windows(self):
+        root = "C:\\Users\\me\\Temp\\mkdocs_x"
+        for rel in [
+            "C:/Windows/win.ini",
+            "D:/x",
+            "..\\..\\Windows\\win.ini",
+            "a/..\\..\\x",
+        ]:
+            with self.subTest(rel=rel):
+                self.assertIsNone(_file_in_root(root, rel, ntpath))
+        self.assertEqual(_file_in_root(root, "a/b.html", ntpath), root + "\\a\\b.html")
+
+    def test_file_in_root_on_posix(self):
+        root = "/tmp/mkdocs_x"
+        self.assertIsNone(_file_in_root(root, "..\0/x", posixpath))
+        self.assertEqual(
+            _file_in_root(root, "a\\b.html", posixpath), root + "/a\\b.html"
+        )
+        self.assertEqual(_file_in_root(root, "", posixpath), root)
 
     @tempdir({"я.html": "<body>aaa</body>", "测试2/index.html": "<body>bbb</body>"})
     def test_serves_with_unicode_characters(self, site_dir):

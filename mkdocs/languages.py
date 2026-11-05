@@ -156,7 +156,11 @@ def parse_languages(value: object) -> list[Language]:
             path = ""
         else:
             path = entry.get("path", code)
-            if not isinstance(path, str) or not _PATH_RE.match(path.strip("/")):
+            if (
+                not isinstance(path, str)
+                or not _PATH_RE.match(path.strip("/"))
+                or any(part in (".", "..") for part in path.strip("/").split("/"))
+            ):
                 raise ValueError(
                     f"Language '{code}': 'path' must be a relative URL path, got: {path!r}"
                 )

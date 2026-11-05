@@ -363,7 +363,9 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
                 rel_file_path += "index.html"
             # Prevent directory traversal - normalize the path.
             rel_file_path = posixpath.normpath("/" + rel_file_path).lstrip("/")
-            file_path = os.path.join(self.root, rel_file_path)
+            file_path = _file_in_root(self.root, rel_file_path)
+            if file_path is None:
+                return None  # Not found
         elif path == "/":
             start_response(
                 "302 Found", [("Location", urllib.parse.quote(self.mount_path))]
@@ -383,8 +385,11 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
             if not path.endswith("/") and os.path.isfile(
                 os.path.join(file_path, "index.html")
             ):
+                # Redirect to the normalized path: the raw one can start with
+                # "//", which browsers read as another host.
+                location = self.mount_path + rel_file_path
                 start_response(
-                    "302 Found", [("Location", urllib.parse.quote(path) + "/")]
+                    "302 Found", [("Location", urllib.parse.quote(location) + "/")]
                 )
                 return []
             return None  # Not found
@@ -446,6 +451,24 @@ class _Handler(wsgiref.simple_server.WSGIRequestHandler):
 
     def log_message(self, format, *args):
         log.debug(format, *args)
+
+
+def _file_in_root(root: str, rel_path: str, path_module: Any = os.path) -> str | None:
+    """
+    Return the path of `rel_path` inside `root`, or None if it points outside it.
+
+    `rel_path` is already normalized with '/' separators, but on Windows a
+    backslash or a drive (`C:/Windows`) can still take it out of `root`.
+    """
+    if "\0" in rel_path:
+        return None
+    file_path = path_module.normpath(path_module.join(root, rel_path))
+    try:
+        if path_module.commonpath([root, file_path]) != path_module.normpath(root):
+            return None
+    except ValueError:  # Paths on different drives.
+        return None
+    return file_path
 
 
 def _timestamp() -> int:
