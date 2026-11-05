@@ -390,10 +390,7 @@ def select_sources(
             rank = (2 if own else 0) + (1 if code is not None else 0)
             # An untranslated page, in the source language.
             is_fallback = (
-                is_page
-                and code is None
-                and not is_source
-                and (shares_dir or not own)
+                is_page and code is None and not is_source and (shares_dir or not own)
             )
             if is_fallback and not lang.fallback:
                 continue

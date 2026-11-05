@@ -398,7 +398,10 @@ class SourceLanguageTests(unittest.TestCase):
         )
         # The English site has no such page: link to its home page.
         self.assertEqual(
-            [(x["code"], x["link"], x["available"]) for x in contexts["only-zh.md"]["languages"]],
+            [
+                (x["code"], x["link"], x["available"])
+                for x in contexts["only-zh.md"]["languages"]
+            ],
             [("en", "../", False), ("zh-cn", "only-zh/", True)],
         )
 
