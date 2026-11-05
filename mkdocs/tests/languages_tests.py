@@ -72,6 +72,18 @@ class ParseLanguagesTests(unittest.TestCase):
         self.assertFalse(langs[1].fallback)
         self.assertEqual(langs[1].locale, "zh_Hans")
 
+    def test_source(self):
+        langs = languages.parse_languages({"en": None, "zh": None})
+        self.assertEqual([lang.source for lang in langs], [True, False])
+        langs = languages.parse_languages(
+            {"en": {"fallback": False}, "zh-cn": {"source": True, "fallback": False}}
+        )
+        self.assertEqual([lang.source for lang in langs], [False, True])
+        # The default language can leave out untranslated pages when it isn't
+        # the source language; the source language always has every page.
+        self.assertEqual([lang.fallback for lang in langs], [False, True])
+        self.assertIs(languages.source_language(langs), langs[1])
+
     def test_errors(self):
         for value, message in [
             ([], "at least one"),
@@ -86,6 +98,9 @@ class ParseLanguagesTests(unittest.TestCase):
             ({"en": None, "zh": {"path": "."}}, "relative URL path"),
             ({"en": None, "zh": None, "cn": {"path": "zh"}}, "already used"),
             ({"en": None, "zh": {"fallback": "no"}}, "true or false"),
+            ({"en": None, "zh": {"source": "yes"}}, "true or false"),
+            ({"en": {"source": True}, "zh": {"source": True}}, "Only one language"),
+            ({"en": None, "zh": {"source": True, "docs_dir": "zh"}}, "own 'docs_dir'"),
         ]:
             with self.subTest(value=value):
                 with self.assertRaisesRegex(ValueError, message):
@@ -321,6 +336,71 @@ languages:
         self.assertTrue(os.path.isfile(os.path.join(tdir, "site", "index.html")))
         with self.assertRaisesRegex(Abort, "no 'languages'"):
             mkdocs.build(os.path.join(tdir, "mkdocs.yml"), language="zh")
+
+
+SOURCE_SITE = {
+    "mkdocs.yml": """
+site_name: Blog
+site_url: https://example.com/
+plugins: []
+languages:
+  en:
+    name: English
+    fallback: false
+  zh-cn:
+    name: 简体中文
+    source: true
+""",
+    "docs/index.md": "# 首页",
+    "docs/index.en.md": "# Home",
+    "docs/post.md": "# 文章",
+    "docs/post.en.md": "# Post",
+    "docs/only-zh.md": "# 只有中文\n\n![logo](img/logo.png)",
+    "docs/img/logo.png": "png",
+}
+
+
+class SourceLanguageTests(unittest.TestCase):
+    @tempdir(SOURCE_SITE)
+    def test_build(self, tdir):
+        build(load_config(os.path.join(tdir, "mkdocs.yml")))
+        site = os.path.join(tdir, "site")
+        self.assertIn("Home</h1>", _read(site, "index.html"))
+        self.assertIn("Post</h1>", _read(site, "post", "index.html"))
+        self.assertIn("首页</h1>", _read(site, "zh-cn", "index.html"))
+        self.assertIn("文章</h1>", _read(site, "zh-cn", "post", "index.html"))
+        self.assertIn("只有中文</h1>", _read(site, "zh-cn", "only-zh", "index.html"))
+        # English has no version of it, and doesn't borrow the Chinese one.
+        self.assertFalse(os.path.exists(os.path.join(site, "only-zh")))
+        self.assertTrue(os.path.isfile(os.path.join(site, "img", "logo.png")))
+        self.assertFalse(os.path.exists(os.path.join(site, "index.en")))
+
+    @tempdir(SOURCE_SITE)
+    def test_template_context(self, tdir):
+        cfg = load_config(os.path.join(tdir, "mkdocs.yml"))
+        zh = languages.load_language_config(cfg, "zh-cn")
+        contexts = {}
+
+        def on_page_context(context, page, **kwargs):
+            contexts[page.file.src_uri] = context["i18n"]
+            return context
+
+        zh.plugins.events["page_context"].append(on_page_context)
+        cfg._build_languages = ["zh-cn"]
+        mkdocs.commands.build._build(zh)
+        i18n = contexts["post.md"]
+        self.assertFalse(i18n["fallback"])
+        self.assertEqual(i18n["default_language"], "en")
+        self.assertEqual(i18n["source_language"], "zh-cn")
+        self.assertEqual(
+            [(x["code"], x["link"], x["available"]) for x in i18n["languages"]],
+            [("en", "../post/", True), ("zh-cn", "post/", True)],
+        )
+        # The English site has no such page: link to its home page.
+        self.assertEqual(
+            [(x["code"], x["link"], x["available"]) for x in contexts["only-zh.md"]["languages"]],
+            [("en", "../", False), ("zh-cn", "only-zh/", True)],
+        )
 
 
 if __name__ == "__main__":

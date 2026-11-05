@@ -60,9 +60,37 @@ languages:
     edit_uri: edit/main/docs-zh/
 ```
 
+### Writing in another language first
+
+Pages without a language code are in the default language. If you write in
+one language and serve another at the root, mark the language you write in
+with `source: true`. Its pages keep the plain names, and the default language
+gets the suffix:
+
+```yaml
+languages:
+  en:
+    name: English
+    fallback: false      # leave out pages that have no English version
+  zh-cn:
+    name: 简体中文
+    source: true
+```
+
+```text
+docs/
+    index.md          # Chinese, built at /zh-cn/
+    index.en.md       # English, built at /
+    post.md           # Chinese only: no English page with fallback: false
+```
+
+This is how a Hugo site with `index.md` and `index.en.md` page bundles keeps
+its file names when it moves to MkDocs.
+
 ### Pages that aren't translated yet
 
-A page that has no translation is built from the default language's version,
+A page that has no translation is built from the untranslated version (the
+default language's, or the [source language's](#writing-in-another-language-first)),
 so every language has every page and no link is broken. Themes can tell that a
 page is shown untranslated (see [For theme authors](#for-theme-authors)) and
 say so to readers; Sumi shows a note at the top of the page.
@@ -82,7 +110,7 @@ language has no version of its own.
 
 ## Settings for one language
 
-Apart from `name`, `path` and `fallback`, every key of a language overrides
+Apart from `name`, `path`, `fallback` and `source`, every key of a language overrides
 that setting of `mkdocs.yml` for that language. Mappings are merged, the same
 way as with [`INHERIT`](configuration.md#configuration-inheritance), and other
 values are replaced. Typical ones are `site_name`, `site_description`, `nav`,
@@ -124,8 +152,13 @@ The keys that describe the language itself:
     into `/zh/`. The default language is always at the root.
 
 `fallback`
-:   Whether pages that have no translation are built from the default
-    language's version. Default: `true`.
+:   Whether pages that have no translation are built from the untranslated
+    version. Default: `true`. The source language always has every page.
+
+`source`
+:   Whether pages without a language code in their name are in this language.
+    Default: `true` for the default language, unless another language sets it.
+    See [Writing in another language first](#writing-in-another-language-first).
 
 ## Building one language
 
@@ -165,6 +198,8 @@ other sites.
 {
     "language": {"code": "zh", "name": "简体中文", "path": "zh", "default": False},
     "default_language": "en",
+    # The language of the pages without a language code in their name.
+    "source_language": "en",
     # True if this page is the default language's version, shown because the
     # current language has no translation of it.
     "fallback": False,

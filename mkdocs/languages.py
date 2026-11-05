@@ -11,8 +11,8 @@ languages:
 
 The first language is the default one and is built at the root of the site.
 Every other language is built into a sub-directory named after it (`/zh/`).
-The keys of a language other than `name`, `path` and `fallback` override the
-config for that language, merged the same way as `INHERIT`.
+The keys of a language other than `name`, `path`, `fallback` and `source`
+override the config for that language, merged the same way as `INHERIT`.
 
 Each language is built as a separate, ordinary MkDocs build, with its own
 config and its own plugin instances. Plugins and themes see a normal
@@ -25,8 +25,12 @@ Pages are found in two ways, which can be mixed:
 * Suffix: `docs/guide.zh.md` is the Chinese version of `docs/guide.md`.
 * Folder: a language that sets its own `docs_dir` takes its pages from there.
 
-A page that has no translation is built from the default language's version
-(set `fallback: false` on a language to leave it out instead).
+Pages without a suffix are in the default language, unless another language
+sets `source: true`: then they are in that language, and the default language
+has only its suffixed pages (`guide.en.md`).
+
+A page that has no translation is built from the untranslated version (set
+`fallback: false` on a language to leave it out instead).
 """
 
 from __future__ import annotations
@@ -55,7 +59,7 @@ _PATH_RE = re.compile(r"^[A-Za-z0-9._~-]+(/[A-Za-z0-9._~-]+)*$")
 
 # Keys of a language entry that describe the language itself. All others are
 # config overrides.
-_OWN_KEYS = ("name", "path", "fallback")
+_OWN_KEYS = ("name", "path", "fallback", "source")
 
 # Config options that can't be set per language.
 _NOT_PER_LANGUAGE = ("languages", "site_dir", "INHERIT", "config_file_path")
@@ -79,8 +83,12 @@ class Language:
     default language, the language code for the others unless set."""
 
     fallback: bool = True
-    """Whether pages that have no translation are built from the default
-    language's version. Always true for the default language."""
+    """Whether pages that have no translation are built from the untranslated
+    version. Always true for the source language."""
+
+    source: bool = False
+    """Whether pages without a language suffix are in this language. True for
+    the default language unless another language sets `source: true`."""
 
     overrides: dict[str, Any] = dataclasses.field(default_factory=dict, repr=False)
     """The config overrides for this language, as written in the config."""
@@ -146,6 +154,14 @@ def parse_languages(value: object) -> list[Language]:
         fallback = entry.get("fallback", True)
         if not isinstance(fallback, bool):
             raise ValueError(f"Language '{code}': 'fallback' must be true or false.")
+        source = entry.get("source", False)
+        if not isinstance(source, bool):
+            raise ValueError(f"Language '{code}': 'source' must be true or false.")
+        if source and "docs_dir" in overrides:
+            raise ValueError(
+                f"Language '{code}': a language with its own 'docs_dir' can't be"
+                " the 'source' language."
+            )
         default = index == 0
         if default:
             if "path" in entry:
@@ -174,11 +190,26 @@ def parse_languages(value: object) -> list[Language]:
                 name=name,
                 default=default,
                 path=path,
-                fallback=True if default else fallback,
+                fallback=fallback,
+                source=source,
                 overrides=overrides,
             )
         )
+    sources = [lang for lang in languages if lang.source]
+    if len(sources) > 1:
+        codes = ", ".join(lang.code for lang in sources)
+        raise ValueError(f"Only one language can set 'source: true', got: {codes}.")
+    if not sources:
+        languages[0].source = True
+    for lang in languages:
+        if lang.source:
+            lang.fallback = True
     return languages
+
+
+def source_language(languages: list[Language]) -> Language:
+    """The language of the pages that have no language suffix."""
+    return next((lang for lang in languages if lang.source), languages[0])
 
 
 def current(config: MkDocsConfig) -> Language | None:
@@ -341,6 +372,7 @@ def select_sources(
     languages: list[Language] = config["languages"]
     codes = {other.code for other in languages}
     default = languages[0]
+    is_source = lang is source_language(languages)
     own_dir = lang.docs_dir
     shares_dir = os.path.normcase(default.docs_dir) == os.path.normcase(own_dir)
     dirs = [(own_dir, True)]
@@ -356,11 +388,11 @@ def select_sources(
             is_page = utils.is_markdown_file(uri)
             # A translation beats the untranslated file, own files beat the default's.
             rank = (2 if own else 0) + (1 if code is not None else 0)
-            # An untranslated page of the default language.
+            # An untranslated page, in the source language.
             is_fallback = (
                 is_page
                 and code is None
-                and not lang.default
+                and not is_source
                 and (shares_dir or not own)
             )
             if is_fallback and not lang.fallback:
@@ -477,6 +509,7 @@ class Switcher:
                 "default": self.language.default,
             },
             "default_language": self.languages[0].code,
+            "source_language": source_language(self.languages).code,
             "fallback": bool(
                 file is not None and getattr(file, "language_fallback", False)
             ),
