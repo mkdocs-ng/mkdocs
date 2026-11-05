@@ -35,6 +35,12 @@ without checking every plugin first:
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
 
+## Version 1.12.0 (unreleased)
+
+### Added
+
+* A language can set `source: true` to own the files without a language suffix, so a site can be written in Chinese first (`index.md`) and still serve English from `/` (`index.en.md`). See [Writing in another language first](../user-guide/multi-language-sites.md#writing-in-another-language-first).
+
 ## Version 1.11.1 (2026-11-05)
 
 A security and bug-fix release for `mkdocs serve`. Upgrade if you run `mkdocs serve` on Windows.
