@@ -35,7 +35,11 @@ without checking every plugin first:
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
 
-## Version 1.11.1 (unreleased)
+## Version 1.11.1 (2026-11-05)
+
+MkDocs NG 1.11.1 fixes `mkdocs serve`: on Windows it could serve any file on
+the computer, and with the Sumi theme it stopped with an error. Upgrade with
+`pip install -U mkdocs-ng`, especially if you run `mkdocs serve` on Windows.
 
 ### Security
 
