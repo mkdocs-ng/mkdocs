@@ -37,447 +37,158 @@ without checking every plugin first:
 
 ## Version 1.11.1 (2026-11-05)
 
-MkDocs NG 1.11.1 fixes `mkdocs serve`: on Windows it could serve any file on
-the computer, and with the Sumi theme it stopped with an error. Upgrade with
-`pip install -U mkdocs-ng`, especially if you run `mkdocs serve` on Windows.
+A security and bug-fix release for `mkdocs serve`. Upgrade if you run `mkdocs serve` on Windows.
 
 ### Security
 
-*   On Windows, `mkdocs serve` no longer serves files from outside the site,
-    such as `/C:/Windows/win.ini` or paths with `..\`. Anyone who could reach
-    the server could read any file on the computer. Other systems weren't
-    affected. Upgrade if you run `mkdocs serve` on Windows.
-*   `mkdocs serve` no longer redirects a request such as
-    `/%2F%2Fexample.com/..%2Fabout` to another site.
+* On Windows, `mkdocs serve` no longer serves files from outside the site, such as `/C:/Windows/win.ini` or paths with `..\`. Other systems weren't affected. #160
+* `mkdocs serve` no longer redirects a request such as `/%2F%2Fexample.com/..%2Fabout` to another site. #160 #161
 
 ### Fixed
 
-*   `mkdocs serve` no longer stops with "unmarshallable object" when the theme
-    or a plugin puts a subclass of `str` or `int` into the page context, such
-    as Jinja's `Markup`. This broke `mkdocs serve` with the Sumi theme in
-    1.11.0.
-*   `mkdocs serve` answers a request for a path with a null byte with "404 Not
-    Found" instead of an error.
-*   A language whose `path` has `.` or `..` in it is an error, instead of
-    being built outside the site directory.
+* Fix `mkdocs serve` stopping with "unmarshallable object" when the theme or a plugin puts a `str` or `int` subclass (such as Jinja's `Markup`) into the page context. This broke the Sumi theme in 1.11.0. #159
+* `mkdocs serve` answers a path with a null byte with "404 Not Found" instead of an error. #160
+* A language `path` containing `.` or `..` is now an error instead of being built outside the site directory. #160
 
 ## Version 1.11.0 (2026-11-04)
 
-MkDocs NG 1.11.0 is the first final release since 1.9.0. It builds every
-language of a site from one `mkdocs.yml`, rebuilds much faster in
-`mkdocs serve`, and makes sure MkDocs NG is what runs however you install your
-plugins and themes. There are no breaking changes: configuration, themes and
-plugins that work with 1.9 keep working. Upgrade with
-`pip install -U mkdocs-ng`.
+MkDocs NG 1.11.0 builds every language of a site from one `mkdocs.yml` and makes `mkdocs serve` much faster. No breaking changes: configuration, themes and plugins that work with 1.9 keep working.
 
-If you upgrade from 1.9, read the notes of
-[1.11.0rc1](#version-1110rc1-2026-11-03) and
-[1.10.0rc1](#version-1100rc1-2026-11-01) too: all of their changes are part
-of 1.11.0. The sections below list what changed since 1.11.0rc1.
+There is no final 1.10.0. This release includes everything in [1.11.0rc1](#version-1110rc1-2026-11-03) and [1.10.0rc1](#version-1100rc1-2026-11-01); the list below is what changed since 1.11.0rc1.
 
 ### Performance
 
-*   Adding, removing or renaming a page during `mkdocs serve` no longer
-    converts every page from Markdown again. Only the pages whose links now
-    point somewhere else are converted; the others keep the HTML of the
-    previous rebuild. With 1,000 pages, a new page showed up after 7.4 seconds
-    with the `mkdocs` theme and now after 2.2; with Material for MkDocs it went
-    from 10.9 to 5.7 seconds.
-*   `mkdocs serve` no longer renders the theme template again for pages whose
-    template context didn't change: the page itself, the navigation, the
-    config, the template files and the Jinja globals. Their HTML from the
-    previous rebuild is reused, and files that already hold it aren't written
-    again. A change that shows up on every page, such as a new page title in
-    the navigation, still renders every page. The `page_context` and
-    `post_page` events run for every page as before, and a page whose context
-    holds an object that MkDocs can't compare, such as one that a plugin added,
-    is rendered as before. With 1,000 pages, showing an edited page took 2.3
-    seconds with the `mkdocs` theme and now takes 0.9; with Material for MkDocs
-    it went from 4.1 to about 1.4 seconds. See
-    [Rendering pages during `mkdocs serve`](../dev-guide/themes.md#rendering-pages-during-mkdocs-serve).
+* Adding, removing or renaming a page in `mkdocs serve` only re-converts the pages whose links changed. With 1,000 pages, a new page shows up in 2.2 s instead of 7.4 s. #152
+* `mkdocs serve` reuses the rendered HTML of pages whose template context didn't change. With 1,000 pages, an edit shows up in 0.9 s instead of 2.3 s with the `mkdocs` theme. See [Rendering pages during `mkdocs serve`](../dev-guide/themes.md#rendering-pages-during-mkdocs-serve). #154 #155
 
 ### Changed
 
-*   `mkdocs serve --clean` turns off the reuse of unchanged pages between
-    rebuilds, along with the other effects of `mkdocs serve`: every rebuild
-    converts and renders every page and writes the site directory from scratch,
-    as `mkdocs build` does. If a page in `mkdocs serve` ever looks out of date,
-    this is the way to check, and please
-    [report it](https://github.com/mkdocs-ng/mkdocs/issues).
+* `mkdocs serve --clean` turns off all reuse between rebuilds, so every rebuild works like `mkdocs build`. Use it to check a page that looks out of date. #156
 
 ### Fixed
 
-*   `mkdocs serve` on a [multi-language site](../user-guide/multi-language-sites.md)
-    no longer answers 404 for the pages of the default language. Each rebuild
-    removed the pages of every language but the last one built, as stale
-    files.
-*   On a multi-language site with Material for MkDocs, each language now gets
-    its own `theme.language`, so its pages say `lang="zh"` (or the language's
-    code) and show Material's interface in that language. It used to be
-    English in every language.
+* Fix `mkdocs serve` answering 404 for the default language's pages on a [multi-language site](../user-guide/multi-language-sites.md). #153
+* With Material for MkDocs, each language of a multi-language site now gets its own `theme.language` instead of English everywhere. #153
 
 ## Version 1.11.0rc1 (2026-11-03)
 
-MkDocs NG 1.11.0 builds every language of a site from one `mkdocs.yml`,
-rebuilds much faster while you write, and makes sure MkDocs NG is what runs
-however you install your plugins and themes. There are no breaking changes:
-configuration, themes and plugins that work with 1.9 keep working.
-
-There is no final 1.10.0. 1.11.0 is the next release after 1.9.0 and includes
-everything in [1.10.0rc1](#version-1100rc1-2026-11-01), so read its notes too
-when you upgrade from 1.9.
-
-This is a release candidate. Install it with `pip install -U --pre mkdocs-ng`
-and please [report](https://github.com/mkdocs-ng/mkdocs/issues) anything that
-breaks, especially on multi-language sites and with `mkdocs serve`.
+Release candidate for 1.11.0. Install it with `pip install -U --pre mkdocs-ng` and please [report](https://github.com/mkdocs-ng/mkdocs/issues) anything that breaks.
 
 ### Highlights
 
-*   **One `mkdocs.yml` for every language.** List the languages of a site
-    under the new [`languages`](../user-guide/configuration.md#languages)
-    setting: the first is built at the root of the site, and the others into
-    `/zh/`, `/de/` and so on. Each language can change any setting, such as
-    `site_name` or `nav`. Translated pages sit next to the original as
-    `page.zh.md`, or in a `docs_dir` of the language's own. A page that isn't
-    translated yet is built from the default language's version, so no link
-    breaks. Each page's language switcher links to the same page in the other
-    languages, through `extra.alternate` for themes such as Sumi and Material,
-    and through the new `i18n` template variable. `mkdocs serve` and
-    `mkdocs build` take `--language` to work on one language only. Every
-    language is an ordinary build with its own plugin instances, so plugins
-    work without changes. See [Multi-language Sites](../user-guide/multi-language-sites.md).
-    #146
-*   **Faster builds and `mkdocs serve`.** Large sites no longer render the
-    whole navigation for every page, and `mkdocs serve` reuses the HTML and
-    output files of pages that didn't change. With 1,000 pages, showing an
-    edited page in `mkdocs serve` went from 5.1 to 2.2 seconds with the
-    `mkdocs` theme, and from 14.6 to 3.1 seconds with Sumi. See
-    [Performance](#performance). #130 #131 #145
-*   **MkDocs NG runs no matter what else you install.** New in 1.10.0rc1:
-    installing a plugin or theme no longer swaps MkDocs NG for upstream
-    MkDocs 1.6.1, and the "switch to ProperDocs" warning is gone. See the
-    [1.10.0rc1 notes](#version-1100rc1-2026-11-01). #115 #123
-*   **Ready for editors and coding agents.** `mkdocs new` creates a site with
-    `llms.txt` and an `AGENTS.md`, and a
-    [JSON Schema](../user-guide/configuration.md#editor-and-agent-support) of
-    `mkdocs.yml` lets editors complete and check settings as you type. #141
+* **One `mkdocs.yml` for every language.** List them under the new [`languages`](../user-guide/configuration.md#languages) setting; translations sit next to the original as `page.zh.md`, untranslated pages fall back to the default language, and plugins work unchanged. See [Multi-language Sites](../user-guide/multi-language-sites.md). #146
+* **Faster builds and `mkdocs serve`.** Large sites no longer render the whole nav for every page, and `mkdocs serve` reuses unchanged pages. With 1,000 pages, an edit shows up in 2.2 s instead of 5.1 s. #130 #131 #145
+* **MkDocs NG always runs**, whatever plugins and themes you install (from [1.10.0rc1](#version-1100rc1-2026-11-01)). #115 #123
+* **Ready for editors and coding agents.** `mkdocs new` adds `llms.txt` and an `AGENTS.md`, and a [JSON Schema](../user-guide/configuration.md#editor-and-agent-support) of `mkdocs.yml` gives completion and checks in editors. #141
 
 ### Performance
 
-*   Large sites build much faster. Each page used to render the whole
-    navigation again, so build time grew with the square of the number of
-    pages. Now a nav section that doesn't contain the current page is rendered
-    once per build, and later pages only fill in their own relative links. The
-    built pages are byte for byte the same. With 1,600 pages, a build with the
-    `mkdocs` theme went from 53 to 24 seconds. Themes opt in with the new
-    [`nav_fragment`](../dev-guide/themes.md#rendering-the-navigation-quickly)
-    block; the built-in `mkdocs` and `readthedocs` themes use it.
-*   `mkdocs serve` rebuilds faster after an edit. Pages whose Markdown didn't
-    change are no longer converted to HTML again; their earlier HTML and
-    warnings are reused. Plugin events still run for every page. This is used
-    only when all Markdown extensions are known not to depend on other files
-    or state (the ones from Python-Markdown and most of PyMdown Extensions);
-    sites using `pymdownx.snippets`, `mkdocstrings` or `mkdocs-autorefs`
-    rebuild as before. With 400 pages and Material for MkDocs, a rebuild went
-    from 7.6 to 4.0 seconds.
-*   The Sumi theme's Markdown extension is on the list of extensions whose
-    HTML `mkdocs serve` reuses, so Sumi sites rebuild faster too. Other
-    extensions can join with `mkdocs_cacheable = True`
-    ([details](../dev-guide/plugins.md#page-events)).
-*   `mkdocs serve` no longer empties the site directory and writes every file
-    again after an edit. Files whose content didn't change are left as they
-    are, and files that the new build no longer produces (a deleted or renamed
-    page) are removed at the end. The search plugin also reuses the index
-    entries of unchanged pages. During `mkdocs serve`, the build date that
-    themes show is when the server started. With 1,000 pages, showing an
-    edited page took 5.1 seconds with the `mkdocs` theme and now takes 2.2;
-    with Sumi it went from 14.6 to 3.1 seconds.
-*   The search plugin reads the text of each page about three times faster,
-    with exactly the same index as before.
+* Inactive nav sections are rendered once per build instead of once per page. With 1,600 pages, a build with the `mkdocs` theme takes 24 s instead of 53 s. Themes opt in with the new [`nav_fragment`](../dev-guide/themes.md#rendering-the-navigation-quickly) block. #130
+* `mkdocs serve` reuses the HTML of pages whose Markdown didn't change, when all Markdown extensions are known to be safe for it. Extensions can opt in with `mkdocs_cacheable = True` ([details](../dev-guide/plugins.md#page-events)). #131
+* `mkdocs serve` only writes files that changed instead of emptying the site directory, and the search plugin reuses entries of unchanged pages. #145
+* The search plugin reads page text about three times faster, with the same index. #145
 
 ### Added
 
-*   `mkdocs new` creates a site that is ready for AI tools: its `mkdocs.yml`
-    turns on the [`llms_txt`](../user-guide/configuration.md#llmstxt) plugin,
-    and a new `AGENTS.md` tells coding agents how to build the site and write
-    pages for it. When the [Sumi](https://sumi.mkdocs-ng.org/)
-    theme is installed, the new site uses it. Install both with the new
-    `sumi` extra: `pip install "mkdocs-ng[sumi]"`. Existing sites and the
-    default theme of a `mkdocs.yml` without `theme` don't change.
-*   A [JSON Schema](../user-guide/configuration.md#editor-and-agent-support)
-    of `mkdocs.yml`, published at
-    <https://mkdocs-ng.org/schema.json>, lets editors complete
-    and check settings as you type and lets coding agents check the
-    configuration they write. It is generated from the definitions of the
-    settings and the built-in plugins, so it stays in step with MkDocs NG.
-    New projects refer to it in the first line of `mkdocs.yml`.
-*   `mkdocs serve` no longer fails when port 8000 is already in use, for
-    example by another `mkdocs serve`. It serves on the next free port, up to
-    8010, and says which one. A port you set yourself with `--dev-addr` or
-    `dev_addr` is still used as given.
-*   GitHub-style [alerts](../user-guide/writing-your-docs.md#alerts), such
-    as `> [!NOTE]` or `> [!WARNING]`, render as admonitions instead of a
-    quote starting with `[!NOTE]`, so docs written for GitHub look right on
-    your site. The built-in themes style all five types.
-*   Markdown links to other sites get `rel="external"`, so themes and custom
-    CSS can mark them, for example with an icon. A `rel` you set yourself is
-    kept. See [External links](../user-guide/writing-your-docs.md#external-links).
-*   Keep your own Markdown extensions next to your docs: list their
-    directories in the new
-    [`markdown_extensions_path`](../user-guide/configuration.md#markdown_extensions_path)
-    setting and name them in `markdown_extensions`, without setting
-    `PYTHONPATH` or installing a package.
-*   The project's root directory can be the `docs_dir`: set `docs_dir: .`
-    to keep Markdown files next to `mkdocs.yml`, with `README.md` as the home
-    page. The config file and the `site_dir` are left out of the site, and
-    the `site_dir` may now be inside the `docs_dir`. See
-    [`docs_dir`](../user-guide/configuration.md#docs_dir).
-*   Plugins and hooks can get the Jinja environment that renders a page in
-    [`on_page_context`](../dev-guide/plugins.md#on_page_context): add an
-    `env` keyword parameter to the handler. It is passed only to handlers
-    that accept it, so existing plugins keep working unchanged.
+* `mkdocs new` creates a site with the [`llms_txt`](../user-guide/configuration.md#llmstxt) plugin and an `AGENTS.md`, using the [Sumi](https://sumi.mkdocs-ng.org/) theme when installed (`pip install "mkdocs-ng[sumi]"`). #141
+* A [JSON Schema](../user-guide/configuration.md#editor-and-agent-support) of `mkdocs.yml` is published at <https://mkdocs-ng.org/schema.json>. #141
+* `mkdocs serve` uses the next free port (up to 8010) when port 8000 is busy. #139
+* GitHub-style [alerts](../user-guide/writing-your-docs.md#alerts), such as `> [!NOTE]`, render as admonitions. #139
+* Links to other sites get `rel="external"`. See [External links](../user-guide/writing-your-docs.md#external-links). #139
+* New [`markdown_extensions_path`](../user-guide/configuration.md#markdown_extensions_path) setting loads your own Markdown extensions from a directory next to your docs. #143
+* `docs_dir: .` builds the project root, with `README.md` as the home page. See [`docs_dir`](../user-guide/configuration.md#docs_dir). #143
+* Plugins can get the page's Jinja environment in [`on_page_context`](../dev-guide/plugins.md#on_page_context) by accepting an `env` parameter. #143
 
 ### Fixed
 
-*   Themes that translate their text without gettext catalogs, such as Sumi
-    and Material for MkDocs, no longer log "No translations could be found for
-    the locale" for a non-English `theme.locale` when Babel is installed. This
-    warning failed `--strict` builds.
-*   The `url` template filter returns the right link for a path above the site
-    root that repeats part of the current page's path, such as `../guide/`
-    on the page `guide/`. It used to point back to the current page.
-*   Links with a [text fragment](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments),
-    such as `page.md#:~:text=some%20words`, are no longer reported as
-    pointing to a missing anchor. When the link also names an anchor
-    (`page.md#heading:~:text=some%20words`), only that anchor is checked.
-*   The `mkdocs` command keeps working when a plugin pulls in upstream MkDocs
-    2.0 pre-releases (such as `mkdocs==2.0.dev6`). Their `mkdocs` launcher
-    replaces ours and runs `from mkdocs import cli`, which failed with
-    `ImportError`. `mkdocs.cli` now points to the MkDocs NG command line, so
-    that launcher runs MkDocs NG. #127
-*   The blog plugin of Material for MkDocs no longer crashes with
-    `TypeError: _data_to_navigation() missing 1 required positional argument`
-    on posts that set `links`. MkDocs NG 1.9.0 added a parameter to that
-    private function, which the plugin calls directly. #129
+* Themes without gettext catalogs, such as Sumi and Material, no longer log "No translations could be found for the locale" (which failed `--strict` builds). #146
+* Fix the `url` template filter for a path above the site root that repeats part of the current page's path, such as `../guide/` on `guide/`. #146
+* Links with a [text fragment](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments) (`page.md#:~:text=...`) are no longer reported as missing anchors. #139
+* The `mkdocs` command keeps working when a plugin pulls in upstream MkDocs 2.0 pre-releases. #127
+* Fix the Material blog plugin crashing with `TypeError: _data_to_navigation()` on posts that set `links`. #129
 
 ### Documentation
 
-*   The documentation moved to <https://mkdocs-ng.org/>. Old links under
-    `mkdocs-ng.github.io/mkdocs/` redirect to the same page there. The
-    [JSON Schema](../user-guide/configuration.md#editor-and-agent-support) is
-    now published at <https://mkdocs-ng.org/schema.json>, and `mkdocs new`
-    and the footers of the built-in themes link to the new address.
-*   New [Switching to MkDocs NG](../user-guide/migrating.md) page: how to
-    switch from upstream MkDocs, ProperDocs or the MkDocs 2.0 pre-releases,
-    what behaves differently from MkDocs 1.6.1, and how to switch back.
-    New [comparison](comparison.md) of MkDocs NG with MkDocs 1.6, the 2.0
-    pre-releases, ProperDocs and Zensical. #128
-*   [Switching to MkDocs NG](../user-guide/migrating.md) shows how to try
-    MkDocs NG with `uvx` before changing anything, how to switch with Poetry,
-    Read the Docs and GitHub Actions, and which plugins and themes the
-    compatibility test builds. New [versioning and support](#versioning-and-support)
-    rules: what patch, minor and major releases may change, and when a Python
-    version is dropped.
-*   The [comparison](comparison.md) page says which tool fits which
-    situation. This documentation site publishes its own `llms.txt` and
-    Markdown pages, and the `llms_txt` plugin and lists in `INHERIT` are
-    marked as new in 1.9, not 2.0.
-
-### Maintenance
-
-*   The plugin compatibility matrix also covers
-    `mkdocs-awesome-pages-plugin` and `mkdocs-markdownextradata-plugin`. #129
+* The documentation moved to <https://mkdocs-ng.org/>; old links redirect. #147
+* New [Switching to MkDocs NG](../user-guide/migrating.md) and [comparison](comparison.md) pages, and [versioning and support](#versioning-and-support) rules. #128 #142
 
 ### Upgrade notes
 
-*   Upgrading from 1.9 or earlier: see the upgrade notes of
-    [1.10.0rc1](#version-1100rc1-2026-11-01). In short, upgrade in place
-    with `pip install -U --pre mkdocs-ng`, and expect `pip list` to show both
-    `mkdocs` and `mkdocs-ng` when you use plugins.
-*   `mkdocs serve` no longer empties the site directory before each rebuild.
-    A plugin that writes files to `site_dir` with its own code, not through
-    MkDocs, keeps whatever it wrote in an earlier rebuild until the server
-    restarts. `mkdocs build` works as before.
-*   Sites that kept a translation in a second config file with `INHERIT`,
-    such as `mkdocs.zh.yml`, keep working. To move to one `mkdocs.yml`, see
-    [Multi-language Sites](../user-guide/multi-language-sites.md).
+* Upgrading from 1.9 or earlier: see the [1.10.0rc1 notes](#version-1100rc1-2026-11-01).
+* `mkdocs serve` no longer empties the site directory before each rebuild, so files a plugin writes to `site_dir` by itself stay until the server restarts. `mkdocs build` is unchanged.
+* Sites that use a second config file with `INHERIT` for a translation keep working. To move to one `mkdocs.yml`, see [Multi-language Sites](../user-guide/multi-language-sites.md).
 
 ## Version 1.10.0rc1 (2026-11-01)
 
-MkDocs NG 1.10.0 makes sure MkDocs NG is what runs, however you install your
-plugins and themes. Until now, installing a plugin could silently swap it for
-upstream MkDocs 1.6.1. There are no breaking changes: configuration, themes
-and plugins that work with 1.9 keep working.
-
-This is a release candidate. Install it with `pip install -U --pre mkdocs-ng`
-and please [report](https://github.com/mkdocs-ng/mkdocs/issues) anything that
-breaks.
+Release candidate for 1.10.0. Install it with `pip install -U --pre mkdocs-ng`.
 
 ### Highlights
 
-*   **MkDocs NG runs no matter what else you install.** Almost every plugin
-    and theme depends on the `mkdocs` package, so upstream MkDocs got
-    installed into the same `site-packages/mkdocs/` directory: whichever
-    package was installed last won, so `pip install mkdocs-ng mkdocs-material`
-    often ran upstream 1.6.1, and `pip uninstall mkdocs` deleted most of
-    MkDocs NG. MkDocs NG now installs its package to
-    `site-packages/mkdocs_ng/mkdocs/`, and a startup hook (`mkdocs_ng.start`,
-    or `mkdocs_ng.pth` before Python 3.15) makes `import mkdocs` load it, so
-    the `mkdocs` command, plugins and themes always run MkDocs NG, in any
-    install order. Switching from upstream MkDocs is now just
-    `pip install -U mkdocs-ng`, with no need to uninstall `mkdocs`. A
-    third-party package can no longer replace the builtin `mkdocs` and
-    `readthedocs` themes when upstream MkDocs isn't installed. See
-    [Plugins, themes and the `mkdocs` package](../user-guide/installation.md#plugins-themes-and-the-mkdocs-package).
-    #115
-*   **No more "switch to ProperDocs" warning.** Some plugins, such as
-    `mkdocs-redirects`, `mkdocs-gen-files`, `mkdocs-literate-nav`,
-    `mkdocs-section-index` and `mkdocs-rss-plugin`, print a long warning
-    when run by the `mkdocs` command: "MkDocs 2.0" could replace what
-    `pip install mkdocs` installs. That doesn't apply to MkDocs NG, so it now
-    sets `DISABLE_MKDOCS_2_WARNING=true`, the variable the warning itself
-    suggests, unless you have already set it. Set it to `false` to see the
-    warning again. #123
+* **MkDocs NG runs no matter what else you install.** Plugins that depend on `mkdocs` used to overwrite MkDocs NG with upstream MkDocs 1.6.1. MkDocs NG now installs to `site-packages/mkdocs_ng/mkdocs/` and makes `import mkdocs` load it, in any install order. See [Plugins, themes and the `mkdocs` package](../user-guide/installation.md#plugins-themes-and-the-mkdocs-package). #115
+* **No more "switch to ProperDocs" warning** from plugins such as `mkdocs-redirects` or `mkdocs-gen-files`. Set `DISABLE_MKDOCS_2_WARNING=false` to see it again. #123
 
 ### Upgrade notes
 
-*   Upgrading from 1.9 or earlier works in place with pip and uv, including
-    environments where upstream MkDocs had already overwritten MkDocs NG:
-    `pip install -U --pre mkdocs-ng`. Afterwards `mkdocs --version` shows a
-    path ending in `mkdocs_ng/mkdocs`.
-*   `pip list` now shows both `mkdocs` and `mkdocs-ng` when you use plugins.
-    That's expected; leave the upstream package installed. Both packages
-    provide the `mkdocs` command, so `pip uninstall mkdocs` removes it. If you
-    did that, `pip install --force-reinstall --no-deps mkdocs-ng` brings it
-    back.
+* Upgrade in place with `pip install -U --pre mkdocs-ng`; `mkdocs --version` then shows a path ending in `mkdocs_ng/mkdocs`.
+* `pip list` shows both `mkdocs` and `mkdocs-ng` when you use plugins; leave both installed. If you ran `pip uninstall mkdocs`, run `pip install --force-reinstall --no-deps mkdocs-ng`.
 
 ### Maintenance
 
-*   The plugin compatibility matrix installs MkDocs NG first and each plugin
-    after it, as users do, instead of reinstalling MkDocs NG last, and checks
-    that both `import mkdocs` and the `mkdocs` command run MkDocs NG. That
-    reinstall is what hid the install-order bug above. #124
+* The plugin compatibility matrix installs plugins after MkDocs NG, as users do, and checks that MkDocs NG is what runs. #124
 
 ## Version 1.9.0 (2026-10-31)
 
-MkDocs NG 1.9.0 publishes your docs for LLMs and coding agents, lets you
-split configuration across several files, and fixes long-standing `nav` and
-`strict` mode annoyances. There are no breaking changes: configuration,
-themes and plugins that work with 1.8 keep working.
+MkDocs NG 1.9.0 publishes your docs for LLMs, lets you split configuration across files, and fixes long-standing `nav` and `strict` annoyances. No breaking changes.
 
 ### Highlights
 
-*   **Docs for LLMs and coding agents.** The new built-in `llms_txt` plugin
-    follows the [llms.txt](https://llmstxt.org/) proposal: it writes the
-    Markdown of every page (after plugins have processed it, at its source
-    path) and an `llms.txt` index at the site root. Pages that are built but
-    not in `nav`, such as blog posts, are listed under "Other pages". Set
-    `full_output: true` to also write `llms-full.txt` with all pages in one
-    file. Enable it with `plugins: [search, llms_txt]`. See
-    [LLMs.txt](../user-guide/configuration.md#llmstxt). #105 #119
-*   **Split configuration into several files.** `INHERIT` accepts a list of
-    files, so you no longer need to chain them. Later files override earlier
-    ones, and the primary file overrides all of them. `mkdocs serve` now also
-    rebuilds when an inherited file changes. See
-    [Configuration Inheritance](../user-guide/configuration.md#configuration-inheritance). #107
-*   **`nav` links to a section of a page.** Entries such as `about.md#license`
-    now point to the page's URL (`about/#license`) instead of the Markdown
-    file, and aren't reported as not found. #104
-*   **Python 3.15** is tested and declared supported. #99
+* **Docs for LLMs.** The new built-in `llms_txt` plugin writes each page's Markdown and an [`llms.txt`](https://llmstxt.org/) index (optionally `llms-full.txt`). Enable it with `plugins: [search, llms_txt]`. See [LLMs.txt](../user-guide/configuration.md#llmstxt). #105 #119
+* **`INHERIT` accepts a list of files**, and `mkdocs serve` rebuilds when one of them changes. See [Configuration Inheritance](../user-guide/configuration.md#configuration-inheritance). #107
+* **`nav` can link to a section of a page**, such as `about.md#license`. #104
+* **Python 3.15** is supported. #99
 
 ### Fixed
 
-*   `--quiet` no longer disables `strict` mode. Previously,
-    `mkdocs build --quiet --strict` (or `--quiet` with `strict: true` in the
-    config) exited successfully even when there were warnings, letting broken
-    links slip through CI. Warnings are now still counted and the build
-    aborts, while the output stays quiet. #101
-*   Using a deprecated configuration option no longer fails the build in
-    `strict` mode. Deprecation notices, from MkDocs itself or from plugins,
-    are now logged at INFO level instead of WARNING, so upgrading doesn't
-    break strict builds of sites that still set, for example,
-    `google_analytics`. Removed options remain an error. #102
-*   When the same page is listed more than once in `nav`, each entry shows
-    the title given to it instead of all entries using the first one. Such a
-    page also appears only once in previous/next links. #103
-*   Links in `nav` that use a page's URL directly, such as `about/#license`,
-    are no longer reported as not found. #104
-*   A configuration file that inherits from itself, directly or indirectly,
-    is reported as an error instead of crashing with `RecursionError`. #107
-*   Built-in search no longer replaces the page's global `window.postMessage`
-    function in browsers without Web Worker support, which broke other
-    scripts that use it. That fallback also works again: it no longer needs
-    jQuery (which the `mkdocs` theme doesn't include) and finds its files
-    when the site is served from a subdirectory. #106
+* `--quiet` no longer disables `strict` mode, so `mkdocs build --quiet --strict` fails on warnings again. #101
+* Deprecated config options no longer fail `strict` builds; deprecation notices are logged at INFO. #102
+* A page listed more than once in `nav` shows each entry's own title, and appears once in previous/next links. #103
+* A config file that inherits from itself is reported as an error instead of crashing. #107
+* Built-in search no longer replaces `window.postMessage` in browsers without Web Workers, and that fallback works again. #106
 
 ### Upgrade notes
 
-*   CI jobs that run `mkdocs build --quiet --strict` will now fail when the
-    build has warnings, as `--strict` always intended. Run without `--quiet`
-    to see the warnings. #101
-*   For plugin and theme authors: when a page is listed more than once in
-    `nav`, the repeated entries are now `PageAlias` objects. They have their
-    own `title` and `parent` and forward everything else to the page, and
-    `is_page` is `True`, so templates keep working. Code that checks
-    `isinstance(item, Page)` on navigation items should also accept
-    `PageAlias` (or check `item.is_page`). `Navigation.pages` lists such a
-    page once. #103
+* CI jobs running `mkdocs build --quiet --strict` now fail when there are warnings. #101
+* For plugin and theme authors: repeated `nav` entries are `PageAlias` objects. Code that checks `isinstance(item, Page)` should also accept `PageAlias` or check `item.is_page`. #103
 
 ### Maintenance
 
-*   New plugin compatibility matrix: every change to MkDocs is checked by
-    building sites with 30 popular plugins, themes and Markdown extensions,
-    on upstream MkDocs and on MkDocs NG. #118
-*   Test coverage raised to almost 100%, GitHub Actions pinned to commit
-    SHAs, and checkout credentials no longer persisted in jobs that don't
-    push. #108
-*   Dependency and GitHub Actions updates.
+* New plugin compatibility matrix builds sites with 30 popular plugins, themes and extensions on every change. #118
+* Test coverage near 100%, GitHub Actions pinned to commit SHAs. #108
 
 ## Version 1.8.0 (2026-08-13)
 
-MkDocs NG 1.8.0 makes builds faster, search smarter, and the built-in themes
-lighter and more privacy-friendly.
+MkDocs NG 1.8.0 makes builds faster, search smarter, and the built-in themes lighter and more privacy-friendly.
 
-**Requires Python 3.10 or newer.** Python 3.8 and 3.9 (both end-of-life) are
-no longer supported; pip keeps installing 1.7.x on those versions. #77
+**Requires Python 3.10 or newer.** Python 3.8 and 3.9 users stay on 1.7.x. #77
 
 ### Highlights
 
-*   **Search now finds programming keywords.** Searching for `while`, `if`,
-    `for`, `from` and similar words used to return nothing because they were
-    filtered out as English stop words. They are indexed by default now; set
-    the search plugin's `stop_words: true` to restore the old behavior. #80
-*   **Faster, smaller builds.** The built-in themes copy only the
-    highlight.js styles and languages your configuration actually uses —
-    clean builds are ~14% faster in our benchmarks and built sites shrink by
-    about 440 files. #90
-*   **A stable Python API.** Call `mkdocs.build()` and `mkdocs.serve()` from
-    your own code — no more subprocess calls or private imports. #76
-*   **Helpful anchor warnings.** When a link's anchor differs from an
-    existing one only by letter case, validation now suggests the correct
-    anchor (`did you mean '#conflicts'?`). #83
-*   **Offline syntax highlighting.** highlight.js is bundled with the
-    built-in themes instead of being loaded from a CDN, so highlighting works
-    in offline, intranet and privacy-sensitive environments. #75
-*   **Nicer automatic navigation.** When no `nav` is configured, section
-    titles use the index page's title instead of the raw directory name. #54
+* **Search finds programming keywords** such as `while`, `if` and `for`. Set the search plugin's `stop_words: true` for the old behavior. #80
+* **Faster, smaller builds.** Built-in themes copy only the highlight.js styles and languages you use: clean builds are ~14% faster and sites have about 440 fewer files. #90
+* **A stable Python API**: `mkdocs.build()` and `mkdocs.serve()`. #76
+* **Anchor warnings suggest a fix** when only the letter case differs (`did you mean '#conflicts'?`). #83
+* **Offline syntax highlighting.** highlight.js is bundled instead of loaded from a CDN. #75
+* **Nicer automatic navigation.** Without `nav`, section titles come from the index page's title. #54
 
 ### Changed
 
-*   The built-in themes no longer embed the legacy Universal Analytics
-    (`analytics.js`) snippet — Google shut the service down in 2023. The
-    deprecated `google_analytics` option now has no effect; use the theme's
-    `analytics.gtag` option (Google Analytics 4) or override the `analytics`
-    template block. #84
+* Built-in themes no longer include the retired Universal Analytics snippet, so `google_analytics` has no effect. Use the theme's `analytics.gtag` option instead. #84
 
 ### Maintenance
 
-*   Every pull request now runs a performance benchmark suite under
-    [CodSpeed](https://codspeed.io), guarding against build-speed
-    regressions. #88 #89
-*   New [Fixed Upstream Issues](https://mkdocs-ng.org/about/fixed-upstream-issues/)
-    page tracking notable upstream issues already resolved in MkDocs NG. #85
-*   Documentation link fixes. #62
+* Every pull request runs a [CodSpeed](https://codspeed.io) performance benchmark. #88 #89
+* New [Fixed Upstream Issues](https://mkdocs-ng.org/about/fixed-upstream-issues/) page. #85
+* Documentation link fixes. #62
 
 ## Version 1.7.3 (2026-05-09)
 
