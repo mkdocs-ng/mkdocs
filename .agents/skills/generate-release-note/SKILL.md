@@ -55,7 +55,8 @@ When a target category already exists, append the entry at the end of that categ
 Match the existing release note source style:
 
 - Use `* ` bullets.
-- Write concise, user-facing English.
+- Write concise, user-facing English: one or two sentences per entry, saying what changed and why it matters. Leave details, background and long benchmarks to the linked docs page or PR.
+- Keep the version intro to one or two sentences. Use a `### Highlights` list (bold lead plus one sentence) only for the few changes most users care about.
 - Describe behavior or value users can observe.
 - Avoid implementation details such as file names, commit hashes, tests, or internal refactors unless directly relevant to users.
 - Use backticks for commands, options, configuration keys, package names, and code-like terms.
