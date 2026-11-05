@@ -39,7 +39,7 @@ without checking every plugin first:
 
 ### Added
 
-* A language can set `source: true` to own the files without a language suffix, so a site can be written in Chinese first (`index.md`) and still serve English from `/` (`index.en.md`). See [Writing in another language first](../user-guide/multi-language-sites.md#writing-in-another-language-first).
+* A language can set `source: true` to own the files without a language suffix, so a site can be written in Chinese first (`index.md`) and still serve English from `/` (`index.en.md`). See [Writing in another language first](../user-guide/multi-language-sites.md#writing-in-another-language-first). #166
 
 ## Version 1.11.1 (2026-11-05)
 
