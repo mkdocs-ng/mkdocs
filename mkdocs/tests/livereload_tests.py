@@ -366,6 +366,7 @@ class BuildTests(unittest.TestCase):
 
     @tempdir(
         {
+            "index.html": "<body>root</body>",
             "foo/bar/index.html": "<body>aaa</body>",
             "foo/測試/index.html": "<body>bbb</body>",
         }
@@ -386,6 +387,11 @@ class BuildTests(unittest.TestCase):
                 headers, _ = do_request(server, "GET /sub/foo/%E6%B8%AC%E8%A9%A6")
             self.assertEqual(headers["_status"], "302 Found")
             self.assertEqual(headers.get("location"), "/sub/foo/%E6%B8%AC%E8%A9%A6/")
+
+            with self.assertLogs("mkdocs.livereload"):
+                headers, _ = do_request(server, "GET /sub")
+            self.assertEqual(headers["_status"], "302 Found")
+            self.assertEqual(headers.get("location"), "/sub/")
 
     @tempdir({"about/index.html": "<body>aaa</body>"})
     def test_redirect_stays_on_the_server(self, site_dir):
