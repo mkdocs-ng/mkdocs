@@ -388,8 +388,10 @@ class LiveReloadServer(socketserver.ThreadingMixIn, wsgiref.simple_server.WSGISe
                 # Redirect to the normalized path: the raw one can start with
                 # "//", which browsers read as another host.
                 location = self.mount_path + rel_file_path
+                if not location.endswith("/"):  # "/sub" has rel_file_path "".
+                    location += "/"
                 start_response(
-                    "302 Found", [("Location", urllib.parse.quote(location) + "/")]
+                    "302 Found", [("Location", urllib.parse.quote(location))]
                 )
                 return []
             return None  # Not found
