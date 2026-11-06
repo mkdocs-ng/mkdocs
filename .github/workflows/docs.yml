@@ -1,3 +1,9 @@
+# Pull requests from this repository also get a preview of the docs site on
+# Cloudflare Pages (https://pr-<number>.mkdocs-ng.pages.dev/), linked from the
+# PR as a deployment. It needs the CLOUDFLARE_API_TOKEN (Account > Cloudflare
+# Pages > Edit) and CLOUDFLARE_ACCOUNT_ID secrets, set on the repository or the
+# organization; without them, and for pull requests from forks, the preview job
+# is skipped.
 name: Docs
 on:
   push:
@@ -32,6 +38,55 @@ jobs:
         run: pip install hatch
       - name: Build site
         run: hatch run docs:build
+      - name: Upload site for the preview
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: site
+          path: site
+          retention-days: 7
+
+  preview:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    environment:
+      name: preview
+      url: ${{ steps.deploy.outputs.pages-deployment-alias-url || steps.deploy.outputs.deployment-url }}
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      PROJECT: mkdocs-ng
+    steps:
+      - if: env.CLOUDFLARE_API_TOKEN == '' || env.CLOUDFLARE_ACCOUNT_ID == ''
+        run: echo "::notice::No Cloudflare secrets, so no preview. See the comment at the top of docs.yml"
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
+        with:
+          name: site
+          path: site
+      # Creates the Pages project on the first run; fails harmlessly once it exists.
+      - uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3.15.0
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
+        continue-on-error: true
+        with:
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages project create ${{ env.PROJECT }} --production-branch=main
+      - id: deploy
+        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3.15.0
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
+        with:
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy site --project-name=${{ env.PROJECT }} --branch=pr-${{ github.event.pull_request.number }} --commit-hash=${{ github.event.pull_request.head.sha }} --commit-dirty=true
+      - if: steps.deploy.outcome == 'success'
+        env:
+          URL: ${{ steps.deploy.outputs.pages-deployment-alias-url || steps.deploy.outputs.deployment-url }}
+        run: echo "Preview at $URL" >> "$GITHUB_STEP_SUMMARY"
 
   deploy:
     runs-on: ubuntu-latest

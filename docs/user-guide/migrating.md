@@ -163,9 +163,16 @@ that works with upstream MkDocs fails with MkDocs NG, please [open an issue].
 
 Material for MkDocs works with MkDocs NG and is part of the tests above. Its
 maintainers have announced that it reaches end of life on 2027-05-05, and it
-prints a notice saying so on every build. When you want to move on, [Sumi] is
-the theme made for MkDocs NG. It reads most Material configuration and
-content as-is, and its [migration guide][sumi-migrate] lists what carries over.
+prints a notice saying so on every build.
+
+To keep your site exactly as it is after that date, replace
+`mkdocs-material` with `mkdocs-ng-material` in your requirements.
+[MkDocs NG Material][ng-material] is Material for MkDocs maintained as part of
+MkDocs NG, with the same `material` theme name and configuration, and it keeps
+getting security and compatibility fixes after 2027-05-05. When you want to
+move on, [Sumi] is the theme made for MkDocs NG. It reads most Material
+configuration and content as-is, and its [migration guide][sumi-migrate] lists
+what carries over. See [Material for MkDocs End of Life] for all the options.
 
 ## Coming from ProperDocs
 
@@ -208,3 +215,5 @@ plugin or a list of files in [`INHERIT`](configuration.md#configuration-inherita
 [plugin catalog]: https://github.com/mkdocs-ng/catalog
 [Sumi]: https://sumi.mkdocs-ng.org/
 [sumi-migrate]: https://sumi.mkdocs-ng.org/docs/start/migrate/
+[ng-material]: https://material.mkdocs-ng.org/
+[Material for MkDocs End of Life]: material-end-of-life.md

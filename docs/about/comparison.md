@@ -39,6 +39,11 @@ See [Build speed](#build-speed) for how this was measured.
     themes. With MkDocs NG the only change is the package name: the `mkdocs`
     command, `mkdocs.yml`, CI scripts and `.readthedocs.yaml` stay as they are.
     ProperDocs uses its own `properdocs` command.
+*   **Your site uses Material for MkDocs and should keep building unchanged
+    after its end of life on 2027-05-05:** MkDocs NG with
+    [MkDocs NG Material](../user-guide/material-end-of-life.md), which keeps
+    the `material` theme and gets security and compatibility fixes after that
+    date.
 *   **Your site uses Material for MkDocs, and only plugins that Zensical
     reimplements:** Zensical is an option if you're ready to switch to a new
     generator. Check its plugin support first, since other plugins are
