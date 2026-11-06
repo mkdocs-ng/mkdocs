@@ -11,6 +11,7 @@ bar at the top of the page to move through the documentation in order.
 
 - [Installation](installation.md)
 - [Switching to MkDocs NG](migrating.md)
+- [Material for MkDocs End of Life](material-end-of-life.md)
 - [Writing Your Docs](writing-your-docs.md)
 - [Choosing Your Theme](choosing-your-theme.md)
 - [Customizing Your Theme](customizing-your-theme.md)
