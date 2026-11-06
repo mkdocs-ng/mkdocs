@@ -514,7 +514,18 @@ class CLITests(unittest.TestCase):
         result = self.runner.invoke(cli.cli, ["new", "project"], catch_exceptions=False)
 
         self.assertEqual(result.exit_code, 0)
-        mock_new.assert_called_once_with("project")
+        mock_new.assert_called_once_with("project", theme=None)
+
+    @mock.patch("mkdocs.commands.new.new", autospec=True)
+    def test_new_theme(self, mock_new):
+        result = self.runner.invoke(
+            cli.cli,
+            ["new", "project", "--theme", "readthedocs"],
+            catch_exceptions=False,
+        )
+
+        self.assertEqual(result.exit_code, 0)
+        mock_new.assert_called_once_with("project", theme="readthedocs")
 
     @mock.patch("mkdocs.config.load_config", autospec=True)
     @mock.patch("mkdocs.commands.build.build", autospec=True)

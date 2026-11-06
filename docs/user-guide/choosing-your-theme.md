@@ -16,6 +16,10 @@ theme:
   name: readthedocs
 ```
 
+To start a new project with a theme, pass it to `mkdocs new`, such as
+`mkdocs new my-project --theme readthedocs`. Without `--theme`, new projects
+use [Sumi](#sumi) when it is installed, and the `mkdocs` theme otherwise.
+
 ## mkdocs
 
 The default theme, which was built as a custom [Bootstrap] theme, supports almost
@@ -232,6 +236,10 @@ plugins:
   - search
   - sumi
 ```
+
+Once Sumi is installed, `mkdocs new` creates Sumi sites with this
+configuration. Install MkDocs NG and Sumi together with
+`pip install "mkdocs-ng[sumi]"`.
 
 ![The Sumi theme](../img/sumi.png)
 

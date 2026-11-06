@@ -85,8 +85,60 @@ class NewTests(unittest.TestCase):
                     new.new("myproject")
             config = load_config(os.path.join("myproject", "mkdocs.yml"))
         self.assertIn("pip install mkdocs-sumi", cm.output[-1])
+        self.assertIn("mkdocs new --theme", cm.output[-1])
         self.assertEqual(config.theme.name, "mkdocs")
         self.assertEqual(list(config.plugins), ["search", "llms_txt"])
+
+    @tempdir()
+    def test_new_theme_builtin(self, temp_dir):
+        with change_dir(temp_dir):
+            with mock.patch(
+                "mkdocs.utils.get_theme_names",
+                return_value=["mkdocs", "readthedocs", "sumi"],
+            ):
+                with self.assertNoLogs("mkdocs.commands.new", level="WARNING"):
+                    new.new("myproject", theme="readthedocs")
+            config = load_config(os.path.join("myproject", "mkdocs.yml"))
+        self.assertEqual(config.theme.name, "readthedocs")
+        self.assertEqual(list(config.plugins), ["search", "llms_txt"])
+
+    @tempdir()
+    def test_new_theme_mkdocs_with_sumi_installed(self, temp_dir):
+        with change_dir(temp_dir):
+            with mock.patch(
+                "mkdocs.utils.get_theme_names", return_value=["mkdocs", "sumi"]
+            ):
+                new.new("myproject", theme="mkdocs")
+        with open(
+            os.path.join(temp_dir, "myproject", "mkdocs.yml"), encoding="utf-8"
+        ) as f:
+            config = yaml.safe_load(f)
+        self.assertEqual(config["theme"], {"name": "mkdocs"})
+        self.assertEqual(config["plugins"], ["search", "llms_txt"])
+
+    @tempdir()
+    def test_new_theme_not_installed(self, temp_dir):
+        cases = [
+            ("sumi", "pip install mkdocs-sumi", ["search", "llms_txt", "sumi"]),
+            ("material", "pip install mkdocs-ng-material", ["search", "llms_txt"]),
+            ("other", "the package that provides it", ["search", "llms_txt"]),
+        ]
+        for theme, hint, plugins in cases:
+            with self.subTest(theme=theme), change_dir(temp_dir):
+                with mock.patch(
+                    "mkdocs.utils.get_theme_names", return_value=["mkdocs"]
+                ):
+                    with self.assertLogs("mkdocs.commands.new", "WARNING") as cm:
+                        new.new(theme, theme=theme)
+                self.assertEqual(len(cm.output), 1)
+                self.assertIn(f"The '{theme}' theme is not installed", cm.output[0])
+                self.assertIn(hint, cm.output[0])
+                with open(
+                    os.path.join(temp_dir, theme, "mkdocs.yml"), encoding="utf-8"
+                ) as f:
+                    config = yaml.safe_load(f)
+                self.assertEqual(config["theme"], {"name": theme})
+                self.assertEqual(config["plugins"], plugins)
 
     @tempdir(files={"myproject/AGENTS.md": "# My own agent notes\n"})
     def test_new_keeps_existing_agents_file(self, temp_dir):

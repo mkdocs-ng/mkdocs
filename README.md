@@ -85,6 +85,15 @@ Install with pip:
 pip install mkdocs-ng
 ```
 
+To start a new site, install it together with the
+[Sumi](https://sumi.mkdocs-ng.org/) theme and create a project. Pass `--theme`
+to `mkdocs new` to pick another theme:
+
+```bash
+pip install "mkdocs-ng[sumi]"
+mkdocs new my-docs
+```
+
 Switching from `mkdocs`? Just install MkDocs NG — the command, imports and
 configuration stay exactly the same:
 

@@ -52,18 +52,19 @@ python get-pip.py
 
 ## Installing MkDocs
 
-Install the `mkdocs-ng` package using pip:
-
-```bash
-pip install mkdocs-ng
-```
-
-To install MkDocs NG together with [Sumi](https://sumi.mkdocs-ng.org/),
-a modern theme from the same team, use the `sumi` extra. `mkdocs new` then
-creates Sumi sites:
+We recommend installing MkDocs NG together with
+[Sumi](https://sumi.mkdocs-ng.org/), the theme made for it, using the `sumi`
+extra. `mkdocs new` then creates Sumi sites:
 
 ```bash
 pip install "mkdocs-ng[sumi]"
+```
+
+To install MkDocs NG on its own, with only the built-in `mkdocs` and
+`readthedocs` themes, install the `mkdocs-ng` package:
+
+```bash
+pip install mkdocs-ng
 ```
 
 You should now have the `mkdocs` command installed on your system. Run `mkdocs

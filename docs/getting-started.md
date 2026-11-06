@@ -6,11 +6,14 @@ An introductory tutorial!
 
 ## Installation
 
-To install MkDocs, run the following command from the command line:
+To install MkDocs together with [Sumi], the theme made for MkDocs NG, run the
+following command from the command line:
 
 ```bash
-pip install mkdocs-ng
+pip install "mkdocs-ng[sumi]"
 ```
+
+Use `pip install mkdocs-ng` instead to install MkDocs on its own.
 
 For more details, see the [Installation Guide].
 
@@ -48,11 +51,11 @@ tells coding agents such as Claude Code or Codex how to build the site and
 write pages for it; edit it to describe your own conventions.
 
 > TIP:
-> If the [Sumi](https://sumi.mkdocs-ng.org/) theme is installed,
-> `mkdocs new` creates a Sumi site instead of one with the default `mkdocs`
-> theme. Install both at once with `pip install "mkdocs-ng[sumi]"`. This
-> tutorial uses the default theme, so its screenshots look different from a
-> Sumi site.
+> When [Sumi] is installed, `mkdocs new` creates a Sumi site, and otherwise
+> one with the built-in `mkdocs` theme. To pick a theme yourself, pass
+> `--theme`, such as `mkdocs new my-project --theme readthedocs`. The
+> screenshots in this tutorial show the `mkdocs` theme; to follow along with
+> the same look, run `mkdocs new my-project --theme mkdocs`.
 
 MkDocs comes with a built-in dev-server that lets you preview your documentation
 as you work on it. Make sure you're in the same directory as the `mkdocs.yml`
@@ -151,7 +154,8 @@ Save your changes, and you'll see the ReadTheDocs theme being used.
 
 Themes can also be installed as packages. [Sumi], the theme made for MkDocs
 NG, adds a command palette search, light and dark modes and a Markdown copy of
-every page. Install it, then select it and enable its plugin:
+every page. If you installed MkDocs on its own, install Sumi first, then select
+it and enable its plugin:
 
 ```bash
 pip install mkdocs-sumi

@@ -35,6 +35,12 @@ without checking every plugin first:
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
 
+## Version 1.12.0 (unreleased)
+
+### Added
+
+* `mkdocs new --theme NAME` creates a project with the theme you pick, such as `sumi`, `mkdocs`, `readthedocs` or `material`, and tells you which package to install when the theme isn't installed yet. Without `--theme` it still uses Sumi when installed. #NN
+
 ## Version 1.11.1 (2026-11-05)
 
 A security and bug-fix release for `mkdocs serve`. Upgrade if you run `mkdocs serve` on Windows.

@@ -409,14 +409,21 @@ def get_deps_command(config_file, projects_file):
         sys.exit(1)
 
 
+new_theme_help = (
+    "The theme of the new project, such as sumi, mkdocs, readthedocs or material. "
+    "Defaults to sumi when it is installed, and to mkdocs otherwise."
+)
+
+
 @cli.command(name="new")
 @click.argument("project_directory")
+@click.option("-t", "--theme", metavar="NAME", help=new_theme_help)
 @common_options
-def new_command(project_directory):
+def new_command(project_directory, theme):
     """Create a new MkDocs project."""
     from mkdocs.commands import new
 
-    new.new(project_directory)
+    new.new(project_directory, theme=theme)
 
 
 if __name__ == "__main__":  # pragma: no cover

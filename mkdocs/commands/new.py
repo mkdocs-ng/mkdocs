@@ -7,30 +7,37 @@ from mkdocs import utils
 
 SCHEMA_COMMENT = "# yaml-language-server: $schema=https://mkdocs-ng.org/schema.json\n"
 
-# Written when the Sumi theme is installed (`pip install "mkdocs-ng[sumi]"`).
-sumi_config_text = (
-    SCHEMA_COMMENT
-    + """site_name: My Docs
+# The theme `mkdocs new` picks when none is given and Sumi is installed.
+DEFAULT_THEME = "sumi"
+
+# Themes that come from a separate package, and the package to install.
+THEME_PACKAGES = {
+    "sumi": "mkdocs-sumi",
+    "material": "mkdocs-ng-material",
+}
+
+# Plugins a theme needs next to the ones every new project gets.
+THEME_PLUGINS = {
+    "sumi": ["sumi"],
+}
+
+
+def config_text(theme: str) -> str:
+    """Return the `mkdocs.yml` of a new project that uses `theme`."""
+    plugins = "".join(f"  - {name}\n" for name in THEME_PLUGINS.get(theme, []))
+    return (
+        SCHEMA_COMMENT
+        + f"""site_name: My Docs
 
 theme:
-  name: sumi
+  name: {theme}
 
 plugins:
   - search
   - llms_txt  # llms.txt and a Markdown copy of every page, for AI tools
-  - sumi
-"""
-)
+{plugins}"""
+    )
 
-config_text = (
-    SCHEMA_COMMENT
-    + """site_name: My Docs
-
-plugins:
-  - search
-  - llms_txt  # llms.txt and a Markdown copy of every page, for AI tools
-"""
-)
 
 index_text = """# Welcome to MkDocs
 
@@ -96,7 +103,13 @@ def _write(path: str, text: str) -> None:
         f.write(text)
 
 
-def new(output_dir: str) -> None:
+def new(output_dir: str, theme: str | None = None) -> None:
+    """
+    Create a new project in `output_dir`.
+
+    Without `theme`, the project uses Sumi when it is installed and the
+    built-in `mkdocs` theme otherwise.
+    """
     docs_dir = os.path.join(output_dir, "docs")
     config_path = os.path.join(output_dir, "mkdocs.yml")
     agents_path = os.path.join(output_dir, "AGENTS.md")
@@ -106,12 +119,16 @@ def new(output_dir: str) -> None:
         log.info("Project already exists.")
         return
 
+    installed = utils.get_theme_names()
+    chosen = theme
+    if chosen is None:
+        chosen = DEFAULT_THEME if DEFAULT_THEME in installed else "mkdocs"
+
     if not os.path.exists(output_dir):
         log.info(f"Creating project directory: {output_dir}")
         os.mkdir(output_dir)
 
-    sumi = "sumi" in utils.get_theme_names()
-    _write(config_path, sumi_config_text if sumi else config_text)
+    _write(config_path, config_text(chosen))
 
     if not os.path.exists(agents_path):
         _write(agents_path, agents_text)
@@ -121,8 +138,18 @@ def new(output_dir: str) -> None:
             os.mkdir(docs_dir)
         _write(index_path, index_text)
 
-    if not sumi:
+    if theme is None and chosen != DEFAULT_THEME:
         log.info(
-            "To start from the modern Sumi theme instead, run "
-            "`pip install mkdocs-sumi` and create the project again."
+            "The project uses the built-in 'mkdocs' theme. For the modern Sumi "
+            "theme, run `pip install mkdocs-sumi` and create the project again, "
+            "or pick another theme with `mkdocs new --theme`."
+        )
+    elif chosen not in installed:
+        package = THEME_PACKAGES.get(chosen)
+        install = (
+            f"`pip install {package}`" if package else "the package that provides it"
+        )
+        log.warning(
+            f"The '{chosen}' theme is not installed. Install it with {install} "
+            "before you build the site."
         )
