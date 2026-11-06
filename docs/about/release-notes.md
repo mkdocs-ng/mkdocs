@@ -39,7 +39,7 @@ without checking every plugin first:
 
 ### Added
 
-* `mkdocs new --theme NAME` creates a project with the theme you pick, such as `sumi`, `mkdocs`, `readthedocs` or `material`, and tells you which package to install when the theme isn't installed yet. Without `--theme` it still uses Sumi when installed. #NN
+* `mkdocs new --theme NAME` creates a project with the theme you pick, such as `sumi`, `mkdocs`, `readthedocs` or `material`, and tells you which package to install when the theme isn't installed yet. Without `--theme` it still uses Sumi when installed. #168
 
 ## Version 1.11.1 (2026-11-05)
 
