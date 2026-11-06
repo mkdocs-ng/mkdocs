@@ -13,7 +13,7 @@ pip install mkdocs-ng
 ```
 
 This tutorial uses the built-in `mkdocs` theme and shows how to switch to
-[Sumi], the theme made for MkDocs NG, at the end. To start with Sumi right
+[Sumi], the theme made for MkDocs NG, later on. To start with Sumi right
 away, run `pip install "mkdocs-ng[sumi]"` instead.
 
 For more details, see the [Installation Guide].
