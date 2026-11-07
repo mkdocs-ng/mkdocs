@@ -257,7 +257,33 @@ def place_language(config: MkDocsConfig, lang: Language) -> None:
     config["site_dir"] = os.path.join(config.get("site_dir") or "site", lang.path)
     site_url = config.get("site_url")
     if site_url and "site_url" not in lang.overrides:
+        config._root_site_url = site_url
         config["site_url"] = language_site_url(site_url, lang)
+
+
+def settle_site_url(config: MkDocsConfig) -> None:
+    """
+    Check `site_url` after the `config` event of plugins.
+
+    A plugin such as mike moves the site into a sub-directory of `site_url`, one
+    per version. On a multi-language site, the language then stays inside that
+    sub-directory: `/1.0/zh/` rather than `/zh/1.0/`.
+    """
+    site_url = config.get("site_url")
+    if not site_url:
+        return
+    root = getattr(config, "_root_site_url", None)
+    lang = current(config)
+    if root and lang is not None:
+        placed = language_site_url(root, lang)
+        if site_url != placed and site_url.startswith(placed):
+            if not root.endswith("/"):
+                root += "/"
+            moved = urljoin(root, site_url[len(placed) :])
+            site_url = language_site_url(moved, lang)
+    if not site_url.endswith("/"):
+        site_url += "/"
+    config["site_url"] = site_url
 
 
 def language_site_url(root_url: str, lang: Language) -> str:

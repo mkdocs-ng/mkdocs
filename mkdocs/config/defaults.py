@@ -233,6 +233,9 @@ class MkDocsConfig(base.Config):
     _base_docs_dir: str | None = None
     """`docs_dir` as set in the config file, before the overrides of a language."""
 
+    _root_site_url: str | None = None
+    """`site_url` of the whole site, before a language was moved into its sub-directory."""
+
     _source: tuple[bytes, str | None, dict] | None = None
     """What `load_config` loaded this config from, to load other languages the same way."""
 

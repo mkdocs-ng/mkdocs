@@ -54,6 +54,7 @@ class FinderTests(unittest.TestCase):
         self.assertIsNone(finder.find_spec("mkdocs.sub"))
         self.assertIsNone(finder.find_spec("mkdocs_material"))
         self.assertIsNone(finder.find_spec("os"))
+        self.assertIsNone(finder.find_spec("mike"))
 
     @tempdir(files=["mkdocs/__init__.py"])
     def test_install(self, root):
@@ -188,6 +189,50 @@ class SitePackagesTests(unittest.TestCase):
             """
         )
         self.assertEqual(out, ["ng"])
+
+    def test_mike_builds_with_mkdocs_ng(self):
+        # mike 2.2 runs `properdocs build` when ProperDocs is installed, as
+        # plugins such as mkdocs-redirects do.
+        files = {
+            "mike/__init__.py": "",
+            "mike/mkdocs_utils.py": (
+                "_program_name = 'properdocs'\n"
+                "_brand = 'ProperDocs'\n"
+                "_version = '1.6.7'\n"
+            ),
+            "mkdocs_ng-9.9.dist-info/METADATA": (
+                "Metadata-Version: 2.1\nName: mkdocs-ng\nVersion: 9.9\n"
+            ),
+        }
+        for name, content in files.items():
+            path = self.site / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(content, encoding="utf-8")
+        out = self.run_python(
+            f"""
+            import site
+            site.addsitedir({str(self.site)!r})
+            from mike import mkdocs_utils
+            print(mkdocs_utils._program_name, mkdocs_utils._version)
+            print(mkdocs_utils._brand.replace(' ', '-'))
+            """
+        )
+        self.assertEqual(out, ["mkdocs", "9.9", "MkDocs-NG"])
+
+    def test_other_mike_versions_left_alone(self):
+        path = self.site / "mike" / "mkdocs_utils.py"
+        path.parent.mkdir(parents=True)
+        (self.site / "mike" / "__init__.py").write_text("", encoding="utf-8")
+        path.write_text("program = 'properdocs'\n", encoding="utf-8")
+        out = self.run_python(
+            f"""
+            import site
+            site.addsitedir({str(self.site)!r})
+            from mike import mkdocs_utils
+            print(mkdocs_utils.program, hasattr(mkdocs_utils, '_program_name'))
+            """
+        )
+        self.assertEqual(out, ["properdocs", "False"])
 
 
 if __name__ == "__main__":
