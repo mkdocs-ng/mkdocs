@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en" data-palette="auto" data-layout="landing" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working."><meta name="author" content="MkDocs NG Team"><link rel="canonical" href="https://mkdocs-ng.org/"><link rel="next" href="getting-started/"><link rel="alternate" type="text/markdown" href="index.md" title="Markdown"><link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
+  <link rel="icon" href="img/favicon.svg">
+  <meta name="generator" content="mkdocs-1.11.1, sumi">
+  <meta name="theme-color" content="#f8f7f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MkDocs NG"><meta property="og:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <meta property="og:site_name" content="MkDocs NG">
+  <meta property="og:locale" content="en_US"><meta property="og:url" content="https://mkdocs-ng.org/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="MkDocs NG"><meta name="twitter:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <title>MkDocs NG</title>
+  <script>
+    (function () {
+      var d = document.documentElement, p = d.dataset.palette, s = null;
+      try { s = localStorage.getItem('sumi.palette'); } catch (e) {}
+      var mode = s || p;
+      if (mode === 'auto' || !mode) mode = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.dataset.theme = mode;
+      d.dataset.mdColorScheme = mode === 'dark' ? 'slate' : 'default';
+      d.classList.replace('no-js', 'js');
+      // A page opened inside the bilingual view shows its content only.
+      if (window.name === 'sumi-pane') d.classList.add('sumi-pane');
+    })();
+  </script>
+  <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/sumi.css"><style>:root{--sumi-accent:#0061fe}[data-theme="dark"]{--sumi-accent:#0061fe}</style><link rel="stylesheet" href="assets/_mkdocstrings.css"><link rel="stylesheet" href="css/extra.css">
+</head>
+<body>
+  <a class="sumi-skip" href="#content">Skip to content</a><header class="sumi-header">
+  <div class="sumi-header-inner">
+    <a class="sumi-brand" href="." aria-label="MkDocs NG">
+      <img class="sumi-logo sumi-when-light" src="img/logo.svg" alt="">
+      <img class="sumi-logo sumi-when-dark" src="img/logo-dark.svg" alt="">
+      <span class="sumi-brand-name">MkDocs NG</span>
+    </a>
+    <nav class="sumi-tabs-nav" aria-label="Navigation">
+      <a class="sumi-tab-link" href="getting-started/">Getting Started</a>
+      <a class="sumi-tab-link" href="user-guide/">User Guide</a>
+      <a class="sumi-tab-link" href="dev-guide/">Developer Guide</a>
+      <a class="sumi-tab-link" href="about/release-notes/">About</a>
+    </nav>
+    <div class="sumi-header-tools">
+      <button class="sumi-search-btn" type="button" data-sumi-palette aria-label="Search">
+        <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span class="sumi-search-label">Search</span><kbd class="sumi-search-kbd" data-mod>Ctrl K</kbd>
+      </button>
+      <button class="sumi-icon-btn sumi-theme-btn" type="button" data-sumi-theme aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="sumi-icon sumi-when-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="sumi-icon sumi-when-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></button>
+      <a class="sumi-icon-btn sumi-repo" href="https://github.com/mkdocs-ng/mkdocs/" aria-label="Repository" title="GitHub" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+    </div>
+  </div>
+</header>
+  <div class="sumi-version-banner" hidden></div><main class="sumi-landing" id="content">
+  <section class="sumi-hero sumi-hero--split">
+    <div class="sumi-hero-bg" aria-hidden="true"></div>
+    <div class="sumi-land-inner sumi-hero-inner">
+      <div class="sumi-hero-copy"><div class="sumi-eyebrow"><span class="sumi-eyebrow-dot"></span>MkDocs NG</div>
+        <h1 class="sumi-hero-title">Write Markdown.<br><em>Ship docs.</em></h1><p class="sumi-hero-text">The maintained MkDocs that keeps your plugins working. One YAML file turns your Markdown into a <strong>fast</strong>, <strong>simple</strong> and <strong>good-looking</strong> documentation site you can host anywhere.</p>
+        <div class="sumi-actions-row">
+  <a class="sumi-btn sumi-btn--primary" href="getting-started/"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg><span>Getting Started</span><svg class="sumi-icon sumi-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  <a class="sumi-btn" href="user-guide/migrating/"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg><span>Switch from MkDocs</span></a>
+  <a class="sumi-btn" href="https://github.com/mkdocs-ng/mkdocs" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span>GitHub</span></a>
+</div>
+        <button class="sumi-install" type="button" data-copy="pip install mkdocs-ng" title="Copy"><span class="sumi-install-prompt">$</span><code>pip install mkdocs-ng</code><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button>
+      </div>
+      <div class="sumi-hero-art"><div class="sumi-land-code">
+  <div class="sumi-land-code-bar"><span></span><span></span><span></span><em>mkdocs.yml</em></div>
+  <div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My Project</span>
+
+<span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Home</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">index.md</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Guide</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">guide.md</span>
+
+<span class="nt">theme</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mkdocs</span><span class="w">    </span><span class="c1"># or readthedocs, sumi, material...</span>
+
+<span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search</span>
+</code></pre></div>
+</div></div>
+    </div>
+  </section>
+  <section class="sumi-land-section sumi-land-stats">
+    <div class="sumi-land-inner">
+      
+      <dl class="sumi-stats"><div><dt>Plugins and themes tested</dt><dd>32</dd></div><div><dt>Upstream bugs fixed</dt><dd>20</dd></div><div><dt>Python up to 3.15</dt><dd>3.10+</dd></div><div><dt>Config changes to switch</dt><dd>0</dd></div>
+      </dl>
+    </div>
+  </section>
+  <section class="sumi-land-section sumi-land-features">
+    <div class="sumi-land-inner">
+      
+  <header class="sumi-land-head"><div class="sumi-eyebrow"><span class="sumi-eyebrow-dot"></span>Why MkDocs NG</div><h2>Everything a docs site needs, from one YAML file.</h2>
+  </header>
+      <div class="sumi-features" style="--cols: 3">
+        <a class="sumi-feature" href="user-guide/choosing-your-theme/"><span class="sumi-feature-icon"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg></span>
+          <h3>Great themes available</h3>
+          <p>Use a built-in theme, <code>mkdocs</code> or <code>readthedocs</code>, pick Sumi or one of the many third-party themes, or build your own.</p><span class="sumi-feature-more"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </a>
+        <a class="sumi-feature" href="user-guide/customizing-your-theme/"><span class="sumi-feature-icon"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></svg></span>
+          <h3>Easy to customize</h3>
+          <p>Customize your theme, install plugins, change Markdown's behavior with extensions. Many configuration options are available.</p><span class="sumi-feature-more"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </a>
+        <a class="sumi-feature" href="user-guide/cli/"><span class="sumi-feature-icon"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg></span>
+          <h3>Preview as you work</h3>
+          <p>The built-in dev server shows your documentation as you write it, and reloads the browser whenever you save.</p><span class="sumi-feature-more"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </a>
+        <a class="sumi-feature" href="user-guide/deploying-your-docs/"><span class="sumi-feature-icon"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span>
+          <h3>Host anywhere</h3>
+          <p>MkDocs NG builds a completely static site that you can host on GitHub Pages, Amazon S3, or anywhere else.</p><span class="sumi-feature-more"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </a>
+        <a class="sumi-feature" href="dev-guide/plugins/"><span class="sumi-feature-icon"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg></span>
+          <h3>Your plugins keep working</h3>
+          <p>Hundreds of plugins and Markdown extensions add API docs, blogs, redirects, diagrams and more. The most popular ones are built against every change.</p><span class="sumi-feature-more"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </a>
+        <a class="sumi-feature" href="user-guide/configuration/#llmstxt"><span class="sumi-feature-icon"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg></span>
+          <h3>Written for agents too</h3>
+          <p>Every page can have a Markdown copy and the site an <code>llms.txt</code>, so coding agents read your docs as easily as people do.</p><span class="sumi-feature-more"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section class="sumi-land-section sumi-land-split">
+    <div class="sumi-land-inner">
+      <div class="sumi-split">
+        <div class="sumi-split-copy">
+          
+  <header class="sumi-land-head"><div class="sumi-eyebrow"><span class="sumi-eyebrow-dot"></span>Sumi theme</div><h2>Good-looking docs out of the box.</h2><p class="sumi-land-lead">Sumi is the theme made for MkDocs NG, and the one this site uses. Install it with <code>pip install mkdocs-sumi</code>.</p>
+  </header>
+          <ul class="sumi-check-list"><li><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Search as a command palette: <kbd>Ctrl</kbd> <kbd>K</kbd> searches every heading.</span></li><li><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Light and dark modes, with fonts, icons and search bundled. No CDN.</span></li><li><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Landing pages, a blog and a releases page from plain Markdown.</span></li></ul><div class="sumi-actions-row">
+  <a class="sumi-btn sumi-btn--primary" href="https://sumi.mkdocs-ng.org/" rel="noopener"><span>Sumi documentation</span><svg class="sumi-icon sumi-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  <a class="sumi-btn" href="user-guide/choosing-your-theme/"><span>Choosing your theme</span></a>
+</div>
+        </div>
+        <div class="sumi-split-art"><img src="img/sumi.png" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="sumi-land-section sumi-land-split">
+    <div class="sumi-land-inner">
+      <div class="sumi-split sumi-split--reverse">
+        <div class="sumi-split-copy">
+          
+  <header class="sumi-land-head"><div class="sumi-eyebrow"><span class="sumi-eyebrow-dot"></span>Already on MkDocs?</div><h2>Switching is a package change.</h2><p class="sumi-land-lead">MkDocs NG keeps the <code>mkdocs</code> command, imports and configuration. Your plugins and themes keep working, and bugs that stayed open upstream are fixed. See <a href="about/comparison/">how it compares</a> to the alternatives.</p>
+  </header><div class="sumi-actions-row">
+  <a class="sumi-btn sumi-btn--primary" href="user-guide/migrating/"><span>Switching to MkDocs NG</span><svg class="sumi-icon sumi-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  <a class="sumi-btn" href="about/fixed-upstream-issues/"><span>Fixed upstream issues</span></a>
+</div>
+        </div>
+        <div class="sumi-split-art"><div class="sumi-land-code">
+  <div class="sumi-land-code-bar"><span></span><span></span><span></span><em>terminal</em></div>
+  <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>mkdocs-ng
+mkdocs<span class="w"> </span>--version
+mkdocs<span class="w"> </span>serve
+</code></pre></div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="sumi-land-section sumi-land-cta">
+    <div class="sumi-land-inner">
+      <div class="sumi-cta">
+        
+  <header class="sumi-land-head"><h2>Start writing.</h2><p class="sumi-land-lead">MkDocs NG is free and open source under the BSD 2-Clause license.</p>
+  </header>
+        <div class="sumi-actions-row">
+  <a class="sumi-btn sumi-btn--primary" href="getting-started/"><span>Getting Started</span><svg class="sumi-icon sumi-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+  <a class="sumi-btn" href="about/release-notes/"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg><span>Release Notes</span></a>
+</div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.sumi-install');
+    if (!b) return;
+    navigator.clipboard.writeText(b.dataset.copy).then(function () {
+      var t = document.querySelector('.sumi-toast');
+      if (t) { t.textContent = "Copied"; t.classList.add('is-on'); setTimeout(function () { t.classList.remove('is-on'); }, 1400); }
+    });
+  });
+</script>
+<footer class="sumi-footer">
+  <div class="sumi-footer-inner">
+    <div class="sumi-footer-left"><div class="sumi-copyright">Copyright &copy; 2014 <a href="https://twitter.com/starletdreaming">Tom Christie</a>, Maintained by the <a href="https://github.com/mkdocs-ng">MkDocs NG Team</a>.</div>
+      <div class="sumi-credit">Built with <a href="https://github.com/mkdocs-ng/mkdocs" rel="noopener">MkDocs NG</a> and <a href="https://github.com/mkdocs-ng/mkdocs-sumi" rel="noopener">Sumi</a></div>
+    </div>
+    <div class="sumi-footer-right">
+      <button class="sumi-icon-btn" type="button" data-sumi-help aria-label="Keyboard shortcuts" title="Keyboard shortcuts"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></button>
+    </div>
+  </div>
+</footer>
+  <dialog class="sumi-palette" aria-label="Search">
+  <div class="sumi-palette-box">
+    <div class="sumi-palette-input">
+      <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+      <input type="search" autocomplete="off" spellcheck="false" placeholder="Search docs or run a command…" aria-label="Search" aria-controls="sumi-palette-results" aria-activedescendant="">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="sumi-palette-results" id="sumi-palette-results" role="listbox"></div>
+    <div class="sumi-palette-foot">
+      <span><kbd>↵</kbd> to open</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd> to move</span>
+      <span><kbd>Esc</kbd> to close</span>
+    </div>
+  </div>
+</dialog>
+<dialog class="sumi-help" aria-label="Keyboard shortcuts">
+  <div class="sumi-help-box">
+    <div class="sumi-help-head"><strong>Keyboard shortcuts</strong><button class="sumi-icon-btn" type="button" data-close aria-label="Close"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+    <dl>
+      <dt><kbd data-mod>Ctrl K</kbd> <kbd>/</kbd></dt><dd>Open search and commands</dd>
+      <dt><kbd>t</kbd></dt><dd>Toggle dark mode</dd>
+      <dt><kbd>[</kbd> <kbd>]</kbd></dt><dd>Previous / next page</dd>
+      <dt><kbd>j</kbd> <kbd>k</kbd></dt><dd>Previous / next heading</dd>
+      <dt><kbd>?</kbd></dt><dd>Show this help</dd>
+    </dl>
+  </div>
+</dialog>
+<dialog class="sumi-zoom" aria-label="Zoom image"><img alt=""></dialog>
+<div class="sumi-toast" role="status" aria-live="polite"></div>
+  <script>
+    window.sumi = {
+      base: ".",
+      page: "",
+      features: [],
+      markdown: "index.md",
+      search: "search/search_index.json",
+      keyboard: true,
+      versions: null,
+      prev: null,
+      next: "getting-started/",
+      edit: "https://github.com/mkdocs-ng/mkdocs/blob/main/docs/index.md",
+      nav: [{"t":"Home","u":"","s":""},{"t":"Getting Started","u":"getting-started/","s":""},{"t":"User Guide","u":"user-guide/","s":"User Guide"},{"t":"Installation","u":"user-guide/installation/","s":"User Guide"},{"t":"Switching to MkDocs NG","u":"user-guide/migrating/","s":"User Guide"},{"t":"Material for MkDocs End of Life","u":"user-guide/material-end-of-life/","s":"User Guide"},{"t":"Writing Your Docs","u":"user-guide/writing-your-docs/","s":"User Guide"},{"t":"Choosing Your Theme","u":"user-guide/choosing-your-theme/","s":"User Guide"},{"t":"Customizing Your Theme","u":"user-guide/customizing-your-theme/","s":"User Guide"},{"t":"Localizing Your Theme","u":"user-guide/localizing-your-theme/","s":"User Guide"},{"t":"Multi-language Sites","u":"user-guide/multi-language-sites/","s":"User Guide"},{"t":"Configuration","u":"user-guide/configuration/","s":"User Guide"},{"t":"Command Line Interface","u":"user-guide/cli/","s":"User Guide"},{"t":"Python API","u":"user-guide/python-api/","s":"User Guide"},{"t":"Deploying Your Docs","u":"user-guide/deploying-your-docs/","s":"User Guide"},{"t":"Versioned Docs","u":"user-guide/versioned-docs/","s":"User Guide"},{"t":"Developer Guide","u":"dev-guide/","s":"Developer Guide"},{"t":"Themes","u":"dev-guide/themes/","s":"Developer Guide"},{"t":"Translations","u":"dev-guide/translations/","s":"Developer Guide"},{"t":"Plugins","u":"dev-guide/plugins/","s":"Developer Guide"},{"t":"API Reference","u":"dev-guide/api/","s":"Developer Guide"},{"t":"Release Notes","u":"about/release-notes/","s":"About"},{"t":"Fixed Upstream Issues","u":"about/fixed-upstream-issues/","s":"About"},{"t":"Comparison","u":"about/comparison/","s":"About"},{"t":"Contributing","u":"about/contributing/","s":"About"},{"t":"License","u":"about/license/","s":"About"}],
+      alternate: [],
+      translations: [],
+      t: {"search":"Search","search_placeholder":"Search docs or run a command…","search_no_results":"No results for","search_loading":"Loading index…","search_hint_open":"to open","search_hint_move":"to move","search_hint_close":"to close","pages":"Pages","commands":"Commands","on_this_page":"On this page","back_to_top":"Back to top","previous":"Previous","next":"Next","edit_page":"Edit this page","view_source":"View source","copy_markdown":"Copy as Markdown","copied":"Copied","view_markdown":"View as Markdown","open_in":"Open in {name}","print":"Print","page_actions":"Page actions","copy":"Copy","copy_code":"Copy code","toggle_theme":"Toggle dark mode","theme_light":"Light","theme_dark":"Dark","theme_auto":"System","menu":"Menu","close":"Close","navigation":"Navigation","skip_to_content":"Skip to content","last_updated":"Last updated","reading_time":"{n} min read","language":"Language","untranslated":"This page has not been translated yet, so it is shown in {language}.","version":"Version","repository":"Repository","keyboard_shortcuts":"Keyboard shortcuts","shortcut_search":"Open search and commands","shortcut_theme":"Toggle dark mode","shortcut_prev_next":"Previous / next page","shortcut_toc":"Previous / next heading","shortcut_help":"Show this help","built_with":"Built with {mkdocs} and {sumi}","not_found_title":"Page not found","not_found_text":"The page you are looking for does not exist or has moved.","go_home":"Go to the home page","blog":"Blog","all_posts":"All posts","tags":"Tags","posted_on":"Posted on","older_post":"Older post","newer_post":"Newer post","subscribe_rss":"Subscribe via RSS","releases":"Releases","latest":"Latest","prerelease":"Pre-release","archived":"Archived","download":"Download","asset":"Asset","size":"Size","checksum":"SHA-256","release_notes":"Release notes","old_version":"You are reading the documentation for an older version.","go_latest":"Go to the latest version","expand_all":"Expand all","zoom_image":"Zoom image","diagram_expand":"Expand diagram","blog_view":"Layout","blog_view_list":"List view","blog_view_cards":"Card view","diagram_source":"Copy diagram source","diagram_download":"Download SVG","cmd_toggle_theme":"Toggle light / dark","cmd_copy_markdown":"Copy this page as Markdown","cmd_view_markdown":"Open this page as Markdown","cmd_edit":"Edit this page","cmd_print":"Print this page","cmd_top":"Scroll to top","cmd_home":"Go to the home page","cmd_language":"Switch language: {name}","cmd_version":"Switch version: {name}","cmd_llms":"Open llms.txt","whole_site":"Whole site","print_title":"Printable edition","contents":"Contents","compare":"Bilingual view","compare_open":"Open bilingual view","compare_sync":"Sync scrolling","compare_failed":"This translation could not be loaded.","feedback_title":"Was this page helpful?","feedback_yes":"Yes","feedback_no":"No","feedback_thanks":"Thanks for your feedback!","comments":"Comments","table_expand":"Expand table","zoom_in":"Zoom in","zoom_out":"Zoom out","zoom_reset":"Fit to window"}
+    };
+  </script>
+  <script src="assets/js/sumi.js" defer></script>
+</body>
+</html>

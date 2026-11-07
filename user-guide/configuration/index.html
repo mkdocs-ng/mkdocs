@@ -1,0 +1,1643 @@
+<!doctype html>
+<html lang="en" data-palette="auto" data-layout="docs" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working."><meta name="author" content="MkDocs NG Team"><link rel="canonical" href="https://mkdocs-ng.org/user-guide/configuration/"><link rel="prev" href="../multi-language-sites/"><link rel="next" href="../cli/"><link rel="alternate" type="text/markdown" href="../configuration.md" title="Markdown"><link rel="alternate" type="text/plain" href="../../llms.txt" title="llms.txt">
+  <link rel="icon" href="../../img/favicon.svg">
+  <meta name="generator" content="mkdocs-1.11.1, sumi">
+  <meta name="theme-color" content="#f8f7f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Configuration"><meta property="og:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <meta property="og:site_name" content="MkDocs NG">
+  <meta property="og:locale" content="en_US"><meta property="og:url" content="https://mkdocs-ng.org/user-guide/configuration/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Configuration"><meta name="twitter:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <title>Configuration · MkDocs NG</title>
+  <script>
+    (function () {
+      var d = document.documentElement, p = d.dataset.palette, s = null;
+      try { s = localStorage.getItem('sumi.palette'); } catch (e) {}
+      var mode = s || p;
+      if (mode === 'auto' || !mode) mode = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.dataset.theme = mode;
+      d.dataset.mdColorScheme = mode === 'dark' ? 'slate' : 'default';
+      d.classList.replace('no-js', 'js');
+      // A page opened inside the bilingual view shows its content only.
+      if (window.name === 'sumi-pane') d.classList.add('sumi-pane');
+    })();
+  </script>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/sumi.css"><style>:root{--sumi-accent:#0061fe}[data-theme="dark"]{--sumi-accent:#0061fe}</style><link rel="stylesheet" href="../../assets/_mkdocstrings.css"><link rel="stylesheet" href="../../css/extra.css">
+</head>
+<body>
+  <a class="sumi-skip" href="#content">Skip to content</a><header class="sumi-header">
+  <div class="sumi-header-inner">
+    <button class="sumi-icon-btn sumi-menu-btn" type="button" aria-label="Menu" aria-controls="sumi-sidebar" aria-expanded="false"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg></button>
+    <a class="sumi-brand" href="../.." aria-label="MkDocs NG">
+      <img class="sumi-logo sumi-when-light" src="../../img/logo.svg" alt="">
+      <img class="sumi-logo sumi-when-dark" src="../../img/logo-dark.svg" alt="">
+      <span class="sumi-brand-name">MkDocs NG</span>
+    </a>
+    <nav class="sumi-tabs-nav" aria-label="Navigation">
+      <a class="sumi-tab-link" href="../../getting-started/">Getting Started</a>
+      <a class="sumi-tab-link is-active" href="../" aria-current="page">User Guide</a>
+      <a class="sumi-tab-link" href="../../dev-guide/">Developer Guide</a>
+      <a class="sumi-tab-link" href="../../about/release-notes/">About</a>
+    </nav>
+    <div class="sumi-header-tools">
+      <button class="sumi-search-btn" type="button" data-sumi-palette aria-label="Search">
+        <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span class="sumi-search-label">Search</span><kbd class="sumi-search-kbd" data-mod>Ctrl K</kbd>
+      </button>
+      <button class="sumi-icon-btn sumi-theme-btn" type="button" data-sumi-theme aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="sumi-icon sumi-when-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="sumi-icon sumi-when-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></button>
+      <a class="sumi-icon-btn sumi-repo" href="https://github.com/mkdocs-ng/mkdocs/" aria-label="Repository" title="GitHub" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+    </div>
+  </div>
+</header>
+  <div class="sumi-version-banner" hidden></div>
+  <div class="sumi-shell">
+    <aside class="sumi-sidebar" id="sumi-sidebar" aria-label="Navigation">
+      <div class="sumi-sidebar-inner">
+        <ul class="sumi-nav-list sumi-sidebar-tabs">
+          <li class="sumi-nav-page"><a href="../../getting-started/">Getting Started</a></li>
+          <li class="sumi-nav-page"><a class="is-active" href="../">User Guide</a></li>
+          <li class="sumi-nav-page"><a href="../../dev-guide/">Developer Guide</a></li>
+          <li class="sumi-nav-page"><a href="../../about/release-notes/">About</a></li>
+        </ul>
+        <a class="sumi-sidebar-title" href="../">User Guide</a>
+        <nav class="sumi-nav"><ul class="sumi-nav-list" data-depth="1">
+    <li class="sumi-nav-page"><a href="../installation/">Installation</a></li>
+    <li class="sumi-nav-page"><a href="../migrating/">Switching to MkDocs NG</a></li>
+    <li class="sumi-nav-page"><a href="../material-end-of-life/">Material for MkDocs End of Life</a></li>
+    <li class="sumi-nav-page"><a href="../writing-your-docs/">Writing Your Docs</a></li>
+    <li class="sumi-nav-page"><a href="../choosing-your-theme/">Choosing Your Theme</a></li>
+    <li class="sumi-nav-page"><a href="../customizing-your-theme/">Customizing Your Theme</a></li>
+    <li class="sumi-nav-page"><a href="../localizing-your-theme/">Localizing Your Theme</a></li>
+    <li class="sumi-nav-page"><a href="../multi-language-sites/">Multi-language Sites</a></li>
+    <li class="sumi-nav-page"><a href="./" aria-current="page" class="is-current">Configuration</a></li>
+    <li class="sumi-nav-page"><a href="../cli/">Command Line Interface</a></li>
+    <li class="sumi-nav-page"><a href="../python-api/">Python API</a></li>
+    <li class="sumi-nav-page"><a href="../deploying-your-docs/">Deploying Your Docs</a></li>
+    <li class="sumi-nav-page"><a href="../versioned-docs/">Versioned Docs</a></li>
+</ul></nav>
+      </div>
+    </aside>
+    <main class="sumi-main" id="content">
+      <article class="sumi-article">
+        <div class="sumi-article-top">
+<nav class="sumi-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="../">User Guide</a><svg class="sumi-icon sumi-crumb-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></li>
+    <li aria-current="page"><span>Configuration</span></li>
+  </ol>
+</nav><div class="sumi-actions">
+  <button class="sumi-chip-btn sumi-copy-page" type="button" data-sumi-copy-page aria-label="Copy as Markdown" title="Copy as Markdown"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span>Copy as Markdown</span></button>
+  <div class="sumi-menu sumi-actions-menu">
+    <button class="sumi-icon-btn sumi-chip-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Page actions" title="Page actions"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <ul class="sumi-menu-list sumi-menu-right" role="menu">
+      <li role="none"><a role="menuitem" href="../configuration.md" target="_blank"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>View as Markdown</a></li>
+      <li role="none"><a role="menuitem" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/user-guide/configuration.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a></li>
+      <li role="none"><button role="menuitem" type="button" data-sumi-print><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>Print</button></li>
+      <li role="none"><a role="menuitem" href="../../print/"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg>Printable edition · Whole site</a></li>
+    </ul>
+  </div>
+</div>
+        </div>
+        <details class="sumi-toc-inline">
+          <summary><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg><span>On this page</span><svg class="sumi-icon sumi-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <nav class="sumi-toc"><ul>
+  <li><a href="#introduction" data-level="2">Introduction</a><ul>
+  <li><a href="#editor-and-agent-support" data-level="3">Editor and agent support</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#project-information" data-level="2">Project information</a><ul>
+  <li><a href="#site_name" data-level="3">site_name</a>
+  </li>
+  <li><a href="#site_url" data-level="3">site_url</a>
+  </li>
+  <li><a href="#repo_url" data-level="3">repo_url</a>
+  </li>
+  <li><a href="#repo_name" data-level="3">repo_name</a>
+  </li>
+  <li><a href="#edit_uri" data-level="3">edit_uri</a>
+  </li>
+  <li><a href="#edit_uri_template" data-level="3">edit_uri_template</a>
+  </li>
+  <li><a href="#site_description" data-level="3">site_description</a>
+  </li>
+  <li><a href="#site_author" data-level="3">site_author</a>
+  </li>
+  <li><a href="#copyright" data-level="3">copyright</a>
+  </li>
+  <li><a href="#remote_branch" data-level="3">remote_branch</a>
+  </li>
+  <li><a href="#remote_name" data-level="3">remote_name</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#documentation-layout" data-level="2">Documentation layout</a><ul>
+  <li><a href="#nav" data-level="3">nav</a>
+  </li>
+  <li><a href="#exclude_docs" data-level="3">exclude_docs</a>
+  </li>
+  <li><a href="#draft_docs" data-level="3">draft_docs</a>
+  </li>
+  <li><a href="#not_in_nav" data-level="3">not_in_nav</a>
+  </li>
+  <li><a href="#validation" data-level="3">validation</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#build-directories" data-level="2">Build directories</a><ul>
+  <li><a href="#theme" data-level="3">theme</a>
+  </li>
+  <li><a href="#docs_dir" data-level="3">docs_dir</a>
+  </li>
+  <li><a href="#site_dir" data-level="3">site_dir</a>
+  </li>
+  <li><a href="#languages" data-level="3">languages</a>
+  </li>
+  <li><a href="#extra_css" data-level="3">extra_css</a>
+  </li>
+  <li><a href="#extra_javascript" data-level="3">extra_javascript</a>
+  </li>
+  <li><a href="#extra_templates" data-level="3">extra_templates</a>
+  </li>
+  <li><a href="#extra" data-level="3">extra</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#preview-controls" data-level="2">Preview controls</a>
+  </li>
+  <li><a href="#live-reloading" data-level="2">Live Reloading</a><ul>
+  <li><a href="#watch" data-level="3">watch</a>
+  </li>
+  <li><a href="#use_directory_urls" data-level="3">use_directory_urls</a>
+  </li>
+  <li><a href="#strict" data-level="3">strict</a>
+  </li>
+  <li><a href="#dev_addr" data-level="3">dev_addr</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#formatting-options" data-level="2">Formatting options</a><ul>
+  <li><a href="#markdown_extensions" data-level="3">markdown_extensions</a>
+  </li>
+  <li><a href="#markdown_extensions_path" data-level="3">markdown_extensions_path</a>
+  </li>
+  <li><a href="#hooks" data-level="3">hooks</a>
+  </li>
+  <li><a href="#plugins" data-level="3">plugins</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#special-yaml-tags" data-level="2">Special YAML tags</a><ul>
+  <li><a href="#environment-variables" data-level="3">Environment variables</a>
+  </li>
+  <li><a href="#paths-relative-to-the-current-file-or-site" data-level="3">Paths relative to the current file or site</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#configuration-inheritance" data-level="2">Configuration Inheritance</a>
+  </li>
+</ul></nav>
+        </details>
+        <div class="sumi-content sumi-prose" data-pagefind-body><h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link"></a></h1>
+<p>Guide to all available configuration settings.</p>
+<hr />
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link"></a></h2>
+<p>Project settings are configured by default using a YAML configuration file in
+the project directory named <code>mkdocs.yml</code>. You can specify another path for it
+by using the <code>-f</code>/<code>--config-file</code> option (see <code>mkdocs build --help</code>).</p>
+<p>At a minimum, this configuration file must contain the <code>site_name</code>. All other settings are optional.</p>
+<h3 id="editor-and-agent-support">Editor and agent support<a class="headerlink" href="#editor-and-agent-support" title="Permanent link"></a></h3>
+<p>MkDocs NG publishes a <a href="https://json-schema.org/" rel="external">JSON Schema</a> of <code>mkdocs.yml</code>
+at <a href="https://mkdocs-ng.org/schema.json" rel="external">https://mkdocs-ng.org/schema.json</a>. It describes every
+setting on this page and the options of the built-in plugins, so editors can
+complete settings, show their documentation and flag typos and wrong values
+before you build, and coding agents can check a configuration they write.
+Settings of other plugins and themes are accepted without being checked.</p>
+<p>Projects created with <code>mkdocs new</code> refer to the schema in their first line,
+which editors using the <a href="https://github.com/redhat-developer/yaml-language-server" rel="external">YAML language server</a>
+(such as VS Code with the YAML extension) pick up without any setup:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># yaml-language-server: $schema=https://mkdocs-ng.org/schema.json</span>
+<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">My Docs</span>
+</code></pre></div>
+<p>Add the same line to an existing <code>mkdocs.yml</code> to use it there. If you use the
+<a href="#special-yaml-tags">special YAML tags</a> <code>!ENV</code> or <code>!relative</code>, also tell the
+YAML extension about them in your editor settings:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">"yaml.customTags"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"!ENV scalar"</span><span class="p">,</span><span class="w"> </span><span class="s2">"!ENV sequence"</span><span class="p">,</span><span class="w"> </span><span class="s2">"!relative scalar"</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="project-information">Project information<a class="headerlink" href="#project-information" title="Permanent link"></a></h2>
+<h3 id="site_name">site_name<a class="headerlink" href="#site_name" title="Permanent link"></a></h3>
+<p>This is a <strong>required setting</strong>, and should be a string that is used as the main
+title for the project documentation. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Marshmallow Generator</span>
+</code></pre></div>
+<p>When rendering the theme this setting will be passed as the <code>site_name</code> context
+variable.</p>
+<h3 id="site_url">site_url<a class="headerlink" href="#site_url" title="Permanent link"></a></h3>
+<p>Set the canonical URL of the site. This will add a <code>link</code> tag with the
+<code>canonical</code> URL to the <code>head</code> section of each HTML page. If the 'root' of the
+MkDocs site will be within a subdirectory of a domain, be sure to include that
+subdirectory in the setting (<code>https://example.com/foo/</code>).</p>
+<p>This setting is also used for <code>mkdocs serve</code>: the server will be mounted onto a
+path taken from the path component of the URL, e.g. <code>some/page.md</code> will be
+served from <code>http://127.0.0.1:8000/foo/some/page/</code> to mimic the expected remote
+layout.</p>
+<p>While it runs, <code>mkdocs serve</code> replaces the scheme, host and port of <code>site_url</code>
+with its own address, so that canonical links and other absolute URLs point to
+the page you are previewing. <code>mkdocs build</code> uses <code>site_url</code> as written. To
+publish the site, for example from a container, run <code>mkdocs build</code> and host the
+<code>site_dir</code> on a web server instead of running <code>mkdocs serve</code>.</p>
+<p><strong>default</strong>: <code>null</code></p>
+<h3 id="repo_url">repo_url<a class="headerlink" href="#repo_url" title="Permanent link"></a></h3>
+<p>When set, provides a link to your repository (GitHub, Bitbucket, GitLab, ...)
+on each page.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">repo_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/example/repository/</span>
+</code></pre></div>
+<p><strong>default</strong>: <code>null</code></p>
+<h3 id="repo_name">repo_name<a class="headerlink" href="#repo_name" title="Permanent link"></a></h3>
+<p>When set, provides the name for the link to your repository on each page.</p>
+<p><strong>default</strong>: <code>'GitHub'</code>, <code>'Bitbucket'</code> or <code>'GitLab'</code> if the <code>repo_url</code> matches
+those domains, otherwise the hostname from the <code>repo_url</code>.</p>
+<h3 id="edit_uri">edit_uri<a class="headerlink" href="#edit_uri" title="Permanent link"></a></h3>
+<p>The path from the base <code>repo_url</code> to the docs directory when directly viewing a
+page, accounting for specifics of the repository host (e.g. GitHub, Bitbucket,
+etc), the branch, and the docs directory itself. MkDocs concatenates <code>repo_url</code>
+and <code>edit_uri</code>, and appends the input path of the page.</p>
+<p>When set, and if your theme supports it, provides a link directly to the page in
+your source repository. This makes it easier to find and edit the source for the
+page. If <code>repo_url</code> is not set, this option is ignored. On some themes, setting
+this option may cause an edit link to be used in place of a repository link.
+Other themes may show both links.</p>
+<p>The <code>edit_uri</code> supports query ('?') and fragment ('#') characters. For
+repository hosts that use a query or a fragment to access the files, the
+<code>edit_uri</code> might be set as follows. (Note the <code>?</code> and <code>#</code> in the URI...)</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Query string example</span>
+<span class="nt">edit_uri</span><span class="p">:</span><span class="w"> </span><span class="s">'?query=root/path/docs/'</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Hash fragment example</span>
+<span class="nt">edit_uri</span><span class="p">:</span><span class="w"> </span><span class="s">'#root/path/docs/'</span>
+</code></pre></div>
+<p>For other repository hosts, simply specify the relative path to the docs
+directory.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Query string example</span>
+<span class="nt">edit_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">root/path/docs/</span>
+</code></pre></div>
+<p>For example, having this config:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">repo_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/project/repo</span>
+<span class="nt">edit_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">blob/main/docs/</span>
+</code></pre></div>
+<p>means that a page named 'foo/bar.md' will have its edit link lead to:
+<a href="https://example.com/project/repo/blob/main/docs/foo/bar.md" rel="external">https://example.com/project/repo/blob/main/docs/foo/bar.md</a></p>
+<p><code>edit_uri</code> can actually be just an absolute URL, not necessarily relative to <code>repo_url</code>, so this can achieve the same result:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">edit_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/project/repo/blob/main/docs/</span>
+</code></pre></div>
+<p>For more flexibility, see <a href="#edit_uri_template">edit_uri_template</a> below.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+On a few known hosts (specifically GitHub, Bitbucket and GitLab), the
+<code>edit_uri</code> is derived from the 'repo_url' and does not need to be set
+manually. Simply defining a <code>repo_url</code> will automatically populate the
+<code>edit_uri</code> configs setting.</p>
+<p>For example, for a GitHub- or GitLab-hosted repository, the <code>edit_uri</code>
+would be automatically set as <code>edit/master/docs/</code> (Note the <code>edit</code> path
+and <code>master</code> branch).</p>
+<p>For a Bitbucket-hosted repository, the equivalent <code>edit_uri</code> would be
+automatically set as <code>src/default/docs/</code> (note the <code>src</code> path and <code>default</code>
+branch).</p>
+<p>To use a different URI than the default (for example a different branch),
+simply set the <code>edit_uri</code> to your desired string. If you do not want any
+"edit URL link" displayed on your pages, then set <code>edit_uri</code> to an empty
+string to disable the automatic setting.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>
+On GitHub and GitLab, the default "edit" path (<code>edit/master/docs/</code>) opens
+the page in the online editor. This functionality requires that the user
+have and be logged in to a GitHub/GitLab account. Otherwise, the user will
+be redirected to a login/signup page. Alternatively, use the "blob" path
+(<code>blob/master/docs/</code>) to open a read-only view, which supports anonymous
+access.</p>
+</div>
+<p><strong>default</strong>: <code>edit/master/docs/</code> for GitHub and GitLab repos or
+<code>src/default/docs/</code> for a Bitbucket repo, if <code>repo_url</code> matches those domains,
+otherwise <code>null</code></p>
+<h3 id="edit_uri_template">edit_uri_template<a class="headerlink" href="#edit_uri_template" title="Permanent link"></a></h3>
+<p>The more flexible variant of <a href="#edit_uri">edit_uri</a>. These two are equivalent:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">edit_uri</span><span class="p">:</span><span class="w"> </span><span class="s">'blob/main/docs/'</span>
+<span class="nt">edit_uri_template</span><span class="p">:</span><span class="w"> </span><span class="s">'blob/main/docs/{path}'</span>
+</code></pre></div>
+<p>(they are also mutually exclusive -- don't specify both).</p>
+<p>Starting from here, you can change the positioning or formatting of the path, in case the default behavior of appending the path isn't enough.</p>
+<p>The contents of <code>edit_uri_template</code> are normal <a href="https://docs.python.org/3/library/string.html#formatstrings" rel="external">Python format strings</a>, with only these fields available:</p>
+<ul>
+<li><code>{path}</code>, e.g. <code>foo/bar.md</code></li>
+<li><code>{path_noext}</code>, e.g. <code>foo/bar</code></li>
+</ul>
+<p>And the conversion flag <code>!q</code> is available, to percent-encode the field:</p>
+<ul>
+<li><code>{path!q}</code>, e.g. <code>foo%2Fbar.md</code></li>
+</ul>
+<details class="note">
+<summary>Suggested useful configurations:</summary>
+<ul>
+<li>
+<p>GitHub Wiki:
+    (e.g. <code>https://github.com/project/repo/wiki/foo/bar/_edit</code>)</p>
+<div class="highlight"><pre><span></span><code><span class="nt">repo_url</span><span class="p">:</span><span class="w"> </span><span class="s">'https://github.com/project/repo/wiki'</span>
+<span class="nt">edit_uri_template</span><span class="p">:</span><span class="w"> </span><span class="s">'{path_noext}/_edit'</span>
+</code></pre></div>
+</li>
+<li>
+<p>BitBucket editor:
+    (e.g. <code>https://bitbucket.org/project/repo/src/master/docs/foo/bar.md?mode=edit</code>)</p>
+<div class="highlight"><pre><span></span><code><span class="nt">repo_url</span><span class="p">:</span><span class="w"> </span><span class="s">'https://bitbucket.org/project/repo/'</span>
+<span class="nt">edit_uri_template</span><span class="p">:</span><span class="w"> </span><span class="s">'src/master/docs/{path}?mode=edit'</span>
+</code></pre></div>
+</li>
+<li>
+<p>GitLab Static Site Editor:
+    (e.g. <code>https://gitlab.com/project/repo/-/sse/master/docs%2Ffoo%2bar.md</code>)</p>
+<div class="highlight"><pre><span></span><code><span class="nt">repo_url</span><span class="p">:</span><span class="w"> </span><span class="s">'https://gitlab.com/project/repo'</span>
+<span class="nt">edit_uri_template</span><span class="p">:</span><span class="w"> </span><span class="s">'-/sse/master/docs%2F{path!q}'</span>
+</code></pre></div>
+</li>
+<li>
+<p>GitLab Web IDE:
+    (e.g. <code>https://gitlab.com/-/ide/project/repo/edit/master/-/docs/foo/bar.md</code>)</p>
+<div class="highlight"><pre><span></span><code><span class="nt">edit_uri_template</span><span class="p">:</span><span class="w"> </span><span class="s">'https://gitlab.com/-/ide/project/repo/edit/master/-/docs/{path}'</span>
+</code></pre></div>
+</li>
+</ul>
+</details>
+<p><strong>default</strong>: <code>null</code></p>
+<h3 id="site_description">site_description<a class="headerlink" href="#site_description" title="Permanent link"></a></h3>
+<p>Set the site description. This will add a meta tag to the generated HTML header.</p>
+<p><strong>default</strong>: <code>null</code></p>
+<h3 id="site_author">site_author<a class="headerlink" href="#site_author" title="Permanent link"></a></h3>
+<p>Set the name of the author. This will add a meta tag to the generated HTML
+header.</p>
+<p><strong>default</strong>: <code>null</code></p>
+<h3 id="copyright">copyright<a class="headerlink" href="#copyright" title="Permanent link"></a></h3>
+<p>Set the copyright information to be included in the documentation by the theme.</p>
+<p><strong>default</strong>: <code>null</code></p>
+<h3 id="remote_branch">remote_branch<a class="headerlink" href="#remote_branch" title="Permanent link"></a></h3>
+<p>Set the remote branch to commit to when using <code>gh-deploy</code> to deploy to GitHub
+Pages. This option can be overridden by a command line option in <code>gh-deploy</code>.</p>
+<p><strong>default</strong>: <code>gh-pages</code></p>
+<h3 id="remote_name">remote_name<a class="headerlink" href="#remote_name" title="Permanent link"></a></h3>
+<p>Set the remote name to push to when using <code>gh-deploy</code> to deploy to GitHub Pages.
+This option can be overridden by a command line option in <code>gh-deploy</code>.</p>
+<p><strong>default</strong>: <code>origin</code></p>
+<h2 id="documentation-layout">Documentation layout<a class="headerlink" href="#documentation-layout" title="Permanent link"></a></h2>
+<h3 id="nav">nav<a class="headerlink" href="#nav" title="Permanent link"></a></h3>
+<p>This setting is used to determine the format and layout of the global navigation
+for the site. A minimal navigation configuration could look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'index.md'</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'about.md'</span>
+</code></pre></div>
+<p>All paths in the navigation configuration must be relative to the
+<a href="#docs_dir"><code>docs_dir</code></a> configuration option. See the section on <a href="../writing-your-docs/#configure-pages-and-navigation">configuring
+pages and navigation</a> for a more detailed breakdown, including how to create
+sub-sections.</p>
+<p>To link to a section of a page, add the section's anchor to the path of the
+Markdown file. MkDocs points the link at the page's URL, for example
+<code>about/#license</code> (or <code>about.html#license</code> with
+<a href="#use_directory_urls"><code>use_directory_urls: false</code></a>). Such an entry is a plain
+link: it has no title of its own, so a title is required.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">About</span><span class="p">:</span><span class="w"> </span><span class="s">'about.md'</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">License</span><span class="p">:</span><span class="w"> </span><span class="s">'about.md#license'</span>
+</code></pre></div>
+<p>Navigation items may also include links to external sites. While titles are
+optional for internal links, they are required for external links. An external
+link may be a full URL or a relative URL. Any path which is not found in the
+files is assumed to be an external link. See the section about <a href="../writing-your-docs/#meta-data">Meta-Data</a> on
+how MkDocs determines the page title of a document.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Introduction</span><span class="p">:</span><span class="w"> </span><span class="s">'index.md'</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'about.md'</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'Issue</span><span class="nv"> </span><span class="s">Tracker'</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">'https://example.com/'</span>
+</code></pre></div>
+<p>In the above example, the first two items point to local files while the third
+points to an external site.</p>
+<p>However, sometimes the MkDocs site is hosted in a subdirectory of a project's
+site and you may want to link to other parts of the same site without including
+the full domain. In that case, you may use an appropriate relative URL.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">site_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/foo/</span>
+
+<span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Home</span><span class="p">:</span><span class="w"> </span><span class="s">'../'</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'User</span><span class="nv"> </span><span class="s">Guide'</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">'user-guide.md'</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'Bug</span><span class="nv"> </span><span class="s">Tracker'</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">'/bugs/'</span>
+</code></pre></div>
+<p>In the above example, two different styles of external links are used. First,
+note that the <code>site_url</code> indicates that the MkDocs site is hosted in the <code>/foo/</code>
+subdirectory of the domain. Therefore, the <code>Home</code> navigation item is a relative
+link that steps up one level to the server root and effectively points to
+<code>https://example.com/</code>. The <code>Bug Tracker</code> item uses an absolute path from the
+server root and effectively points to <code>https://example.com/bugs/</code>. Of course, the
+<code>User Guide</code> points to a local MkDocs page.</p>
+<p><strong>default</strong>: By default <code>nav</code> will contain an alphanumerically sorted, nested
+list of all the Markdown files found within the <code>docs_dir</code> and its
+sub-directories. Index files will always be listed first within a sub-section.</p>
+<h3 id="exclude_docs">exclude_docs<a class="headerlink" href="#exclude_docs" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.5</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Changed in version 1.6:</p>
+<p>This config no longer applies the "drafts" functionality for <code>mkdocs serve</code>. If you have draft documents that you want available in "serve" and not "build", replace <code>exclude_docs</code> with the new <a href="#draft_docs"><code>draft_docs</code></a> config option.</p>
+</div>
+<p>This config defines patterns of files (under <a href="#docs_dir"><code>docs_dir</code></a>) to not be picked up into the built site.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">exclude_docs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no"># A file with this name anywhere.</span>
+<span class="w">  </span><span class="no">api-config.json</span>
+
+<span class="w">  </span><span class="no"># Top-level "docs/requirements.txt".</span>
+<span class="w">  </span><span class="no">/requirements.txt</span>
+
+<span class="w">  </span><span class="no"># Any file with this extension anywhere.</span>
+<span class="w">  </span><span class="no">*.py</span>
+
+<span class="w">  </span><span class="no"># But keep this particular file.</span>
+<span class="w">  </span><span class="no">!/foo/example.py</span>
+</code></pre></div>
+<p>This follows the <a href="https://git-scm.com/docs/gitignore#_pattern_format" rel="external">.gitignore pattern format</a>.</p>
+<p>The following defaults are always implicitly prepended - to exclude dot-files (and directories) as well as the top-level <code>templates</code> directory:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">exclude_docs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">.*</span>
+<span class="w">  </span><span class="no">/templates/</span>
+</code></pre></div>
+<p>So, in order to really start this config fresh, you'd need to specify a negated version of these entries first.</p>
+<p>Otherwise you could for example opt only certain dot-files back into the site:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">exclude_docs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no"># Don't exclude '.assets' although all other '.*' are excluded</span>
+<span class="w">  </span><span class="no">!.assets</span>
+</code></pre></div>
+<h3 id="draft_docs">draft_docs<a class="headerlink" href="#draft_docs" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.6</p>
+</div>
+<p>This config defines patterns of files (under <a href="#docs_dir"><code>docs_dir</code></a>) to be treated as a draft.  Draft files are available during <code>mkdocs serve</code> and include a "DRAFT" mark but will not be included in the build. To prevent this effect and make "serve" behave the same as "build", you can run <code>mkdocs serve --clean</code>.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">draft_docs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no"># A "drafts" directory anywhere.</span>
+<span class="w">  </span><span class="no">drafts/</span>
+
+<span class="w">  </span><span class="no"># A Markdown file ending in _unpublished.md anywhere.</span>
+<span class="w">  </span><span class="no">*_unpublished.md</span>
+
+<span class="w">  </span><span class="no"># But keep this particular file.</span>
+<span class="w">  </span><span class="no">!/foo_unpublished.md</span>
+</code></pre></div>
+<p>This follows the <a href="https://git-scm.com/docs/gitignore#_pattern_format" rel="external">.gitignore pattern format</a>.</p>
+<h3 id="not_in_nav">not_in_nav<a class="headerlink" href="#not_in_nav" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.5</p>
+</div>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.6:</p>
+<p>If the <a href="#nav"><code>nav</code></a> config is not specified at all, pages specified in this config will now be excluded from the inferred navigation.</p>
+</div>
+<p>If you want to include some docs into the site but intentionally exclude them from the nav, normally MkDocs warns about this.</p>
+<p>Adding such patterns of files (relative to <a href="#docs_dir"><code>docs_dir</code></a>) into the <code>not_in_nav</code> config will prevent such warnings.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Foo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foo.md</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Bar</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bar.md</span>
+
+<span class="nt">not_in_nav</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">/private.md</span>
+</code></pre></div>
+<p>As the previous option, this follows the .gitignore pattern format.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Adding a given file to <a href="#exclude_docs"><code>exclude_docs</code></a> takes precedence over and implies <code>not_in_nav</code>.</p>
+</div>
+<h3 id="validation">validation<a class="headerlink" href="#validation" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.5</p>
+</div>
+<p>Configure the strictness of MkDocs' diagnostic messages when validating links to documents.</p>
+<p>This is a tree of configs, and for each one the value can be one of the three: <code>warn</code>, <code>info</code>, <code>ignore</code>. Which cause a logging message of the corresponding severity to be produced. The <code>warn</code> level is, of course, intended for use with <code>mkdocs build --strict</code> (where it becomes an error), which you can employ in continuous testing.</p>
+<p>The config <code>validation.links.absolute_links</code> additionally has a special value <code>relative_to_docs</code>, for <a href="#validation-of-absolute-links">validation of absolute links</a>.</p>
+<details class="example">
+<summary>Defaults of this config as of MkDocs 1.6:</summary>
+<div class="highlight"><pre><span></span><code><span class="nt">validation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">nav</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">omitted_files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span>
+<span class="w">    </span><span class="nt">not_found</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+<span class="w">    </span><span class="nt">absolute_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span>
+<span class="w">  </span><span class="nt">links</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">not_found</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+<span class="w">    </span><span class="nt">anchors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span>
+<span class="w">    </span><span class="nt">absolute_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span>
+<span class="w">    </span><span class="nt">unrecognized_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span>
+</code></pre></div>
+<p>(Note: you shouldn't copy this whole example, because it only duplicates the defaults. Only individual items that differ should be set.)</p>
+</details>
+<p>The defaults of some of the behaviors already differ from MkDocs 1.4 and below - they were ignored before.</p>
+<details class="example">
+<summary>Configure MkDocs 1.6 to behave like MkDocs 1.4 and below (reduce strictness):</summary>
+<div class="highlight"><pre><span></span><code><span class="nt">validation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">absolute_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ignore</span>
+<span class="w">  </span><span class="nt">unrecognized_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ignore</span>
+<span class="w">  </span><span class="nt">anchors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ignore</span>
+</code></pre></div>
+</details>
+<!-- -->
+<details class="example" open="open">
+<summary>Recommended settings for most sites (maximal strictness):</summary>
+<div class="highlight"><pre><span></span><code><span class="nt">validation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">omitted_files</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+<span class="w">  </span><span class="nt">absolute_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span><span class="w">  </span><span class="c1"># Or 'relative_to_docs' - new in MkDocs 1.6</span>
+<span class="w">  </span><span class="nt">unrecognized_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+<span class="w">  </span><span class="nt">anchors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span><span class="w">  </span><span class="c1"># New in MkDocs 1.6</span>
+</code></pre></div>
+</details>
+<p>Note how in the above examples we omitted the 'nav' and 'links' keys. Here <code>absolute_links:</code> means setting both <code>nav: absolute_links:</code> and <code>links: absolute_links:</code>.</p>
+<p>Full list of values and examples of log messages that they can hide or make more prominent:</p>
+<ul>
+<li><code>validation.nav.omitted_files</code><ul>
+<li>
+<blockquote>
+<p>The following pages exist in the docs directory, but are not included in the "nav" configuration: ...</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><code>validation.nav.not_found</code><ul>
+<li>
+<blockquote>
+<p>A reference to 'foo/bar.md' is included in the 'nav' configuration, which is not found in the documentation files.</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>A reference to 'foo/bar.md' is included in the 'nav' configuration, but this file is excluded from the built site.</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><code>validation.nav.absolute_links</code><ul>
+<li>
+<blockquote>
+<p>An absolute path to '/foo/bar.html' is included in the 'nav' configuration, which presumably points to an external resource.</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<!-- -->
+<ul>
+<li><code>validation.links.not_found</code><ul>
+<li>
+<blockquote>
+<p>Doc file 'example.md' contains a link '../foo/bar.md', but the target is not found among documentation files.</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>Doc file 'example.md' contains a link to 'foo/bar.md' which is excluded from the built site.</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p><code>validation.links.anchors</code></p>
+<ul>
+<li>
+<blockquote>
+<p>Doc file 'example.md' contains a link '../foo/bar.md#some-heading', but the doc 'foo/bar.md' does not contain an anchor '#some-heading'.</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>Doc file 'example.md' contains a link '#some-heading', but there is no such anchor on this page.</p>
+</blockquote>
+</li>
+</ul>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments" rel="external">Text fragments</a> such as <code>bar.md#:~:text=some%20words</code> aren't anchors and are not reported. In <code>bar.md#some-heading:~:text=some%20words</code>, only <code>#some-heading</code> is checked.
+*   <code>validation.links.absolute_links</code>
+* &gt; Doc file 'example.md' contains an absolute link '/foo/bar.html', it was left as is. Did you mean 'foo/bar.md'?
+*   <code>validation.links.unrecognized_links</code>
+* &gt; Doc file 'example.md' contains an unrecognized relative link '../foo/bar/', it was left as is. Did you mean 'foo/bar.md'?
+* &gt; Doc file 'example.md' contains an unrecognized relative link 'mail@example.com', it was left as is. Did you mean 'mailto:mail@example.com'?</p>
+</li>
+</ul>
+<h4 id="validation-of-absolute-links">Validation of absolute links<a class="headerlink" href="#validation-of-absolute-links" title="Permanent link"></a></h4>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.6</p>
+</div>
+<blockquote>
+<p>Historically, within Markdown, MkDocs only recognized <strong>relative</strong> links that lead to another physical <code>*.md</code> document (or media file). This is a good convention to follow because then the source pages are also freely browsable without MkDocs, for example on GitHub. Whereas absolute links were left unmodified (making them often not work as expected) or, more recently, warned against. If you dislike having to always use relative links, now you can opt into absolute links and have them work correctly.</p>
+</blockquote>
+<p>If you set the setting <code>validation.links.absolute_links</code> to the new value <code>relative_to_docs</code>, all Markdown links starting with <code>/</code> will be understood as being relative to the <code>docs_dir</code> root. The links will then be validated for correctness according to all the other rules that were already working for relative links in prior versions of MkDocs. For the HTML output, these links will still be turned relative so that the site still works reliably.</p>
+<p>So, now any document (e.g. "dir1/foo.md") can link to the document "dir2/bar.md" as <code>[link](/dir2/bar.md)</code>, in addition to the previously only correct way <code>[link](../dir2/bar.md)</code>.</p>
+<p>You have to enable the setting, though. The default is still to just skip the link.</p>
+<div class="admonition example">
+<p class="admonition-title">Settings to recognize absolute links and validate them:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">validation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">links</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">absolute_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">relative_to_docs</span>
+<span class="w">    </span><span class="nt">anchors</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+<span class="w">    </span><span class="nt">unrecognized_links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warn</span>
+</code></pre></div>
+</div>
+<h2 id="build-directories">Build directories<a class="headerlink" href="#build-directories" title="Permanent link"></a></h2>
+<h3 id="theme">theme<a class="headerlink" href="#theme" title="Permanent link"></a></h3>
+<p>Sets the theme and theme specific configuration of your documentation site.
+May be either a string or a set of key/value pairs.</p>
+<p>If a string, it must be the string name of a known installed theme. For a list
+of available themes visit <a href="../choosing-your-theme/">Choosing Your Theme</a>.</p>
+<p>An example set of key/value pairs might look something like this:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">theme</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mkdocs</span>
+<span class="w">  </span><span class="nt">locale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+<span class="w">  </span><span class="nt">custom_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_theme_customizations/</span>
+<span class="w">  </span><span class="nt">static_templates</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sitemap.html</span>
+<span class="w">  </span><span class="nt">include_sidebar</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p>If a set of key/value pairs, the following nested keys can be defined:</p>
+<div class="admonition block">
+<p class="admonition-title">Block</p>
+<h4 id="name">
+name<a class="headerlink" href="#name" title="Permanent link"></a></h4>
+<p>The string name of a known installed theme. For a list of available themes
+visit <a href="../choosing-your-theme/">Choosing Your Theme</a>.</p>
+<h4 id="locale">locale<a class="headerlink" href="#locale" title="Permanent link"></a></h4>
+<p>A code representing the language of your site. See <a href="../localizing-your-theme/">Localizing your theme</a>
+for details.</p>
+<h4 id="custom_dir">custom_dir<a class="headerlink" href="#custom_dir" title="Permanent link"></a></h4>
+<p>A directory containing a custom theme. This can either be a relative
+directory, in which case it is resolved relative to the directory containing
+your configuration file or it can be an absolute directory path from the
+root of your local file system.</p>
+<p>See <a href="../customizing-your-theme/#using-the-theme-custom_dir">Customizing Your Theme</a> for details if you would like to tweak an
+existing theme.</p>
+<p>See the <a href="../../dev-guide/themes/">Theme Developer Guide</a> if you would like to build your own theme
+from the ground up.</p>
+<h4 id="static_templates">static_templates<a class="headerlink" href="#static_templates" title="Permanent link"></a></h4>
+<p>A list of templates to render as static pages. The templates must be located
+in either the theme's template directory or in the <code>custom_dir</code> defined in
+the theme configuration.</p>
+<h4 id="theme-specific-keywords">(theme specific keywords)<a class="headerlink" href="#theme-specific-keywords" title="Permanent link"></a></h4>
+<p>Any additional keywords supported by the theme can also be defined. See the
+documentation for the theme you are using for details.</p>
+</div>
+<p><strong>default</strong>: <code>'mkdocs'</code></p>
+<h3 id="docs_dir">docs_dir<a class="headerlink" href="#docs_dir" title="Permanent link"></a></h3>
+<p>The directory containing the documentation source markdown files. This can
+either be a relative directory, in which case it is resolved relative to the
+directory containing your configuration file, or it can be an absolute directory
+path from the root of your local file system.</p>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.11</p>
+<p>
+It can also be the directory of the configuration file itself, for a small
+project whose Markdown files sit next to <code>mkdocs.yml</code>, with <code>README.md</code> as
+the home page:</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="nt">docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<span class="nt">exclude_docs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">venv/</span>
+<span class="w">  </span><span class="no">*.py</span>
+<span class="w">  </span><span class="no">pyproject.toml</span>
+</code></pre></div>
+<p>The configuration file and the <a href="#site_dir"><code>site_dir</code></a> are then left out of
+the documentation. Every other file in the directory is published, like in
+any <code>docs_dir</code>, so list the files that aren't docs in
+<a href="#exclude_docs"><code>exclude_docs</code></a>. Hidden files and directories, such as
+<code>.git</code>, are always left out.</p>
+<p><strong>default</strong>: <code>'docs'</code></p>
+<h3 id="site_dir">site_dir<a class="headerlink" href="#site_dir" title="Permanent link"></a></h3>
+<p>The directory where the output HTML and other files are created. This can either
+be a relative directory, in which case it is resolved relative to the directory
+containing your configuration file, or it can be an absolute directory path from
+the root of your local file system.</p>
+<p>It can't contain the <a href="#docs_dir"><code>docs_dir</code></a>. It can be inside the
+<code>docs_dir</code>; it is then left out of the documentation.</p>
+<p><strong>default</strong>: <code>'site'</code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+If you are using source code control you will normally want to ensure that
+your <em>build output</em> files are not committed into the repository, and only
+keep the <em>source</em> files under version control. For example, if using <code>git</code>
+you might add the following line to your <code>.gitignore</code> file:</p>
+<div class="highlight"><pre><span></span><code>site/
+</code></pre></div>
+<p>If you're using another source code control tool, you'll want to check its
+documentation on how to ignore specific directories.</p>
+</div>
+<h3 id="languages">languages<a class="headerlink" href="#languages" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in MkDocs NG 1.11</p>
+</div>
+<p>The languages of a multi-language site. Each key is a language code, such as
+<code>en</code>, <code>zh</code> or <code>pt-BR</code>. Its value is the name shown in the language switcher, or
+a mapping with that <code>name</code> and any setting of <code>mkdocs.yml</code> to change for that
+language. The first language is the default one, built at the root of the site;
+the others are built into a sub-directory named after their code.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">languages</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">en</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">English</span>
+<span class="w">  </span><span class="nt">zh</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">简体中文</span>
+<span class="w">    </span><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">我的项目</span>
+</code></pre></div>
+<p>Translated pages sit next to the default language's, as <code>page.zh.md</code>, or in a
+<code>docs_dir</code> of the language's own. See <a href="../multi-language-sites/">Multi-language Sites</a> for the details.</p>
+<p><strong>default</strong>: <code>null</code> (a single-language site)</p>
+<h3 id="extra_css">extra_css<a class="headerlink" href="#extra_css" title="Permanent link"></a></h3>
+<p>Set a list of CSS files (relative to <code>docs_dir</code>) to be included by the theme, typically as <code>&lt;link&gt;</code> tags.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">extra_css</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">css/extra.css</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">css/second_extra.css</span>
+</code></pre></div>
+<p><strong>default</strong>: <code>[]</code> (an empty list).</p>
+<h3 id="extra_javascript">extra_javascript<a class="headerlink" href="#extra_javascript" title="Permanent link"></a></h3>
+<p>Set a list of JavaScript files in your <code>docs_dir</code> to be included by the theme, as <code>&lt;script&gt;</code> tags.</p>
+<div class="admonition new">
+<p class="admonition-title">Changed in version 1.5:</p>
+<p>Older versions of MkDocs supported only a plain list of strings, but now several additional config keys are available: <code>type</code>, <code>async</code>, <code>defer</code>.</p>
+</div>
+<p>See the examples and what they produce:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">extra_javascript</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">some_plain_javascript.js</span><span class="w">       </span><span class="c1"># &lt;script src="some_plain_javascript.js"&gt;&lt;/script&gt;</span>
+<span class="w">        </span><span class="c1"># New behavior in MkDocs 1.5:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">implicitly_as_module.mjs</span><span class="w">       </span><span class="c1"># &lt;script src="implicitly_as_module.mjs" type="module"&gt;&lt;/script&gt;</span>
+<span class="w">        </span><span class="c1"># Config keys only supported since MkDocs 1.5:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">explicitly_as_module.mjs</span><span class="w"> </span><span class="c1"># &lt;script src="explicitly_as_module.mjs" type="module"&gt;&lt;/script&gt;</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">module</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deferred_plain.js</span><span class="w">        </span><span class="c1"># &lt;script src="deferred_plain.js" defer&gt;&lt;/script&gt;</span>
+<span class="w">    </span><span class="nt">defer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scripts/async_module.mjs</span><span class="w"> </span><span class="c1"># &lt;script src="scripts/async_module.mjs" type="module" async&gt;&lt;/script&gt;</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">module</span>
+<span class="w">    </span><span class="nt">async</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>So, each item can be either:</p>
+<ul>
+<li>a plain string, or</li>
+<li>a mapping that has the required <code>path</code> key and 3 optional keys <code>type</code> (string), <code>async</code> (boolean), <code>defer</code> (boolean).</li>
+</ul>
+<p>Only the plain string variant detects the <code>.mjs</code> extension and adds <code>type="module"</code>, otherwise <code>type: module</code> must be written out regardless of extension.</p>
+<p><strong>default</strong>: <code>[]</code> (an empty list).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>*.js</code> and <code>*.css</code> files, just like any other type of file, are always copied from <code>docs_dir</code> into the site's deployed copy, regardless if they're linked to the pages via the above configs or not.</p>
+</div>
+<h3 id="extra_templates">extra_templates<a class="headerlink" href="#extra_templates" title="Permanent link"></a></h3>
+<p>Set a list of templates in your <code>docs_dir</code> to be built by MkDocs. To see more
+about writing templates for MkDocs read the documentation about <a href="../../dev-guide/themes/">custom themes</a>
+and specifically the section about the <a href="../../dev-guide/themes/#template-variables">available variables</a> to
+templates. See the example in <a href="#extra_css">extra_css</a> for usage.</p>
+<p><strong>default</strong>: <code>[]</code> (an empty list).</p>
+<h3 id="extra">extra<a class="headerlink" href="#extra" title="Permanent link"></a></h3>
+<p>A set of key-value pairs, where the values can be any valid YAML construct, that
+will be passed to the template. This allows for great flexibility when creating
+custom themes.</p>
+<p>For example, if you are using a theme that supports displaying the project
+version, you can pass it to the theme like this:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">extra</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+</code></pre></div>
+<p><strong>default</strong>: By default <code>extra</code> will be an empty key-value mapping.</p>
+<h2 id="preview-controls">Preview controls<a class="headerlink" href="#preview-controls" title="Permanent link"></a></h2>
+<h2 id="live-reloading">Live Reloading<a class="headerlink" href="#live-reloading" title="Permanent link"></a></h2>
+<h3 id="watch">watch<a class="headerlink" href="#watch" title="Permanent link"></a></h3>
+<p>Determines additional directories to watch when running <code>mkdocs serve</code>.
+Configuration is a YAML list.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">watch</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">directory_a</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">directory_b</span>
+</code></pre></div>
+<p>Allows a custom default to be set without the need to pass it through the <code>-w</code>/<code>--watch</code>
+option every time the <code>mkdocs serve</code> command is called.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+The paths provided via the configuration file are relative to the configuration file.</p>
+<p>The paths provided via the <code>-w</code>/<code>--watch</code> CLI parameters are not.</p>
+</div>
+<h3 id="use_directory_urls">use_directory_urls<a class="headerlink" href="#use_directory_urls" title="Permanent link"></a></h3>
+<p>This setting controls the directory structure of the generated documentation, and thereby the URL format used for linking to pages.</p>
+<p>The following tables demonstrate how the directory structure and URLs used on the site differ when
+setting <code>use_directory_urls</code> to <code>true</code> or <code>false</code>.</p>
+<p><strong><code>use_directory_urls: false</code></strong></p>
+<p>This setting is needed when the documentation is hosted on systems that can't
+access the file <code>X/index.html</code> when given the URL <code>X</code>. When set to <code>false</code>,
+no additional <code>X</code> directory is created, and the file is simply stored as <code>X.html</code>.
+Links are created that point directly to the target <em>file</em> rather than a target
+<em>directory</em>.</p>
+<div class="sumi-table">
+<table>
+<thead>
+<tr>
+<th>Source file</th>
+<th>Generated File</th>
+<th>URL Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index.md</td>
+<td>index.html</td>
+<td>/index.html</td>
+</tr>
+<tr>
+<td>api-guide.md</td>
+<td>api-guide.html</td>
+<td>/api-guide.html</td>
+</tr>
+<tr>
+<td>about/license.md</td>
+<td>about/license.html</td>
+<td>/about/license.html</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For example, this needs to be set to <code>false</code> when:</p>
+<ul>
+<li>opening pages directly from the file system</li>
+<li>publishing the documentation to a static S3 website.</li>
+</ul>
+<p><strong><code>use_directory_urls: true</code></strong></p>
+<p>The default style of <code>use_directory_urls: true</code> creates more user friendly URLs,
+and is usually what you'll want to use.</p>
+<div class="sumi-table">
+<table>
+<thead>
+<tr>
+<th>Source file</th>
+<th>Generated File</th>
+<th>URL Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index.md</td>
+<td>/index.html</td>
+<td>/</td>
+</tr>
+<tr>
+<td>api-guide.md</td>
+<td>/api-guide/index.html</td>
+<td>/api-guide/</td>
+</tr>
+<tr>
+<td>about/license.md</td>
+<td>/about/license/index.html</td>
+<td>/about/license/</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>default</strong>: <code>true</code></p>
+<h3 id="strict">strict<a class="headerlink" href="#strict" title="Permanent link"></a></h3>
+<p>Determines how warnings are handled. Set to <code>true</code> to halt processing when a
+warning is raised. Set to <code>false</code> to print a warning and continue processing.</p>
+<p>Notices about deprecated configuration options (of MkDocs or of plugins) are
+logged at INFO level and don't halt processing, so upgrading doesn't break a
+strict build. Options that have been removed are always an error.</p>
+<p>This is also available as a command line flag: <code>--strict</code>.</p>
+<p><strong>default</strong>: <code>false</code></p>
+<h3 id="dev_addr">dev_addr<a class="headerlink" href="#dev_addr" title="Permanent link"></a></h3>
+<p>Determines the address used when running <code>mkdocs serve</code>. Must be of the format
+<code>IP:PORT</code>.</p>
+<p>Allows a custom default to be set without the need to pass it through the
+<code>--dev-addr</code> option every time the <code>mkdocs serve</code> command is called.</p>
+<p>If the port is the default <code>8000</code> and another program is already using it,
+<code>mkdocs serve</code> uses the next free port, up to <code>8010</code>, and says so in its
+output. Any other port is used as given: if it is busy, <code>mkdocs serve</code> stops
+with an error.</p>
+<p><code>mkdocs serve</code> is a development server. Use an address such as <code>0.0.0.0:8000</code>
+to preview the site from another machine or from outside a container, not to
+host the site: see <a href="#site_url">site_url</a>.</p>
+<p><strong>default</strong>: <code>'127.0.0.1:8000'</code></p>
+<p>See also: <a href="#site_url">site_url</a>.</p>
+<h2 id="formatting-options">Formatting options<a class="headerlink" href="#formatting-options" title="Permanent link"></a></h2>
+<h3 id="markdown_extensions">markdown_extensions<a class="headerlink" href="#markdown_extensions" title="Permanent link"></a></h3>
+<p>MkDocs uses the <a href="https://python-markdown.github.io/" rel="external">Python Markdown</a> library to translate Markdown files
+into HTML. Python Markdown supports a variety of <a href="https://python-markdown.github.io/extensions/" rel="external">extensions</a>
+that customize how pages are formatted. This setting lets you enable a list of
+extensions beyond the ones that MkDocs uses by default (<code>meta</code>, <code>toc</code>, <code>tables</code>,
+and <code>fenced_code</code>).</p>
+<p>For example, to enable the <a href="https://python-markdown.github.io/extensions/smarty/" rel="external">SmartyPants typography extension</a>, use:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">smarty</span>
+</code></pre></div>
+<p>Some extensions provide configuration options of their own. If you would like to
+set any configuration options, then you can nest a key/value mapping
+(<code>option_name: option value</code>) of any options that a given extension supports.
+See the documentation for the extension you are using to determine what options
+they support.</p>
+<p>For example, to enable permalinks in the (included) <code>toc</code> extension, use:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Note that a colon (<code>:</code>) must follow the extension name (<code>toc</code>) and then on a new
+line the option name and value must be indented and separated by a colon. If you
+would like to define multiple options for a single extension, each option must be
+defined on a separate line:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">"_"</span>
+</code></pre></div>
+<p>Add an additional item to the list for each extension. If you have no
+configuration options to set for a specific extension, then simply omit options
+for that extension:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">smarty</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sane_lists</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Dynamic config values</p>
+<p>To dynamically configure the extensions, you can get the config values from <a href="#environment-variables">environment variables</a> or <a href="#paths-relative-to-the-current-file-or-site">obtain paths</a> of the currently rendered Markdown file or the overall MkDocs site.</p>
+</div>
+<p>In the above examples, each extension is a list item (starts with a <code>-</code>). As an
+alternative, key/value pairs can be used instead. However, in that case an empty
+value must be provided for extensions for which no options are defined.
+Therefore, the last example above could also be defined as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">smarty</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">sane_lists</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+</code></pre></div>
+<p>This alternative syntax is required if you intend to override some options via
+<a href="#configuration-inheritance">inheritance</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">More extensions</p>
+<p>The Python-Markdown documentation provides a <a href="https://python-markdown.github.io/extensions/" rel="external">list of extensions</a>
+which are available out-of-the-box. For a list of configuration options
+available for a given extension, see the documentation for that extension.</p>
+<p>You may also install and use various third party extensions (<a href="https://github.com/Python-Markdown/markdown/wiki/Third-Party-Extensions" rel="external">Python-Markdown wiki</a>, <a href="https://github.com/mkdocs-ng/catalog" rel="external">MkDocs project catalog</a>). Consult
+the documentation provided by those extensions for installation instructions
+and available configuration options.</p>
+</div>
+<p><strong>default</strong>: <code>[]</code> (an empty list).</p>
+<h3 id="markdown_extensions_path">markdown_extensions_path<a class="headerlink" href="#markdown_extensions_path" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.11</p>
+</div>
+<p>A list of directories (relative to <code>mkdocs.yml</code>) to load your own Markdown
+extensions from, so a small extension can live next to your docs instead of
+in an installed package.</p>
+<p>For example, with an extension in <code>extensions/abbreviations.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions_path</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">extensions</span>
+<span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">abbreviations</span>
+</code></pre></div>
+<p>The directories are added to Python's import path, like the <code>PYTHONPATH</code>
+environment variable would, before the extensions in
+<a href="#markdown_extensions"><code>markdown_extensions</code></a> are loaded. Each directory must
+exist. Use the module's name (or <code>module:ClassName</code>) as the extension name.</p>
+<p><strong>default</strong>: <code>[]</code> (an empty list).</p>
+<h3 id="hooks">hooks<a class="headerlink" href="#hooks" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.4</p>
+</div>
+<p>A list of paths to Python scripts (relative to <code>mkdocs.yml</code>) that are loaded and used as <a href="#plugins">plugin</a> instances.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_hooks.py</span>
+</code></pre></div>
+<p>Then the file <code>my_hooks.py</code> can contain any <a href="../../dev-guide/plugins/#events">plugin event handlers</a> (without <code>self</code>), e.g.:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">on_page_markdown</span><span class="p">(</span><span class="n">markdown</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">markdown</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'z'</span><span class="p">)</span>
+</code></pre></div>
+<details class="example">
+<summary>Advanced example:</summary>
+<p>This produces warnings based on the Markdown content (and warnings are fatal in <a href="#strict">strict</a> mode):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mkdocs.plugins</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">'mkdocs'</span><span class="p">)</span>
+
+<span class="nd">@mkdocs</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">event_priority</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_page_markdown</span><span class="p">(</span><span class="n">markdown</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">src_uri</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\bhttp://[^) ]+'</span><span class="p">,</span> <span class="n">markdown</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Documentation file '</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">' contains a non-HTTPS link: </span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<p>This does not enable any new abilities compared to <a href="../../dev-guide/plugins/">plugins</a>, it only simplifies one-off usages, as these don't need to be <em>installed</em> like plugins do.</p>
+<p>Note that for <code>mkdocs serve</code> the hook module will <em>not</em> be reloaded on each build.</p>
+<p>You might have seen this feature in the <a href="https://github.com/aklajnert/mkdocs-simple-hooks" rel="external">mkdocs-simple-hooks plugin</a>. If using standard method names, it can be directly replaced, e.g.:</p>
+<div class="highlight"><pre><span></span><code><span class="gd">-plugins:</span>
+<span class="gd">-  - mkdocs-simple-hooks:</span>
+<span class="gd">-      hooks:</span>
+<span class="gd">-        on_page_markdown: 'my_hooks:on_page_markdown'</span>
+<span class="gi">+hooks:</span>
+<span class="gi">+  - my_hooks.py</span>
+</code></pre></div>
+<div class="admonition new">
+<p class="admonition-title">New in MkDocs 1.6</p>
+<p>If a hook file has a file <code>foo.py</code> adjacent to it, it can use the normal Python syntax <code>import foo</code> to access its functions.</p>
+<p>In older versions of MkDocs, a workaround was necessary to make this work - adding the path to <code>sys.path</code>.</p>
+</div>
+<h3 id="plugins">plugins<a class="headerlink" href="#plugins" title="Permanent link"></a></h3>
+<p>A list of plugins (with optional configuration settings) to use when building
+the site. See the <a href="../../dev-guide/plugins/">Plugins</a> documentation for full details.</p>
+<p><strong>default</strong>: <code>['search']</code> (the "search" plugin included with MkDocs).</p>
+<p>If the <code>plugins</code> config setting is defined in the <code>mkdocs.yml</code> config file, then
+any defaults (such as <code>search</code>) are ignored and you need to explicitly re-enable
+the defaults if you would like to continue using them:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">your_other_plugin</span>
+</code></pre></div>
+<p>To define options for a given plugin, use a nested set of key/value pairs:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">your_other_plugin</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">option1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value</span>
+<span class="w">      </span><span class="nt">option2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">other value</span>
+</code></pre></div>
+<p>To completely disable all plugins, including any defaults, set the <code>plugins</code>
+setting to an empty list:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+</code></pre></div>
+<h4 id="enabled-option"><code>enabled</code> option<a class="headerlink" href="#enabled-option" title="Permanent link"></a></h4>
+<div class="admonition new">
+<p class="admonition-title">New in MkDocs 1.6</p>
+<p>Each plugin has its own options keys. However MkDocs also ensures that each plugin has the <code>enabled</code> boolean option. This can be used to conditionally enable a particular plugin, as in the following example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">code-validator</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kt">!ENV</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">LINT</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<p>See: <a href="#environment-variables">Environment variables</a></p>
+</div>
+<h4 id="alternate-syntax">Alternate syntax<a class="headerlink" href="#alternate-syntax" title="Permanent link"></a></h4>
+<p>In the above examples, each plugin is a list item (starts with a <code>-</code>). As an
+alternative, key/value pairs can be used instead. However, in that case an empty
+value must be provided for plugins for which no options are defined. Therefore,
+the last example above could also be defined as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">search</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">your_other_plugin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">option1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value</span>
+<span class="w">    </span><span class="nt">option2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">other value</span>
+</code></pre></div>
+<p>This alternative syntax is required if you intend to override some options via
+<a href="#configuration-inheritance">inheritance</a>.</p>
+<h4 id="search">Search<a class="headerlink" href="#search" title="Permanent link"></a></h4>
+<p>A search plugin is provided by default with MkDocs which uses <a href="https://lunrjs.com/" rel="external">lunr.js</a> as a
+search engine. The following config options are available to alter the behavior
+of the search plugin:</p>
+<h5 id="separator"><strong>separator</strong><a class="headerlink" href="#separator" title="Permanent link"></a></h5>
+<p>A regular expression which matches the characters used as word separators when
+building the index. By default whitespace and the hyphen (<code>-</code>) are used. To add
+the dot (<code>.</code>) as a word separator you might do this:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">'[\s\-\.]+'</span>
+</code></pre></div>
+<p><strong>default</strong>: <code>'[\s\-]+'</code></p>
+<h5 id="stop_words"><strong>stop_words</strong><a class="headerlink" href="#stop_words" title="Permanent link"></a></h5>
+<p>A boolean that determines whether <a href="https://lunrjs.com/" rel="external">lunr.js</a> filters common "stop words" (such
+as <code>for</code>, <code>from</code>, <code>if</code>, <code>when</code> or <code>while</code> in English) out of the search index.</p>
+<p>Stop word filtering slightly reduces the size of the index, but it makes those
+words impossible to search for, which is a poor fit for technical
+documentation where words like <code>for</code>, <code>from</code> or <code>while</code> are often meaningful
+keywords. For that reason stop words are kept in the index by default. Set
+this option to <code>true</code> to restore lunr's stop word filtering:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">stop_words</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+Regardless of this setting, queries shorter than <code>min_search_length</code>
+characters are ignored. For example, to be able to search for <code>if</code> or <code>in</code>,
+<code>min_search_length</code> must also be lowered to <code>2</code>.</p>
+</div>
+<p><strong>default</strong>: <code>False</code></p>
+<h5 id="min_search_length"><strong>min_search_length</strong><a class="headerlink" href="#min_search_length" title="Permanent link"></a></h5>
+<p>An integer value that defines the minimum length for a search query. By default
+searches shorter than 3 chars in length are ignored as search result quality with
+short search terms are poor. However, for some use cases (such as documentation
+about Message Queues which might generate searches for 'MQ') it may be preferable
+to set a shorter limit.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">min_search_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</code></pre></div>
+<p><strong>default</strong>: 3</p>
+<h5 id="lang"><strong>lang</strong><a class="headerlink" href="#lang" title="Permanent link"></a></h5>
+<p>A list of languages to use when building the search index as identified by their
+<a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" rel="external">ISO 639-1</a> language codes. With <a href="https://github.com/MihaiValentin/lunr-languages#lunr-languages-----" rel="external">Lunr Languages</a>, the following languages are
+supported:</p>
+<ul>
+<li><code>ar</code>: Arabic</li>
+<li><code>da</code>: Danish</li>
+<li><code>nl</code>: Dutch</li>
+<li><code>en</code>: English</li>
+<li><code>fi</code>: Finnish</li>
+<li><code>fr</code>: French</li>
+<li><code>de</code>: German</li>
+<li><code>hu</code>: Hungarian</li>
+<li><code>it</code>: Italian</li>
+<li><code>ja</code>: Japanese</li>
+<li><code>no</code>: Norwegian</li>
+<li><code>pt</code>: Portuguese</li>
+<li><code>ro</code>: Romanian</li>
+<li><code>ru</code>: Russian</li>
+<li><code>es</code>: Spanish</li>
+<li><code>sv</code>: Swedish</li>
+<li><code>th</code>: Thai</li>
+<li><code>tr</code>: Turkish</li>
+<li><code>vi</code>: Vietnamese</li>
+<li><code>zh</code>: Chinese</li>
+</ul>
+<p>You may <a href="https://github.com/MihaiValentin/lunr-languages/blob/master/CONTRIBUTING.md" rel="external">contribute additional languages</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>
+While search does support using multiple languages together, it is best not
+to add additional languages unless you really need them. Each additional
+language adds significant bandwidth requirements and uses more browser
+resources. Generally, it is best to keep each instance of MkDocs to a single
+language.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Changed in version 1.11.2</p>
+<p>
+Chinese and Japanese are written without spaces between words. With <code>zh</code> or
+<code>ja</code> in <code>lang</code>, search splits such text into words with the browser's
+built-in <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter" rel="external"><code>Intl.Segmenter</code></a>, both in the index and in the
+search query, so a search for a word finds the pages that contain it. Browsers
+without <code>Intl.Segmenter</code> (such as Firefox before version 125) search for each
+character instead. A Chinese or Japanese character counts as two characters
+for <a href="#min_search_length"><code>min_search_length</code></a>, so two-character words can be
+searched for with the default setting.</p>
+</div>
+<p><strong>default</strong>: The value of <code>theme.locale</code> if set, otherwise <code>[en]</code>.</p>
+<h5 id="prebuild_index"><strong>prebuild_index</strong><a class="headerlink" href="#prebuild_index" title="Permanent link"></a></h5>
+<p>Optionally generates a pre-built index of all pages, which provides some
+performance improvements for larger sites. Before enabling, confirm that the
+theme you are using explicitly supports using a prebuilt index (the builtin
+themes do). Set to <code>true</code> to enable.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>
+This option requires that <a href="https://nodejs.org/" rel="external">Node.js</a> be installed and the command <code>node</code> be
+on the system path. If the call to <code>node</code> fails for any reason, a warning
+is issued and the build continues uninterrupted. You may use the <code>--strict</code>
+flag when building to cause such a failure to raise an error instead.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+On smaller sites, using a pre-built index is not recommended as it creates a
+significant increase is bandwidth requirements with little to no noticeable
+improvement to your users. However, for larger sites (hundreds of pages),
+the bandwidth increase is relatively small and your users will notice a
+significant improvement in search performance.</p>
+</div>
+<p><strong>default</strong>: <code>False</code></p>
+<h5 id="indexing"><strong>indexing</strong><a class="headerlink" href="#indexing" title="Permanent link"></a></h5>
+<p>Configures what strategy the search indexer will use when building the index
+for your pages. This property is particularly useful if your project is large
+in scale, and the index takes up an enormous amount of disk space.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">indexing</span><span class="p">:</span><span class="w"> </span><span class="s">'full'</span>
+</code></pre></div>
+<h6 id="options">Options<a class="headerlink" href="#options" title="Permanent link"></a></h6>
+<div class="sumi-table">
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>full</code></td>
+<td>Indexes the title, section headings, and full text of each page.</td>
+</tr>
+<tr>
+<td><code>sections</code></td>
+<td>Indexes the title and section headings of each page.</td>
+</tr>
+<tr>
+<td><code>titles</code></td>
+<td>Indexes only the title of each page.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>default</strong>: <code>full</code></p>
+<h4 id="llmstxt">LLMs.txt<a class="headerlink" href="#llmstxt" title="Permanent link"></a></h4>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.9</p>
+</div>
+<p>The <code>llms_txt</code> plugin, provided with MkDocs but not enabled by default,
+publishes your documentation in a form that is easy for LLMs and coding agents
+to read, following the <a href="https://llmstxt.org/" rel="external">llms.txt</a> proposal:</p>
+<ul>
+<li>A Markdown version of every page, at the page's source path. For example,
+    <code>docs/user-guide/install.md</code> is published as <code>user-guide/install.md</code> next to
+    the HTML page. The content is the page's Markdown after other plugins have
+    processed it (so macros and snippets are expanded), without its front
+    matter, and starting with the page's title. Relative links between pages
+    keep working.</li>
+<li>An <code>llms.txt</code> file at the root of the site, with the <code>site_name</code> as its
+    title, the <code>site_description</code> as its summary, and links to the Markdown
+    pages grouped by navigation section. Pages that are built but not in the
+    navigation, such as blog posts, are listed last under "Other pages". A
+    page's <code>description</code> <a href="../writing-your-docs/#meta-data">meta-data</a> becomes the note of its link.
+    Links are absolute when <code>site_url</code> is set. Pages can link to <code>llms.txt</code>
+    (and <code>llms-full.txt</code>) like to any other file in <code>docs_dir</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">site_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/</span>
+<span class="nt">site_description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Short summary of the project.</span>
+
+<span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llms_txt</span>
+</code></pre></div>
+<p>Draft pages are left out, and so are <a href="#nav">links</a> that are not pages.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+The Markdown versions are made from the pages' Markdown, not from the
+generated HTML. Content that Markdown extensions generate while rendering the
+page, such as API documentation from <code>mkdocstrings</code> (<code>::: identifier</code>
+blocks), appears in its source form.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+Add <code>search</code> to <code>plugins</code> as well if you want to keep the search feature:
+listing <code>plugins</code> replaces the default list.</p>
+</div>
+<h5 id="full_output"><strong>full_output</strong><a class="headerlink" href="#full_output" title="Permanent link"></a></h5>
+<p>A boolean that determines whether to also write <code>llms-full.txt</code>: the content
+of all pages in navigation order, in a single file.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">llms_txt</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">full_output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p><strong>default</strong>: <code>False</code></p>
+<h2 id="special-yaml-tags">Special YAML tags<a class="headerlink" href="#special-yaml-tags" title="Permanent link"></a></h2>
+<h3 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="Permanent link"></a></h3>
+<p>In most cases, the value of a configuration option is set directly in the
+configuration file. However, as an option, the value of a configuration option
+may be set to the value of an environment variable using the <code>!ENV</code> tag. For
+example, to set the value of the <code>site_name</code> option to the value of the
+variable <code>SITE_NAME</code> the YAML file may contain the following:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="kt">!ENV</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SITE_NAME</span>
+</code></pre></div>
+<p>If the environment variable is not defined, then the configuration setting
+would be assigned a <code>null</code> (or <code>None</code> in Python) value. A default value can be
+defined as the last value in a list. Like this:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="kt">!ENV</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">SITE_NAME</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'My</span><span class="nv"> </span><span class="s">default</span><span class="nv"> </span><span class="s">site</span><span class="nv"> </span><span class="s">name'</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<p>Multiple fallback variables can be used as well. Note that the last value is
+not an environment variable, but must be a value to use as a default if none
+of the specified environment variables are defined.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="kt">!ENV</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">SITE_NAME</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">OTHER_NAME</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'My</span><span class="nv"> </span><span class="s">default</span><span class="nv"> </span><span class="s">site</span><span class="nv"> </span><span class="s">name'</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<p>Simple types defined within an environment variable such as string, bool,
+integer, float, datestamp and null are parsed as if they were defined directly
+in the YAML file, which means that the value will be converted to the
+appropriate type. However, complex types such as lists and key/value pairs
+cannot be defined within a single environment variable.</p>
+<p>For more details, see the <a href="https://github.com/waylan/pyyaml-env-tag" rel="external">pyyaml_env_tag</a>
+project.</p>
+<h3 id="paths-relative-to-the-current-file-or-site">Paths relative to the current file or site<a class="headerlink" href="#paths-relative-to-the-current-file-or-site" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.5</p>
+</div>
+<p>Some Markdown extensions can benefit from knowing the path of the Markdown file that's currently being processed, or just the root path of the current site. For that, the special tag <code>!relative</code> can be used in most contexts within the config file, though the only known usecases are within <a href="#markdown_extensions"><code>markdown_extensions</code></a>.</p>
+<p>Examples of the possible values are:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="kt">!relative</span><span class="w">  </span><span class="c1"># Relative to the directory of the current Markdown file</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="kt">!relative</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$docs_dir</span><span class="w">  </span><span class="c1"># Path of the docs_dir</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="kt">!relative</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$config_dir</span><span class="w">  </span><span class="c1"># Path of the directory that contains the main mkdocs.yml</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="kt">!relative</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$config_dir/some/child/dir</span><span class="w">  </span><span class="c1"># Some subdirectory of the root config directory</span>
+</code></pre></div>
+<p>(Here, <code>$docs_dir</code> and <code>$config_dir</code> are currently the <em>only</em> special prefixes that are recognized.)</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pymdownx.snippets</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">base_path</span><span class="p">:</span><span class="w"> </span><span class="kt">!relative</span><span class="w">  </span><span class="c1"># Relative to the current Markdown file</span>
+</code></pre></div>
+<p>This allows the <a href="https://facelessuser.github.io/pymdown-extensions/extensions/snippets/" rel="external">pymdownx.snippets</a> extension to include files relative to the current Markdown file, which without this tag it would have no way of knowing.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Even for the default case, any extension's base path is technically the <em>current working directory</em> although the assumption is that it's the <em>directory of mkdocs.yml</em>. So even if you don't want the paths to be relative, to improve the default behavior, always prefer to use this idiom:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pymdownx.snippets</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">base_path</span><span class="p">:</span><span class="w"> </span><span class="kt">!relative</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$config_dir</span><span class="w">  </span><span class="c1"># Relative to the root directory with mkdocs.yml</span>
+</code></pre></div>
+</div>
+<h2 id="configuration-inheritance">Configuration Inheritance<a class="headerlink" href="#configuration-inheritance" title="Permanent link"></a></h2>
+<p>Generally, a single file would hold the entire configuration for a site.
+However, some organizations may maintain multiple sites which all share a common
+configuration across them. Rather than maintaining separate configurations for
+each, the common configuration options can be defined in a parent configuration
+file which each site's primary configuration file inherits.</p>
+<p>To define the parent for a configuration file, set the <code>INHERIT</code> (all caps) key
+to the path of the parent file. The path must be relative to the location of the
+primary file.</p>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.9</p>
+</div>
+<p><code>INHERIT</code> can also be a list of paths, to split the configuration into several
+files. The files are merged in order: each one overrides the ones before it, and
+the primary file overrides all of them. A parent file may itself set <code>INHERIT</code>,
+with paths relative to that file. A file that inherits from itself, directly or
+indirectly, is an error.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">INHERIT</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config/markdown_extensions.yml</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config/plugins.yml</span>
+<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Foo Project</span>
+</code></pre></div>
+<p><code>mkdocs serve</code> watches inherited files too, and rebuilds the site when they
+change.</p>
+<p>For configuration options to be merged with a parent configuration, those
+options must be defined as key/value pairs. Specifically, the
+<a href="#markdown_extensions">markdown_extensions</a> and <a href="#plugins">plugins</a> options must use the alternative syntax
+which does not use list items (lines which start with  <code>-</code>).</p>
+<p>For example, suppose the common (parent) configuration is defined in <code>base.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">theme</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mkdocs</span>
+<span class="w">  </span><span class="nt">locale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+<span class="w">  </span><span class="nt">highlightjs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">admonition</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+</code></pre></div>
+<p>Then, for the "foo" site, the primary configuration file would be defined at
+<code>foo/mkdocs.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">INHERIT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../base.yml</span>
+<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Foo Project</span>
+<span class="nt">site_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/foo</span>
+</code></pre></div>
+<p>When running <code>mkdocs build</code>, the file at <code>foo/mkdocs.yml</code> would be passed in as
+the configuration file. MkDocs will then parse that file, retrieve and parse the
+parent file <code>base.yml</code> and deep merge the two. This would result in MkDocs
+receiving the following merged configuration:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Foo Project</span>
+<span class="nt">site_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/foo</span>
+
+<span class="nt">theme</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mkdocs</span>
+<span class="w">  </span><span class="nt">locale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+<span class="w">  </span><span class="nt">highlightjs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">admonition</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+</code></pre></div>
+<p>Deep merging allows you to add and/or override various values in your primary
+configuration file. For example, suppose for one site you wanted to add support
+for definition lists, use a different symbol for permalinks, and define a
+different separator. In that site's primary configuration file you could do:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">INHERIT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../base.yml</span>
+<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Bar Project</span>
+<span class="nt">site_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/bar</span>
+
+<span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">def_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain"></span>
+<span class="w">    </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">"_"</span>
+</code></pre></div>
+<p>In that case, the above configuration would be deep merged with <code>base.yml</code> and
+result in the following configuration:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Bar Project</span>
+<span class="nt">site_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/bar</span>
+
+<span class="nt">theme</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mkdocs</span>
+<span class="w">  </span><span class="nt">locale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+<span class="w">  </span><span class="nt">highlightjs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">def_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">  </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain"></span>
+<span class="w">    </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">"_"</span>
+<span class="w">  </span><span class="nt">admonition</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+</code></pre></div>
+<p>Notice that the <code>admonition</code> extension was retained from the parent
+configuration, the <code>def_list</code> extension was added, the value of
+<code>toc.permalink</code> was replaced, and the value of <code>toc.separator</code> was added.</p>
+<p>You can replace or merge the value of any key. However, any non-key is always
+replaced. Therefore, you cannot append items to a list. You must redefine the
+entire list.</p>
+<p>As the <a href="#nav">nav</a> configuration is made up of nested lists, this means that you
+cannot merge navigation items. Of course, you can replace the entire <code>nav</code>
+configuration with a new one. However, it is generally expected that the entire
+navigation would be defined in the primary configuration file for a project.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>
+As a reminder, all path based configuration options must be relative to the
+primary configuration file and MkDocs does not alter the paths when merging.
+Therefore, defining paths in a parent file which is inherited by multiple
+different sites may not work as expected. It is generally best to define
+path based options in the primary configuration file only.</p>
+</div>
+<p>The inheritance can also be used as a quick way to override keys on the command line - by using stdin as the config file. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s1">'{INHERIT: mkdocs.yml, site_name: "Renamed site"}'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mkdocs<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>-
+</code></pre></div>
+        </div>
+<footer class="sumi-article-footer">
+  <div class="sumi-meta-row"><a class="sumi-meta sumi-edit" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/user-guide/configuration.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a>
+  </div>
+  <nav class="sumi-pager" aria-label="Previous / Next">
+    <a class="sumi-pager-prev" href="../multi-language-sites/" rel="prev"><span class="sumi-pager-label"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Previous</span><span class="sumi-pager-title">Multi-language Sites</span></a>
+    <a class="sumi-pager-next" href="../cli/" rel="next"><span class="sumi-pager-label">Next<svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span><span class="sumi-pager-title">Command Line Interface</span></a>
+  </nav>
+</footer>
+      </article>
+    </main>
+    <aside class="sumi-rail" aria-label="On this page">
+      <div class="sumi-rail-inner">
+        <div class="sumi-rail-title">On this page</div>
+        <nav class="sumi-toc"><ul>
+  <li><a href="#introduction" data-level="2">Introduction</a><ul>
+  <li><a href="#editor-and-agent-support" data-level="3">Editor and agent support</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#project-information" data-level="2">Project information</a><ul>
+  <li><a href="#site_name" data-level="3">site_name</a>
+  </li>
+  <li><a href="#site_url" data-level="3">site_url</a>
+  </li>
+  <li><a href="#repo_url" data-level="3">repo_url</a>
+  </li>
+  <li><a href="#repo_name" data-level="3">repo_name</a>
+  </li>
+  <li><a href="#edit_uri" data-level="3">edit_uri</a>
+  </li>
+  <li><a href="#edit_uri_template" data-level="3">edit_uri_template</a>
+  </li>
+  <li><a href="#site_description" data-level="3">site_description</a>
+  </li>
+  <li><a href="#site_author" data-level="3">site_author</a>
+  </li>
+  <li><a href="#copyright" data-level="3">copyright</a>
+  </li>
+  <li><a href="#remote_branch" data-level="3">remote_branch</a>
+  </li>
+  <li><a href="#remote_name" data-level="3">remote_name</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#documentation-layout" data-level="2">Documentation layout</a><ul>
+  <li><a href="#nav" data-level="3">nav</a>
+  </li>
+  <li><a href="#exclude_docs" data-level="3">exclude_docs</a>
+  </li>
+  <li><a href="#draft_docs" data-level="3">draft_docs</a>
+  </li>
+  <li><a href="#not_in_nav" data-level="3">not_in_nav</a>
+  </li>
+  <li><a href="#validation" data-level="3">validation</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#build-directories" data-level="2">Build directories</a><ul>
+  <li><a href="#theme" data-level="3">theme</a>
+  </li>
+  <li><a href="#docs_dir" data-level="3">docs_dir</a>
+  </li>
+  <li><a href="#site_dir" data-level="3">site_dir</a>
+  </li>
+  <li><a href="#languages" data-level="3">languages</a>
+  </li>
+  <li><a href="#extra_css" data-level="3">extra_css</a>
+  </li>
+  <li><a href="#extra_javascript" data-level="3">extra_javascript</a>
+  </li>
+  <li><a href="#extra_templates" data-level="3">extra_templates</a>
+  </li>
+  <li><a href="#extra" data-level="3">extra</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#preview-controls" data-level="2">Preview controls</a>
+  </li>
+  <li><a href="#live-reloading" data-level="2">Live Reloading</a><ul>
+  <li><a href="#watch" data-level="3">watch</a>
+  </li>
+  <li><a href="#use_directory_urls" data-level="3">use_directory_urls</a>
+  </li>
+  <li><a href="#strict" data-level="3">strict</a>
+  </li>
+  <li><a href="#dev_addr" data-level="3">dev_addr</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#formatting-options" data-level="2">Formatting options</a><ul>
+  <li><a href="#markdown_extensions" data-level="3">markdown_extensions</a>
+  </li>
+  <li><a href="#markdown_extensions_path" data-level="3">markdown_extensions_path</a>
+  </li>
+  <li><a href="#hooks" data-level="3">hooks</a>
+  </li>
+  <li><a href="#plugins" data-level="3">plugins</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#special-yaml-tags" data-level="2">Special YAML tags</a><ul>
+  <li><a href="#environment-variables" data-level="3">Environment variables</a>
+  </li>
+  <li><a href="#paths-relative-to-the-current-file-or-site" data-level="3">Paths relative to the current file or site</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#configuration-inheritance" data-level="2">Configuration Inheritance</a>
+  </li>
+</ul></nav>
+        <a class="sumi-rail-top" href="#"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>Back to top</a>
+      </div>
+    </aside>
+  </div><footer class="sumi-footer">
+  <div class="sumi-footer-inner">
+    <div class="sumi-footer-left"><div class="sumi-copyright">Copyright &copy; 2014 <a href="https://twitter.com/starletdreaming">Tom Christie</a>, Maintained by the <a href="https://github.com/mkdocs-ng">MkDocs NG Team</a>.</div>
+      <div class="sumi-credit">Built with <a href="https://github.com/mkdocs-ng/mkdocs" rel="noopener">MkDocs NG</a> and <a href="https://github.com/mkdocs-ng/mkdocs-sumi" rel="noopener">Sumi</a></div>
+    </div>
+    <div class="sumi-footer-right">
+      <button class="sumi-icon-btn" type="button" data-sumi-help aria-label="Keyboard shortcuts" title="Keyboard shortcuts"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></button>
+    </div>
+  </div>
+</footer>
+  <dialog class="sumi-palette" aria-label="Search">
+  <div class="sumi-palette-box">
+    <div class="sumi-palette-input">
+      <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+      <input type="search" autocomplete="off" spellcheck="false" placeholder="Search docs or run a command…" aria-label="Search" aria-controls="sumi-palette-results" aria-activedescendant="">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="sumi-palette-results" id="sumi-palette-results" role="listbox"></div>
+    <div class="sumi-palette-foot">
+      <span><kbd>↵</kbd> to open</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd> to move</span>
+      <span><kbd>Esc</kbd> to close</span>
+    </div>
+  </div>
+</dialog>
+<dialog class="sumi-help" aria-label="Keyboard shortcuts">
+  <div class="sumi-help-box">
+    <div class="sumi-help-head"><strong>Keyboard shortcuts</strong><button class="sumi-icon-btn" type="button" data-close aria-label="Close"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+    <dl>
+      <dt><kbd data-mod>Ctrl K</kbd> <kbd>/</kbd></dt><dd>Open search and commands</dd>
+      <dt><kbd>t</kbd></dt><dd>Toggle dark mode</dd>
+      <dt><kbd>[</kbd> <kbd>]</kbd></dt><dd>Previous / next page</dd>
+      <dt><kbd>j</kbd> <kbd>k</kbd></dt><dd>Previous / next heading</dd>
+      <dt><kbd>?</kbd></dt><dd>Show this help</dd>
+    </dl>
+  </div>
+</dialog>
+<dialog class="sumi-zoom" aria-label="Zoom image"><img alt=""></dialog>
+<div class="sumi-toast" role="status" aria-live="polite"></div>
+  <script>
+    window.sumi = {
+      base: "../..",
+      page: "user-guide/configuration/",
+      features: [],
+      markdown: "../configuration.md",
+      search: "../../search/search_index.json",
+      keyboard: true,
+      versions: null,
+      prev: "../multi-language-sites/",
+      next: "../cli/",
+      edit: "https://github.com/mkdocs-ng/mkdocs/blob/main/docs/user-guide/configuration.md",
+      nav: [{"t":"Home","u":"","s":""},{"t":"Getting Started","u":"getting-started/","s":""},{"t":"User Guide","u":"user-guide/","s":"User Guide"},{"t":"Installation","u":"user-guide/installation/","s":"User Guide"},{"t":"Switching to MkDocs NG","u":"user-guide/migrating/","s":"User Guide"},{"t":"Material for MkDocs End of Life","u":"user-guide/material-end-of-life/","s":"User Guide"},{"t":"Writing Your Docs","u":"user-guide/writing-your-docs/","s":"User Guide"},{"t":"Choosing Your Theme","u":"user-guide/choosing-your-theme/","s":"User Guide"},{"t":"Customizing Your Theme","u":"user-guide/customizing-your-theme/","s":"User Guide"},{"t":"Localizing Your Theme","u":"user-guide/localizing-your-theme/","s":"User Guide"},{"t":"Multi-language Sites","u":"user-guide/multi-language-sites/","s":"User Guide"},{"t":"Configuration","u":"user-guide/configuration/","s":"User Guide"},{"t":"Command Line Interface","u":"user-guide/cli/","s":"User Guide"},{"t":"Python API","u":"user-guide/python-api/","s":"User Guide"},{"t":"Deploying Your Docs","u":"user-guide/deploying-your-docs/","s":"User Guide"},{"t":"Versioned Docs","u":"user-guide/versioned-docs/","s":"User Guide"},{"t":"Developer Guide","u":"dev-guide/","s":"Developer Guide"},{"t":"Themes","u":"dev-guide/themes/","s":"Developer Guide"},{"t":"Translations","u":"dev-guide/translations/","s":"Developer Guide"},{"t":"Plugins","u":"dev-guide/plugins/","s":"Developer Guide"},{"t":"API Reference","u":"dev-guide/api/","s":"Developer Guide"},{"t":"Release Notes","u":"about/release-notes/","s":"About"},{"t":"Fixed Upstream Issues","u":"about/fixed-upstream-issues/","s":"About"},{"t":"Comparison","u":"about/comparison/","s":"About"},{"t":"Contributing","u":"about/contributing/","s":"About"},{"t":"License","u":"about/license/","s":"About"}],
+      alternate: [],
+      translations: [],
+      t: {"search":"Search","search_placeholder":"Search docs or run a command…","search_no_results":"No results for","search_loading":"Loading index…","search_hint_open":"to open","search_hint_move":"to move","search_hint_close":"to close","pages":"Pages","commands":"Commands","on_this_page":"On this page","back_to_top":"Back to top","previous":"Previous","next":"Next","edit_page":"Edit this page","view_source":"View source","copy_markdown":"Copy as Markdown","copied":"Copied","view_markdown":"View as Markdown","open_in":"Open in {name}","print":"Print","page_actions":"Page actions","copy":"Copy","copy_code":"Copy code","toggle_theme":"Toggle dark mode","theme_light":"Light","theme_dark":"Dark","theme_auto":"System","menu":"Menu","close":"Close","navigation":"Navigation","skip_to_content":"Skip to content","last_updated":"Last updated","reading_time":"{n} min read","language":"Language","untranslated":"This page has not been translated yet, so it is shown in {language}.","version":"Version","repository":"Repository","keyboard_shortcuts":"Keyboard shortcuts","shortcut_search":"Open search and commands","shortcut_theme":"Toggle dark mode","shortcut_prev_next":"Previous / next page","shortcut_toc":"Previous / next heading","shortcut_help":"Show this help","built_with":"Built with {mkdocs} and {sumi}","not_found_title":"Page not found","not_found_text":"The page you are looking for does not exist or has moved.","go_home":"Go to the home page","blog":"Blog","all_posts":"All posts","tags":"Tags","posted_on":"Posted on","older_post":"Older post","newer_post":"Newer post","subscribe_rss":"Subscribe via RSS","releases":"Releases","latest":"Latest","prerelease":"Pre-release","archived":"Archived","download":"Download","asset":"Asset","size":"Size","checksum":"SHA-256","release_notes":"Release notes","old_version":"You are reading the documentation for an older version.","go_latest":"Go to the latest version","expand_all":"Expand all","zoom_image":"Zoom image","diagram_expand":"Expand diagram","blog_view":"Layout","blog_view_list":"List view","blog_view_cards":"Card view","diagram_source":"Copy diagram source","diagram_download":"Download SVG","cmd_toggle_theme":"Toggle light / dark","cmd_copy_markdown":"Copy this page as Markdown","cmd_view_markdown":"Open this page as Markdown","cmd_edit":"Edit this page","cmd_print":"Print this page","cmd_top":"Scroll to top","cmd_home":"Go to the home page","cmd_language":"Switch language: {name}","cmd_version":"Switch version: {name}","cmd_llms":"Open llms.txt","whole_site":"Whole site","print_title":"Printable edition","contents":"Contents","compare":"Bilingual view","compare_open":"Open bilingual view","compare_sync":"Sync scrolling","compare_failed":"This translation could not be loaded.","feedback_title":"Was this page helpful?","feedback_yes":"Yes","feedback_no":"No","feedback_thanks":"Thanks for your feedback!","comments":"Comments","table_expand":"Expand table","zoom_in":"Zoom in","zoom_out":"Zoom out","zoom_reset":"Fit to window"}
+    };
+  </script>
+  <script src="../../assets/js/sumi.js" defer></script>
+</body>
+</html>

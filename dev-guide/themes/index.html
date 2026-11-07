@@ -1,0 +1,2140 @@
+<!doctype html>
+<html lang="en" data-palette="auto" data-layout="docs" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working."><meta name="author" content="MkDocs NG Team"><link rel="canonical" href="https://mkdocs-ng.org/dev-guide/themes/"><link rel="prev" href="../"><link rel="next" href="../translations/"><link rel="alternate" type="text/markdown" href="../themes.md" title="Markdown"><link rel="alternate" type="text/plain" href="../../llms.txt" title="llms.txt">
+  <link rel="icon" href="../../img/favicon.svg">
+  <meta name="generator" content="mkdocs-1.11.1, sumi">
+  <meta name="theme-color" content="#f8f7f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Themes"><meta property="og:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <meta property="og:site_name" content="MkDocs NG">
+  <meta property="og:locale" content="en_US"><meta property="og:url" content="https://mkdocs-ng.org/dev-guide/themes/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Themes"><meta name="twitter:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <title>Themes · MkDocs NG</title>
+  <script>
+    (function () {
+      var d = document.documentElement, p = d.dataset.palette, s = null;
+      try { s = localStorage.getItem('sumi.palette'); } catch (e) {}
+      var mode = s || p;
+      if (mode === 'auto' || !mode) mode = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.dataset.theme = mode;
+      d.dataset.mdColorScheme = mode === 'dark' ? 'slate' : 'default';
+      d.classList.replace('no-js', 'js');
+      // A page opened inside the bilingual view shows its content only.
+      if (window.name === 'sumi-pane') d.classList.add('sumi-pane');
+    })();
+  </script>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/sumi.css"><style>:root{--sumi-accent:#0061fe}[data-theme="dark"]{--sumi-accent:#0061fe}</style><link rel="stylesheet" href="../../assets/_mkdocstrings.css"><link rel="stylesheet" href="../../css/extra.css">
+</head>
+<body>
+  <a class="sumi-skip" href="#content">Skip to content</a><header class="sumi-header">
+  <div class="sumi-header-inner">
+    <button class="sumi-icon-btn sumi-menu-btn" type="button" aria-label="Menu" aria-controls="sumi-sidebar" aria-expanded="false"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg></button>
+    <a class="sumi-brand" href="../.." aria-label="MkDocs NG">
+      <img class="sumi-logo sumi-when-light" src="../../img/logo.svg" alt="">
+      <img class="sumi-logo sumi-when-dark" src="../../img/logo-dark.svg" alt="">
+      <span class="sumi-brand-name">MkDocs NG</span>
+    </a>
+    <nav class="sumi-tabs-nav" aria-label="Navigation">
+      <a class="sumi-tab-link" href="../../getting-started/">Getting Started</a>
+      <a class="sumi-tab-link" href="../../user-guide/">User Guide</a>
+      <a class="sumi-tab-link is-active" href="../" aria-current="page">Developer Guide</a>
+      <a class="sumi-tab-link" href="../../about/release-notes/">About</a>
+    </nav>
+    <div class="sumi-header-tools">
+      <button class="sumi-search-btn" type="button" data-sumi-palette aria-label="Search">
+        <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span class="sumi-search-label">Search</span><kbd class="sumi-search-kbd" data-mod>Ctrl K</kbd>
+      </button>
+      <button class="sumi-icon-btn sumi-theme-btn" type="button" data-sumi-theme aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="sumi-icon sumi-when-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="sumi-icon sumi-when-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></button>
+      <a class="sumi-icon-btn sumi-repo" href="https://github.com/mkdocs-ng/mkdocs/" aria-label="Repository" title="GitHub" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+    </div>
+  </div>
+</header>
+  <div class="sumi-version-banner" hidden></div>
+  <div class="sumi-shell">
+    <aside class="sumi-sidebar" id="sumi-sidebar" aria-label="Navigation">
+      <div class="sumi-sidebar-inner">
+        <ul class="sumi-nav-list sumi-sidebar-tabs">
+          <li class="sumi-nav-page"><a href="../../getting-started/">Getting Started</a></li>
+          <li class="sumi-nav-page"><a href="../../user-guide/">User Guide</a></li>
+          <li class="sumi-nav-page"><a class="is-active" href="../">Developer Guide</a></li>
+          <li class="sumi-nav-page"><a href="../../about/release-notes/">About</a></li>
+        </ul>
+        <a class="sumi-sidebar-title" href="../">Developer Guide</a>
+        <nav class="sumi-nav"><ul class="sumi-nav-list" data-depth="1">
+    <li class="sumi-nav-page"><a href="./" aria-current="page" class="is-current">Themes</a></li>
+    <li class="sumi-nav-page"><a href="../translations/">Translations</a></li>
+    <li class="sumi-nav-page"><a href="../plugins/">Plugins</a></li>
+    <li class="sumi-nav-page"><a href="../api/">API Reference</a></li>
+</ul></nav>
+      </div>
+    </aside>
+    <main class="sumi-main" id="content">
+      <article class="sumi-article">
+        <div class="sumi-article-top">
+<nav class="sumi-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="../">Developer Guide</a><svg class="sumi-icon sumi-crumb-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></li>
+    <li aria-current="page"><span>Themes</span></li>
+  </ol>
+</nav><div class="sumi-actions">
+  <button class="sumi-chip-btn sumi-copy-page" type="button" data-sumi-copy-page aria-label="Copy as Markdown" title="Copy as Markdown"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span>Copy as Markdown</span></button>
+  <div class="sumi-menu sumi-actions-menu">
+    <button class="sumi-icon-btn sumi-chip-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Page actions" title="Page actions"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <ul class="sumi-menu-list sumi-menu-right" role="menu">
+      <li role="none"><a role="menuitem" href="../themes.md" target="_blank"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>View as Markdown</a></li>
+      <li role="none"><a role="menuitem" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/dev-guide/themes.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a></li>
+      <li role="none"><button role="menuitem" type="button" data-sumi-print><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>Print</button></li>
+      <li role="none"><a role="menuitem" href="../../print/"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg>Printable edition · Whole site</a></li>
+    </ul>
+  </div>
+</div>
+        </div>
+        <details class="sumi-toc-inline">
+          <summary><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg><span>On this page</span><svg class="sumi-icon sumi-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <nav class="sumi-toc"><ul>
+  <li><a href="#creating-a-custom-theme" data-level="2">Creating a custom theme</a>
+  </li>
+  <li><a href="#basic-theme" data-level="2">Basic theme</a><ul>
+  <li><a href="#picking-up-css-and-javascript-from-the-config" data-level="3">Picking up CSS and JavaScript from the config</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#theme-files" data-level="2">Theme Files</a><ul>
+  <li><a href="#template-files" data-level="3">Template Files</a>
+  </li>
+  <li><a href="#theme-meta-files" data-level="3">Theme Meta Files</a>
+  </li>
+  <li><a href="#dot-files" data-level="3">Dot Files</a>
+  </li>
+  <li><a href="#documentation-files" data-level="3">Documentation Files</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#template-variables" data-level="2">Template Variables</a><ul>
+  <li><a href="#global-context" data-level="3">Global Context</a>
+  </li>
+  <li><a href="#navigation-objects" data-level="3">Navigation Objects</a>
+  </li>
+  <li><a href="#extra-context" data-level="3">Extra Context</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#template-filters" data-level="2">Template Filters</a><ul>
+  <li><a href="#url" data-level="3">url</a>
+  </li>
+  <li><a href="#tojson" data-level="3">tojson</a>
+  </li>
+  <li><a href="#script_tag" data-level="3">script_tag</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#rendering-pages-during-mkdocs-serve" data-level="2">Rendering pages during mkdocs serve</a>
+  </li>
+  <li><a href="#rendering-the-navigation-quickly" data-level="2">Rendering the navigation quickly</a>
+  </li>
+  <li><a href="#search-and-themes" data-level="2">Search and themes</a><ul>
+  <li><a href="#include_search_page" data-level="3">include_search_page</a>
+  </li>
+  <li><a href="#search_index_only" data-level="3">search_index_only</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#packaging-themes" data-level="2">Packaging Themes</a><ul>
+  <li><a href="#package-layout" data-level="3">Package Layout</a>
+  </li>
+  <li><a href="#theme-configuration" data-level="3">Theme Configuration</a>
+  </li>
+  <li><a href="#distributing-themes" data-level="3">Distributing Themes</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#supporting-theme-localizationtranslation" data-level="2">Supporting theme Localization/Translation</a><ul>
+  <li><a href="#using-the-localizationtranslation-commands" data-level="3">Using the Localization/Translation commands</a>
+  </li>
+  <li><a href="#example-custom-theme-localizationtranslation-workflow" data-level="3">Example custom theme Localization/Translation workflow</a>
+  </li>
+  <li><a href="#packaging-translations-with-your-theme" data-level="3">Packaging Translations with your theme</a>
+  </li>
+</ul>
+  </li>
+</ul></nav>
+        </details>
+        <div class="sumi-content sumi-prose" data-pagefind-body><h1 id="developing-themes">Developing Themes<a class="headerlink" href="#developing-themes" title="Permanent link"></a></h1>
+<p>A guide to creating and distributing custom themes.</p>
+<hr />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+If you are looking for existing third party themes, they are listed in the
+<a href="https://github.com/mkdocs-ng/mkdocs/wiki/MkDocs-Themes" rel="external">community wiki</a> page and the <a href="https://github.com/mkdocs-ng/catalog#-theming" rel="external">MkDocs project catalog</a>. If you want to
+share a theme you create, you should list it there.</p>
+</div>
+<p>When creating a new theme, you can either follow the steps in this guide to
+create one from scratch or you can download the <code>mkdocs-basic-theme</code> as a
+basic, yet complete, theme with all the boilerplate required. <strong>You can find
+this base theme on <a href="https://github.com/mkdocs-ng/mkdocs-basic-theme" rel="external">GitHub</a></strong>. It contains detailed comments in
+the code to describe the different features and their usage.</p>
+<h2 id="creating-a-custom-theme">Creating a custom theme<a class="headerlink" href="#creating-a-custom-theme" title="Permanent link"></a></h2>
+<p>The bare minimum required for a custom theme is a <code>main.html</code> <a href="https://jinja.palletsprojects.com/" rel="external">Jinja2
+template</a> file which is placed in a directory that is <em>not</em> a child of the
+<a href="../../user-guide/configuration/#docs_dir">docs_dir</a>. Within <code>mkdocs.yml</code>, set the <a href="../../user-guide/configuration/#custom_dir"><code>theme.custom_dir</code></a>
+option to the path of the directory containing <code>main.html</code>. The path should be
+relative to the configuration file. For example, given this example project
+layout:</p>
+<div class="highlight"><pre><span></span><code>mkdocs.yml
+docs/
+    index.md
+    about.md
+custom_theme/
+    main.html
+    ...
+</code></pre></div>
+<p>... you would include the following settings in <code>mkdocs.yml</code> to use the custom theme
+directory:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">theme</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">custom_dir</span><span class="p">:</span><span class="w"> </span><span class="s">'custom_theme/'</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+Generally, when building your own custom theme, the theme.<a href="../../user-guide/configuration/#name">name</a>
+configuration setting would be set to <code>null</code>. However, if the
+theme.<a href="../../user-guide/configuration/#custom_dir">custom_dir</a> configuration value is used in combination with an
+existing theme, the theme.<a href="../../user-guide/configuration/#custom_dir">custom_dir</a> can be used to replace only specific
+parts of a built-in theme. For example, with the above layout and if you set
+<code>name: "mkdocs"</code> then the <code>main.html</code> file in the theme.<a href="../../user-guide/configuration/#custom_dir">custom_dir</a> would
+replace the file of the same name in the <code>mkdocs</code> theme but otherwise the
+<code>mkdocs</code> theme would remain unchanged. This is useful if you want to make
+small adjustments to an existing theme.</p>
+<p>For more specific information, see <a href="../../user-guide/customizing-your-theme/#using-the-theme-custom_dir">Customizing Your Theme</a>.</p>
+</div>
+<!-- -->
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>
+A theme's <a href="#theme-configuration">configuration</a> defined in a <code>mkdocs_theme.yml</code> file is not loaded
+from <code>theme.custom_dir</code>. When an entire theme exists in <code>theme.custom_dir</code>
+and <code>theme.name</code> is set to <code>null</code>, then the entire theme configuration must
+be defined in the <a href="../../user-guide/configuration/#theme">theme</a> configuration option in the <code>mkdocs.yml</code> file.</p>
+<p>However, when a theme is <a href="#packaging-themes">packaged</a> up for distribution, and loaded using
+the <code>theme.name</code> configuration option, then a <code>mkdocs_theme.yml</code> file
+is required for the theme.</p>
+</div>
+<h2 id="basic-theme">Basic theme<a class="headerlink" href="#basic-theme" title="Permanent link"></a></h2>
+<p>The simplest <code>main.html</code> file is the following:</p>
+<div class="highlight"><pre><span></span><code><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">  &lt;head&gt;</span>
+<span class="x">    &lt;title&gt;</span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">page.title</span> <span class="cp">%}{{</span> <span class="nv">page.title</span> <span class="cp">}}</span><span class="x"> - </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}{{</span> <span class="nv">config.site_name</span> <span class="cp">}}</span><span class="x">&lt;/title&gt;</span>
+<span class="x">    </span><span class="cp">{%</span>- <span class="k">for</span> <span class="nv">path</span> <span class="k">in</span> <span class="nv">config.extra_css</span> <span class="cp">%}</span>
+<span class="x">      &lt;link href="</span><span class="cp">{{</span> <span class="nv">path</span> <span class="o">|</span> <span class="nf">url</span> <span class="cp">}}</span><span class="x">" rel="stylesheet"&gt;</span>
+<span class="x">    </span><span class="cp">{%</span>- <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="x">  &lt;/head&gt;</span>
+<span class="x">  &lt;body&gt;</span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">page.content</span> <span class="cp">}}</span>
+
+<span class="x">    </span><span class="cp">{%</span>- <span class="k">for</span> <span class="nv">script</span> <span class="k">in</span> <span class="nv">config.extra_javascript</span> <span class="cp">%}</span>
+<span class="x">      </span><span class="cp">{{</span> <span class="nv">script</span> <span class="o">|</span> <span class="nf">script_tag</span> <span class="cp">}}</span>
+<span class="x">    </span><span class="cp">{%</span>- <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="x">  &lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</code></pre></div>
+<p>The body content from each page specified in <code>mkdocs.yml</code> is inserted using the
+<code>{{ page.content }}</code> tag. Style-sheets and scripts can be brought into this
+theme as with a normal HTML file. Navbars and tables of contents can also be
+generated and included automatically, through the <code>nav</code> and <code>toc</code> objects,
+respectively. If you wish to write your own theme, it is recommended to start
+with one of the <a href="https://github.com/mkdocs-ng/mkdocs/tree/main/mkdocs/themes" rel="external">built-in themes</a> and modify it accordingly.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+As MkDocs uses <a href="https://jinja.palletsprojects.com/" rel="external">Jinja</a> as its template engine, you have access to all the
+power of Jinja, including <a href="https://jinja.palletsprojects.com/en/latest/templates/#template-inheritance" rel="external">template inheritance</a>. You may notice that the
+themes included with MkDocs make extensive use of template inheritance and
+blocks, allowing users to easily override small bits and pieces of the
+templates from the theme <a href="../../user-guide/configuration/#custom_dir">custom_dir</a>. Therefore, the built-in themes are
+implemented in a <code>base.html</code> file, which <code>main.html</code> extends. Although not
+required, third party template authors are encouraged to follow a similar
+pattern and may want to define the same <a href="../../user-guide/customizing-your-theme/#overriding-template-blocks">blocks</a> as are used in the built-in
+themes for consistency.</p>
+</div>
+<h3 id="picking-up-css-and-javascript-from-the-config">Picking up CSS and JavaScript from the config<a class="headerlink" href="#picking-up-css-and-javascript-from-the-config" title="Permanent link"></a></h3>
+<p>MkDocs defines the top-level <a href="../../user-guide/configuration/#extra_css">extra_css</a> and <a href="../../user-guide/configuration/#extra_javascript">extra_javascript</a> configs. These are lists of files.</p>
+<p>The theme must include the HTML that links the items from these configs, otherwise the configs will be non-functional. You can see the recommended way to render both of them in the <a href="#basic-theme">base example above</a>.</p>
+<div class="admonition new">
+<p class="admonition-title">Changed in version 1.5:</p>
+<p>The items of the <code>config.extra_javascript</code> list used to be simple strings but now became objects that have these fields: <code>path</code>, <code>type</code>, <code>async</code>, <code>defer</code>.</p>
+<p>In that version, MkDocs also gained the <a href="#script_tag"><code>script_tag</code> filter</a>.</p>
+<details class="example">
+<summary>Obsolete style:</summary>
+<div class="highlight"><pre><span></span><code><span class="x">  </span><span class="cp">{%</span>- <span class="k">for</span> <span class="nv">path</span> <span class="k">in</span> <span class="nv">extra_javascript</span> <span class="cp">%}</span>
+<span class="x">    &lt;script src="</span><span class="cp">{{</span> <span class="nv">path</span> <span class="cp">}}</span><span class="x">"&gt;&lt;/script&gt;</span>
+<span class="x">  </span><span class="cp">{%</span>- <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+<p>This old-style example even uses the obsolete top-level <code>extra_javascript</code> list. Please always use <code>config.extra_javascript</code> instead.</p>
+<p>So, a slightly more modern approach is the following, but it is still obsolete because it ignores the extra attributes of the script:</p>
+<p><div class="highlight"><pre><span></span><code><span class="x">  </span><span class="cp">{%</span>- <span class="k">for</span> <span class="nv">path</span> <span class="k">in</span> <span class="nv">config.extra_javascript</span> <span class="cp">%}</span>
+<span class="x">    &lt;script src="</span><span class="cp">{{</span> <span class="nv">path</span> <span class="o">|</span> <span class="nf">url</span> <span class="cp">}}</span><span class="x">"&gt;&lt;/script&gt;</span>
+<span class="x">  </span><span class="cp">{%</span>- <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+<!-- -->
+? EXAMPLE: <strong>New style:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="x">  </span><span class="cp">{%</span>- <span class="k">for</span> <span class="nv">script</span> <span class="k">in</span> <span class="nv">config.extra_javascript</span> <span class="cp">%}</span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">script</span> <span class="o">|</span> <span class="nf">script_tag</span> <span class="cp">}}</span>
+<span class="x">  </span><span class="cp">{%</span>- <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+</details>
+<p>If you wish to be able to pick up the new customizations while keeping your theme compatible with older versions of MkDocs, use this snippet:</p>
+<details class="example" open="open">
+<summary>Backwards-compatible style:</summary>
+<div class="highlight"><pre><span></span><code><span class="x">  </span><span class="cp">{%</span>- <span class="k">for</span> <span class="nv">script</span> <span class="k">in</span> <span class="nv">config.extra_javascript</span> <span class="cp">%}</span>
+<span class="x">    </span><span class="cp">{%</span>- <span class="k">if</span> <span class="nv">script.path</span> <span class="cp">%}</span><span class="x">  </span><span class="c">{# Detected MkDocs 1.5+ which has `script.path` and `script_tag` #}</span>
+<span class="x">      </span><span class="cp">{{</span> <span class="nv">script</span> <span class="o">|</span> <span class="nf">script_tag</span> <span class="cp">}}</span>
+<span class="x">    </span><span class="cp">{%</span>- <span class="k">else</span> <span class="cp">%}</span><span class="x">  </span><span class="c">{# Fallback - examine the file name directly #}</span>
+<span class="x">      &lt;script src="</span><span class="cp">{{</span> <span class="nv">script</span> <span class="o">|</span> <span class="nf">url</span> <span class="cp">}}</span><span class="x">"</span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">script.endswith</span><span class="o">(</span><span class="s2">".mjs"</span><span class="o">)</span> <span class="cp">%}</span><span class="x"> type="module"</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">&gt;&lt;/script&gt;</span>
+<span class="x">    </span><span class="cp">{%</span>- <span class="k">endif</span> <span class="cp">%}</span>
+<span class="x">  </span><span class="cp">{%</span>- <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+</details>
+</div>
+<h2 id="theme-files">Theme Files<a class="headerlink" href="#theme-files" title="Permanent link"></a></h2>
+<p>There are various files which a theme treats special in some way. Any other
+files are simply copied from the theme directory to the same path in the
+<code>site_dir</code> when the site it built. For example image and CSS files have no
+special significance and are copied as-is. Note, however, that if the user
+provides a file with the same path in their <code>docs_dir</code>, then the user's file
+will replace the theme file.</p>
+<h3 id="template-files">Template Files<a class="headerlink" href="#template-files" title="Permanent link"></a></h3>
+<p>Any files with the <code>.html</code> extension are considered to be template files and are
+not copied from the theme directory or any subdirectories. Also, any files
+listed in <a href="#static_templates">static_templates</a> are treated as templates regardless of their file
+extension.</p>
+<h3 id="theme-meta-files">Theme Meta Files<a class="headerlink" href="#theme-meta-files" title="Permanent link"></a></h3>
+<p>The various files required for packaging a theme are also ignored. Specifically,
+the <code>mkdocs_theme.yml</code> configuration file and any Python files.</p>
+<h3 id="dot-files">Dot Files<a class="headerlink" href="#dot-files" title="Permanent link"></a></h3>
+<p>Theme authors can explicitly force MkDocs to ignore files by starting a file or
+directory name with a dot. Any of the following files would be ignored:</p>
+<div class="highlight"><pre><span></span><code>.ignored.txt
+.ignored/file.txt
+foo/.ignored.txt
+foo/.ignored/file.txt
+</code></pre></div>
+<h3 id="documentation-files">Documentation Files<a class="headerlink" href="#documentation-files" title="Permanent link"></a></h3>
+<p>All documentation files are ignored. Specifically, any Markdown files (using any
+of the file extensions supported by MKDocs). Additionally, any README files
+which may exist in the theme directories are ignored.</p>
+<h2 id="template-variables">Template Variables<a class="headerlink" href="#template-variables" title="Permanent link"></a></h2>
+<p>Each template in a theme is built with a template context. These are the
+variables that are available to themes. The context varies depending on the
+template that is being built. At the moment templates are either built with
+the global context or with a page specific context. The global context is used
+for HTML pages that don't represent an individual Markdown document, for
+example a 404.html page or search.html.</p>
+<h3 id="global-context">Global Context<a class="headerlink" href="#global-context" title="Permanent link"></a></h3>
+<p>The following variables are available globally on any template.</p>
+<h4 id="config">config<a class="headerlink" href="#config" title="Permanent link"></a></h4>
+<p>The <code>config</code> variable is an instance of MkDocs' config object generated from the
+<code>mkdocs.yml</code> config file. While you can use any config option, some commonly
+used options include:</p>
+<ul>
+<li><a href="../../user-guide/configuration/#site_name">config.site_name</a></li>
+<li><a href="../../user-guide/configuration/#site_url">config.site_url</a></li>
+<li><a href="../../user-guide/configuration/#site_author">config.site_author</a></li>
+<li><a href="../../user-guide/configuration/#site_description">config.site_description</a></li>
+<li><a href="../../user-guide/configuration/#locale">config.theme.locale</a> (See also <a href="#locale">Theme Configuration</a> below)</li>
+<li><a href="../../user-guide/configuration/#extra_javascript">config.extra_javascript</a></li>
+<li><a href="../../user-guide/configuration/#extra_css">config.extra_css</a></li>
+<li><a href="../../user-guide/configuration/#repo_url">config.repo_url</a></li>
+<li><a href="../../user-guide/configuration/#repo_name">config.repo_name</a></li>
+<li><a href="../../user-guide/configuration/#copyright">config.copyright</a></li>
+</ul>
+<h4 id="nav">nav<a class="headerlink" href="#nav" title="Permanent link"></a></h4>
+<p>The <code>nav</code> variable is used to create the navigation for the documentation. The
+<code>nav</code> object is an iterable of <a href="#navigation-objects">navigation objects</a> as
+defined by the <a href="../../user-guide/configuration/#nav">nav</a> configuration setting.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="mkdocs.structure.nav.Navigation"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><p>In addition to the iterable of <a href="#navigation-objects">navigation objects</a>, the
+<code>nav</code> object contains the following attributes:</p>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Navigation.homepage" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">homepage</span><span class="p">:</span> <span class="n">Page</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Navigation.homepage" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <a class="autorefs autorefs-internal" href="#mkdocs.structure.pages.Page">page</a> object for the homepage of the site.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Navigation.pages" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">pages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Page</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Navigation.pages" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>A flat list of all <a class="autorefs autorefs-internal" href="#mkdocs.structure.pages.Page">page</a> objects contained in the navigation.</p>
+
+    </div>
+
+</div><p>This list is not necessarily a complete list of all site pages as it does not contain
+pages which are not included in the navigation. This list does match the list
+and order of pages used for all "next page" and "previous page" links. For a
+list of all pages, use the <a href="#pages">pages</a> template variable.</p>
+<h5 id="nav-example">Nav Example<a class="headerlink" href="#nav-example" title="Permanent link"></a></h5>
+<p>Following is a basic usage example which outputs the first and second level
+navigation as a nested list.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">if</span> <span class="nv">nav</span><span class="o">|</span><span class="nf">length</span> <span class="o">&gt;</span> <span class="m">1</span> <span class="cp">%}</span>
+<span class="x">    &lt;ul&gt;</span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">nav_item</span> <span class="k">in</span> <span class="nv">nav</span> <span class="cp">%}</span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">nav_item.children</span> <span class="cp">%}</span>
+<span class="x">            &lt;li&gt;</span><span class="cp">{{</span> <span class="nv">nav_item.title</span> <span class="cp">}}</span>
+<span class="x">                &lt;ul&gt;</span>
+<span class="x">                </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">nav_item</span> <span class="k">in</span> <span class="nv">nav_item.children</span> <span class="cp">%}</span>
+<span class="x">                    &lt;li class="</span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">nav_item.active</span> <span class="cp">%}</span><span class="x">current</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">"&gt;</span>
+<span class="x">                        &lt;a href="</span><span class="cp">{{</span> <span class="nv">nav_item.url</span><span class="o">|</span><span class="nf">url</span> <span class="cp">}}</span><span class="x">"&gt;</span><span class="cp">{{</span> <span class="nv">nav_item.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;</span>
+<span class="x">                    &lt;/li&gt;</span>
+<span class="x">                </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="x">                &lt;/ul&gt;</span>
+<span class="x">            &lt;/li&gt;</span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span>
+<span class="x">            &lt;li class="</span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">nav_item.active</span> <span class="cp">%}</span><span class="x">current</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x">"&gt;</span>
+<span class="x">                &lt;a href="</span><span class="cp">{{</span> <span class="nv">nav_item.url</span><span class="o">|</span><span class="nf">url</span> <span class="cp">}}</span><span class="x">"&gt;</span><span class="cp">{{</span> <span class="nv">nav_item.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;</span>
+<span class="x">            &lt;/li&gt;</span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="x">    &lt;/ul&gt;</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</code></pre></div>
+<h4 id="base_url">base_url<a class="headerlink" href="#base_url" title="Permanent link"></a></h4>
+<p>The <code>base_url</code> provides a relative path to the root of the MkDocs project. While
+this can be used directly by prepending it to a local relative URL, it is best
+to use the <a href="#url">url</a> template filter, which is smarter about how it applies
+<code>base_url</code>.</p>
+<h4 id="mkdocs_version">mkdocs_version<a class="headerlink" href="#mkdocs_version" title="Permanent link"></a></h4>
+<p>Contains the current MkDocs version.</p>
+<h4 id="build_date_utc">build_date_utc<a class="headerlink" href="#build_date_utc" title="Permanent link"></a></h4>
+<p>A Python datetime object that represents the date and time the documentation
+was built in UTC. This is useful for showing how recently the documentation
+was updated.</p>
+<h4 id="i18n">i18n<a class="headerlink" href="#i18n" title="Permanent link"></a></h4>
+<p>On a <a href="../../user-guide/multi-language-sites/">multi-language site</a>, information
+about the language being built and the same page in the other languages, for a
+language switcher and <code>hreflang</code> links. <code>None</code> on other sites. See
+<a href="../../user-guide/multi-language-sites/#for-theme-authors">For theme authors</a>.</p>
+<h4 id="pages">pages<a class="headerlink" href="#pages" title="Permanent link"></a></h4>
+<p>A flat list of <code>File</code> objects for <em>all</em> pages in the project. This list can
+contain pages not included in the global <a href="#nav">navigation</a> and may not match
+the order of pages within that navigation. The <a href="#page">page</a> object for each
+<code>File</code> can be accessed from <code>file.page</code>.</p>
+<h4 id="page">page<a class="headerlink" href="#page" title="Permanent link"></a></h4>
+<p>In templates which are not rendered from a Markdown source file, the <code>page</code>
+variable is <code>None</code>. In templates which are rendered from a Markdown source file,
+the <code>page</code> variable contains a <code>page</code> object. The same <code>page</code> objects are used
+as <code>page</code> <a href="#navigation-objects">navigation objects</a> in the global
+<a href="#nav">navigation</a> and in the <a href="#pages">pages</a> template variable.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="mkdocs.structure.pages.Page"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="mkdocs.structure.StructureItem">StructureItem</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><p>All <code>page</code> objects contain the following attributes:</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="mkdocs.structure.pages.Page.title" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">title</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.structure.pages.Page.title" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Returns the title for the current page.</p>
+<p>Before calling <code>read_source()</code>, this value is empty. It can also be updated by <code>render()</code>.</p>
+<p>Checks these in order and uses the first that returns a valid title:</p>
+<ul>
+<li>value provided on init (passed in from config)</li>
+<li>value of metadata 'title'</li>
+<li>content of the first H1 in Markdown content</li>
+<li>convert filename to title</li>
+</ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.content" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.content" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The rendered Markdown as HTML, this is the contents of the documentation.</p>
+<p>Populated after <code>.render()</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.toc" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">toc</span><span class="p">:</span> <span class="n">TableOfContents</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.toc" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>An iterable object representing the Table of contents for a page. Each item in
+the <code>toc</code> is an <a class="autorefs autorefs-internal" href="#mkdocs.structure.toc.AnchorLink"><code>AnchorLink</code></a>.</p>
+
+    </div>
+
+</div><p>The following example would display the top two levels of the Table of Contents
+for a page.</p>
+<div class="highlight"><pre><span></span><code><span class="x">&lt;ul&gt;</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">toc_item</span> <span class="k">in</span> <span class="nv">page.toc</span> <span class="cp">%}</span>
+<span class="x">    &lt;li&gt;&lt;a href="</span><span class="cp">{{</span> <span class="nv">toc_item.url</span> <span class="cp">}}</span><span class="x">"&gt;</span><span class="cp">{{</span> <span class="nv">toc_item.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">toc_item</span> <span class="k">in</span> <span class="nv">toc_item.children</span> <span class="cp">%}</span>
+<span class="x">        &lt;li&gt;&lt;a href="</span><span class="cp">{{</span> <span class="nv">toc_item.url</span> <span class="cp">}}</span><span class="x">"&gt;</span><span class="cp">{{</span> <span class="nv">toc_item.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="x">&lt;/ul&gt;</span>
+</code></pre></div>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.meta" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.meta" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>A mapping of the metadata included at the top of the markdown page.</p>
+
+    </div>
+
+</div><p>In this example we define a <code>source</code> property above the page title:</p>
+<div class="highlight"><pre><span></span><code>source: generics.py
+        mixins.py
+
+# Page title
+
+Content...
+</code></pre></div>
+<p>A template can access this metadata for the page with the <code>meta.source</code>
+variable. This could then be used to link to source files related to the
+documentation page.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">for</span> <span class="nv">filename</span> <span class="k">in</span> <span class="nv">page.meta.source</span> <span class="cp">%}</span>
+<span class="x">  &lt;a class="github" href="https://github.com/.../</span><span class="cp">{{</span> <span class="nv">filename</span> <span class="cp">}}</span><span class="x">"&gt;</span>
+<span class="x">    &lt;span class="label label-info"&gt;</span><span class="cp">{{</span> <span class="nv">filename</span> <span class="cp">}}</span><span class="x">&lt;/span&gt;</span>
+<span class="x">  &lt;/a&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">url</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.url" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The URL of the page relative to the MkDocs <code>site_dir</code>.</p>
+
+    </div>
+
+</div><p>It is expected that this be used with the <a href="#url">url</a> filter to ensure the URL is relative to the current
+page.</p>
+<div class="highlight"><pre><span></span><code><span class="x">&lt;a href="</span><span class="cp">{{</span> <span class="nv">page.url</span><span class="o">|</span><span class="nf">url</span> <span class="cp">}}</span><span class="x">"&gt;</span><span class="cp">{{</span> <span class="nv">page.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;</span>
+</code></pre></div>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.file" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">file</span><span class="p">:</span> <span class="n">File</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.file" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The documentation <a class="autorefs autorefs-internal" title="mkdocs.structure.files.File" href="../api/#mkdocs.structure.files.File"><code>File</code></a> that the page is being rendered from.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.abs_url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">abs_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.abs_url" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The absolute URL of the page from the server root as determined by the value
+assigned to the <a class="autorefs autorefs-internal" href="../../user-guide/configuration/#site_url">site_url</a> configuration setting. The value includes any
+subdirectory included in the <code>site_url</code>, but not the domain. <a class="autorefs autorefs-internal" href="#base_url">base_url</a> should
+not be used with this variable.</p>
+
+    </div>
+
+</div><p>For example, if <code>site_url: https://example.com/</code>, then the value of
+<code>page.abs_url</code> for the page <code>foo.md</code> would be <code>/foo/</code>. However, if
+<code>site_url: https://example.com/bar/</code>, then the value of <code>page.abs_url</code> for the
+page <code>foo.md</code> would be <code>/bar/foo/</code>.</p>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.canonical_url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">canonical_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.canonical_url" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The full, canonical URL to the current page as determined by the value assigned
+to the <a class="autorefs autorefs-internal" href="../../user-guide/configuration/#site_url">site_url</a> configuration setting. The value includes the domain and any
+subdirectory included in the <code>site_url</code>. <a class="autorefs autorefs-internal" href="#base_url">base_url</a> should not be used with this
+variable.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.edit_url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">edit_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.edit_url" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The full URL to the source page in the source repository. Typically used to
+provide a link to edit the source page. <a class="autorefs autorefs-internal" href="#base_url">base_url</a> should not be used with this
+variable.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.is_homepage" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_homepage</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.is_homepage" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Evaluates to <code>True</code> for the homepage of the site and <code>False</code> for all other pages.</p>
+
+    </div>
+
+</div><p>This can be used in conjunction with other attributes of the <code>page</code>
+object to alter the behavior. For example, to display a different title
+on the homepage:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">if</span> <span class="k">not</span> <span class="nv">page.is_homepage</span> <span class="cp">%}{{</span> <span class="nv">page.title</span> <span class="cp">}}</span><span class="x"> - </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}{{</span> <span class="nv">site_name</span> <span class="cp">}}</span>
+</code></pre></div>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.previous_page" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">previous_page</span><span class="p">:</span> <span class="n">Page</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.previous_page" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <a class="autorefs autorefs-internal" href="#mkdocs.structure.pages.Page">page</a> object for the previous page or <code>None</code>.
+The value will be <code>None</code> if the current page is the first item in the site navigation
+or if the current page is not included in the navigation at all.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.next_page" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">next_page</span><span class="p">:</span> <span class="n">Page</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.next_page" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <a class="autorefs autorefs-internal" href="#mkdocs.structure.pages.Page">page</a> object for the next page or <code>None</code>.
+The value will be <code>None</code> if the current page is the last item in the site navigation
+or if the current page is not included in the navigation at all.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.StructureItem.parent" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parent</span><span class="p">:</span> <span class="n">Section</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.StructureItem.parent" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The immediate parent of the item in the site navigation. <code>None</code> if it's at the top level.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.children" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">children</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.children" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Pages do not contain children and the attribute is always <code>None</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.active" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">active</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.active" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>When <code>True</code>, indicates that this page is the currently viewed page. Defaults to <code>False</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.is_section" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_section</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.is_section" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Indicates that the navigation object is a "section" object. Always <code>False</code> for page objects.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.is_page" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_page</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.is_page" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Indicates that the navigation object is a "page" object. Always <code>True</code> for page objects.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.pages.Page.is_link" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_link</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.pages.Page.is_link" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Indicates that the navigation object is a "link" object. Always <code>False</code> for page objects.</p>
+
+    </div>
+
+</div><h4 id="anchorlink">AnchorLink<a class="headerlink" href="#anchorlink" title="Permanent link"></a></h4>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="mkdocs.structure.toc.AnchorLink"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>A single entry in the table of contents.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.toc.AnchorLink.title" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.toc.AnchorLink.title" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The text of the item, as HTML.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.toc.AnchorLink.url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">url</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#mkdocs.structure.toc.AnchorLink.url" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The hash fragment of a URL pointing to the item.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.toc.AnchorLink.level" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">level</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.toc.AnchorLink.level" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The zero-based level of the item.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.toc.AnchorLink.children" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AnchorLink</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.toc.AnchorLink.children" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An iterable of any child items.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h3 id="navigation-objects">Navigation Objects<a class="headerlink" href="#navigation-objects" title="Permanent link"></a></h3>
+<p>Navigation objects contained in the <a href="#nav">nav</a> template variable may be one of
+<a href="#section">section</a> objects, <a href="#page">page</a> objects, and <a href="#link">link</a> objects.
+While section objects may contain nested navigation objects, pages and links do
+not.</p>
+<p>Page objects are the full page object as used for the current <a href="#page">page</a> with
+all of the same attributes available. Section and Link objects contain a subset
+of those attributes as defined below:</p>
+<p>If the same page is listed more than once in the <code>nav</code> configuration, only its
+first entry is the page object itself. Each later entry is a <code>PageAlias</code>: it has
+its own <code>title</code> (as given in the <code>nav</code>) and <code>parent</code>, <code>page</code> refers to the page
+object, and all other page attributes (<code>url</code>, <code>active</code>, <code>toc</code>, <code>is_page</code>, ...)
+are those of the page. Page aliases are not included in <a href="#nav">nav.pages</a>, so
+the page appears only once in previous/next links.</p>
+<h4 id="section">Section<a class="headerlink" href="#section" title="Permanent link"></a></h4>
+<p>A <code>section</code> navigation object defines a named section in the navigation and
+contains a list of child navigation objects. Note that sections do not contain
+URLs and are not links of any kind. However, by default, MkDocs sorts index
+pages to the top and the first child might be used as the URL for a section if a
+theme chooses to do so.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="mkdocs.structure.nav.Section"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="mkdocs.structure.StructureItem">StructureItem</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><p>The following attributes are available on <code>section</code> objects:</p>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Section.title" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Section.title" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The title of the section.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.StructureItem.parent" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parent</span><span class="p">:</span> <span class="n">Section</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.StructureItem.parent" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The immediate parent of the item in the site navigation. <code>None</code> if it's at the top level.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Section.children" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">children</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">StructureItem</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Section.children" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>An iterable of all child navigation objects. Children may include nested sections, pages and links.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Section.active" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">active</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Section.active" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>When <code>True</code>, indicates that a child page of this section is the current page and
+can be used to highlight the section as the currently viewed section. Defaults
+to <code>False</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Section.is_section" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_section</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Section.is_section" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Indicates that the navigation object is a "section" object. Always <code>True</code> for section objects.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Section.is_page" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_page</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Section.is_page" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Indicates that the navigation object is a "page" object. Always <code>False</code> for section objects.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Section.is_link" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_link</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Section.is_link" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Indicates that the navigation object is a "link" object. Always <code>False</code> for section objects.</p>
+
+    </div>
+
+</div><h4 id="link">Link<a class="headerlink" href="#link" title="Permanent link"></a></h4>
+<p>A <code>link</code> navigation object contains a link which does not point to an internal
+MkDocs page.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="mkdocs.structure.nav.Link"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="mkdocs.structure.StructureItem">StructureItem</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><p>The following attributes are available on <code>link</code> objects:</p>
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Link.title" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Link.title" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The title of the link. This would generally be used as the label of the link.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Link.url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">url</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Link.url" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The URL that the link points to. The URL should always be an absolute URLs and
+should not need to have <code>base_url</code> prepended.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.StructureItem.parent" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parent</span><span class="p">:</span> <span class="n">Section</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.StructureItem.parent" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>The immediate parent of the item in the site navigation. <code>None</code> if it's at the top level.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Link.children" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">children</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Link.children" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Links do not contain children and the attribute is always <code>None</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Link.active" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Link.active" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>External links cannot be "active" and the attribute is always <code>False</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Link.is_section" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_section</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Link.is_section" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Indicates that the navigation object is a "section" object. Always <code>False</code> for link objects.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Link.is_page" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_page</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Link.is_page" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Indicates that the navigation object is a "page" object. Always <code>False</code> for link objects.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="mkdocs.structure.nav.Link.is_link" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_link</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.nav.Link.is_link" class="headerlink" title="Permanent link"></a></h5>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Indicates that the navigation object is a "link" object. Always <code>True</code> for link objects.</p>
+
+    </div>
+
+</div><h3 id="extra-context">Extra Context<a class="headerlink" href="#extra-context" title="Permanent link"></a></h3>
+<p>Additional variables can be passed to the template with the
+<a href="../../user-guide/configuration/#extra"><code>extra</code></a> configuration option. This is a
+set of key value pairs that can make custom templates far more flexible.</p>
+<p>For example, this could be used to include the project version of all pages
+and a list of links related to the project. This can be achieved with the
+following <code>extra</code> configuration:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">extra</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.13.0</span>
+<span class="w">  </span><span class="nt">links</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/mkdocs-ng</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://docs.readthedocs.org/en/latest/builds.html#mkdocs</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://mkdocs-ng.org/</span>
+</code></pre></div>
+<p>And then displayed with this HTML in the custom theme.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{{</span> <span class="nv">config.extra.version</span> <span class="cp">}}</span>
+
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">config.extra.links</span> <span class="cp">%}</span>
+<span class="x">  &lt;ul&gt;</span>
+<span class="x">  </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">link</span> <span class="k">in</span> <span class="nv">config.extra.links</span> <span class="cp">%}</span>
+<span class="x">      &lt;li&gt;</span><span class="cp">{{</span> <span class="nv">link</span> <span class="cp">}}</span><span class="x">&lt;/li&gt;</span>
+<span class="x">  </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="x">  &lt;/ul&gt;</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</code></pre></div>
+<h2 id="template-filters">Template Filters<a class="headerlink" href="#template-filters" title="Permanent link"></a></h2>
+<p>In addition to <a href="https://jinja.palletsprojects.com/en/latest/templates/#builtin-filters" rel="external">Jinja's default filters</a>, the following custom filters are
+available to use in MkDocs templates:</p>
+<h3 id="url">url<a class="headerlink" href="#url" title="Permanent link"></a></h3>
+<p>Normalizes a URL. Absolute URLs are passed through unaltered. If the URL is
+relative and the template context includes a page object, then the URL is
+returned relative to the page object. Otherwise, the URL is returned with
+<a href="#base_url">base_url</a> prepended.</p>
+<div class="highlight"><pre><span></span><code><span class="x">&lt;a href="</span><span class="cp">{{</span> <span class="nv">page.url</span><span class="o">|</span><span class="nf">url</span> <span class="cp">}}</span><span class="x">"&gt;</span><span class="cp">{{</span> <span class="nv">page.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;</span>
+</code></pre></div>
+<h3 id="tojson">tojson<a class="headerlink" href="#tojson" title="Permanent link"></a></h3>
+<p>Safely convert a Python object to a value in a JavaScript script.</p>
+<div class="highlight"><pre><span></span><code><span class="x">&lt;script&gt;</span>
+<span class="x">    var mkdocs_page_name = </span><span class="cp">{{</span> <span class="nv">page.title</span><span class="o">|</span><span class="nf">tojson</span><span class="o">|</span><span class="nf">safe</span> <span class="cp">}}</span><span class="x">;</span>
+<span class="x">&lt;/script&gt;</span>
+</code></pre></div>
+<h3 id="script_tag">script_tag<a class="headerlink" href="#script_tag" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.5</p>
+</div>
+<p>Convert an item from <code>extra_javascript</code> to a <code>&lt;script&gt;</code> tag that takes into account all <a href="../../user-guide/configuration/#extra_javascript">customizations of this config</a> and has the equivalent of <a href="#url"><code>|url</code></a> behavior built-in.</p>
+<p>See how to use it in the <a href="#basic-theme">base example above</a></p>
+<h2 id="rendering-pages-during-mkdocs-serve">Rendering pages during <code>mkdocs serve</code><a class="headerlink" href="#rendering-pages-during-mkdocs-serve" title="Permanent link"></a></h2>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.11</p>
+</div>
+<p>After an edit, <code>mkdocs serve</code> rebuilds the whole site, but it doesn't render
+the template again for a page whose template context is the same as in the
+previous rebuild. It compares everything a template can see: every attribute
+of the page (its HTML, title, metadata, table of contents and any attribute a
+plugin set), the navigation with the titles, URLs and metadata of its pages,
+the list of pages, the config (including <code>extra</code> and the theme options), the
+other context variables, the template files that were loaded and the names of
+the Jinja globals, filters and tests. When one of them holds an object that
+MkDocs can't compare from one rebuild to the next, such as an instance of a
+class that a plugin added, the page is rendered as usual.</p>
+<p>So a template must give the same HTML for the same context. Don't output
+values that change by themselves, like the current time (use
+<code>build_date_utc</code>, which stays the same while the server runs) or random
+numbers. <code>mkdocs build</code> always renders every page, and so does
+<code>mkdocs serve --clean</code>.</p>
+<h2 id="rendering-the-navigation-quickly">Rendering the navigation quickly<a class="headerlink" href="#rendering-the-navigation-quickly" title="Permanent link"></a></h2>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.11</p>
+</div>
+<p>Every page shows the whole navigation, so a theme that renders the full nav
+tree on every page does work proportional to the number of pages, on every
+page: build time grows with the square of the site size. Yet a nav section that
+doesn't contain the current page looks the same on every page, except for its
+URLs, which are relative to the page.</p>
+<p>The <code>nav_fragment</code> global lets a theme render such a section once per build.
+Wrap the markup of a nav item in a call block:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">for</span> <span class="nv">nav_item</span> <span class="k">in</span> <span class="nv">nav</span> <span class="cp">%}</span>
+<span class="x">  </span><span class="cp">{%</span> <span class="k">call</span> <span class="nv">nav_fragment</span><span class="o">(</span><span class="nv">nav_item</span><span class="o">)</span> <span class="cp">%}</span>
+<span class="x">    &lt;li&gt;</span>
+<span class="x">      &lt;a href="</span><span class="cp">{{</span> <span class="nv">nav_item.url</span><span class="o">|</span><span class="nf">url</span> <span class="cp">}}</span><span class="x">"&gt;</span><span class="cp">{{</span> <span class="nv">nav_item.title</span> <span class="cp">}}</span><span class="x">&lt;/a&gt;</span>
+<span class="x">      </span><span class="c">{# ... render nav_item.children ... #}</span>
+<span class="x">    &lt;/li&gt;</span>
+<span class="x">  </span><span class="cp">{%</span> <span class="k">endcall</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+<p>The first time a section that doesn't contain the current page is rendered,
+MkDocs keeps its markup, with placeholders for the URLs that went through the
+<a href="#url"><code>url</code></a> filter. Later pages reuse that markup and fill in their own
+relative URLs, so the output is the same as without the block. Sections that
+contain the current page, and sections that repeat a page listed elsewhere in
+the nav, are rendered as usual.</p>
+<p>The markup inside the block must not depend on <code>page</code>, other than through the
+<code>url</code> filter, because it is shared between pages. Pass anything else it depends
+on as extra arguments, which become part of the cache key:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">call</span> <span class="nv">nav_fragment</span><span class="o">(</span><span class="nv">nav_item</span><span class="o">,</span> <span class="nv">level</span><span class="o">,</span> <span class="nv">parent.active</span><span class="o">)</span> <span class="cp">%}</span>
+</code></pre></div>
+<p>The built-in <code>mkdocs</code> and <code>readthedocs</code> themes use it. A theme that should also
+work with older versions of MkDocs can check <code>{% if nav_fragment is defined %}</code>
+first. A plugin that changes nav items while pages are being built, rather than
+in <a href="../plugins/#on_nav"><code>on_nav</code></a>, should give each page its own <code>nav</code> object,
+or call <code>env.globals["nav_fragment"].clear()</code> after the change.</p>
+<h2 id="search-and-themes">Search and themes<a class="headerlink" href="#search-and-themes" title="Permanent link"></a></h2>
+<p>As of MkDocs version <em>0.17</em> client side search support has been added to MkDocs
+via the <code>search</code> plugin. A theme needs to provide a few things for the plugin to
+work with the theme.</p>
+<p>While the <code>search</code> plugin is activated by default, users can disable the plugin
+and themes should account for this. It is recommended that theme templates wrap
+search specific markup with a check for the plugin:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">if</span> <span class="s1">'search'</span> <span class="k">in</span> <span class="nv">config.plugins</span> <span class="cp">%}</span>
+<span class="x">    search stuff here...</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</code></pre></div>
+<p>At its most basic functionality, the search plugin will simply provide an index
+file which is no more than a JSON file containing the content of all pages.
+The theme would need to implement its own search functionality client-side.
+However, with a few settings and the necessary templates, the plugin can provide
+a complete functioning client-side search tool based on <a href="https://lunrjs.com/" rel="external">lunr.js</a>.</p>
+<p>The following HTML needs to be added to the theme so that the provided
+JavaScript is able to properly load the search scripts and make relative links
+to the search results from the current page.</p>
+<div class="highlight"><pre><span></span><code><span class="x">&lt;script&gt;var base_url = </span><span class="cp">{{</span> <span class="nv">base_url</span><span class="o">|</span><span class="nf">tojson</span> <span class="cp">}}</span><span class="x">;&lt;/script&gt;</span>
+</code></pre></div>
+<p>With properly configured settings, the following HTML in a template  will add a
+full search implementation to your theme.</p>
+<div class="highlight"><pre><span></span><code><span class="x">&lt;h1 id="search"&gt;Search Results&lt;/h1&gt;</span>
+
+<span class="x">&lt;form action="search.html"&gt;</span>
+<span class="x">  &lt;input name="q" id="mkdocs-search-query" type="text" &gt;</span>
+<span class="x">&lt;/form&gt;</span>
+
+<span class="x">&lt;div id="mkdocs-search-results"&gt;</span>
+<span class="x">  Sorry, page not found.</span>
+<span class="x">&lt;/div&gt;</span>
+</code></pre></div>
+<p>The JavaScript in the plugin works by looking for the specific ID's used in the
+above HTML. The form input for the user to type the search query must be
+identified with <code>id="mkdocs-search-query"</code> and the div where the results will be
+placed must be identified with <code>id="mkdocs-search-results"</code>.</p>
+<p>The plugin supports the following options being set in the <a href="#theme-configuration">theme's
+configuration file</a>, <code>mkdocs_theme.yml</code>:</p>
+<h3 id="include_search_page">include_search_page<a class="headerlink" href="#include_search_page" title="Permanent link"></a></h3>
+<p>Determines whether the search plugin expects the theme to provide a dedicated
+search page via a template located at <code>search/search.html</code>.</p>
+<p>When <code>include_search_page</code> is set to <code>true</code>, the search template will be built
+and available at <code>search/search.html</code>. This method is used by the <code>readthedocs</code>
+theme.</p>
+<p>When <code>include_search_page</code> is set to <code>false</code> or not defined, it is expected that
+the theme provide some other mechanisms for displaying search results. For
+example, the <code>mkdocs</code> theme displays results on any page via a modal.</p>
+<h3 id="search_index_only">search_index_only<a class="headerlink" href="#search_index_only" title="Permanent link"></a></h3>
+<p>Determines whether the search plugin should only generate a search index or a
+complete search solution.</p>
+<p>When <code>search_index_only</code> is set to <code>false</code>, then the search plugin modifies the
+Jinja environment by adding its own <code>templates</code> directory (with a lower
+precedence than the theme) and adds its scripts to the <code>extra_javascript</code> config
+setting.</p>
+<p>When <code>search_index_only</code> is set to <code>true</code> or not defined, the search plugin
+makes no modifications to the Jinja environment. A complete solution using the
+provided index file is the responsibility of the theme.</p>
+<p>The search index is written to a JSON file at <code>search/search_index.json</code> in the
+<a href="../../user-guide/configuration/#site_dir">site_dir</a>. The JSON object contained within the file may contain up to three
+objects.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="err">co</span><span class="kc">nf</span><span class="err">ig</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span>
+<span class="w">    </span><span class="err">docs</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+<span class="w">    </span><span class="err">i</span><span class="kc">n</span><span class="err">dex</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>If present, the <code>config</code> object contains the key/value pairs of config options
+defined for the plugin in the user's <code>mkdocs.yml</code> config file under
+<code>plugings.search</code>. The <code>config</code> object was new in MkDocs version <em>1.0</em>.</p>
+<p>The <code>docs</code> object contains a list of document objects. Each document object is
+made up of a <code>location</code> (URL), a <code>title</code>, and <code>text</code> which can be used to create
+a search index and/or display search results.</p>
+<p>If present, the <code>index</code> object contains a pre-built index which offers
+performance improvements for larger sites. Note that the pre-built index is only
+created if the user explicitly enables the <a href="../../user-guide/configuration/#prebuild_index">prebuild_index</a> config option.
+Themes should expect the index to not be present, but can choose to use the
+index when it is available. The <code>index</code> object was new in MkDocs version <em>1.0</em>.</p>
+<h2 id="packaging-themes">Packaging Themes<a class="headerlink" href="#packaging-themes" title="Permanent link"></a></h2>
+<p>MkDocs makes use of <a href="https://packaging.python.org/en/latest/" rel="external">Python packaging</a> to distribute themes. This comes with a
+few requirements.</p>
+<p>To see an example of a package containing one theme, see the <a href="https://mkdocs.github.io/mkdocs-bootstrap/" rel="external">MkDocs Bootstrap
+theme</a> and to see a package that contains many themes, see the <a href="https://mkdocs.github.io/mkdocs-bootswatch/" rel="external">MkDocs
+Bootswatch theme</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+It is not strictly necessary to package a theme, as the entire theme
+can be contained in the <code>custom_dir</code>. If you have created a "one-off theme,"
+that should be sufficient. However, if you intend to distribute your theme
+for others to use, packaging the theme has some advantages. By packaging
+your theme, your users can more easily install it, they can rely on a default
+<a href="#theme-configuration">configuration</a> being defined, and they can then take advantage of the
+<a href="../../user-guide/configuration/#custom_dir">custom_dir</a> to make tweaks to your theme to better suit their needs.</p>
+</div>
+<h3 id="package-layout">Package Layout<a class="headerlink" href="#package-layout" title="Permanent link"></a></h3>
+<p>The following layout is recommended for themes. Two files at the top level
+directory called <code>MANIFEST.in</code> and <code>setup.py</code> beside the theme directory which
+contains an empty <code>__init__.py</code> file, a theme configuration file
+(<code>mkdocs_theme.yml</code>), and your template and media files.</p>
+<div class="highlight"><pre><span></span><code>.
+|-- MANIFEST.in
+|-- theme_name
+|   |-- __init__.py
+|   |-- mkdocs_theme.yml
+|   |-- main.html
+|   |-- styles.css
+`-- setup.py
+</code></pre></div>
+<p>The <code>MANIFEST.in</code> file should contain the following contents but with
+theme_name updated and any extra file extensions added to the include.</p>
+<div class="highlight"><pre><span></span><code>recursive-include theme_name *.ico *.js *.css *.png *.html *.eot *.svg *.ttf *.woff
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+</code></pre></div>
+<p>The <code>setup.py</code> should include the following text with the modifications
+described below.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">setuptools</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
+
+<span class="n">VERSION</span> <span class="o">=</span> <span class="s1">'0.0.1'</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"mkdocs-themename"</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="n">VERSION</span><span class="p">,</span>
+    <span class="n">url</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
+    <span class="n">license</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
+    <span class="n">author</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
+    <span class="n">author_email</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
+    <span class="n">packages</span><span class="o">=</span><span class="n">find_packages</span><span class="p">(),</span>
+    <span class="n">include_package_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">'mkdocs.themes'</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s1">'themename = theme_name'</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="n">zip_safe</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Fill in the URL, license, description, author and author email address.</p>
+<p>The name should follow the convention <code>mkdocs-themename</code> (like
+<code>mkdocs-bootstrap</code> and <code>mkdocs-bootswatch</code>), starting with MkDocs, using
+hyphens to separate words and including the name of your theme.</p>
+<p>Most of the rest of the file can be left unedited. The last section we need to
+change is the entry_points. This is how MkDocs finds the theme(s) you are
+including in the package. The name on the left is the one that users will use
+in their mkdocs.yml and the one on the right is the directory containing your
+theme files.</p>
+<p>The directory you created at the start of this section with the main.html file
+should contain all of the other theme files. The minimum requirement is that
+it includes a <code>main.html</code> for the theme. It <strong>must</strong> also include a
+<code>__init__.py</code> file which should be empty, this file tells Python that the
+directory is a package.</p>
+<h3 id="theme-configuration">Theme Configuration<a class="headerlink" href="#theme-configuration" title="Permanent link"></a></h3>
+<p>A packaged theme is required to include a configuration file named
+<code>mkdocs_theme.yml</code> which is placed in the root of your template files. The file
+should contain default configuration options for the theme. However, if the
+theme offers no configuration options, the file is still required and can be
+left blank. A theme which is not packaged does not need a <code>mkdocs_theme.yml</code>
+file as that file is not loaded from <code>theme.custom_dir</code>.</p>
+<p>The theme author is free to define any arbitrary options deemed necessary and
+those options will be made available in the templates to control behavior.
+For example, a theme might want to make a sidebar optional and include the
+following in the <code>mkdocs_theme.yml</code> file:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">show_sidebar</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>Then in a template, that config option could be referenced:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">if</span> <span class="nv">config.theme.show_sidebar</span> <span class="cp">%}</span>
+<span class="x">&lt;div id="sidebar"&gt;...&lt;/div&gt;</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</code></pre></div>
+<p>And the user could override the default in their project's <code>mkdocs.yml</code> config
+file:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">theme</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">themename</span>
+<span class="w">  </span><span class="nt">show_sidebar</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p>In addition to arbitrary options defined by the theme, MkDocs defines a few
+special options which alters its behavior:</p>
+<div class="admonition block">
+<p class="admonition-title">Block</p>
+<h4 id="locale">
+locale<a class="headerlink" href="#locale" title="Permanent link"></a></h4>
+<p>This option mirrors the <a href="../../user-guide/configuration/#theme">theme</a> config option of the same name. If this
+value is not defined in the <code>mkdocs_theme.yml</code> file and the user does not
+set it in <code>mkdocs.yml</code> then it will default to <code>en</code> (English). The value
+is expected to match the language used in the text provided by the theme
+(such a "next" and "previous" links) and should be used as the value of
+the <code>&lt;html&gt;</code> tag's <code>lang</code> attribute. See <a href="#supporting-theme-localizationtranslation">Supporting theme localization/
+translation</a> for more
+information.</p>
+<p>Note that during configuration validation, the provided string is converted
+to a <code>Locale</code> object. The object contains <code>Locale.language</code> and
+<code>Locale.territory</code> attributes and will resolve as a string from within a
+template. Therefore, the following will work fine:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">"{ config.theme.locale }"</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>If the locale was set to <code>fr_CA</code> (Canadian French), then the above template
+would render as:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">"fr_CA"</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>If you did not want the territory attribute to be included, then reference
+the <code>language</code> attribute directly:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">"{ config.theme.locale.language }"</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>That would render as:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">"fr"</span><span class="p">&gt;</span>
+</code></pre></div>
+<h4 id="static_templates">static_templates<a class="headerlink" href="#static_templates" title="Permanent link"></a></h4>
+<p>This option mirrors the <a href="../../user-guide/configuration/#theme">theme</a> config option of the same name and allows
+some defaults to be set by the theme. Note that while the user can add
+templates to this list, the user cannot remove templates included in the
+theme's config.</p>
+<h4 id="extends">extends<a class="headerlink" href="#extends" title="Permanent link"></a></h4>
+<p>Defines a parent theme that this theme inherits from. The value should be
+the string name of the parent theme. Normal <a href="https://jinja.palletsprojects.com/en/latest/templates/#template-inheritance" rel="external">Jinja inheritance rules</a>
+apply.</p>
+</div>
+<p>Plugins may also define some options which allow the theme to inform a plugin
+about which set of plugin options it expects. See the documentation for any
+plugins you may wish to support in your theme.</p>
+<h3 id="distributing-themes">Distributing Themes<a class="headerlink" href="#distributing-themes" title="Permanent link"></a></h3>
+<p>With the above changes, your theme should now be ready to install. This can be
+done with pip, using <code>pip install .</code> if you are still in the same directory as
+the setup.py.</p>
+<p>Most Python packages, including MkDocs, are distributed on PyPI. To do this,
+you should run the following command.</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>setup.py<span class="w"> </span>register
+</code></pre></div>
+<p>If you don't have an account setup, you should be prompted to create one.</p>
+<p>For a much more detailed guide, see the official Python packaging
+documentation for <a href="https://packaging.python.org/en/latest/distributing/" rel="external">Packaging and Distributing Projects</a>.</p>
+<h2 id="supporting-theme-localizationtranslation">Supporting theme Localization/Translation<a class="headerlink" href="#supporting-theme-localizationtranslation" title="Permanent link"></a></h2>
+<p>While the built-in themes provide support for <a href="../../user-guide/localizing-your-theme/">localization/translation</a> of
+templates, custom themes and third-party themes may choose not to. Regardless,
+the <a href="#locale"><code>locale</code></a> setting of the <code>theme</code> configuration option is always
+present and is relied upon by other parts of the system. Therefore, it is
+recommended that all third-party themes use the same setting for designating a
+language regardless of the system they use for translation. In that way, users
+will experience consistent behavior regardless of the theme they may choose.</p>
+<p>The method for managing translations is up to the developers of a theme.
+However, if a theme developer chooses to use the same mechanisms used by the
+built-in themes, the sections below outline how to enable and make use of the
+same commands utilized by MkDocs.</p>
+<h3 id="using-the-localizationtranslation-commands">Using the Localization/Translation commands<a class="headerlink" href="#using-the-localizationtranslation-commands" title="Permanent link"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>
+As <strong><a href="https://babel.pocoo.org/en/latest/setup.html" rel="external">pybabel</a> is not installed by default</strong> and most users will not have
+pybabel installed, theme developers and/or translators should make sure to
+have installed the necessary dependencies
+(using <code>pip install 'mkdocs[i18n]'</code>) in order for the commands to be
+available for use.</p>
+</div>
+<p>The translation commands should be called from the root of your theme's working tree.</p>
+<p>For an overview of the workflow used by MkDocs to translate the built-in
+themes, see the appropriate <a href="../../about/contributing/#development-setup">section</a> of the Contributing Guide and the
+<a href="../translations/">Translation Guide</a>.</p>
+<h3 id="example-custom-theme-localizationtranslation-workflow">Example custom theme Localization/Translation workflow<a class="headerlink" href="#example-custom-theme-localizationtranslation-workflow" title="Permanent link"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If your theme inherits from an existing theme which already provides
+translation catalogs, your theme's translations will be merged with the
+parent theme's translations during a MkDocs build.</p>
+<p>This means that you only need to concentrate on the added translations.
+Yet, you will still benefit from the translations of the parent theme. At
+the same time, you may override any of parent theme's translations!</p>
+</div>
+<p>Let's suppose that you're working on your own fork of the
+<a href="https://github.com/mkdocs-ng/mkdocs-basic-theme" rel="external">mkdocs-basic-theme</a> and want to add translations to it.</p>
+<p>Edit the templates by wrapping text in your HTML sources with
+<code>{% trans %}</code> and <code>{% endtrans %}</code> as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="gd">--- a/basic_theme/base.html</span>
+<span class="gi">+++ b/basic_theme/base.html</span>
+<span class="gu">@@ -88,7 +88,7 @@</span>
+
+<span class="w"> </span>&lt;body&gt;
+
+<span class="gd">-  &lt;h1&gt;This is an example theme for MkDocs.&lt;/h1&gt;</span>
+<span class="gi">+  &lt;h1&gt;{% trans %}This is an example theme for MkDocs.{% endtrans %}&lt;/h1&gt;</span>
+
+<span class="w"> </span>  &lt;p&gt;
+<span class="w"> </span>    It is designed to be read by looking at the theme HTML which is heavily
+</code></pre></div>
+<p>Then you would follow the <a href="../translations/">Translation Guide</a> as usual to get your translations
+running.</p>
+<h3 id="packaging-translations-with-your-theme">Packaging Translations with your theme<a class="headerlink" href="#packaging-translations-with-your-theme" title="Permanent link"></a></h3>
+<p>While the Portable Object Template (<code>pot</code>) file created by the
+<code>extract_messages</code> command and the Portable Object (<code>po</code>) files created by the
+<code>init_catalog</code> and <code>update_catalog</code> commands are useful for creating and
+editing translations, they are not used by MkDocs directly and do not need to
+be included in a packaged release of a theme. When MkDocs builds a site with
+translations, it only makes use of the binary <code>mo</code> files(s) for the specified
+locale. Therefore, when <a href="#packaging-themes">packaging a theme</a>, make sure to include it in the
+"wheels", using a <code>MANIFEST.in</code> file or otherwise.</p>
+<p>Then, before building your Python package, you will want to ensure that the
+binary <code>mo</code> file for each locale is up-to-date by running the <code>compile_catalog</code>
+command for each locale. MkDocs expects the binary <code>mo</code> files to be located at
+<code>locales/&lt;locale&gt;/LC_MESSAGES/messages.mo</code>, which the <code>compile_catalog</code>
+command automatically does for you. See <a href="../translations/#testing-theme-translations">Testing theme translations</a> for
+details.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+As outlined in our <a href="../translations/">Translation Guide</a>, the MkDocs project has chosen to
+include the <code>pot</code> and <code>po</code> files in our code repository, but not the
+<code>mo</code> files. This requires us to always run <code>compile_catalog</code> before
+packaging a new release regardless of whether any changes were made to a
+translation or not. However, you may chose an alternate workflow for your
+theme. At a minimum, you need to ensure that up-to-date <code>mo</code> files are
+included at the correct location in each release. However, you may use a
+different process for generating those <code>mo</code> files if you chose to do so.</p>
+</div>
+        </div>
+<footer class="sumi-article-footer">
+  <div class="sumi-meta-row"><a class="sumi-meta sumi-edit" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/dev-guide/themes.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a>
+  </div>
+  <nav class="sumi-pager" aria-label="Previous / Next">
+    <a class="sumi-pager-prev" href="../" rel="prev"><span class="sumi-pager-label"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Previous</span><span class="sumi-pager-title">Developer Guide</span></a>
+    <a class="sumi-pager-next" href="../translations/" rel="next"><span class="sumi-pager-label">Next<svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span><span class="sumi-pager-title">Translations</span></a>
+  </nav>
+</footer>
+      </article>
+    </main>
+    <aside class="sumi-rail" aria-label="On this page">
+      <div class="sumi-rail-inner">
+        <div class="sumi-rail-title">On this page</div>
+        <nav class="sumi-toc"><ul>
+  <li><a href="#creating-a-custom-theme" data-level="2">Creating a custom theme</a>
+  </li>
+  <li><a href="#basic-theme" data-level="2">Basic theme</a><ul>
+  <li><a href="#picking-up-css-and-javascript-from-the-config" data-level="3">Picking up CSS and JavaScript from the config</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#theme-files" data-level="2">Theme Files</a><ul>
+  <li><a href="#template-files" data-level="3">Template Files</a>
+  </li>
+  <li><a href="#theme-meta-files" data-level="3">Theme Meta Files</a>
+  </li>
+  <li><a href="#dot-files" data-level="3">Dot Files</a>
+  </li>
+  <li><a href="#documentation-files" data-level="3">Documentation Files</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#template-variables" data-level="2">Template Variables</a><ul>
+  <li><a href="#global-context" data-level="3">Global Context</a>
+  </li>
+  <li><a href="#navigation-objects" data-level="3">Navigation Objects</a>
+  </li>
+  <li><a href="#extra-context" data-level="3">Extra Context</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#template-filters" data-level="2">Template Filters</a><ul>
+  <li><a href="#url" data-level="3">url</a>
+  </li>
+  <li><a href="#tojson" data-level="3">tojson</a>
+  </li>
+  <li><a href="#script_tag" data-level="3">script_tag</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#rendering-pages-during-mkdocs-serve" data-level="2">Rendering pages during mkdocs serve</a>
+  </li>
+  <li><a href="#rendering-the-navigation-quickly" data-level="2">Rendering the navigation quickly</a>
+  </li>
+  <li><a href="#search-and-themes" data-level="2">Search and themes</a><ul>
+  <li><a href="#include_search_page" data-level="3">include_search_page</a>
+  </li>
+  <li><a href="#search_index_only" data-level="3">search_index_only</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#packaging-themes" data-level="2">Packaging Themes</a><ul>
+  <li><a href="#package-layout" data-level="3">Package Layout</a>
+  </li>
+  <li><a href="#theme-configuration" data-level="3">Theme Configuration</a>
+  </li>
+  <li><a href="#distributing-themes" data-level="3">Distributing Themes</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#supporting-theme-localizationtranslation" data-level="2">Supporting theme Localization/Translation</a><ul>
+  <li><a href="#using-the-localizationtranslation-commands" data-level="3">Using the Localization/Translation commands</a>
+  </li>
+  <li><a href="#example-custom-theme-localizationtranslation-workflow" data-level="3">Example custom theme Localization/Translation workflow</a>
+  </li>
+  <li><a href="#packaging-translations-with-your-theme" data-level="3">Packaging Translations with your theme</a>
+  </li>
+</ul>
+  </li>
+</ul></nav>
+        <a class="sumi-rail-top" href="#"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>Back to top</a>
+      </div>
+    </aside>
+  </div><footer class="sumi-footer">
+  <div class="sumi-footer-inner">
+    <div class="sumi-footer-left"><div class="sumi-copyright">Copyright &copy; 2014 <a href="https://twitter.com/starletdreaming">Tom Christie</a>, Maintained by the <a href="https://github.com/mkdocs-ng">MkDocs NG Team</a>.</div>
+      <div class="sumi-credit">Built with <a href="https://github.com/mkdocs-ng/mkdocs" rel="noopener">MkDocs NG</a> and <a href="https://github.com/mkdocs-ng/mkdocs-sumi" rel="noopener">Sumi</a></div>
+    </div>
+    <div class="sumi-footer-right">
+      <button class="sumi-icon-btn" type="button" data-sumi-help aria-label="Keyboard shortcuts" title="Keyboard shortcuts"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></button>
+    </div>
+  </div>
+</footer>
+  <dialog class="sumi-palette" aria-label="Search">
+  <div class="sumi-palette-box">
+    <div class="sumi-palette-input">
+      <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+      <input type="search" autocomplete="off" spellcheck="false" placeholder="Search docs or run a command…" aria-label="Search" aria-controls="sumi-palette-results" aria-activedescendant="">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="sumi-palette-results" id="sumi-palette-results" role="listbox"></div>
+    <div class="sumi-palette-foot">
+      <span><kbd>↵</kbd> to open</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd> to move</span>
+      <span><kbd>Esc</kbd> to close</span>
+    </div>
+  </div>
+</dialog>
+<dialog class="sumi-help" aria-label="Keyboard shortcuts">
+  <div class="sumi-help-box">
+    <div class="sumi-help-head"><strong>Keyboard shortcuts</strong><button class="sumi-icon-btn" type="button" data-close aria-label="Close"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+    <dl>
+      <dt><kbd data-mod>Ctrl K</kbd> <kbd>/</kbd></dt><dd>Open search and commands</dd>
+      <dt><kbd>t</kbd></dt><dd>Toggle dark mode</dd>
+      <dt><kbd>[</kbd> <kbd>]</kbd></dt><dd>Previous / next page</dd>
+      <dt><kbd>j</kbd> <kbd>k</kbd></dt><dd>Previous / next heading</dd>
+      <dt><kbd>?</kbd></dt><dd>Show this help</dd>
+    </dl>
+  </div>
+</dialog>
+<dialog class="sumi-zoom" aria-label="Zoom image"><img alt=""></dialog>
+<div class="sumi-toast" role="status" aria-live="polite"></div>
+  <script>
+    window.sumi = {
+      base: "../..",
+      page: "dev-guide/themes/",
+      features: [],
+      markdown: "../themes.md",
+      search: "../../search/search_index.json",
+      keyboard: true,
+      versions: null,
+      prev: "../",
+      next: "../translations/",
+      edit: "https://github.com/mkdocs-ng/mkdocs/blob/main/docs/dev-guide/themes.md",
+      nav: [{"t":"Home","u":"","s":""},{"t":"Getting Started","u":"getting-started/","s":""},{"t":"User Guide","u":"user-guide/","s":"User Guide"},{"t":"Installation","u":"user-guide/installation/","s":"User Guide"},{"t":"Switching to MkDocs NG","u":"user-guide/migrating/","s":"User Guide"},{"t":"Material for MkDocs End of Life","u":"user-guide/material-end-of-life/","s":"User Guide"},{"t":"Writing Your Docs","u":"user-guide/writing-your-docs/","s":"User Guide"},{"t":"Choosing Your Theme","u":"user-guide/choosing-your-theme/","s":"User Guide"},{"t":"Customizing Your Theme","u":"user-guide/customizing-your-theme/","s":"User Guide"},{"t":"Localizing Your Theme","u":"user-guide/localizing-your-theme/","s":"User Guide"},{"t":"Multi-language Sites","u":"user-guide/multi-language-sites/","s":"User Guide"},{"t":"Configuration","u":"user-guide/configuration/","s":"User Guide"},{"t":"Command Line Interface","u":"user-guide/cli/","s":"User Guide"},{"t":"Python API","u":"user-guide/python-api/","s":"User Guide"},{"t":"Deploying Your Docs","u":"user-guide/deploying-your-docs/","s":"User Guide"},{"t":"Versioned Docs","u":"user-guide/versioned-docs/","s":"User Guide"},{"t":"Developer Guide","u":"dev-guide/","s":"Developer Guide"},{"t":"Themes","u":"dev-guide/themes/","s":"Developer Guide"},{"t":"Translations","u":"dev-guide/translations/","s":"Developer Guide"},{"t":"Plugins","u":"dev-guide/plugins/","s":"Developer Guide"},{"t":"API Reference","u":"dev-guide/api/","s":"Developer Guide"},{"t":"Release Notes","u":"about/release-notes/","s":"About"},{"t":"Fixed Upstream Issues","u":"about/fixed-upstream-issues/","s":"About"},{"t":"Comparison","u":"about/comparison/","s":"About"},{"t":"Contributing","u":"about/contributing/","s":"About"},{"t":"License","u":"about/license/","s":"About"}],
+      alternate: [],
+      translations: [],
+      t: {"search":"Search","search_placeholder":"Search docs or run a command…","search_no_results":"No results for","search_loading":"Loading index…","search_hint_open":"to open","search_hint_move":"to move","search_hint_close":"to close","pages":"Pages","commands":"Commands","on_this_page":"On this page","back_to_top":"Back to top","previous":"Previous","next":"Next","edit_page":"Edit this page","view_source":"View source","copy_markdown":"Copy as Markdown","copied":"Copied","view_markdown":"View as Markdown","open_in":"Open in {name}","print":"Print","page_actions":"Page actions","copy":"Copy","copy_code":"Copy code","toggle_theme":"Toggle dark mode","theme_light":"Light","theme_dark":"Dark","theme_auto":"System","menu":"Menu","close":"Close","navigation":"Navigation","skip_to_content":"Skip to content","last_updated":"Last updated","reading_time":"{n} min read","language":"Language","untranslated":"This page has not been translated yet, so it is shown in {language}.","version":"Version","repository":"Repository","keyboard_shortcuts":"Keyboard shortcuts","shortcut_search":"Open search and commands","shortcut_theme":"Toggle dark mode","shortcut_prev_next":"Previous / next page","shortcut_toc":"Previous / next heading","shortcut_help":"Show this help","built_with":"Built with {mkdocs} and {sumi}","not_found_title":"Page not found","not_found_text":"The page you are looking for does not exist or has moved.","go_home":"Go to the home page","blog":"Blog","all_posts":"All posts","tags":"Tags","posted_on":"Posted on","older_post":"Older post","newer_post":"Newer post","subscribe_rss":"Subscribe via RSS","releases":"Releases","latest":"Latest","prerelease":"Pre-release","archived":"Archived","download":"Download","asset":"Asset","size":"Size","checksum":"SHA-256","release_notes":"Release notes","old_version":"You are reading the documentation for an older version.","go_latest":"Go to the latest version","expand_all":"Expand all","zoom_image":"Zoom image","diagram_expand":"Expand diagram","blog_view":"Layout","blog_view_list":"List view","blog_view_cards":"Card view","diagram_source":"Copy diagram source","diagram_download":"Download SVG","cmd_toggle_theme":"Toggle light / dark","cmd_copy_markdown":"Copy this page as Markdown","cmd_view_markdown":"Open this page as Markdown","cmd_edit":"Edit this page","cmd_print":"Print this page","cmd_top":"Scroll to top","cmd_home":"Go to the home page","cmd_language":"Switch language: {name}","cmd_version":"Switch version: {name}","cmd_llms":"Open llms.txt","whole_site":"Whole site","print_title":"Printable edition","contents":"Contents","compare":"Bilingual view","compare_open":"Open bilingual view","compare_sync":"Sync scrolling","compare_failed":"This translation could not be loaded.","feedback_title":"Was this page helpful?","feedback_yes":"Yes","feedback_no":"No","feedback_thanks":"Thanks for your feedback!","comments":"Comments","table_expand":"Expand table","zoom_in":"Zoom in","zoom_out":"Zoom out","zoom_reset":"Fit to window"}
+    };
+  </script>
+  <script src="../../assets/js/sumi.js" defer></script>
+</body>
+</html>

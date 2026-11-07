@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en" data-palette="auto" data-layout="docs" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working."><meta name="author" content="MkDocs NG Team"><link rel="canonical" href="https://mkdocs-ng.org/about/comparison/"><link rel="prev" href="../fixed-upstream-issues/"><link rel="next" href="../contributing/"><link rel="alternate" type="text/markdown" href="../comparison.md" title="Markdown"><link rel="alternate" type="text/plain" href="../../llms.txt" title="llms.txt">
+  <link rel="icon" href="../../img/favicon.svg">
+  <meta name="generator" content="mkdocs-1.11.1, sumi">
+  <meta name="theme-color" content="#f8f7f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Comparison"><meta property="og:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <meta property="og:site_name" content="MkDocs NG">
+  <meta property="og:locale" content="en_US"><meta property="og:url" content="https://mkdocs-ng.org/about/comparison/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Comparison"><meta name="twitter:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <title>Comparison · MkDocs NG</title>
+  <script>
+    (function () {
+      var d = document.documentElement, p = d.dataset.palette, s = null;
+      try { s = localStorage.getItem('sumi.palette'); } catch (e) {}
+      var mode = s || p;
+      if (mode === 'auto' || !mode) mode = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.dataset.theme = mode;
+      d.dataset.mdColorScheme = mode === 'dark' ? 'slate' : 'default';
+      d.classList.replace('no-js', 'js');
+      // A page opened inside the bilingual view shows its content only.
+      if (window.name === 'sumi-pane') d.classList.add('sumi-pane');
+    })();
+  </script>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/sumi.css"><style>:root{--sumi-accent:#0061fe}[data-theme="dark"]{--sumi-accent:#0061fe}</style><link rel="stylesheet" href="../../assets/_mkdocstrings.css"><link rel="stylesheet" href="../../css/extra.css">
+</head>
+<body>
+  <a class="sumi-skip" href="#content">Skip to content</a><header class="sumi-header">
+  <div class="sumi-header-inner">
+    <button class="sumi-icon-btn sumi-menu-btn" type="button" aria-label="Menu" aria-controls="sumi-sidebar" aria-expanded="false"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg></button>
+    <a class="sumi-brand" href="../.." aria-label="MkDocs NG">
+      <img class="sumi-logo sumi-when-light" src="../../img/logo.svg" alt="">
+      <img class="sumi-logo sumi-when-dark" src="../../img/logo-dark.svg" alt="">
+      <span class="sumi-brand-name">MkDocs NG</span>
+    </a>
+    <nav class="sumi-tabs-nav" aria-label="Navigation">
+      <a class="sumi-tab-link" href="../../getting-started/">Getting Started</a>
+      <a class="sumi-tab-link" href="../../user-guide/">User Guide</a>
+      <a class="sumi-tab-link" href="../../dev-guide/">Developer Guide</a>
+      <a class="sumi-tab-link is-active" href="../release-notes/" aria-current="page">About</a>
+    </nav>
+    <div class="sumi-header-tools">
+      <button class="sumi-search-btn" type="button" data-sumi-palette aria-label="Search">
+        <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span class="sumi-search-label">Search</span><kbd class="sumi-search-kbd" data-mod>Ctrl K</kbd>
+      </button>
+      <button class="sumi-icon-btn sumi-theme-btn" type="button" data-sumi-theme aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="sumi-icon sumi-when-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="sumi-icon sumi-when-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></button>
+      <a class="sumi-icon-btn sumi-repo" href="https://github.com/mkdocs-ng/mkdocs/" aria-label="Repository" title="GitHub" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+    </div>
+  </div>
+</header>
+  <div class="sumi-version-banner" hidden></div>
+  <div class="sumi-shell">
+    <aside class="sumi-sidebar" id="sumi-sidebar" aria-label="Navigation">
+      <div class="sumi-sidebar-inner">
+        <ul class="sumi-nav-list sumi-sidebar-tabs">
+          <li class="sumi-nav-page"><a href="../../getting-started/">Getting Started</a></li>
+          <li class="sumi-nav-page"><a href="../../user-guide/">User Guide</a></li>
+          <li class="sumi-nav-page"><a href="../../dev-guide/">Developer Guide</a></li>
+          <li class="sumi-nav-page"><a class="is-active" href="../release-notes/">About</a></li>
+        </ul>
+        <div class="sumi-sidebar-title">About</div>
+        <nav class="sumi-nav"><ul class="sumi-nav-list" data-depth="1">
+    <li class="sumi-nav-page"><a href="../release-notes/">Release Notes</a></li>
+    <li class="sumi-nav-page"><a href="../fixed-upstream-issues/">Fixed Upstream Issues</a></li>
+    <li class="sumi-nav-page"><a href="./" aria-current="page" class="is-current">Comparison</a></li>
+    <li class="sumi-nav-page"><a href="../contributing/">Contributing</a></li>
+    <li class="sumi-nav-page"><a href="../license/">License</a></li>
+</ul></nav>
+      </div>
+    </aside>
+    <main class="sumi-main" id="content">
+      <article class="sumi-article">
+        <div class="sumi-article-top">
+<nav class="sumi-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><span>About</span><svg class="sumi-icon sumi-crumb-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></li>
+    <li aria-current="page"><span>Comparison</span></li>
+  </ol>
+</nav><div class="sumi-actions">
+  <button class="sumi-chip-btn sumi-copy-page" type="button" data-sumi-copy-page aria-label="Copy as Markdown" title="Copy as Markdown"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span>Copy as Markdown</span></button>
+  <div class="sumi-menu sumi-actions-menu">
+    <button class="sumi-icon-btn sumi-chip-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Page actions" title="Page actions"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <ul class="sumi-menu-list sumi-menu-right" role="menu">
+      <li role="none"><a role="menuitem" href="../comparison.md" target="_blank"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>View as Markdown</a></li>
+      <li role="none"><a role="menuitem" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/about/comparison.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a></li>
+      <li role="none"><button role="menuitem" type="button" data-sumi-print><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>Print</button></li>
+      <li role="none"><a role="menuitem" href="../../print/"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg>Printable edition · Whole site</a></li>
+    </ul>
+  </div>
+</div>
+        </div>
+        <details class="sumi-toc-inline">
+          <summary><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg><span>On this page</span><svg class="sumi-icon sumi-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <nav class="sumi-toc"><ul>
+  <li><a href="#at-a-glance" data-level="2">At a glance</a>
+  </li>
+  <li><a href="#which-one-should-i-use" data-level="2">Which one should I use?</a>
+  </li>
+  <li><a href="#mkdocs-16" data-level="2">MkDocs 1.6</a>
+  </li>
+  <li><a href="#mkdocs-20-pre-releases" data-level="2">MkDocs 2.0 pre-releases</a>
+  </li>
+  <li><a href="#properdocs" data-level="2">ProperDocs</a>
+  </li>
+  <li><a href="#zensical" data-level="2">Zensical</a>
+  </li>
+  <li><a href="#mkdocs-ng" data-level="2">MkDocs NG</a>
+  </li>
+  <li><a href="#build-speed" data-level="2">Build speed</a><ul>
+  <li><a href="#clean-build-of-1000-pages" data-level="3">Clean build of 1,000 pages</a>
+  </li>
+  <li><a href="#clean-build-of-5000-pages" data-level="3">Clean build of 5,000 pages</a>
+  </li>
+  <li><a href="#showing-an-edit-in-serve" data-level="3">Showing an edit in serve</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#sources" data-level="2">Sources</a>
+  </li>
+</ul></nav>
+        </details>
+        <div class="sumi-content sumi-prose" data-pagefind-body><h1 id="mkdocs-ng-and-its-alternatives">MkDocs NG and Its Alternatives<a class="headerlink" href="#mkdocs-ng-and-its-alternatives" title="Permanent link"></a></h1>
+<p>How MkDocs NG relates to the other tools that build MkDocs sites.</p>
+<hr />
+<p>Since upstream MkDocs 1.x stopped being developed, several projects have
+offered a way forward for existing MkDocs sites. This page compares them on
+what matters when you already have a site: whether it keeps building
+unchanged, and whether your plugins keep running.</p>
+<p>Facts on this page were checked on 2026-11-01 against each project's PyPI
+release history, documentation and source code; see <a href="#sources">Sources</a>.
+Build times were measured on 2026-11-04.
+Projects change quickly, so check their documentation for the current state.
+If something here is wrong or out of date, please
+<a href="https://github.com/mkdocs-ng/mkdocs/issues" rel="external">open an issue</a>.</p>
+<h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance" title="Permanent link"></a></h2>
+<div class="sumi-table">
+<table>
+<thead>
+<tr>
+<th>&nbsp;</th>
+<th>MkDocs NG</th>
+<th>MkDocs 1.6</th>
+<th>MkDocs 2.0 pre-releases</th>
+<th>ProperDocs</th>
+<th>Zensical</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What it is</td>
+<td>Maintained fork of MkDocs 1.x</td>
+<td>Last upstream 1.x release</td>
+<td>Upstream rewrite</td>
+<td>Fork of MkDocs 1.6</td>
+<td>New generator by the Material for MkDocs team</td>
+</tr>
+<tr>
+<td>Latest release</td>
+<td>1.11.0 (2026-11-04)</td>
+<td>1.6.1 (2024-08-30)</td>
+<td>2.0.dev6 (2026-09-15)</td>
+<td>1.6.7 (2026-03-20)</td>
+<td>0.0.74 (2026-10-30)</td>
+</tr>
+<tr>
+<td>PyPI package</td>
+<td><code>mkdocs-ng</code></td>
+<td><code>mkdocs</code></td>
+<td><code>mkdocs</code> (<code>--pre</code>)</td>
+<td><code>properdocs</code></td>
+<td><code>zensical</code></td>
+</tr>
+<tr>
+<td>Command</td>
+<td><code>mkdocs</code></td>
+<td><code>mkdocs</code></td>
+<td><code>mkdocs</code></td>
+<td><code>properdocs</code></td>
+<td><code>zensical</code></td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td><code>mkdocs.yml</code></td>
+<td><code>mkdocs.yml</code></td>
+<td>None; refuses to run when <code>mkdocs.yml</code> exists</td>
+<td><code>properdocs.yml</code>, falls back to <code>mkdocs.yml</code></td>
+<td><code>mkdocs.yml</code> or <code>zensical.toml</code></td>
+</tr>
+<tr>
+<td>Runs MkDocs plugins</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>No; reimplements about 30 popular ones</td>
+</tr>
+<tr>
+<td>Runs MkDocs themes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>No; its own theme supports Material for MkDocs settings</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>3.10+</td>
+<td>3.8+</td>
+<td>3.10+</td>
+<td>3.9+</td>
+<td>3.11+</td>
+</tr>
+<tr>
+<td>Build of a 1,000-page site with Material for MkDocs</td>
+<td>11.1 s</td>
+<td>34.2 s</td>
+<td>Can't build it</td>
+<td>32.1 s</td>
+<td>15.9 s; 5.7 s with its cache</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>See <a href="#build-speed">Build speed</a> for how this was measured.</p>
+<h2 id="which-one-should-i-use">Which one should I use?<a class="headerlink" href="#which-one-should-i-use" title="Permanent link"></a></h2>
+<ul>
+<li><strong>You have an MkDocs site and want it to keep building unchanged,
+    plugins included:</strong> MkDocs NG or ProperDocs. Both run MkDocs plugins and
+    themes. With MkDocs NG the only change is the package name: the <code>mkdocs</code>
+    command, <code>mkdocs.yml</code>, CI scripts and <code>.readthedocs.yaml</code> stay as they are.
+    ProperDocs uses its own <code>properdocs</code> command.</li>
+<li><strong>Your site uses Material for MkDocs and should keep building unchanged
+    after its end of life on 2027-05-05:</strong> MkDocs NG with
+    <a href="../../user-guide/material-end-of-life/">MkDocs NG Material</a>, which keeps
+    the <code>material</code> theme and gets security and compatibility fixes after that
+    date.</li>
+<li><strong>Your site uses Material for MkDocs, and only plugins that Zensical
+    reimplements:</strong> Zensical is an option if you're ready to switch to a new
+    generator. Check its plugin support first, since other plugins are
+    ignored.</li>
+<li><strong>You're starting new documentation and want the MkDocs plugin
+    ecosystem:</strong> MkDocs NG. <code>mkdocs new</code> creates a site to start from.</li>
+<li><strong>Staying on MkDocs 1.6.1</strong> keeps working for now, but bugs stay unfixed
+    and it declares support only for Python 3.8 to 3.12.</li>
+<li><strong>The MkDocs 2.0 pre-releases</strong> can't build existing sites. Avoid
+    installing them with <code>pip install --pre</code> or <code>uv --prerelease allow</code>.</li>
+</ul>
+<h2 id="mkdocs-16">MkDocs 1.6<a class="headerlink" href="#mkdocs-16" title="Permanent link"></a></h2>
+<p>The last release of upstream MkDocs 1.x is 1.6.1, from August 2024. Sites and
+plugins built for it keep working, but bugs reported since then stay unfixed,
+and it declares support for Python 3.8 to 3.12 only. Plugins and themes keep
+installing it as a dependency, which is why MkDocs NG installs alongside it
+and takes precedence instead of replacing it. See
+<a href="../../user-guide/installation/#plugins-themes-and-the-mkdocs-package">Plugins, themes and the <code>mkdocs</code> package</a>.</p>
+<h2 id="mkdocs-20-pre-releases">MkDocs 2.0 pre-releases<a class="headerlink" href="#mkdocs-20-pre-releases" title="Permanent link"></a></h2>
+<p>Upstream MkDocs 2.0 is a rewrite, published as pre-releases of the <code>mkdocs</code>
+package, so <code>pip install mkdocs</code> still installs 1.6.1 and only
+<code>pip install --pre mkdocs</code> installs 2.0. As of 2.0.dev6 it builds a directory
+of Markdown files with a single Jinja template (<code>templates/base.html</code>). It has
+no configuration file, plugins or themes, and it stops with an error when it
+finds a <code>mkdocs.yml</code>. Existing sites can't be built with it.</p>
+<h2 id="properdocs">ProperDocs<a class="headerlink" href="#properdocs" title="Permanent link"></a></h2>
+<p>ProperDocs is a fork of MkDocs 1.6 with its own package, command and
+configuration file name. It loads plugins and themes written for MkDocs, so
+existing sites can move to it by running <code>properdocs</code> instead of <code>mkdocs</code>;
+it also reads <code>mkdocs.yml</code>. Several plugins, including <code>mkdocs-redirects</code>,
+<code>mkdocs-gen-files</code>, <code>mkdocs-literate-nav</code>, <code>mkdocs-section-index</code> and
+<code>mkdocs-rss-plugin</code>, now depend on ProperDocs and print a warning suggesting
+it when run by the <code>mkdocs</code> command. They keep working with MkDocs NG, which
+turns that warning off.</p>
+<h2 id="zensical">Zensical<a class="headerlink" href="#zensical" title="Permanent link"></a></h2>
+<p>Zensical is a new static site generator from the team behind Material for
+MkDocs, which is in maintenance mode with critical fixes through 2027-05-05.
+It reads existing <code>mkdocs.yml</code> files and supports Material for MkDocs
+settings. It doesn't run MkDocs plugins: it reimplements about 30 popular
+ones natively and ignores the configuration of the rest. <code>gh-deploy</code>,
+<code>get-deps</code> and <code>hooks</code> aren't supported, and templates use MiniJinja instead
+of Jinja. It is a good fit if your site uses Material for MkDocs and only
+plugins it supports.</p>
+<h2 id="mkdocs-ng">MkDocs NG<a class="headerlink" href="#mkdocs-ng" title="Permanent link"></a></h2>
+<p>MkDocs NG continues MkDocs 1.x: same command, same <code>mkdocs.yml</code>, same plugin
+and theme APIs, so switching is a package change. On top of that it supports
+current Python versions (3.10 to 3.15), fixes
+<a href="../fixed-upstream-issues/">long-standing upstream bugs</a>, and adds features
+such as <code>llms.txt</code> output for LLMs and coding agents, a stable Python API, and
+built-in themes that load nothing from CDNs. Every change is tested by
+building sites with around 30 popular plugins, themes and Markdown
+extensions. See <a href="../../user-guide/migrating/">Switching to MkDocs NG</a>.</p>
+<h2 id="build-speed">Build speed<a class="headerlink" href="#build-speed" title="Permanent link"></a></h2>
+<p>We built the same generated site with each tool: Markdown pages with
+headings, lists, tables, code blocks and links between pages, in sections of
+49 pages. Every tool builds all the pages and a search index, with the same
+Markdown extensions where it has them. Times are the median of 5 clean builds
+for the Python tools and 3 for the others, one tool after another, on a
+4-core Linux machine with 16 GB of memory, Python 3.13 and Node.js 22,
+measured on 2026-11-04. The script is
+<a href="https://github.com/mkdocs-ng/mkdocs/tree/main/benchmarks" rel="external"><code>benchmarks/compare.py</code></a>,
+so you can repeat it on your own machine.</p>
+<h3 id="clean-build-of-1000-pages">Clean build of 1,000 pages<a class="headerlink" href="#clean-build-of-1000-pages" title="Permanent link"></a></h3>
+<div class="sumi-table">
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Theme</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MkDocs NG 1.11.0</td>
+<td><code>mkdocs</code></td>
+<td>8.8 s</td>
+</tr>
+<tr>
+<td>MkDocs NG 1.11.0</td>
+<td>Material for MkDocs (<code>mkdocs-ng-material</code> 9.8.0)</td>
+<td>11.1 s</td>
+</tr>
+<tr>
+<td>MkDocs NG 1.11.0</td>
+<td><a href="https://sumi.mkdocs-ng.org/" rel="external">Sumi</a> 0.2.0</td>
+<td>12.2 s</td>
+</tr>
+<tr>
+<td>Zensical 0.0.74</td>
+<td>Its own, based on Material for MkDocs</td>
+<td>15.9 s; 5.7 s with its cache</td>
+</tr>
+<tr>
+<td>MkDocs 1.6.1</td>
+<td><code>mkdocs</code></td>
+<td>16.4 s</td>
+</tr>
+<tr>
+<td>ProperDocs 1.6.7</td>
+<td><code>mkdocs</code></td>
+<td>16.9 s</td>
+</tr>
+<tr>
+<td>Sphinx 9.2, 4 processes</td>
+<td>Alabaster</td>
+<td>23.5 s</td>
+</tr>
+<tr>
+<td>ProperDocs 1.6.7</td>
+<td>Material for MkDocs 9.8.0</td>
+<td>32.1 s</td>
+</tr>
+<tr>
+<td>Astro Starlight 0.42.8</td>
+<td>Its own</td>
+<td>32.9 s; 21.8 s with its cache</td>
+</tr>
+<tr>
+<td>MkDocs 1.6.1</td>
+<td>Material for MkDocs 9.8.0</td>
+<td>34.2 s</td>
+</tr>
+<tr>
+<td>VitePress 1.6.4</td>
+<td>Its own</td>
+<td>85.4 s</td>
+</tr>
+<tr>
+<td>Docusaurus 3.10.2</td>
+<td>Its own</td>
+<td>106.6 s; 39.3 s with its cache</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Each tool ran with its default settings. Zensical, Starlight and Docusaurus
+keep caches between builds (in <code>.cache</code>, <code>node_modules/.astro</code> and
+<code>node_modules/.cache</code>); the first time is with the cache removed before the
+build, the second with it kept, after a build with no changes. MkDocs NG has
+no cache between builds. Compare like with like: Zensical's theme is based on
+Material for MkDocs, so the closest MkDocs NG time is the one with Material.
+ProperDocs is a fork of MkDocs 1.6 and builds as fast as it: the difference
+between them is within the variation between runs.</p>
+<h3 id="clean-build-of-5000-pages">Clean build of 5,000 pages<a class="headerlink" href="#clean-build-of-5000-pages" title="Permanent link"></a></h3>
+<p>One run of each, measured on 2026-11-02 (ProperDocs on 2026-11-04).</p>
+<div class="sumi-table">
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Theme</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zensical 0.0.74, cache kept</td>
+<td>Its own</td>
+<td>59.2 s</td>
+</tr>
+<tr>
+<td>MkDocs NG 1.11.0rc1</td>
+<td><code>mkdocs</code></td>
+<td>59.6 s</td>
+</tr>
+<tr>
+<td>MkDocs NG 1.11.0rc1</td>
+<td>Sumi 0.2.0</td>
+<td>67.6 s</td>
+</tr>
+<tr>
+<td>MkDocs NG 1.11.0rc1</td>
+<td>Material for MkDocs (<code>mkdocs-ng-material</code> 9.8.0)</td>
+<td>134.5 s</td>
+</tr>
+<tr>
+<td>Zensical 0.0.74, cache cleared</td>
+<td>Its own</td>
+<td>185.7 s</td>
+</tr>
+<tr>
+<td>MkDocs 1.6.1</td>
+<td><code>mkdocs</code></td>
+<td>340.0 s</td>
+</tr>
+<tr>
+<td>ProperDocs 1.6.7</td>
+<td><code>mkdocs</code></td>
+<td>341.2 s</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>With Material for MkDocs every page holds the whole navigation, so this site
+is more than 4 GB of HTML, which is most of the time it takes. Zensical's
+cache for it takes another 8 GB.</p>
+<h3 id="showing-an-edit-in-serve">Showing an edit in <code>serve</code><a class="headerlink" href="#showing-an-edit-in-serve" title="Permanent link"></a></h3>
+<p>How long after saving a page of the 1,000-page site the development server
+serves the changed page, median of 5 edits, measured on 2026-11-04:</p>
+<div class="sumi-table">
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Theme</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zensical 0.0.74</td>
+<td>Its own, based on Material for MkDocs</td>
+<td>1.2 s</td>
+</tr>
+<tr>
+<td>MkDocs NG 1.11.0</td>
+<td><code>mkdocs</code></td>
+<td>1.2 s</td>
+</tr>
+<tr>
+<td>MkDocs NG 1.11.0</td>
+<td>Sumi 0.2.0</td>
+<td>1.8 s</td>
+</tr>
+<tr>
+<td>MkDocs NG 1.11.0</td>
+<td>Material for MkDocs (<code>mkdocs-ng-material</code> 9.8.0)</td>
+<td>2.7 s</td>
+</tr>
+<tr>
+<td>ProperDocs 1.6.7</td>
+<td><code>mkdocs</code></td>
+<td>17.9 s</td>
+</tr>
+<tr>
+<td>MkDocs 1.6.1</td>
+<td><code>mkdocs</code></td>
+<td>18.6 s</td>
+</tr>
+<tr>
+<td>MkDocs 1.6.1</td>
+<td>Material for MkDocs 9.8.0</td>
+<td>35.9 s</td>
+</tr>
+<tr>
+<td>ProperDocs 1.6.7</td>
+<td>Material for MkDocs 9.8.0</td>
+<td>37.3 s</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Zensical rebuilds only the pages that changed. MkDocs NG runs the plugin events
+for the whole site, because a plugin can change any page when one changes, but
+reuses the rendered Markdown and HTML of the pages that didn't change.
+MkDocs 1.6.1 and ProperDocs build the whole site again.</p>
+<h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link"></a></h2>
+<ul>
+<li>PyPI release history:
+    <a href="https://pypi.org/project/mkdocs-ng/#history" rel="external">mkdocs-ng</a>,
+    <a href="https://pypi.org/project/mkdocs/#history" rel="external">mkdocs</a>,
+    <a href="https://pypi.org/project/properdocs/#history" rel="external">properdocs</a>,
+    <a href="https://pypi.org/project/zensical/#history" rel="external">zensical</a>.</li>
+<li>MkDocs 2.0: the <a href="https://pypi.org/project/mkdocs/2.0.dev6/" rel="external">package description</a>
+    and the source code of 2.0.dev6.</li>
+<li>ProperDocs: <a href="https://properdocs.org/" rel="external">documentation</a> and the source code of
+    1.6.7.</li>
+<li>Zensical:
+    <a href="https://zensical.org/docs/compatibility/mkdocs/migration/" rel="external">migrating from MkDocs</a>,
+    <a href="https://zensical.org/docs/compatibility/mkdocs/plugins/" rel="external">MkDocs plugin support</a>.</li>
+<li>Material for MkDocs maintenance:
+    <a href="https://zensical.org/upcoming-changes/#material-for-mkdocs" rel="external">upcoming changes</a>.</li>
+</ul>
+        </div>
+<footer class="sumi-article-footer">
+  <div class="sumi-meta-row"><a class="sumi-meta sumi-edit" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/about/comparison.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a>
+  </div>
+  <nav class="sumi-pager" aria-label="Previous / Next">
+    <a class="sumi-pager-prev" href="../fixed-upstream-issues/" rel="prev"><span class="sumi-pager-label"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Previous</span><span class="sumi-pager-title">Fixed Upstream Issues</span></a>
+    <a class="sumi-pager-next" href="../contributing/" rel="next"><span class="sumi-pager-label">Next<svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span><span class="sumi-pager-title">Contributing</span></a>
+  </nav>
+</footer>
+      </article>
+    </main>
+    <aside class="sumi-rail" aria-label="On this page">
+      <div class="sumi-rail-inner">
+        <div class="sumi-rail-title">On this page</div>
+        <nav class="sumi-toc"><ul>
+  <li><a href="#at-a-glance" data-level="2">At a glance</a>
+  </li>
+  <li><a href="#which-one-should-i-use" data-level="2">Which one should I use?</a>
+  </li>
+  <li><a href="#mkdocs-16" data-level="2">MkDocs 1.6</a>
+  </li>
+  <li><a href="#mkdocs-20-pre-releases" data-level="2">MkDocs 2.0 pre-releases</a>
+  </li>
+  <li><a href="#properdocs" data-level="2">ProperDocs</a>
+  </li>
+  <li><a href="#zensical" data-level="2">Zensical</a>
+  </li>
+  <li><a href="#mkdocs-ng" data-level="2">MkDocs NG</a>
+  </li>
+  <li><a href="#build-speed" data-level="2">Build speed</a><ul>
+  <li><a href="#clean-build-of-1000-pages" data-level="3">Clean build of 1,000 pages</a>
+  </li>
+  <li><a href="#clean-build-of-5000-pages" data-level="3">Clean build of 5,000 pages</a>
+  </li>
+  <li><a href="#showing-an-edit-in-serve" data-level="3">Showing an edit in serve</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#sources" data-level="2">Sources</a>
+  </li>
+</ul></nav>
+        <a class="sumi-rail-top" href="#"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>Back to top</a>
+      </div>
+    </aside>
+  </div><footer class="sumi-footer">
+  <div class="sumi-footer-inner">
+    <div class="sumi-footer-left"><div class="sumi-copyright">Copyright &copy; 2014 <a href="https://twitter.com/starletdreaming">Tom Christie</a>, Maintained by the <a href="https://github.com/mkdocs-ng">MkDocs NG Team</a>.</div>
+      <div class="sumi-credit">Built with <a href="https://github.com/mkdocs-ng/mkdocs" rel="noopener">MkDocs NG</a> and <a href="https://github.com/mkdocs-ng/mkdocs-sumi" rel="noopener">Sumi</a></div>
+    </div>
+    <div class="sumi-footer-right">
+      <button class="sumi-icon-btn" type="button" data-sumi-help aria-label="Keyboard shortcuts" title="Keyboard shortcuts"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></button>
+    </div>
+  </div>
+</footer>
+  <dialog class="sumi-palette" aria-label="Search">
+  <div class="sumi-palette-box">
+    <div class="sumi-palette-input">
+      <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+      <input type="search" autocomplete="off" spellcheck="false" placeholder="Search docs or run a command…" aria-label="Search" aria-controls="sumi-palette-results" aria-activedescendant="">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="sumi-palette-results" id="sumi-palette-results" role="listbox"></div>
+    <div class="sumi-palette-foot">
+      <span><kbd>↵</kbd> to open</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd> to move</span>
+      <span><kbd>Esc</kbd> to close</span>
+    </div>
+  </div>
+</dialog>
+<dialog class="sumi-help" aria-label="Keyboard shortcuts">
+  <div class="sumi-help-box">
+    <div class="sumi-help-head"><strong>Keyboard shortcuts</strong><button class="sumi-icon-btn" type="button" data-close aria-label="Close"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+    <dl>
+      <dt><kbd data-mod>Ctrl K</kbd> <kbd>/</kbd></dt><dd>Open search and commands</dd>
+      <dt><kbd>t</kbd></dt><dd>Toggle dark mode</dd>
+      <dt><kbd>[</kbd> <kbd>]</kbd></dt><dd>Previous / next page</dd>
+      <dt><kbd>j</kbd> <kbd>k</kbd></dt><dd>Previous / next heading</dd>
+      <dt><kbd>?</kbd></dt><dd>Show this help</dd>
+    </dl>
+  </div>
+</dialog>
+<dialog class="sumi-zoom" aria-label="Zoom image"><img alt=""></dialog>
+<div class="sumi-toast" role="status" aria-live="polite"></div>
+  <script>
+    window.sumi = {
+      base: "../..",
+      page: "about/comparison/",
+      features: [],
+      markdown: "../comparison.md",
+      search: "../../search/search_index.json",
+      keyboard: true,
+      versions: null,
+      prev: "../fixed-upstream-issues/",
+      next: "../contributing/",
+      edit: "https://github.com/mkdocs-ng/mkdocs/blob/main/docs/about/comparison.md",
+      nav: [{"t":"Home","u":"","s":""},{"t":"Getting Started","u":"getting-started/","s":""},{"t":"User Guide","u":"user-guide/","s":"User Guide"},{"t":"Installation","u":"user-guide/installation/","s":"User Guide"},{"t":"Switching to MkDocs NG","u":"user-guide/migrating/","s":"User Guide"},{"t":"Material for MkDocs End of Life","u":"user-guide/material-end-of-life/","s":"User Guide"},{"t":"Writing Your Docs","u":"user-guide/writing-your-docs/","s":"User Guide"},{"t":"Choosing Your Theme","u":"user-guide/choosing-your-theme/","s":"User Guide"},{"t":"Customizing Your Theme","u":"user-guide/customizing-your-theme/","s":"User Guide"},{"t":"Localizing Your Theme","u":"user-guide/localizing-your-theme/","s":"User Guide"},{"t":"Multi-language Sites","u":"user-guide/multi-language-sites/","s":"User Guide"},{"t":"Configuration","u":"user-guide/configuration/","s":"User Guide"},{"t":"Command Line Interface","u":"user-guide/cli/","s":"User Guide"},{"t":"Python API","u":"user-guide/python-api/","s":"User Guide"},{"t":"Deploying Your Docs","u":"user-guide/deploying-your-docs/","s":"User Guide"},{"t":"Versioned Docs","u":"user-guide/versioned-docs/","s":"User Guide"},{"t":"Developer Guide","u":"dev-guide/","s":"Developer Guide"},{"t":"Themes","u":"dev-guide/themes/","s":"Developer Guide"},{"t":"Translations","u":"dev-guide/translations/","s":"Developer Guide"},{"t":"Plugins","u":"dev-guide/plugins/","s":"Developer Guide"},{"t":"API Reference","u":"dev-guide/api/","s":"Developer Guide"},{"t":"Release Notes","u":"about/release-notes/","s":"About"},{"t":"Fixed Upstream Issues","u":"about/fixed-upstream-issues/","s":"About"},{"t":"Comparison","u":"about/comparison/","s":"About"},{"t":"Contributing","u":"about/contributing/","s":"About"},{"t":"License","u":"about/license/","s":"About"}],
+      alternate: [],
+      translations: [],
+      t: {"search":"Search","search_placeholder":"Search docs or run a command…","search_no_results":"No results for","search_loading":"Loading index…","search_hint_open":"to open","search_hint_move":"to move","search_hint_close":"to close","pages":"Pages","commands":"Commands","on_this_page":"On this page","back_to_top":"Back to top","previous":"Previous","next":"Next","edit_page":"Edit this page","view_source":"View source","copy_markdown":"Copy as Markdown","copied":"Copied","view_markdown":"View as Markdown","open_in":"Open in {name}","print":"Print","page_actions":"Page actions","copy":"Copy","copy_code":"Copy code","toggle_theme":"Toggle dark mode","theme_light":"Light","theme_dark":"Dark","theme_auto":"System","menu":"Menu","close":"Close","navigation":"Navigation","skip_to_content":"Skip to content","last_updated":"Last updated","reading_time":"{n} min read","language":"Language","untranslated":"This page has not been translated yet, so it is shown in {language}.","version":"Version","repository":"Repository","keyboard_shortcuts":"Keyboard shortcuts","shortcut_search":"Open search and commands","shortcut_theme":"Toggle dark mode","shortcut_prev_next":"Previous / next page","shortcut_toc":"Previous / next heading","shortcut_help":"Show this help","built_with":"Built with {mkdocs} and {sumi}","not_found_title":"Page not found","not_found_text":"The page you are looking for does not exist or has moved.","go_home":"Go to the home page","blog":"Blog","all_posts":"All posts","tags":"Tags","posted_on":"Posted on","older_post":"Older post","newer_post":"Newer post","subscribe_rss":"Subscribe via RSS","releases":"Releases","latest":"Latest","prerelease":"Pre-release","archived":"Archived","download":"Download","asset":"Asset","size":"Size","checksum":"SHA-256","release_notes":"Release notes","old_version":"You are reading the documentation for an older version.","go_latest":"Go to the latest version","expand_all":"Expand all","zoom_image":"Zoom image","diagram_expand":"Expand diagram","blog_view":"Layout","blog_view_list":"List view","blog_view_cards":"Card view","diagram_source":"Copy diagram source","diagram_download":"Download SVG","cmd_toggle_theme":"Toggle light / dark","cmd_copy_markdown":"Copy this page as Markdown","cmd_view_markdown":"Open this page as Markdown","cmd_edit":"Edit this page","cmd_print":"Print this page","cmd_top":"Scroll to top","cmd_home":"Go to the home page","cmd_language":"Switch language: {name}","cmd_version":"Switch version: {name}","cmd_llms":"Open llms.txt","whole_site":"Whole site","print_title":"Printable edition","contents":"Contents","compare":"Bilingual view","compare_open":"Open bilingual view","compare_sync":"Sync scrolling","compare_failed":"This translation could not be loaded.","feedback_title":"Was this page helpful?","feedback_yes":"Yes","feedback_no":"No","feedback_thanks":"Thanks for your feedback!","comments":"Comments","table_expand":"Expand table","zoom_in":"Zoom in","zoom_out":"Zoom out","zoom_reset":"Fit to window"}
+    };
+  </script>
+  <script src="../../assets/js/sumi.js" defer></script>
+</body>
+</html>

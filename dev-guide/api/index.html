@@ -1,0 +1,2178 @@
+<!doctype html>
+<html lang="en" data-palette="auto" data-layout="docs" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working."><meta name="author" content="MkDocs NG Team"><link rel="canonical" href="https://mkdocs-ng.org/dev-guide/api/"><link rel="prev" href="../plugins/"><link rel="next" href="../../about/release-notes/"><link rel="alternate" type="text/markdown" href="../api.md" title="Markdown"><link rel="alternate" type="text/plain" href="../../llms.txt" title="llms.txt">
+  <link rel="icon" href="../../img/favicon.svg">
+  <meta name="generator" content="mkdocs-1.11.1, sumi">
+  <meta name="theme-color" content="#f8f7f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="API Reference"><meta property="og:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <meta property="og:site_name" content="MkDocs NG">
+  <meta property="og:locale" content="en_US"><meta property="og:url" content="https://mkdocs-ng.org/dev-guide/api/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="API Reference"><meta name="twitter:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <title>API Reference · MkDocs NG</title>
+  <script>
+    (function () {
+      var d = document.documentElement, p = d.dataset.palette, s = null;
+      try { s = localStorage.getItem('sumi.palette'); } catch (e) {}
+      var mode = s || p;
+      if (mode === 'auto' || !mode) mode = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.dataset.theme = mode;
+      d.dataset.mdColorScheme = mode === 'dark' ? 'slate' : 'default';
+      d.classList.replace('no-js', 'js');
+      // A page opened inside the bilingual view shows its content only.
+      if (window.name === 'sumi-pane') d.classList.add('sumi-pane');
+    })();
+  </script>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/sumi.css"><style>:root{--sumi-accent:#0061fe}[data-theme="dark"]{--sumi-accent:#0061fe}</style><link rel="stylesheet" href="../../assets/_mkdocstrings.css"><link rel="stylesheet" href="../../css/extra.css">
+</head>
+<body>
+  <a class="sumi-skip" href="#content">Skip to content</a><header class="sumi-header">
+  <div class="sumi-header-inner">
+    <button class="sumi-icon-btn sumi-menu-btn" type="button" aria-label="Menu" aria-controls="sumi-sidebar" aria-expanded="false"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg></button>
+    <a class="sumi-brand" href="../.." aria-label="MkDocs NG">
+      <img class="sumi-logo sumi-when-light" src="../../img/logo.svg" alt="">
+      <img class="sumi-logo sumi-when-dark" src="../../img/logo-dark.svg" alt="">
+      <span class="sumi-brand-name">MkDocs NG</span>
+    </a>
+    <nav class="sumi-tabs-nav" aria-label="Navigation">
+      <a class="sumi-tab-link" href="../../getting-started/">Getting Started</a>
+      <a class="sumi-tab-link" href="../../user-guide/">User Guide</a>
+      <a class="sumi-tab-link is-active" href="../" aria-current="page">Developer Guide</a>
+      <a class="sumi-tab-link" href="../../about/release-notes/">About</a>
+    </nav>
+    <div class="sumi-header-tools">
+      <button class="sumi-search-btn" type="button" data-sumi-palette aria-label="Search">
+        <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span class="sumi-search-label">Search</span><kbd class="sumi-search-kbd" data-mod>Ctrl K</kbd>
+      </button>
+      <button class="sumi-icon-btn sumi-theme-btn" type="button" data-sumi-theme aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="sumi-icon sumi-when-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="sumi-icon sumi-when-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></button>
+      <a class="sumi-icon-btn sumi-repo" href="https://github.com/mkdocs-ng/mkdocs/" aria-label="Repository" title="GitHub" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+    </div>
+  </div>
+</header>
+  <div class="sumi-version-banner" hidden></div>
+  <div class="sumi-shell">
+    <aside class="sumi-sidebar" id="sumi-sidebar" aria-label="Navigation">
+      <div class="sumi-sidebar-inner">
+        <ul class="sumi-nav-list sumi-sidebar-tabs">
+          <li class="sumi-nav-page"><a href="../../getting-started/">Getting Started</a></li>
+          <li class="sumi-nav-page"><a href="../../user-guide/">User Guide</a></li>
+          <li class="sumi-nav-page"><a class="is-active" href="../">Developer Guide</a></li>
+          <li class="sumi-nav-page"><a href="../../about/release-notes/">About</a></li>
+        </ul>
+        <a class="sumi-sidebar-title" href="../">Developer Guide</a>
+        <nav class="sumi-nav"><ul class="sumi-nav-list" data-depth="1">
+    <li class="sumi-nav-page"><a href="../themes/">Themes</a></li>
+    <li class="sumi-nav-page"><a href="../translations/">Translations</a></li>
+    <li class="sumi-nav-page"><a href="../plugins/">Plugins</a></li>
+    <li class="sumi-nav-page"><a href="./" aria-current="page" class="is-current">API Reference</a></li>
+</ul></nav>
+      </div>
+    </aside>
+    <main class="sumi-main" id="content">
+      <article class="sumi-article">
+        <div class="sumi-article-top">
+<nav class="sumi-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="../">Developer Guide</a><svg class="sumi-icon sumi-crumb-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></li>
+    <li aria-current="page"><span>API Reference</span></li>
+  </ol>
+</nav><div class="sumi-actions">
+  <button class="sumi-chip-btn sumi-copy-page" type="button" data-sumi-copy-page aria-label="Copy as Markdown" title="Copy as Markdown"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span>Copy as Markdown</span></button>
+  <div class="sumi-menu sumi-actions-menu">
+    <button class="sumi-icon-btn sumi-chip-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Page actions" title="Page actions"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <ul class="sumi-menu-list sumi-menu-right" role="menu">
+      <li role="none"><a role="menuitem" href="../api.md" target="_blank"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>View as Markdown</a></li>
+      <li role="none"><a role="menuitem" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/dev-guide/api.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a></li>
+      <li role="none"><button role="menuitem" type="button" data-sumi-print><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>Print</button></li>
+      <li role="none"><a role="menuitem" href="../../print/"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg>Printable edition · Whole site</a></li>
+    </ul>
+  </div>
+</div>
+        </div>
+        <details class="sumi-toc-inline">
+          <summary><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg><span>On this page</span><svg class="sumi-icon sumi-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <nav class="sumi-toc"><ul>
+  <li><a href="#mkdocs.build" data-level="2">build</a>
+  </li>
+  <li><a href="#mkdocs.serve" data-level="2">serve</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files" data-level="2">Files</a><ul>
+  <li><a href="#mkdocs.structure.files.Files.src_paths" data-level="3">src_paths</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.src_uris" data-level="3">src_uris</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.__iter__" data-level="3">__iter__</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.__len__" data-level="3">__len__</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.__contains__" data-level="3">__contains__</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.get_file_from_path" data-level="3">get_file_from_path</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.append" data-level="3">append</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.remove" data-level="3">remove</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.copy_static_files" data-level="3">copy_static_files</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.documentation_pages" data-level="3">documentation_pages</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.static_pages" data-level="3">static_pages</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.media_files" data-level="3">media_files</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.javascript_files" data-level="3">javascript_files</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.css_files" data-level="3">css_files</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.add_files_from_theme" data-level="3">add_files_from_theme</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#mkdocs.structure.files.File" data-level="2">File</a><ul>
+  <li><a href="#mkdocs.structure.files.File.src_uri" data-level="3">src_uri</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.generated_by" data-level="3">generated_by</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.dest_path" data-level="3">dest_path</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.language_fallback" data-level="3">language_fallback</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.src_path" data-level="3">src_path</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.src_dir" data-level="3">src_dir</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.dest_dir" data-level="3">dest_dir</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.use_directory_urls" data-level="3">use_directory_urls</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.inclusion" data-level="3">inclusion</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.name" data-level="3">name</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.dest_uri" data-level="3">dest_uri</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.url" data-level="3">url</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.abs_src_path" data-level="3">abs_src_path</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.abs_dest_path" data-level="3">abs_dest_path</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.content_bytes" data-level="3">content_bytes</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.content_string" data-level="3">content_string</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.generated" data-level="3">generated</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.edit_uri" data-level="3">edit_uri</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.url_relative_to" data-level="3">url_relative_to</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.copy_file" data-level="3">copy_file</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.is_documentation_page" data-level="3">is_documentation_page</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.is_static_page" data-level="3">is_static_page</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.is_media_file" data-level="3">is_media_file</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.is_javascript" data-level="3">is_javascript</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.is_css" data-level="3">is_css</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#mkdocs.config.base.Config" data-level="2">Config</a><ul>
+  <li><a href="#mkdocs.config.base.Config.__new__" data-level="3">__new__</a>
+  </li>
+  <li><a href="#mkdocs.config.base.Config.set_defaults" data-level="3">set_defaults</a>
+  </li>
+  <li><a href="#mkdocs.config.base.Config.load_dict" data-level="3">load_dict</a>
+  </li>
+  <li><a href="#mkdocs.config.base.Config.load_file" data-level="3">load_file</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext" data-level="2">TemplateContext</a><ul>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.nav" data-level="3">nav</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.pages" data-level="3">pages</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.base_url" data-level="3">base_url</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.extra_css" data-level="3">extra_css</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.extra_javascript" data-level="3">extra_javascript</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.mkdocs_version" data-level="3">mkdocs_version</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.build_date_utc" data-level="3">build_date_utc</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.config" data-level="3">config</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.page" data-level="3">page</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.i18n" data-level="3">i18n</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#mkdocs.livereload.LiveReloadServer" data-level="2">LiveReloadServer</a><ul>
+  <li><a href="#mkdocs.livereload.LiveReloadServer.watch" data-level="3">watch</a>
+  </li>
+  <li><a href="#mkdocs.livereload.LiveReloadServer.unwatch" data-level="3">unwatch</a>
+  </li>
+  <li><a href="#mkdocs.livereload.LiveReloadServer.bind" data-level="3">bind</a>
+  </li>
+</ul>
+  </li>
+</ul></nav>
+        </details>
+        <div class="sumi-content sumi-prose" data-pagefind-body><h1 id="api-reference">API reference<a class="headerlink" href="#api-reference" title="Permanent link"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The main entry point to the API is through <a href="../plugins/#events">Events</a> that are received by plugins. These events' descriptions link back to this page.</p>
+</div>
+<p>For using MkDocs programmatically (building and serving sites from Python), see the <a href="../../user-guide/python-api/">Python API</a> guide.</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="mkdocs.build" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">mkdocs</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">config_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="n">IO</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">site_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dirty</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">theme</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_directory_urls</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MkDocsConfig</span></code>
+
+<a href="#mkdocs.build" class="headerlink" title="Permanent link"></a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Build a documentation site.</p>
+<p>This is the programmatic equivalent of the <code>mkdocs build</code> command. The
+configuration is loaded from <code>config_file</code> (or the default <code>mkdocs.yml</code>),
+then any options passed as keyword arguments override the values from the
+file.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>config_file</code></b>
+              (<code><span title="str">str</span> | <span title="pathlib.Path">Path</span> | <span title="typing.IO">IO</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Path to the configuration file, a file-like object, or
+<code>None</code> to use <code>mkdocs.yml</code> in the current directory. Pass <code>-</code> to
+read the configuration from stdin.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>site_dir</code></b>
+              (<code><span title="str">str</span> | <span title="pathlib.Path">Path</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Directory to output the built site to. Overrides the
+<code>site_dir</code> value from the config file.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>dirty</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Only rebuild pages that have changed, instead of doing a full
+clean build. Equivalent to <code>mkdocs build --dirty</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>strict</code></b>
+              (<code><span title="bool">bool</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Enable strict mode, which aborts the build on any warnings.
+Overrides the <code>strict</code> value from the config file.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>theme</code></b>
+              (<code><span title="str">str</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The theme to use when building the documentation. Overrides
+the <code>theme</code> value from the config file.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>use_directory_urls</code></b>
+              (<code><span title="bool">bool</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Use directory URLs when building pages.
+Overrides the <code>use_directory_urls</code> value from the config file.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>language</code></b>
+              (<code><span title="str">str</span> | <span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>For a multi-language site, build only this language (a code
+from <code>languages</code>), or only these languages. All by default.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>**kwargs</code></b>
+              (<code><span title="typing.Any">Any</span></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Any other configuration option to override the values from
+the config file, for example <code>site_name</code>, <code>nav</code> or <code>plugins</code>.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>
+          –
+          <div class="doc-md-description">
+            <p>The loaded configuration, with all defaults and overrides applied.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+              <code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>
+          –
+          <div class="doc-md-description">
+            <p>For example, the built site can be found at <code>config.site_dir</code>.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">mkdocs</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">mkdocs</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
+    <span class="n">config_file</span><span class="o">=</span><span class="s2">"mkdocs.yml"</span><span class="p">,</span>
+    <span class="n">site_name</span><span class="o">=</span><span class="s2">"My project"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Built site to </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">site_dir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="mkdocs.serve" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">mkdocs</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">config_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="n">IO</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dev_addr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">livereload</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">build_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">watch_theme</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">watch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">open_in_browser</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">theme</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_directory_urls</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.serve" class="headerlink" title="Permanent link"></a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Run the built-in development server.</p>
+<p>This is the programmatic equivalent of the <code>mkdocs serve</code> command. It
+blocks until the server is shut down (for example with Ctrl+C or SIGTERM).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>config_file</code></b>
+              (<code><span title="str">str</span> | <span title="pathlib.Path">Path</span> | <span title="typing.IO">IO</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Path to the configuration file, a file-like object, or
+<code>None</code> to use <code>mkdocs.yml</code> in the current directory.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>dev_addr</code></b>
+              (<code><span title="str">str</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>IP address and port to serve the documentation on, for
+example <code>"127.0.0.1:8000"</code>. Defaults to <code>"localhost:8000"</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>livereload</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>True</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Enable live reloading, which rebuilds the documentation
+and refreshes the browser when files change. Defaults to <code>True</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>build_type</code></b>
+              (<code><span title="str">str</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p><code>"dirty"</code> to only rebuild files that have changed,
+<code>"clean"</code> to do a full clean build, or <code>None</code> for the default
+behavior. Equivalent to the <code>--dirty</code> and <code>--clean</code> options.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>watch_theme</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Include the theme in the files watched for live
+reloading. Ignored when <code>livereload</code> is disabled.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>watch</code></b>
+              (<code><span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>]</code>, default:
+                  <code>()</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Additional directories or files to watch for live reloading.
+Ignored when <code>livereload</code> is disabled.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>open_in_browser</code></b>
+              (<code><span title="bool">bool</span></code>, default:
+                  <code>False</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Open the site in a web browser after the initial
+build finishes.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>strict</code></b>
+              (<code><span title="bool">bool</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Enable strict mode, which aborts the build on any warnings.
+Overrides the <code>strict</code> value from the config file.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>theme</code></b>
+              (<code><span title="str">str</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The theme to use when building the documentation. Overrides
+the <code>theme</code> value from the config file.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>use_directory_urls</code></b>
+              (<code><span title="bool">bool</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Use directory URLs when building pages.
+Overrides the <code>use_directory_urls</code> value from the config file.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>language</code></b>
+              (<code><span title="str">str</span> | <span title="collections.abc.Sequence">Sequence</span>[<span title="str">str</span>] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>For a multi-language site, serve only this language (a code
+from <code>languages</code>), or only these languages. All by default.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>**kwargs</code></b>
+              (<code><span title="typing.Any">Any</span></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Any other configuration option to override the values from
+the config file, for example <code>site_name</code>, <code>nav</code> or <code>plugins</code>.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkdocs.structure.files.Files" class="doc doc-heading">
+            <code>mkdocs.structure.files.Files</code>
+
+
+<a href="#mkdocs.structure.files.Files" class="headerlink" title="Permanent link"></a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>A collection of <a class="autorefs autorefs-internal" title="mkdocs.structure.files.File" href="#mkdocs.structure.files.File">File</a> objects.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.Files.src_paths" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">src_paths</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">File</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.Files.src_paths" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Soft-deprecated, prefer <code>src_uris</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.Files.src_uris" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">src_uris</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">File</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.Files.src_uris" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A mapping containing every file, with the keys being their
+<a class="autorefs autorefs-internal" title="src_uri: str
+
+  
+      instance-attribute
+  " href="#mkdocs.structure.files.File.src_uri"><code>src_uri</code></a>.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.__iter__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__iter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">File</span><span class="p">]</span></code>
+
+<a href="#mkdocs.structure.files.Files.__iter__" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Iterate over the files within.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.__len__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__len__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+
+<a href="#mkdocs.structure.files.Files.__len__" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The number of files within.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.__contains__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__contains__</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#mkdocs.structure.files.Files.__contains__" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Soft-deprecated, prefer <code>get_file_from_path(path) is not None</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.get_file_from_path" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_file_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">File</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.structure.files.Files.get_file_from_path" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a File instance with File.src_uri equal to path.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.append" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">File</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.structure.files.Files.append" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Add file to the Files collection.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.remove" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">remove</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">File</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.structure.files.Files.remove" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Remove file from Files collection.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.copy_static_files" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">copy_static_files</span><span class="p">(</span><span class="n">dirty</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">inclusion</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">InclusionLevel</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">InclusionLevel</span><span class="o">.</span><span class="n">is_included</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.structure.files.Files.copy_static_files" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Copy static files from source to destination.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.documentation_pages" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">documentation_pages</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">inclusion</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">InclusionLevel</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">InclusionLevel</span><span class="o">.</span><span class="n">is_included</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">File</span><span class="p">]</span></code>
+
+<a href="#mkdocs.structure.files.Files.documentation_pages" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return iterable of all Markdown page file objects.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.static_pages" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">static_pages</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">File</span><span class="p">]</span></code>
+
+<a href="#mkdocs.structure.files.Files.static_pages" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return iterable of all static page file objects.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.media_files" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">media_files</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">File</span><span class="p">]</span></code>
+
+<a href="#mkdocs.structure.files.Files.media_files" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return iterable of all file objects which are not documentation or static pages.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.javascript_files" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">javascript_files</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">File</span><span class="p">]</span></code>
+
+<a href="#mkdocs.structure.files.Files.javascript_files" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return iterable of all javascript file objects.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.css_files" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">css_files</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">File</span><span class="p">]</span></code>
+
+<a href="#mkdocs.structure.files.Files.css_files" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return iterable of all CSS file objects.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.Files.add_files_from_theme" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">add_files_from_theme</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">MkDocsConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.structure.files.Files.add_files_from_theme" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Retrieve static files from Jinja environment and add to collection.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkdocs.structure.files.File" class="doc doc-heading">
+            <code>mkdocs.structure.files.File</code>
+
+
+<a href="#mkdocs.structure.files.File" class="headerlink" title="Permanent link"></a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>A MkDocs File object.</p>
+<p>It represents how the contents of one file should be populated in the destination site.</p>
+<p>A file always has its <code>abs_dest_path</code> (obtained by joining <code>dest_dir</code> and <code>dest_path</code>),
+where the <code>dest_dir</code> is understood to be the <em>site</em> directory.</p>
+<p><code>content_bytes</code>/<code>content_string</code> (new in MkDocs 1.6) can always be used to obtain the file's
+content. But it may be backed by one of the two sources:</p>
+<ul>
+<li>
+<p>A physical source file at <code>abs_src_path</code> (by default obtained by joining <code>src_dir</code> and
+    <code>src_uri</code>). <code>src_dir</code> is understood to be the <em>docs</em> directory.</p>
+<p>Then <code>content_bytes</code>/<code>content_string</code> will read the file at <code>abs_src_path</code>.</p>
+<p><code>src_dir</code> <em>should</em> be populated for real files and should be <code>None</code> for generated files.</p>
+</li>
+<li>
+<p>Since MkDocs 1.6 a file may alternatively be stored in memory - <code>content_string</code>/<code>content_bytes</code>.</p>
+<p>Then <code>src_dir</code> and <code>abs_src_path</code> will remain <code>None</code>. <code>content_bytes</code>/<code>content_string</code> need
+to be written to, or populated through the <code>content</code> argument in the constructor.</p>
+<p>But <code>src_uri</code> is still populated for such files as well! The virtual file pretends as if it
+originated from that path in the <code>docs</code> directory, and other values are derived.</p>
+</li>
+</ul>
+<p>For static files the file is just copied to the destination, and <code>dest_uri</code> equals <code>src_uri</code>.</p>
+<p>For Markdown files (determined by the file extension in <code>src_uri</code>) the destination content
+will be the rendered content, and <code>dest_uri</code> will have the <code>.html</code> extension and some
+additional transformations to the path, based on <code>use_directory_urls</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.src_uri" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">src_uri</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.src_uri" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The pure path (always '/'-separated) of the source file relative to the source directory.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.generated_by" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">generated_by</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.generated_by" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>If not None, indicates that a plugin generated this file on the fly.</p>
+<p>The value is the plugin's entrypoint name and can be used to find the plugin by key in the PluginCollection.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.dest_path" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dest_path</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.dest_path" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Same as <code>dest_uri</code> (and synchronized with it) but will use backslashes on Windows. Discouraged.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.language_fallback" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">language_fallback</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.language_fallback" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>For a multi-language site: whether this page is the default language's
+version, used because the language being built has no translation of it.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.src_path" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">src_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">path</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.src_path" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Same as <code>src_uri</code> (and synchronized with it) but will use backslashes on Windows. Discouraged.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.src_dir" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">src_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">src_dir</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.src_dir" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The OS path of the top-level directory that the source file originates from.</p>
+<p>Assumed to be the <em>docs_dir</em>; not populated for generated files.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.dest_dir" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dest_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">dest_dir</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.dest_dir" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The OS path of the destination directory (top-level site_dir) that the file should be copied to.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.use_directory_urls" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">use_directory_urls</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">use_directory_urls</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.use_directory_urls" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether directory URLs ('foo/') should be used or not ('foo.html').</p>
+<p>If <code>False</code>, a Markdown file is mapped to an HTML file of the same name (the file extension is
+changed to <code>.html</code>). If True, a Markdown file is mapped to an HTML index file (<code>index.html</code>)
+nested in a directory using the "name" of the file in <code>path</code>. Non-Markdown files retain their
+original path.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.inclusion" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">inclusion</span><span class="p">:</span> <span class="n">InclusionLevel</span> <span class="o">=</span> <span class="n">inclusion</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.inclusion" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether the file will be excluded from the built site.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.name" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">name</span> <span class="o">=</span> <span class="n">cached_property</span><span class="p">(</span><span class="n">_get_stem</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.name" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the name of the file without its extension.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.dest_uri" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dest_uri</span> <span class="o">=</span> <span class="n">cached_property</span><span class="p">(</span><span class="n">_get_dest_path</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.dest_uri" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The pure path (always '/'-separated) of the destination file relative to the destination directory.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">url</span> <span class="o">=</span> <span class="n">cached_property</span><span class="p">(</span><span class="n">_get_url</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.url" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The URI of the destination file relative to the destination directory as a string.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.abs_src_path" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">abs_src_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.abs_src_path" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The absolute concrete path of the source file. Will use backslashes on Windows.</p>
+<p>Note: do not use this path to read the file, prefer <code>content_bytes</code>/<code>content_string</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.abs_dest_path" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">abs_dest_path</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.abs_dest_path" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The absolute concrete path of the destination file. Will use backslashes on Windows.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.content_bytes" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">content_bytes</span><span class="p">:</span> <span class="nb">bytes</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.content_bytes" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get the content of this file as a bytestring.</p>
+<p>May raise if backed by a real file (<code>abs_src_path</code>) if it cannot be read.</p>
+<p>If used as a setter, it defines the content of the file, and <code>abs_src_path</code> becomes unset.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.structure.files.File.content_string" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">content_string</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.content_string" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Get the content of this file as a string. Assumes UTF-8 encoding, may raise.</p>
+<p>May also raise if backed by a real file (<code>abs_src_path</code>) if it cannot be read.</p>
+<p>If used as a setter, it defines the content of the file, and <code>abs_src_path</code> becomes unset.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.File.generated" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">generated</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">MkDocsConfig</span><span class="p">,</span> <span class="n">src_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">abs_src_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">inclusion</span><span class="p">:</span> <span class="n">InclusionLevel</span> <span class="o">=</span> <span class="n">InclusionLevel</span><span class="o">.</span><span class="n">UNDEFINED</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">File</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#mkdocs.structure.files.File.generated" class="headerlink" title="Permanent link"></a></h3>
+          <div class="doc-overloads">
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">generated</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">MkDocsConfig</span><span class="p">,</span> <span class="n">src_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">inclusion</span><span class="p">:</span> <span class="n">InclusionLevel</span> <span class="o">=</span> <span class="n">InclusionLevel</span><span class="o">.</span><span class="n">UNDEFINED</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">File</span>
+</code></pre></div><div class="doc-signature highlight"><pre><span></span><code><span class="nf">generated</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">MkDocsConfig</span><span class="p">,</span> <span class="n">src_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">abs_src_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">inclusion</span><span class="p">:</span> <span class="n">InclusionLevel</span> <span class="o">=</span> <span class="n">InclusionLevel</span><span class="o">.</span><span class="n">UNDEFINED</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">File</span>
+</code></pre></div>          </div>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create a virtual file, backed either by in-memory <code>content</code> or by a file at <code>abs_src_path</code>.</p>
+<p>It will pretend to be a file in the docs dir at <code>src_uri</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.File.edit_uri" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">edit_uri</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.structure.files.File.edit_uri" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A path relative to the source repository to use for the "edit" button.</p>
+<p>Defaults to <code>src_uri</code> and can be overwritten.
+For generated files this should be set to <code>None</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.File.url_relative_to" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">url_relative_to</span><span class="p">(</span><span class="n">other</span><span class="p">:</span> <span class="n">File</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+
+<a href="#mkdocs.structure.files.File.url_relative_to" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return url for file relative to other file.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.File.copy_file" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">copy_file</span><span class="p">(</span><span class="n">dirty</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.structure.files.File.copy_file" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Copy source file to destination, ensuring parent directories exist.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.File.is_documentation_page" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_documentation_page</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#mkdocs.structure.files.File.is_documentation_page" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return True if file is a Markdown page.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.File.is_static_page" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_static_page</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#mkdocs.structure.files.File.is_static_page" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return True if file is a static page (HTML, XML, JSON).</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.File.is_media_file" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_media_file</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#mkdocs.structure.files.File.is_media_file" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return True if file is not a documentation or static page.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.File.is_javascript" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_javascript</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#mkdocs.structure.files.File.is_javascript" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return True if file is a JavaScript file.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.structure.files.File.is_css" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">is_css</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span></code>
+
+<a href="#mkdocs.structure.files.File.is_css" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return True if file is a CSS file.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkdocs.config.base.Config" class="doc doc-heading">
+            <code>mkdocs.config.base.Config</code>
+
+
+<a href="#mkdocs.config.base.Config" class="headerlink" title="Permanent link"></a></h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="collections.UserDict">UserDict</span></code></p>
+
+
+
+        <p>Base class for MkDocs configuration, plugin configuration (and sub-configuration) objects.</p>
+<p>It should be subclassed and have <code>ConfigOption</code>s defined as attributes.
+For examples, see mkdocs/contrib/search/<strong>init</strong>.py and mkdocs/config/defaults.py.</p>
+<p>Behavior as it was prior to MkDocs 1.4 is now handled by LegacyConfig.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.config.base.Config.__new__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__new__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Config</span></code>
+
+<a href="#mkdocs.config.base.Config.__new__" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compatibility: allow referring to <code>LegacyConfig(...)</code> constructor as <code>Config(...)</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.config.base.Config.set_defaults" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_defaults</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.config.base.Config.set_defaults" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Set the base config by going through each validator and getting the
+default if it has one.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.config.base.Config.load_dict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">load_dict</span><span class="p">(</span><span class="n">patch</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.config.base.Config.load_dict" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Load config options from a dictionary.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.config.base.Config.load_file" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">load_file</span><span class="p">(</span><span class="n">config_file</span><span class="p">:</span> <span class="n">IO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.config.base.Config.load_file" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Load config options from the open file descriptor of a YAML file.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkdocs.utils.templates.TemplateContext" class="doc doc-heading">
+            <code>mkdocs.utils.templates.TemplateContext</code>
+
+
+<a href="#mkdocs.utils.templates.TemplateContext" class="headerlink" title="Permanent link"></a></h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.TypedDict">TypedDict</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.utils.templates.TemplateContext.nav" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">nav</span><span class="p">:</span> <span class="n">Navigation</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.utils.templates.TemplateContext.nav" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.utils.templates.TemplateContext.pages" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">pages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">File</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.utils.templates.TemplateContext.pages" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.utils.templates.TemplateContext.base_url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.utils.templates.TemplateContext.base_url" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.utils.templates.TemplateContext.extra_css" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">extra_css</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.utils.templates.TemplateContext.extra_css" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.utils.templates.TemplateContext.extra_javascript" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">extra_javascript</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.utils.templates.TemplateContext.extra_javascript" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.utils.templates.TemplateContext.mkdocs_version" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">mkdocs_version</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.utils.templates.TemplateContext.mkdocs_version" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.utils.templates.TemplateContext.build_date_utc" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_date_utc</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.utils.templates.TemplateContext.build_date_utc" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.utils.templates.TemplateContext.config" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">config</span><span class="p">:</span> <span class="n">MkDocsConfig</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.utils.templates.TemplateContext.config" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.utils.templates.TemplateContext.page" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">page</span><span class="p">:</span> <span class="n">Page</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.utils.templates.TemplateContext.page" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="mkdocs.utils.templates.TemplateContext.i18n" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">i18n</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#mkdocs.utils.templates.TemplateContext.i18n" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="mkdocs.livereload.LiveReloadServer" class="doc doc-heading">
+            <code>mkdocs.livereload.LiveReloadServer</code>
+
+
+<a href="#mkdocs.livereload.LiveReloadServer" class="headerlink" title="Permanent link"></a></h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="socketserver.ThreadingMixIn">ThreadingMixIn</span></code>, <code><span title="wsgiref.simple_server.WSGIServer">WSGIServer</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.livereload.LiveReloadServer.watch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">watch</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.livereload.LiveReloadServer.watch" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Add the 'path' to watched paths, call the function and reload when any file changes under it.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.livereload.LiveReloadServer.unwatch" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">unwatch</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#mkdocs.livereload.LiveReloadServer.unwatch" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Stop watching file changes for path. Raises if there was no corresponding <code>watch</code> call.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="mkdocs.livereload.LiveReloadServer.bind" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">try_next_ports</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span></code>
+
+<a href="#mkdocs.livereload.LiveReloadServer.bind" class="headerlink" title="Permanent link"></a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Bind the server's address and return the port it got.</p>
+<p>If the port is in use, try up to <code>try_next_ports</code> following ports.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+        </div>
+<footer class="sumi-article-footer">
+  <div class="sumi-meta-row"><a class="sumi-meta sumi-edit" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/dev-guide/api.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a>
+  </div>
+  <nav class="sumi-pager" aria-label="Previous / Next">
+    <a class="sumi-pager-prev" href="../plugins/" rel="prev"><span class="sumi-pager-label"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Previous</span><span class="sumi-pager-title">Plugins</span></a>
+    <a class="sumi-pager-next" href="../../about/release-notes/" rel="next"><span class="sumi-pager-label">Next<svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span><span class="sumi-pager-title">Release Notes</span></a>
+  </nav>
+</footer>
+      </article>
+    </main>
+    <aside class="sumi-rail" aria-label="On this page">
+      <div class="sumi-rail-inner">
+        <div class="sumi-rail-title">On this page</div>
+        <nav class="sumi-toc"><ul>
+  <li><a href="#mkdocs.build" data-level="2">build</a>
+  </li>
+  <li><a href="#mkdocs.serve" data-level="2">serve</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files" data-level="2">Files</a><ul>
+  <li><a href="#mkdocs.structure.files.Files.src_paths" data-level="3">src_paths</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.src_uris" data-level="3">src_uris</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.__iter__" data-level="3">__iter__</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.__len__" data-level="3">__len__</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.__contains__" data-level="3">__contains__</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.get_file_from_path" data-level="3">get_file_from_path</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.append" data-level="3">append</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.remove" data-level="3">remove</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.copy_static_files" data-level="3">copy_static_files</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.documentation_pages" data-level="3">documentation_pages</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.static_pages" data-level="3">static_pages</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.media_files" data-level="3">media_files</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.javascript_files" data-level="3">javascript_files</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.css_files" data-level="3">css_files</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.Files.add_files_from_theme" data-level="3">add_files_from_theme</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#mkdocs.structure.files.File" data-level="2">File</a><ul>
+  <li><a href="#mkdocs.structure.files.File.src_uri" data-level="3">src_uri</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.generated_by" data-level="3">generated_by</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.dest_path" data-level="3">dest_path</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.language_fallback" data-level="3">language_fallback</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.src_path" data-level="3">src_path</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.src_dir" data-level="3">src_dir</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.dest_dir" data-level="3">dest_dir</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.use_directory_urls" data-level="3">use_directory_urls</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.inclusion" data-level="3">inclusion</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.name" data-level="3">name</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.dest_uri" data-level="3">dest_uri</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.url" data-level="3">url</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.abs_src_path" data-level="3">abs_src_path</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.abs_dest_path" data-level="3">abs_dest_path</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.content_bytes" data-level="3">content_bytes</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.content_string" data-level="3">content_string</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.generated" data-level="3">generated</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.edit_uri" data-level="3">edit_uri</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.url_relative_to" data-level="3">url_relative_to</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.copy_file" data-level="3">copy_file</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.is_documentation_page" data-level="3">is_documentation_page</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.is_static_page" data-level="3">is_static_page</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.is_media_file" data-level="3">is_media_file</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.is_javascript" data-level="3">is_javascript</a>
+  </li>
+  <li><a href="#mkdocs.structure.files.File.is_css" data-level="3">is_css</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#mkdocs.config.base.Config" data-level="2">Config</a><ul>
+  <li><a href="#mkdocs.config.base.Config.__new__" data-level="3">__new__</a>
+  </li>
+  <li><a href="#mkdocs.config.base.Config.set_defaults" data-level="3">set_defaults</a>
+  </li>
+  <li><a href="#mkdocs.config.base.Config.load_dict" data-level="3">load_dict</a>
+  </li>
+  <li><a href="#mkdocs.config.base.Config.load_file" data-level="3">load_file</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext" data-level="2">TemplateContext</a><ul>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.nav" data-level="3">nav</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.pages" data-level="3">pages</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.base_url" data-level="3">base_url</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.extra_css" data-level="3">extra_css</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.extra_javascript" data-level="3">extra_javascript</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.mkdocs_version" data-level="3">mkdocs_version</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.build_date_utc" data-level="3">build_date_utc</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.config" data-level="3">config</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.page" data-level="3">page</a>
+  </li>
+  <li><a href="#mkdocs.utils.templates.TemplateContext.i18n" data-level="3">i18n</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#mkdocs.livereload.LiveReloadServer" data-level="2">LiveReloadServer</a><ul>
+  <li><a href="#mkdocs.livereload.LiveReloadServer.watch" data-level="3">watch</a>
+  </li>
+  <li><a href="#mkdocs.livereload.LiveReloadServer.unwatch" data-level="3">unwatch</a>
+  </li>
+  <li><a href="#mkdocs.livereload.LiveReloadServer.bind" data-level="3">bind</a>
+  </li>
+</ul>
+  </li>
+</ul></nav>
+        <a class="sumi-rail-top" href="#"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>Back to top</a>
+      </div>
+    </aside>
+  </div><footer class="sumi-footer">
+  <div class="sumi-footer-inner">
+    <div class="sumi-footer-left"><div class="sumi-copyright">Copyright &copy; 2014 <a href="https://twitter.com/starletdreaming">Tom Christie</a>, Maintained by the <a href="https://github.com/mkdocs-ng">MkDocs NG Team</a>.</div>
+      <div class="sumi-credit">Built with <a href="https://github.com/mkdocs-ng/mkdocs" rel="noopener">MkDocs NG</a> and <a href="https://github.com/mkdocs-ng/mkdocs-sumi" rel="noopener">Sumi</a></div>
+    </div>
+    <div class="sumi-footer-right">
+      <button class="sumi-icon-btn" type="button" data-sumi-help aria-label="Keyboard shortcuts" title="Keyboard shortcuts"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></button>
+    </div>
+  </div>
+</footer>
+  <dialog class="sumi-palette" aria-label="Search">
+  <div class="sumi-palette-box">
+    <div class="sumi-palette-input">
+      <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+      <input type="search" autocomplete="off" spellcheck="false" placeholder="Search docs or run a command…" aria-label="Search" aria-controls="sumi-palette-results" aria-activedescendant="">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="sumi-palette-results" id="sumi-palette-results" role="listbox"></div>
+    <div class="sumi-palette-foot">
+      <span><kbd>↵</kbd> to open</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd> to move</span>
+      <span><kbd>Esc</kbd> to close</span>
+    </div>
+  </div>
+</dialog>
+<dialog class="sumi-help" aria-label="Keyboard shortcuts">
+  <div class="sumi-help-box">
+    <div class="sumi-help-head"><strong>Keyboard shortcuts</strong><button class="sumi-icon-btn" type="button" data-close aria-label="Close"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+    <dl>
+      <dt><kbd data-mod>Ctrl K</kbd> <kbd>/</kbd></dt><dd>Open search and commands</dd>
+      <dt><kbd>t</kbd></dt><dd>Toggle dark mode</dd>
+      <dt><kbd>[</kbd> <kbd>]</kbd></dt><dd>Previous / next page</dd>
+      <dt><kbd>j</kbd> <kbd>k</kbd></dt><dd>Previous / next heading</dd>
+      <dt><kbd>?</kbd></dt><dd>Show this help</dd>
+    </dl>
+  </div>
+</dialog>
+<dialog class="sumi-zoom" aria-label="Zoom image"><img alt=""></dialog>
+<div class="sumi-toast" role="status" aria-live="polite"></div>
+  <script>
+    window.sumi = {
+      base: "../..",
+      page: "dev-guide/api/",
+      features: [],
+      markdown: "../api.md",
+      search: "../../search/search_index.json",
+      keyboard: true,
+      versions: null,
+      prev: "../plugins/",
+      next: "../../about/release-notes/",
+      edit: "https://github.com/mkdocs-ng/mkdocs/blob/main/docs/dev-guide/api.md",
+      nav: [{"t":"Home","u":"","s":""},{"t":"Getting Started","u":"getting-started/","s":""},{"t":"User Guide","u":"user-guide/","s":"User Guide"},{"t":"Installation","u":"user-guide/installation/","s":"User Guide"},{"t":"Switching to MkDocs NG","u":"user-guide/migrating/","s":"User Guide"},{"t":"Material for MkDocs End of Life","u":"user-guide/material-end-of-life/","s":"User Guide"},{"t":"Writing Your Docs","u":"user-guide/writing-your-docs/","s":"User Guide"},{"t":"Choosing Your Theme","u":"user-guide/choosing-your-theme/","s":"User Guide"},{"t":"Customizing Your Theme","u":"user-guide/customizing-your-theme/","s":"User Guide"},{"t":"Localizing Your Theme","u":"user-guide/localizing-your-theme/","s":"User Guide"},{"t":"Multi-language Sites","u":"user-guide/multi-language-sites/","s":"User Guide"},{"t":"Configuration","u":"user-guide/configuration/","s":"User Guide"},{"t":"Command Line Interface","u":"user-guide/cli/","s":"User Guide"},{"t":"Python API","u":"user-guide/python-api/","s":"User Guide"},{"t":"Deploying Your Docs","u":"user-guide/deploying-your-docs/","s":"User Guide"},{"t":"Versioned Docs","u":"user-guide/versioned-docs/","s":"User Guide"},{"t":"Developer Guide","u":"dev-guide/","s":"Developer Guide"},{"t":"Themes","u":"dev-guide/themes/","s":"Developer Guide"},{"t":"Translations","u":"dev-guide/translations/","s":"Developer Guide"},{"t":"Plugins","u":"dev-guide/plugins/","s":"Developer Guide"},{"t":"API Reference","u":"dev-guide/api/","s":"Developer Guide"},{"t":"Release Notes","u":"about/release-notes/","s":"About"},{"t":"Fixed Upstream Issues","u":"about/fixed-upstream-issues/","s":"About"},{"t":"Comparison","u":"about/comparison/","s":"About"},{"t":"Contributing","u":"about/contributing/","s":"About"},{"t":"License","u":"about/license/","s":"About"}],
+      alternate: [],
+      translations: [],
+      t: {"search":"Search","search_placeholder":"Search docs or run a command…","search_no_results":"No results for","search_loading":"Loading index…","search_hint_open":"to open","search_hint_move":"to move","search_hint_close":"to close","pages":"Pages","commands":"Commands","on_this_page":"On this page","back_to_top":"Back to top","previous":"Previous","next":"Next","edit_page":"Edit this page","view_source":"View source","copy_markdown":"Copy as Markdown","copied":"Copied","view_markdown":"View as Markdown","open_in":"Open in {name}","print":"Print","page_actions":"Page actions","copy":"Copy","copy_code":"Copy code","toggle_theme":"Toggle dark mode","theme_light":"Light","theme_dark":"Dark","theme_auto":"System","menu":"Menu","close":"Close","navigation":"Navigation","skip_to_content":"Skip to content","last_updated":"Last updated","reading_time":"{n} min read","language":"Language","untranslated":"This page has not been translated yet, so it is shown in {language}.","version":"Version","repository":"Repository","keyboard_shortcuts":"Keyboard shortcuts","shortcut_search":"Open search and commands","shortcut_theme":"Toggle dark mode","shortcut_prev_next":"Previous / next page","shortcut_toc":"Previous / next heading","shortcut_help":"Show this help","built_with":"Built with {mkdocs} and {sumi}","not_found_title":"Page not found","not_found_text":"The page you are looking for does not exist or has moved.","go_home":"Go to the home page","blog":"Blog","all_posts":"All posts","tags":"Tags","posted_on":"Posted on","older_post":"Older post","newer_post":"Newer post","subscribe_rss":"Subscribe via RSS","releases":"Releases","latest":"Latest","prerelease":"Pre-release","archived":"Archived","download":"Download","asset":"Asset","size":"Size","checksum":"SHA-256","release_notes":"Release notes","old_version":"You are reading the documentation for an older version.","go_latest":"Go to the latest version","expand_all":"Expand all","zoom_image":"Zoom image","diagram_expand":"Expand diagram","blog_view":"Layout","blog_view_list":"List view","blog_view_cards":"Card view","diagram_source":"Copy diagram source","diagram_download":"Download SVG","cmd_toggle_theme":"Toggle light / dark","cmd_copy_markdown":"Copy this page as Markdown","cmd_view_markdown":"Open this page as Markdown","cmd_edit":"Edit this page","cmd_print":"Print this page","cmd_top":"Scroll to top","cmd_home":"Go to the home page","cmd_language":"Switch language: {name}","cmd_version":"Switch version: {name}","cmd_llms":"Open llms.txt","whole_site":"Whole site","print_title":"Printable edition","contents":"Contents","compare":"Bilingual view","compare_open":"Open bilingual view","compare_sync":"Sync scrolling","compare_failed":"This translation could not be loaded.","feedback_title":"Was this page helpful?","feedback_yes":"Yes","feedback_no":"No","feedback_thanks":"Thanks for your feedback!","comments":"Comments","table_expand":"Expand table","zoom_in":"Zoom in","zoom_out":"Zoom out","zoom_reset":"Fit to window"}
+    };
+  </script>
+  <script src="../../assets/js/sumi.js" defer></script>
+</body>
+</html>
