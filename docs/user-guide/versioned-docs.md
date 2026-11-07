@@ -29,6 +29,17 @@ pip install mkdocs-ng mike
 mike installs the upstream `mkdocs` package too, as plugins do. MkDocs NG
 takes precedence, see [Updating your dependencies](migrating.md#updating-your-dependencies).
 
+Some plugins, such as `mkdocs-redirects`, `mkdocs-literate-nav` and
+`mkdocs-gen-files`, also install [ProperDocs]. When it's installed, mike builds
+your docs with the `properdocs` command instead of `mkdocs`: the build doesn't
+use MkDocs NG, and stops at settings that only MkDocs NG has, such as
+`languages`. Remove it after installing your dependencies. The plugins keep
+working without it:
+
+```sh
+pip uninstall -y properdocs
+```
+
 Add the `mike` plugin to `mkdocs.yml`, and turn on the version menu of your
 theme.
 
@@ -128,6 +139,8 @@ jobs:
         with:
           python-version: "3.x"
       - run: pip install mkdocs-ng mike
+      # Only needed when a plugin installs ProperDocs, see above.
+      - run: pip uninstall -y properdocs
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -182,5 +195,6 @@ For now, the version menu of mike, Sumi and Material shows on the pages of the
 default language only.
 
 [mike]: https://github.com/jimporter/mike
+[ProperDocs]: https://properdocs.org/
 [sumi-versions]: https://sumi.mkdocs-ng.org/docs/customize/navigation/#versions
 [material-versions]: https://material.mkdocs-ng.org/setup/setting-up-versioning/
