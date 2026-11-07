@@ -50,10 +50,12 @@ except ImportError:  # pragma: no cover
 #####################################################################
 
 YAML_RE = re.compile(
-    r"^-{3}[ \t]*\n(.*?\n)(?:\.{3}|-{3})[ \t]*\n", re.UNICODE | re.DOTALL
+    r"^-{3}[ \t]*\n(.*?\n)(?:\.{3}|-{3})[ \t]*(?:\n|\Z)", re.UNICODE | re.DOTALL
 )
 META_RE = re.compile(r"^[ ]{0,3}(?P<key>[A-Za-z0-9_-]+):\s*(?P<value>.*)")
 META_MORE_RE = re.compile(r"^([ ]{4}|\t)(\s*)(?P<value>.*)")
+# A setext heading underline (`===`): the line above it is a heading, not metadata.
+SETEXT_H1_RE = re.compile(r"^[ ]{0,3}=+[ \t]*$")
 
 
 def get_data(doc: str) -> tuple[str, dict[str, Any]]:
@@ -98,6 +100,9 @@ def get_data(doc: str) -> tuple[str, dict[str, Any]]:
                 # Add another line to existing key
                 data[key] += " {}".format(m2.group("value").strip())
             else:
+                if SETEXT_H1_RE.match(line):
+                    # `Foo: Bar` underlined with `===` is a heading.
+                    return doc, {}
                 lines.insert(0, line)
                 break  # no meta data - done
     return "\n".join(lines).lstrip("\n"), data

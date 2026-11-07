@@ -41,22 +41,27 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
+[#3618] | Relative URLs in raw HTML, such as an `<img>` inside a `<figure>`, broke with `use_directory_urls` because they weren't adjusted like Markdown links. They now are, when they point to a file in the `docs_dir`. | 1.11.2 (#170)
 [#3772] | Loading your own Markdown extension from the project needed `PYTHONPATH` set by hand or a package to install. The new [`markdown_extensions_path`](../user-guide/configuration.md#markdown_extensions_path) setting names directories to load them from. | 1.11.0
+[#3908] | An HTML comment above the first heading, such as an SPDX license header, stopped the heading from becoming the page title. | 1.11.2 (#170)
 [#3914] | Links to other sites couldn't be told apart from internal links in the HTML, so themes couldn't mark them. They now get `rel="external"`. | 1.11.0
 [#3997] | GitHub-style alerts (`> [!NOTE]`, `> [!WARNING]` and so on) showed up as a quote starting with `[!NOTE]`. They now render as admonitions. | 1.11.0
+[#4079] | A first line like `Foo: Bar` underlined with `===` was read as metadata, so the heading disappeared. | 1.11.2 (#170)
+[#4149] | YAML front matter was ignored when the file ended right after the closing `---` without a newline. | 1.11.2 (#170)
 
 ## Search
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
-[#4167] | Searching for words that happen to be English stop words — `while`, `if`, `for`, `from` and many more — returned no results, even though they are meaningful keywords in technical documentation. Stop words are now indexed by default; a `stop_words` plugin option restores the old behavior. | 1.8.0 (#80)
 [#4106] | In browsers without Web Worker support, search replaced the page's global `window.postMessage` function, breaking other scripts that rely on it. The fallback now leaves it alone (and no longer depends on jQuery or on the site being served from the domain root). | 1.9.0 (#106)
+[#4167] | Searching for words that happen to be English stop words — `while`, `if`, `for`, `from` and many more — returned no results, even though they are meaningful keywords in technical documentation. Stop words are now indexed by default; a `stop_words` plugin option restores the old behavior. | 1.8.0 (#80)
 
 ## Navigation
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
 [#3450] | The project's root directory couldn't be the `docs_dir`, so a small project couldn't keep its Markdown files next to `mkdocs.yml`. `docs_dir: .` now works; the config file and the `site_dir` are left out of the site. | 1.11.0
+[#3551] | `page.is_homepage` was `False` for the home page when `nav` put it inside a section, so themes didn't treat it as the home page. | 1.11.2 (#170)
 [#3710] | When the same page was listed more than once in `nav` under different titles, every entry showed the title of the first one. Each entry now keeps its own title. | 1.9.0 (#103)
 [#4026] | A `nav` entry that links to a section of a page (`page.md#anchor` or `page/#anchor`) was reported as "not found in the documentation files", failing `strict` builds; the `page.md#anchor` form also produced a broken link. Both forms now work without a warning. | 1.9.0 (#104)
 
@@ -102,6 +107,8 @@ Upstream issue | Symptom | Fixed in
 [#2624]: https://github.com/mkdocs/mkdocs/issues/2624
 [#3450]: https://github.com/mkdocs/mkdocs/issues/3450
 [#3496]: https://github.com/mkdocs/mkdocs/issues/3496
+[#3551]: https://github.com/mkdocs/mkdocs/issues/3551
+[#3618]: https://github.com/mkdocs/mkdocs/issues/3618
 [#3630]: https://github.com/mkdocs/mkdocs/issues/3630
 [#3690]: https://github.com/mkdocs/mkdocs/issues/3690
 [#3696]: https://github.com/mkdocs/mkdocs/issues/3696
@@ -109,6 +116,7 @@ Upstream issue | Symptom | Fixed in
 [#3709]: https://github.com/mkdocs/mkdocs/issues/3709
 [#3710]: https://github.com/mkdocs/mkdocs/issues/3710
 [#3772]: https://github.com/mkdocs/mkdocs/issues/3772
+[#3908]: https://github.com/mkdocs/mkdocs/issues/3908
 [#3914]: https://github.com/mkdocs/mkdocs/issues/3914
 [#3952]: https://github.com/mkdocs/mkdocs/issues/3952
 [#3973]: https://github.com/mkdocs/mkdocs/issues/3973
@@ -119,8 +127,10 @@ Upstream issue | Symptom | Fixed in
 [#4032]: https://github.com/mkdocs/mkdocs/issues/4032
 [#4045]: https://github.com/mkdocs/mkdocs/issues/4045
 [#4055]: https://github.com/mkdocs/mkdocs/issues/4055
+[#4079]: https://github.com/mkdocs/mkdocs/issues/4079
 [#4081]: https://github.com/mkdocs/mkdocs/issues/4081
 [#4106]: https://github.com/mkdocs/mkdocs/issues/4106
 [#4126]: https://github.com/mkdocs/mkdocs/issues/4126
+[#4149]: https://github.com/mkdocs/mkdocs/pull/4149
 [#4167]: https://github.com/mkdocs/mkdocs/issues/4167
 [open an issue]: https://github.com/mkdocs-ng/mkdocs/issues
