@@ -566,6 +566,19 @@ class UtilsTests(unittest.TestCase):
         )
         self.assertEqual(meta.get_data(doc), (doc, {}))
 
+    def test_yaml_meta_data_without_trailing_newline(self):
+        self.assertEqual(meta.get_data("---\nTitle: Foo\n---"), ("", {"Title": "Foo"}))
+
+    def test_mm_meta_data_setext_heading(self):
+        doc = "Foo: Bar\n========\n\nText\n"
+        self.assertEqual(meta.get_data(doc), (doc, {}))
+
+    def test_mm_meta_data_before_hr_kept(self):
+        # Only `===` marks a heading; `---` below metadata keeps working as before.
+        self.assertEqual(
+            meta.get_data("Title: Foo\n---\n"), ("---\n", {"title": "Foo"})
+        )
+
     def test_no_meta_data(self):
         doc = dedent(
             """

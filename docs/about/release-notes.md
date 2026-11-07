@@ -41,6 +41,14 @@ without checking every plugin first:
 
 * `mkdocs serve` on an address such as `0.0.0.0` now says that its pages link to the dev server instead of `site_url`, and that `mkdocs build` is the way to publish. #169
 
+### Fixed
+
+* Relative `src` and `href` URLs in raw HTML, such as an `<img>` in a `<figure>`, now work with `use_directory_urls`: they are adjusted like Markdown links. URLs that already work from the built page are kept. #170
+* `page.is_homepage` is now `True` for the home page when `nav` puts it inside a section. #170
+* An HTML comment above the first heading, such as a license header, no longer stops the heading from becoming the page title. #170
+* A heading like `Foo: Bar` underlined with `===` at the top of a page is no longer read as metadata. #170
+* YAML front matter is read when the file ends right after the closing `---`. #170
+
 ## Version 1.11.1 (2026-11-05)
 
 A security and bug-fix release for `mkdocs serve`. Upgrade if you run `mkdocs serve` on Windows.

@@ -341,10 +341,25 @@ also be previewed if you're working on the documentation with a Markdown editor.
 
 Markdown allows document authors to fall back to raw HTML when the Markdown
 syntax does not meets the author's needs. MkDocs does not limit Markdown in this
-regard. However, as all raw HTML is ignored by the Markdown parser, MkDocs is
-not able to validate or convert links contained in raw HTML. When including
-internal links within raw HTML, you will need to manually format the link
-appropriately for the rendered document.
+regard.
+
+NEW: **New in version 1.11.2.**
+
+Relative `href` and `src` URLs in raw HTML are adjusted like Markdown links
+when they point to a file in the `docs_dir`, relative to the Markdown file. So
+this works in `about/team.md`, also with [use_directory_urls]:
+
+```html
+<figure>
+  <img src="img/team.png" alt="Our team">
+  <figcaption>Our team</figcaption>
+</figure>
+```
+
+A URL that already works from the built page is left as it is, so HTML written
+for the rendered site keeps working. Links in raw HTML are not validated.
+
+[use_directory_urls]: configuration.md#use_directory_urls
 
 ### External links
 
@@ -360,7 +375,7 @@ a[rel~="external"]::after { content: " ↗"; }
 
 A `rel` value you set yourself, for example with the `attr_list` extension
 (`[text](https://example.com){rel="nofollow"}`), is kept and `external` is
-added to it. Links in raw HTML are left as they are.
+added to it. Links in raw HTML don't get `rel="external"`.
 
 ### Meta-Data
 

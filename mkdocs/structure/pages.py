@@ -5,6 +5,8 @@ import logging
 import posixpath
 import re
 import warnings
+from html import escape as html_escape
+from html import unescape as html_unescape
 from typing import TYPE_CHECKING, Any
 from urllib.parse import unquote as urlunquote
 from urllib.parse import urljoin, urlsplit, urlunsplit
@@ -15,6 +17,7 @@ import markdown.extensions.toc
 import markdown.htmlparser  # type: ignore
 import markdown.postprocessors
 import markdown.treeprocessors
+import markdown.util
 from markdown.util import AMP_SUBSTITUTE
 
 from mkdocs import utils
@@ -38,6 +41,11 @@ if TYPE_CHECKING:
 
 
 log = logging.getLogger(__name__)
+
+_HTML_PLACEHOLDER_RE = re.compile(
+    re.escape(markdown.util.STX) + r"wzxhzdk:(\d+)" + re.escape(markdown.util.ETX)
+)
+_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 
 
 class Page(StructureItem):
@@ -157,11 +165,9 @@ class Page(StructureItem):
     @property
     def is_homepage(self) -> bool:
         """Evaluates to `True` for the homepage of the site and `False` for all other pages."""
-        return (
-            self.is_top_level
-            and self.is_index
-            and self.file.url in (".", "./", "index.html")
-        )
+        # Only `index.md` at the root of `docs_dir` has this URL, even when
+        # `nav` puts it inside a section.
+        return self.is_index and self.file.url in (".", "./", "index.html")
 
     previous_page: Page | None
     """The [page][mkdocs.structure.pages.Page] object for the previous page or `None`.
@@ -320,6 +326,8 @@ class Page(StructureItem):
 
         relative_path_ext = _RelativePathTreeprocessor(self.file, files, config)
         relative_path_ext._register(md)
+
+        _RawHTMLLinksPostprocessor(self.file, files)._register(md)
 
         extract_title_ext = _ExtractTitleTreeprocessor()
         extract_title_ext._register(md)
@@ -682,6 +690,82 @@ class _RelativePathTreeprocessor(markdown.treeprocessors.Treeprocessor):
         md.treeprocessors.register(self, "relpath", 0)
 
 
+_START_TAG_RE = re.compile(
+    r"""<[a-zA-Z][^\s/>]*(?:\s+[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'=<>`]+))?)*\s*/?>"""
+)
+_URL_ATTR_RE = re.compile(
+    r"""(?P<before>\s(?:href|src)\s*=\s*)(?:"(?P<dq>[^"]*)"|'(?P<sq>[^']*)')""",
+    re.IGNORECASE,
+)
+
+
+class _RawHTMLLinksPostprocessor(markdown.postprocessors.Postprocessor):
+    """
+    Fix relative `href` and `src` URLs in raw HTML, the way Markdown links are fixed.
+
+    A URL is only changed when it points to a documentation file relative to the
+    Markdown file, and doesn't already work from the built page. So an `img` in
+    `sec/page.md` with `src="img/a.png"` works with `use_directory_urls`, and HTML
+    written for the built site stays as it is.
+    """
+
+    def __init__(self, file: File, files: Files) -> None:
+        super().__init__()
+        self.file = file
+        self.files = files
+
+    def run(self, text: str) -> str:
+        blocks = self.md.htmlStash.rawHtmlBlocks
+        for i, html in enumerate(blocks):
+            if isinstance(html, str) and ("href" in html or "src" in html):
+                blocks[i] = _START_TAG_RE.sub(self._fix_tag, html)
+        return text
+
+    def _fix_tag(self, m: re.Match[str]) -> str:
+        return _URL_ATTR_RE.sub(self._fix_attr, m.group())
+
+    def _fix_attr(self, m: re.Match[str]) -> str:
+        quote = '"' if m.group("dq") is not None else "'"
+        value = m.group("dq") if quote == '"' else m.group("sq")
+        url = html_unescape(value)
+        new_url = self._fix_url(url)
+        if new_url is None or new_url == url:
+            return m.group()
+        return f"{m.group('before')}{quote}{html_escape(new_url)}{quote}"
+
+    def _fix_url(self, url: str) -> str | None:
+        if AMP_SUBSTITUTE in url:
+            return None
+        try:
+            scheme, netloc, path, query, anchor = urlsplit(url)
+        except ValueError:
+            return None
+        if scheme or netloc or not path or path.startswith(("/", "\\")):
+            return None
+        path = urlunquote(path)
+        get = self.files.get_file_from_path
+        target_file = get(
+            _RelativePathTreeprocessor._target_uri(self.file.src_uri, path)
+        )
+        if target_file is None or target_file.inclusion.is_excluded():
+            return None
+        if not target_file.is_documentation_page():
+            built_uri = posixpath.normpath(
+                posixpath.join(posixpath.dirname(self.file.dest_uri), path)
+            )
+            if get(built_uri) is not None:
+                # Already works from the built page.
+                return None
+        new_path = utils.get_relative_url(target_file.url, self.file.url)
+        return urlunsplit(("", "", new_path, query, anchor))
+
+    def _register(self, md: markdown.Markdown) -> None:
+        self.md = md
+        md.postprocessors.register(
+            self, "mkdocs_raw_html_links", priority=31
+        )  # Right before 'raw_html'.
+
+
 class _RawHTMLPreprocessor(markdown.preprocessors.Preprocessor):
     def __init__(self) -> None:
         super().__init__()
@@ -727,10 +811,26 @@ class _ExtractTitleTreeprocessor(markdown.treeprocessors.Treeprocessor):
 
     def run(self, root: etree.Element) -> etree.Element:
         for el in root:
+            if self._is_html_comment(el):
+                # Such as a license header above the first heading.
+                continue
             if el.tag == "h1":
                 self.title = get_heading_text(el, self.md)
             break
         return root
+
+    def _is_html_comment(self, el: etree.Element) -> bool:
+        """Whether `el` only holds raw HTML that is nothing but comments."""
+        if el.tag != "p" or len(el) or not el.text:
+            return False
+        m = _HTML_PLACEHOLDER_RE.fullmatch(el.text.strip())
+        if not m:
+            return False
+        try:
+            html = self.md.htmlStash.rawHtmlBlocks[int(m.group(1))]
+        except IndexError:
+            return False
+        return isinstance(html, str) and not _HTML_COMMENT_RE.sub("", html).strip()
 
     def _register(self, md: markdown.Markdown) -> None:
         self.md = md

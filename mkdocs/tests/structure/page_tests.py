@@ -94,6 +94,14 @@ class PageTests(unittest.TestCase):
         self.assertEqual(pg.title, "Foo")
         self.assertEqual(pg.toc, [])
 
+    def test_homepage_inside_section(self):
+        cfg = load_config(docs_dir=DOCS_DIR)
+        fl = File("index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
+        pg = Page(None, fl, cfg)
+        pg.parent = "foo"  # `nav` puts the home page inside a section.
+        self.assertTrue(pg.is_homepage)
+        self.assertFalse(pg.is_top_level)
+
     def test_nested_index_page_no_parent(self):
         cfg = load_config(docs_dir=DOCS_DIR)
         fl = File("sub1/index.md", cfg.docs_dir, cfg.site_dir, cfg.use_directory_urls)
@@ -431,6 +439,18 @@ class PageTests(unittest.TestCase):
         self._test_extract_title(
             """# foo <!-- comment with <em> --> bar""", expected="foo bar"
         )
+
+    def test_page_title_after_html_comment(self):
+        self._test_extract_title(
+            "<!-- SPDX-License-Identifier: MIT -->\n\n# Hello\n\nText",
+            expected="Hello",
+        )
+        self._test_extract_title(
+            "<!-- one -->\n<!-- two -->\n# Hello\n", expected="Hello"
+        )
+
+    def test_page_title_not_after_other_html(self):
+        self._test_extract_title("<div>x</div>\n\n# Hello\n", expected=None)
 
     def test_page_title_from_markdown_strip_image(self):
         self._test_extract_title("""# Hi ![😄](hah.png)""", expected="Hi 😄")
@@ -1063,6 +1083,69 @@ class RelativePathExtensionTests(unittest.TestCase):
                 files=["non-index.md", "image.png"],
             ),
             '<img alt="image" src="image.png" />',
+        )
+
+    def test_raw_html_relative_image_from_subpage(self):
+        self.assertEqual(
+            self.get_rendered_result(
+                content='<figure><img src="../image.png" alt="a"></figure>',
+                files=["sub2/non-index.md", "image.png"],
+            ),
+            '<figure><img src="../../image.png" alt="a"></figure>',
+        )
+
+    def test_raw_html_relative_links_inline(self):
+        self.assertEqual(
+            self.get_rendered_result(
+                content="An <img src='image.png?v=1#x'> and "
+                '<a href="index.md#top">home</a>.',
+                files=["non-index.md", "index.md", "image.png"],
+            ),
+            "An <img src='../image.png?v=1#x'> and <a href=\"../#top\">home</a>.",
+        )
+
+    def test_raw_html_relative_links_without_directory_urls(self):
+        self.assertEqual(
+            self.get_rendered_result(
+                use_directory_urls=False,
+                content='<img src="image.png"> <a href="index.md">home</a>',
+                files=["non-index.md", "index.md", "image.png"],
+            ),
+            '<img src="image.png"> <a href="index.html">home</a>',
+        )
+
+    def test_raw_html_links_left_as_is(self):
+        content = (
+            # Already written for the built page, or not a documentation file.
+            '<img src="../image.png"> <img src="missing.png"> '
+            '<a href="https://example.com/image.png">x</a> <a href="#top">x</a> '
+            '<a href="/image.png">x</a> <a href="sub/">x</a> '
+            '<img src="data:image/png;base64,AA==">'
+        )
+        self.assertEqual(
+            self.get_rendered_result(
+                content=content, files=["non-index.md", "image.png"]
+            ),
+            content,
+        )
+
+    def test_raw_html_link_working_both_ways_is_kept(self):
+        # `img/a.png` next to the built page exists too, so it is not changed.
+        self.assertEqual(
+            self.get_rendered_result(
+                content='<img src="img/a.png">',
+                files=["sub/page.md", "sub/img/a.png", "sub/page/img/a.png"],
+            ),
+            '<img src="img/a.png">',
+        )
+
+    def test_raw_html_in_code_left_as_is(self):
+        self.assertEqual(
+            self.get_rendered_result(
+                content='`<img src="image.png">`',
+                files=["non-index.md", "image.png"],
+            ),
+            '<code>&lt;img src="image.png"&gt;</code>',
         )
 
     def test_no_links(self):
