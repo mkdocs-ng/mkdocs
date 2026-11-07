@@ -35,6 +35,12 @@ without checking every plugin first:
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
 
+## Version 1.11.2 (unreleased)
+
+### Changed
+
+* `mkdocs serve` on an address such as `0.0.0.0` now says that its pages link to the dev server instead of `site_url`, and that `mkdocs build` is the way to publish. #169
+
 ## Version 1.11.1 (2026-11-05)
 
 A security and bug-fix release for `mkdocs serve`. Upgrade if you run `mkdocs serve` on Windows.

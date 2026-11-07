@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ipaddress
 import logging
 import shutil
 import signal
@@ -30,6 +31,15 @@ _PORT_FALLBACKS = 10
 
 class _ShutdownRequested(KeyboardInterrupt):
     pass
+
+
+def _is_loopback(host: str) -> bool:
+    if host == "localhost":
+        return True
+    try:
+        return ipaddress.ip_address(host).is_loopback
+    except ValueError:
+        return False
 
 
 def serve(
@@ -72,7 +82,8 @@ def serve(
     )
 
     host, port = config.dev_addr
-    mount_path = urlsplit(config.site_url or "/").path
+    site_url = config.site_url
+    mount_path = urlsplit(site_url or "/").path
 
     def builder(config: MkDocsConfig | None = None):
         log.info("Building documentation...")
@@ -117,6 +128,15 @@ def serve(
                 try_next_ports=_PORT_FALLBACKS if port == _DEFAULT_PORT else 0
             )
             config.site_url = serve_url = _serve_url(host, port, mount_path)
+            if site_url and not _is_loopback(host):
+                # Serving to other machines often means `serve` is being used
+                # to host the site, where links to the dev server are wrong.
+                log.info(
+                    f"Pages served by 'mkdocs serve' use {serve_url} instead of "
+                    f"site_url ({site_url}) for canonical and other absolute "
+                    "links. To publish the site, run 'mkdocs build' and host "
+                    "the site directory on a web server."
+                )
 
             # Perform the initial build
             builder(config)
