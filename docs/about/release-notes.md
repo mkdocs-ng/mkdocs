@@ -39,7 +39,7 @@ without checking every plugin first:
 
 ### Changed
 
-* `mkdocs serve` on an address such as `0.0.0.0` now says that its pages link to the dev server instead of `site_url`, and that `mkdocs build` is the way to publish. #PRNUM
+* `mkdocs serve` on an address such as `0.0.0.0` now says that its pages link to the dev server instead of `site_url`, and that `mkdocs build` is the way to publish. #169
 
 ## Version 1.11.1 (2026-11-05)
 
