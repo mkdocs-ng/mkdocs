@@ -690,8 +690,13 @@ class _RelativePathTreeprocessor(markdown.treeprocessors.Treeprocessor):
         md.treeprocessors.register(self, "relpath", 0)
 
 
+# Only standard elements: custom ones such as `<swagger-ui src="…">` belong to
+# plugins, which resolve their URLs themselves.
+_URL_TAGS = frozenset(
+    "a area audio embed iframe img link script source track video".split()
+)
 _START_TAG_RE = re.compile(
-    r"""<[a-zA-Z][^\s/>]*(?:\s+[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'=<>`]+))?)*\s*/?>"""
+    r"""<(?P<tag>[a-zA-Z][^\s/>]*)(?:\s+[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'=<>`]+))?)*\s*/?>"""
 )
 _URL_ATTR_RE = re.compile(
     r"""(?P<before>\s(?:href|src)\s*=\s*)(?:"(?P<dq>[^"]*)"|'(?P<sq>[^']*)')""",
@@ -703,8 +708,8 @@ class _RawHTMLLinksPostprocessor(markdown.postprocessors.Postprocessor):
     """
     Fix relative `href` and `src` URLs in raw HTML, the way Markdown links are fixed.
 
-    A URL is only changed when it points to a documentation file relative to the
-    Markdown file, and doesn't already work from the built page. So an `img` in
+    A URL is only changed on standard elements, when it points to a documentation
+    file relative to the Markdown file, and doesn't already work from the built page. So an `img` in
     `sec/page.md` with `src="img/a.png"` works with `use_directory_urls`, and HTML
     written for the built site stays as it is.
     """
@@ -722,6 +727,8 @@ class _RawHTMLLinksPostprocessor(markdown.postprocessors.Postprocessor):
         return text
 
     def _fix_tag(self, m: re.Match[str]) -> str:
+        if m.group("tag").lower() not in _URL_TAGS:
+            return m.group()
         return _URL_ATTR_RE.sub(self._fix_attr, m.group())
 
     def _fix_attr(self, m: re.Match[str]) -> str:

@@ -1120,7 +1120,9 @@ class RelativePathExtensionTests(unittest.TestCase):
             '<img src="../image.png"> <img src="missing.png"> '
             '<a href="https://example.com/image.png">x</a> <a href="#top">x</a> '
             '<a href="/image.png">x</a> <a href="sub/">x</a> '
-            '<img src="data:image/png;base64,AA==">'
+            '<img src="data:image/png;base64,AA=="> '
+            # Custom elements belong to plugins, which resolve URLs themselves.
+            '<swagger-ui src="image.png"/>'
         )
         self.assertEqual(
             self.get_rendered_result(

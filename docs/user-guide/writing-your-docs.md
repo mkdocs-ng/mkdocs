@@ -356,8 +356,11 @@ this works in `about/team.md`, also with [use_directory_urls]:
 </figure>
 ```
 
-A URL that already works from the built page is left as it is, so HTML written
-for the rendered site keeps working. Links in raw HTML are not validated.
+This applies to standard elements such as `a`, `img`, `video`, `source` and
+`iframe`. A URL that already works from the built page is left as it is, so
+HTML written for the rendered site keeps working, and custom elements that a
+plugin handles, such as `<swagger-ui>`, are left to the plugin. Links in raw
+HTML are not validated.
 
 [use_directory_urls]: configuration.md#use_directory_urls
 
