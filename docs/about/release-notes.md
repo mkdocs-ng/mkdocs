@@ -54,6 +54,7 @@ without checking every plugin first:
 * YAML front matter is read when the file ends right after the closing `---`. #170
 * Built-in search finds Chinese and Japanese words. With `lang: zh` search stopped with an error, and Japanese only found whole sentences. Text is now split into words with the browser's `Intl.Segmenter`. #172
 * Built-in search shows titles such as `Tom & Jerry` correctly instead of `Tom &amp; Jerry`. #172
+* mike builds with MkDocs NG when ProperDocs is installed too, as plugins such as `mkdocs-redirects`, `mkdocs-literate-nav` and `mkdocs-gen-files` do. It used to build with ProperDocs, which stopped at settings such as `languages`. #173
 * On a multi-language site deployed with mike, canonical URLs, the sitemap and the links between languages put the version before the language, `/1.0/zh/`, instead of `/zh/1.0/`. #173
 
 ## Version 1.11.1 (2026-11-05)

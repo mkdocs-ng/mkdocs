@@ -51,18 +51,61 @@ class MkDocsFinder:
 
     Submodules are then found through the package's `__path__` as usual, so
     they're never mixed with files from another `mkdocs` package.
+
+    It also makes mike build with MkDocs NG, see `_MikeLoader`.
     """
 
     def __init__(self, root: str) -> None:
         self.root = root
 
     def find_spec(self, fullname, path=None, target=None):
+        if fullname == MIKE_MODULE:
+            spec = _path_finder().find_spec(fullname, path)
+            if spec is not None and spec.loader is not None:
+                spec.loader = _MikeLoader(spec.loader)
+            return spec
         if fullname != "mkdocs":
             return None
         return _path_finder().find_spec(fullname, [self.root])
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}({self.root!r})"
+
+
+MIKE_MODULE = "mike.mkdocs_utils"
+
+
+class _MikeLoader:
+    """
+    Load `mike.mkdocs_utils`, then point it at MkDocs NG.
+
+    mike runs `properdocs build` instead of `mkdocs build` whenever ProperDocs
+    is installed, which plugins such as mkdocs-redirects do. The build then
+    doesn't use MkDocs NG, and fails on its settings such as `languages`.
+    """
+
+    def __init__(self, loader) -> None:
+        self.loader = loader
+
+    def __getattr__(self, name):
+        return getattr(self.loader, name)
+
+    def create_module(self, spec):
+        return self.loader.create_module(spec)
+
+    def exec_module(self, module) -> None:
+        self.loader.exec_module(module)
+        if not hasattr(module, "_program_name"):
+            return  # A mike version that works differently: leave it alone.
+        module._program_name = "mkdocs"
+        # Also shown in the messages of mike's commits.
+        from importlib import metadata
+
+        try:
+            module._version = metadata.version("mkdocs-ng")
+            module._brand = "MkDocs NG"
+        except metadata.PackageNotFoundError:
+            pass
 
 
 def install() -> bool:
