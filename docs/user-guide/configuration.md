@@ -1159,6 +1159,7 @@ supported:
 * `th`: Thai
 * `tr`: Turkish
 * `vi`: Vietnamese
+* `zh`: Chinese
 
 You may [contribute additional languages].
 
@@ -1169,9 +1170,17 @@ language adds significant bandwidth requirements and uses more browser
 resources. Generally, it is best to keep each instance of MkDocs to a single
 language.
 
-NOTE:
-Lunr Languages does not currently include support for Chinese or other Asian
-languages. However, some users have reported decent results using Japanese.
+NOTE: **Changed in version 1.11.2.**
+Chinese and Japanese are written without spaces between words. With `zh` or
+`ja` in `lang`, search splits such text into words with the browser's
+built-in [`Intl.Segmenter`][Intl.Segmenter], both in the index and in the
+search query, so a search for a word finds the pages that contain it. Browsers
+without `Intl.Segmenter` (such as Firefox before version 125) search for each
+character instead. A Chinese or Japanese character counts as two characters
+for [`min_search_length`](#min_search_length), so two-character words can be
+searched for with the default setting.
+
+[Intl.Segmenter]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter
 
 **default**: The value of `theme.locale` if set, otherwise `[en]`.
 
