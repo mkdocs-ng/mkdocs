@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import unittest
+from urllib.parse import urljoin
 
 import mkdocs
 from mkdocs import languages
@@ -123,6 +124,24 @@ class LanguageConfigTests(unittest.TestCase):
         self.assertEqual(zh.site_url, "https://example.com/proj/zh/")
         self.assertEqual(zh.nav[0], {"首页": "index.md"})
         self.assertEqual(languages.current(zh).code, "zh")
+
+    @tempdir(SUFFIX_SITE)
+    def test_settle_site_url(self, tdir):
+        cfg = load_config(os.path.join(tdir, "mkdocs.yml"))
+        zh = languages.load_language_config(cfg, "zh")
+        # A plugin such as mike moves the site into a version sub-directory.
+        cfg.site_url = urljoin(cfg.site_url, "1.0")
+        languages.settle_site_url(cfg)
+        self.assertEqual(cfg.site_url, "https://example.com/proj/1.0/")
+        zh.site_url = urljoin(zh.site_url, "1.0")
+        languages.settle_site_url(zh)
+        self.assertEqual(zh.site_url, "https://example.com/proj/1.0/zh/")
+        # Unchanged, or changed to somewhere else: left as it is.
+        languages.settle_site_url(zh)
+        self.assertEqual(zh.site_url, "https://example.com/proj/1.0/zh/")
+        zh.site_url = "https://zh.example.com/"
+        languages.settle_site_url(zh)
+        self.assertEqual(zh.site_url, "https://zh.example.com/")
 
     @tempdir(SUFFIX_SITE)
     def test_command_line_options_apply_to_every_language(self, tdir):
@@ -302,6 +321,28 @@ languages:
         self.assertIn("首页</h1>", _read(site, "zh", "index.html"))
         # Not built as pages of the English site at /zh/ first.
         self.assertFalse(os.path.exists(os.path.join(site, "zh", "zh")))
+
+    @tempdir(SUFFIX_SITE)
+    def test_site_url_moved_by_plugin(self, tdir):
+        cfg = load_config(os.path.join(tdir, "mkdocs.yml"))
+        zh = languages.load_language_config(cfg, "zh")
+
+        def on_config(config):
+            # What mike does to deploy a version.
+            config.site_url = urljoin(config.site_url, "1.0")
+            return config
+
+        zh.plugins.events["config"].append(on_config)
+        mkdocs.commands.build._build(zh)
+        site = os.path.join(tdir, "site")
+        html = _read(site, "zh", "guide", "index.html")
+        self.assertIn(
+            '<link rel="canonical" href="https://example.com/proj/1.0/zh/guide/">', html
+        )
+        self.assertIn(
+            "<loc>https://example.com/proj/1.0/zh/guide/</loc>",
+            _read(site, "zh", "sitemap.xml"),
+        )
 
     @tempdir(SUFFIX_SITE)
     def test_build_one_language(self, tdir):

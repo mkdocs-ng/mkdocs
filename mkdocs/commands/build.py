@@ -416,6 +416,7 @@ def _build(
 
         # Run `config` plugin events.
         config = config.plugins.on_config(config)
+        languages.settle_site_url(config)
 
         # Run `pre_build` plugin events.
         config.plugins.on_pre_build(config=config)
