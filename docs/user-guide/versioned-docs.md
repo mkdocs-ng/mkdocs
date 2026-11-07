@@ -95,12 +95,12 @@ to the menu for every release.
 
 Other useful commands:
 
-* `mike list` lists the deployed versions and their aliases.
-* `mike serve` serves the `gh-pages` branch at `http://localhost:8000/`, to
-  check the version menu before pushing. Keep using `mkdocs serve` while you
-  write: it shows the version you are working on, without the menu.
-* `mike delete --push 0.9` removes an old version.
-* `mike retitle --push 1.0 "1.0 (LTS)"` changes the title shown in the menu.
+*   `mike list` lists the deployed versions and their aliases.
+*   `mike serve` serves the `gh-pages` branch at `http://localhost:8000/`, to
+    check the version menu before pushing. Keep using `mkdocs serve` while you
+    write: it shows the version you are working on, without the menu.
+*   `mike delete --push 0.9` removes an old version.
+*   `mike retitle --push 1.0 "1.0 (LTS)"` changes the title shown in the menu.
 
 Without `--push`, mike only commits to your local `gh-pages` branch.
 

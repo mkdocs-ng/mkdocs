@@ -93,10 +93,16 @@ to copy the file to your `docs_dir`. With the file properly included in your
 If you are having problems getting a custom domain to work, see GitHub's
 documentation on [Troubleshooting custom domains].
 
+### Several versions
+
+To keep the docs of older releases online next to the newest ones, deploy with
+[mike] instead of `gh-deploy`. See [Versioned Docs](versioned-docs.md).
+
 [GitHub]: https://github.com/
 [GitHub Pages]: https://pages.github.com/
 [types of GitHub Pages sites]: https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#types-of-github-pages-sites
 [ghp-import]: https://github.com/davisp/ghp-import
+[mike]: https://github.com/jimporter/mike
 [remote_branch]: ./configuration.md#remote_branch
 [Custom Domain]: https://help.github.com/articles/adding-or-removing-a-custom-domain-for-your-github-pages-site
 [docs_dir]: ./configuration.md#docs_dir

@@ -21,5 +21,6 @@ bar at the top of the page to move through the documentation in order.
 - [Command Line Interface](cli.md)
 - [Python API](python-api.md)
 - [Deploying Your Docs](deploying-your-docs.md)
+- [Versioned Docs](versioned-docs.md)
 
 [Getting Started]: ../getting-started.md
