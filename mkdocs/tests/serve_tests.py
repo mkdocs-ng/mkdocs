@@ -407,6 +407,44 @@ class ServeTests(unittest.TestCase):
         server.bind.assert_called_once_with(try_next_ports=0)
         self.assertEqual(config.site_url, "http://127.0.0.1:9000/")
 
+    def _serve_logs(self, temp_dir, host, site_url):
+        config = self.make_config(temp_dir, dev_addr=(host, 8000), site_url=site_url)
+        server = mock.Mock()
+        server.bind.return_value = 8000
+
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(
+                mock.patch("mkdocs.commands.serve.load_config", return_value=config)
+            )
+            stack.enter_context(mock.patch("mkdocs.commands.serve.build"))
+            stack.enter_context(
+                mock.patch(
+                    "mkdocs.commands.serve.LiveReloadServer", return_value=server
+                )
+            )
+            log_cm = stack.enter_context(self.assertLogs("mkdocs.commands.serve"))
+            serve.serve()
+        return [line for line in log_cm.output if "site_url" in line]
+
+    @tempdir()
+    def test_public_address_notes_site_url_is_replaced(self, temp_dir):
+        lines = self._serve_logs(temp_dir, "0.0.0.0", "https://example.com/foo/")
+        self.assertEqual(len(lines), 1)
+        self.assertIn("http://0.0.0.0:8000/foo/", lines[0])
+        self.assertIn("(https://example.com/foo/)", lines[0])
+        self.assertIn("mkdocs build", lines[0])
+
+    @tempdir()
+    def test_no_site_url_note_on_loopback_or_without_site_url(self, temp_dir):
+        for host, site_url in [
+            ("127.0.0.1", "https://example.com/"),
+            ("localhost", "https://example.com/"),
+            ("::1", "https://example.com/"),
+            ("0.0.0.0", None),
+        ]:
+            with self.subTest(host=host, site_url=site_url):
+                self.assertEqual(self._serve_logs(temp_dir, host, site_url), [])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -64,6 +64,12 @@ path taken from the path component of the URL, e.g. `some/page.md` will be
 served from `http://127.0.0.1:8000/foo/some/page/` to mimic the expected remote
 layout.
 
+While it runs, `mkdocs serve` replaces the scheme, host and port of `site_url`
+with its own address, so that canonical links and other absolute URLs point to
+the page you are previewing. `mkdocs build` uses `site_url` as written. To
+publish the site, for example from a container, run `mkdocs build` and host the
+`site_dir` on a web server instead of running `mkdocs serve`.
+
 **default**: `null`
 
 ### repo_url
@@ -823,6 +829,10 @@ If the port is the default `8000` and another program is already using it,
 `mkdocs serve` uses the next free port, up to `8010`, and says so in its
 output. Any other port is used as given: if it is busy, `mkdocs serve` stops
 with an error.
+
+`mkdocs serve` is a development server. Use an address such as `0.0.0.0:8000`
+to preview the site from another machine or from outside a container, not to
+host the site: see [site_url](#site_url).
 
 **default**: `'127.0.0.1:8000'`
 
