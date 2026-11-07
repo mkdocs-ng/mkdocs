@@ -7,6 +7,9 @@ var index;
 var documents = {};
 var lang = ['en'];
 var data;
+// Splits Chinese and Japanese text into words, see cjk-segment.js.
+var cjkLocale = null;
+var cjkTokenize = null;
 
 // Send a message to the search UI. From a Web Worker that's `postMessage`.
 // When running in the page, call main.js's handler directly instead, leaving
@@ -63,6 +66,10 @@ function onJSONLoaded () {
     if (lang.includes("ja") || lang.includes("jp")) {
       scriptsToLoad.push('tinyseg.js');
     }
+    cjkLocale = getCJKLocale(lang);
+    if (cjkLocale) {
+      scriptsToLoad.push('cjk-segment.js');
+    }
     for (var i=0; i < lang.length; i++) {
       if (lang[i] != 'en') {
         scriptsToLoad.push(['lunr', lang[i], 'js'].join('.'));
@@ -72,10 +79,27 @@ function onJSONLoaded () {
   loadScripts(scriptsToLoad, onScriptsLoaded);
 }
 
+function getCJKLocale (lang) {
+  if (lang.includes("zh")) {
+    return "zh";
+  }
+  if (lang.includes("ja") || lang.includes("jp")) {
+    return "ja";
+  }
+  return null;
+}
+
 function onScriptsLoaded () {
   console.log('All search scripts loaded, building Lunr index...');
   if (data.config && data.config.separator && data.config.separator.length) {
     lunr.tokenizer.separator = new RegExp(data.config.separator);
+  }
+  if (cjkLocale && lunr.cjk) {
+    var baseTokenizer = lunr.tokenizer;
+    if (lang.length === 1 && lunr[lang[0]] && lunr[lang[0]].tokenizer) {
+      baseTokenizer = lunr[lang[0]].tokenizer;
+    }
+    cjkTokenize = lunr.cjk.tokenizer(baseTokenizer, cjkLocale);
   }
 
   if (data.index) {
@@ -101,6 +125,9 @@ function onScriptsLoaded () {
             this.pipeline.remove(lunr[lang[j]].stopWordFilter);
           }
         }
+      }
+      if (cjkTokenize) {
+        this.tokenizer = cjkTokenize;
       }
       this.field('title');
       this.field('text');
@@ -133,6 +160,9 @@ function search (query) {
   }
 
   var resultDocuments = [];
+  if (cjkTokenize) {
+    query = lunr.cjk.query(query, cjkTokenize);
+  }
   var results = index.search(query);
   for (var i=0; i < results.length; i++){
     var result = results[i];

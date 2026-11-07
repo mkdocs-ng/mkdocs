@@ -48,6 +48,8 @@ without checking every plugin first:
 * An HTML comment above the first heading, such as a license header, no longer stops the heading from becoming the page title. #170
 * A heading like `Foo: Bar` underlined with `===` at the top of a page is no longer read as metadata. #170
 * YAML front matter is read when the file ends right after the closing `---`. #170
+* Built-in search finds Chinese and Japanese words. With `lang: zh` search stopped with an error, and Japanese only found whole sentences. Text is now split into words with the browser's `Intl.Segmenter`. #172
+* Built-in search shows titles such as `Tom & Jerry` correctly instead of `Tom &amp; Jerry`. #172
 
 ## Version 1.11.1 (2026-11-05)
 

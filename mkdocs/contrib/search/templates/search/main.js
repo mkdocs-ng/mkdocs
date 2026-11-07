@@ -28,8 +28,20 @@ function escapeHtml (value) {
     .replace(/>/g, '&gt;');
 }
 
+// Titles in the index are HTML (`Tom &amp; Jerry`), the text is plain.
+function htmlToText (value) {
+  return value ? new DOMParser().parseFromString(value, 'text/html').documentElement.textContent : '';
+}
+
 function formatResult (location, title, summary) {
-  return '<article><h3><a href="' + joinUrl(base_url, location) + '">'+ escapeHtml(title) + '</a></h3><p>' + escapeHtml(summary) +'</p></article>';
+  return '<article><h3><a href="' + joinUrl(base_url, location) + '">'+ escapeHtml(htmlToText(title)) + '</a></h3><p>' + escapeHtml(summary) +'</p></article>';
+}
+
+// A Chinese or Japanese character counts as two towards min_search_length,
+// so a two-character word such as 搜索 can be searched for.
+function queryLength (query) {
+  var cjk = query.match(/[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/g);
+  return query.length + (cjk ? cjk.length : 0);
 }
 
 function displayResults (results) {
@@ -54,7 +66,7 @@ function displayResults (results) {
 
 function doSearch () {
   var query = document.getElementById('mkdocs-search-query').value;
-  if (query.length > min_search_length) {
+  if (queryLength(query) > min_search_length) {
     if (!window.Worker) {
       displayResults(search(query));
     } else {

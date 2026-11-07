@@ -71,6 +71,13 @@
         lunr.zh.stemmer
       );
 
+      // MkDocs NG: search words go through the same stemmer as indexed
+      // words, so English words on the page can be found too.
+      if (this.searchPipeline) {
+        this.searchPipeline.reset();
+        this.searchPipeline.add(lunr.zh.stemmer);
+      }
+
       // change the tokenizer for Chinese one
       if (isLunr2) { // for lunr version 2.0.0
         this.tokenizer = lunr.zh.tokenizer;
@@ -89,6 +96,12 @@
       if (Array.isArray(obj)) return obj.map(function(t) {
         return isLunr2 ? new lunr.Token(t.toLowerCase()) : t.toLowerCase()
       })
+
+      if (!nodejieba) {
+        // MkDocs NG: jieba only exists in Node.js. In the browser, split on
+        // whitespace here; cjk-segment.js then splits the Chinese words.
+        return lunr.tokenizer(obj)
+      }
 
       nodejiebaDictJson && nodejieba.load(nodejiebaDictJson)
 

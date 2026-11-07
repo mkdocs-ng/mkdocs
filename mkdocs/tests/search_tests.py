@@ -305,9 +305,28 @@ class SearchPluginTests(unittest.TestCase):
         # Japanese also needs the TinySegmenter word splitter.
         self.assertEqual(
             [os.path.basename(c.args[1]) for c in mock_copy_file.call_args_list],
-            ["lunr.stemmer.support.js", "tinyseg.js", "lunr.ja.js"],
+            ["lunr.stemmer.support.js", "tinyseg.js", "cjk-segment.js", "lunr.ja.js"],
         )
         self.assertEqual(mock_write_file.call_count, 1)
+
+    @mock.patch("mkdocs.utils.write_file", autospec=True)
+    @mock.patch("mkdocs.utils.copy_file", autospec=True)
+    def test_event_on_post_build_chinese(self, mock_copy_file, mock_write_file):
+        plugin = search.SearchPlugin()
+        plugin.load_config({"lang": ["en", "zh"]})
+        config = load_config(theme="mkdocs")
+        plugin.on_pre_build(config)
+        plugin.on_post_build(config)
+        # Chinese needs the word splitter, also next to other languages.
+        self.assertEqual(
+            [os.path.basename(c.args[1]) for c in mock_copy_file.call_args_list],
+            [
+                "lunr.stemmer.support.js",
+                "lunr.multi.js",
+                "cjk-segment.js",
+                "lunr.zh.js",
+            ],
+        )
 
     @mock.patch("mkdocs.utils.write_file", autospec=True)
     @mock.patch("mkdocs.utils.copy_file", autospec=True)

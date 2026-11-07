@@ -12,7 +12,8 @@ stdin.on('data', function (data) {
 
 stdin.on('end', function () {
   var data = JSON.parse(buffer.join('')),
-      lang = ['en'];
+      lang = ['en'],
+      cjkLocale = null;
 
   if (data.config) {
     if (data.config.lang && data.config.lang.length) {
@@ -24,6 +25,15 @@ stdin.on('end', function () {
         }
         if (lang.includes("ja") || lang.includes("jp")) {
           require('./lunr-language/tinyseg')(lunr);
+        }
+        // Split Chinese and Japanese text into words, as worker.js does.
+        if (lang.includes("zh")) {
+          cjkLocale = "zh";
+        } else if (lang.includes("ja") || lang.includes("jp")) {
+          cjkLocale = "ja";
+        }
+        if (cjkLocale) {
+          require('./lunr-language/cjk-segment')(lunr);
         }
         for (var i=0; i < lang.length; i++) {
           if (lang[i] != 'en') {
@@ -53,6 +63,13 @@ stdin.on('end', function () {
           this.pipeline.remove(lunr[lang[j]].stopWordFilter);
         }
       }
+    }
+    if (cjkLocale) {
+      var baseTokenizer = lunr.tokenizer;
+      if (lang.length === 1 && lunr[lang[0]] && lunr[lang[0]].tokenizer) {
+        baseTokenizer = lunr[lang[0]].tokenizer;
+      }
+      this.tokenizer = lunr.cjk.tokenizer(baseTokenizer, cjkLocale);
     }
     this.field('title');
     this.field('text');

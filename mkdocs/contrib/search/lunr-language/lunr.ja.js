@@ -71,6 +71,13 @@
         lunr.ja.stemmer
       );
 
+      // MkDocs NG: search words go through the same stemmer as indexed
+      // words, so English words on the page can be found too.
+      if (this.searchPipeline) {
+        this.searchPipeline.reset();
+        this.searchPipeline.add(lunr.ja.stemmer);
+      }
+
       // change the tokenizer for japanese one
       if (isLunr2) { // for lunr version 2.0.0
         this.tokenizer = lunr.ja.tokenizer;

@@ -63,7 +63,9 @@ Upstream issue | Symptom | Fixed in
 
 Upstream issue | Symptom | Fixed in
 -------------- | ------- | --------
+[#3213] | Titles with `&`, such as `Tom & Jerry`, showed up as `Tom &amp; Jerry` in the built-in search results. | 1.11.2 (#172)
 [#3560] | Page and section titles with inline HTML, such as `# Hello <b>world</b>`, showed raw tags in search results. Tags are now stripped from search titles. | 1.7.3 (#53)
+[#3761] | With `lang: zh` the built-in search stopped with an error, because its Chinese word splitter only exists in Node.js; Japanese only found whole sentences. Chinese and Japanese text is now split into words with the browser's `Intl.Segmenter`. | 1.11.2 (#172)
 [#4106] | In browsers without Web Worker support, search replaced the page's global `window.postMessage` function, breaking other scripts that rely on it. The fallback now leaves it alone (and no longer depends on jQuery or on the site being served from the domain root). | 1.9.0 (#106)
 [#4167] | Searching for words that happen to be English stop words — `while`, `if`, `for`, `from` and many more — returned no results, even though they are meaningful keywords in technical documentation. Stop words are now indexed by default; a `stop_words` plugin option restores the old behavior. | 1.8.0 (#80)
 
@@ -119,6 +121,7 @@ Upstream issue | Symptom | Fixed in
 [#2171]: https://github.com/mkdocs/mkdocs/issues/2171
 [#2519]: https://github.com/mkdocs/mkdocs/issues/2519
 [#2624]: https://github.com/mkdocs/mkdocs/issues/2624
+[#3213]: https://github.com/mkdocs/mkdocs/issues/3213
 [#3450]: https://github.com/mkdocs/mkdocs/issues/3450
 [#3496]: https://github.com/mkdocs/mkdocs/issues/3496
 [#3533]: https://github.com/mkdocs/mkdocs/pull/3533
@@ -131,6 +134,7 @@ Upstream issue | Symptom | Fixed in
 [#3703]: https://github.com/mkdocs/mkdocs/issues/3703
 [#3709]: https://github.com/mkdocs/mkdocs/issues/3709
 [#3710]: https://github.com/mkdocs/mkdocs/issues/3710
+[#3761]: https://github.com/mkdocs/mkdocs/pull/3761
 [#3772]: https://github.com/mkdocs/mkdocs/issues/3772
 [#3785]: https://github.com/mkdocs/mkdocs/pull/3785
 [#3900]: https://github.com/mkdocs/mkdocs/issues/3900
