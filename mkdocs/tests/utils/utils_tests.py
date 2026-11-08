@@ -486,6 +486,23 @@ class UtilsTests(unittest.TestCase):
         # The broken symlink should not have been copied.
         self.assertFalse(os.path.exists(os.path.join(dst_dir, "broken_link")))
 
+    @tempdir()
+    @tempdir(files={"assets/real.png": "image"})
+    def test_copy_relative_symlink(self, src_dir, dst_dir):
+        # A relative symlink is copied whatever the current directory is.
+        os.makedirs(os.path.join(src_dir, "docs"))
+        link = os.path.join(src_dir, "docs", "link.png")
+        os.symlink(os.path.join("..", "assets", "real.png"), link)
+        dst = os.path.join(dst_dir, "link.png")
+        old_cwd = os.getcwd()
+        os.chdir(dst_dir)
+        try:
+            utils.copy_file(link, dst)
+        finally:
+            os.chdir(old_cwd)
+        with open(dst, encoding="utf-8") as f:
+            self.assertEqual(f.read(), "image")
+
     def test_mm_meta_data(self):
         doc = dedent(
             """
