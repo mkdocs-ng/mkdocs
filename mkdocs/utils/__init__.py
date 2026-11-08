@@ -105,7 +105,9 @@ def copy_file(source_path: str, output_path: str) -> None:
     os.makedirs(output_dir, exist_ok=True)
     if os.path.isdir(output_path):
         output_path = os.path.join(output_path, os.path.basename(source_path))
-    if os.path.islink(source_path) and not os.path.exists(os.readlink(source_path)):
+    # `os.path.exists` follows the link from its own folder, so relative links
+    # work whatever the current directory is.
+    if os.path.islink(source_path) and not os.path.exists(source_path):
         raise FileNotFoundError(f"Broken symlink: {source_path}")
     shutil.copyfile(source_path, output_path)
 
