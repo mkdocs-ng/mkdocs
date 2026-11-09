@@ -498,6 +498,39 @@ style meta-data.
 [MultiMarkdown]: https://fletcherpenney.net/MultiMarkdown_Syntax_Guide#metadata
 [nav]: configuration.md#nav
 
+### Lists
+
+Anything that belongs to a list item, such as a second paragraph, a code block
+or a nested list, must be indented by 4 spaces (one tab), not 2. This is how
+[Python-Markdown] reads lists, and it differs from GitHub and other CommonMark
+renderers, which follow the width of the list marker.
+
+```markdown
+- First item.
+
+    A second paragraph of the first item.
+
+    - A nested item.
+
+        A second paragraph of the nested item.
+
+- Second item.
+```
+
+With only 2 spaces, the second paragraph ends the list and becomes a normal
+paragraph, and a nested list may be joined to the line above it.
+
+If your Markdown files already use 2 spaces, the third-party
+[mdx_truly_sane_lists] extension can read them with `nested_indent: 2`:
+
+```yaml
+markdown_extensions:
+  - mdx_truly_sane_lists:
+      nested_indent: 2
+```
+
+[mdx_truly_sane_lists]: https://github.com/radude/mdx_truly_sane_lists
+
 ### Tables
 
 The [tables] extension adds a basic table syntax to Markdown which is popular
