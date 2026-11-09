@@ -373,21 +373,28 @@ def select_sources(
     if not lang.default and not shares_dir:
         dirs.append((default.docs_dir, False))
 
-    chosen: dict[str, tuple[int, SourceFile]] = {}
+    chosen: dict[str, tuple[float, SourceFile]] = {}
     for src_dir, own in dirs:
         for rel_path in walk(src_dir):
             uri, code = _split_suffix(rel_path, codes)
-            if code is not None and code != lang.code:
+            # The default language may name its files `page.en.md` too, like
+            # mkdocs-static-i18n allows; other languages fall back to them.
+            of_default = code == default.code and not lang.default
+            if code is not None and code != lang.code and not of_default:
                 continue  # Another language's version of a file.
             is_page = utils.is_markdown_file(uri)
-            # A translation beats the untranslated file, own files beat the default's.
-            rank = (2 if own else 0) + (1 if code is not None else 0)
+            # A translation beats the untranslated file, own files beat the
+            # default's, and the default's `page.en.md` beats its `page.md`.
+            if of_default:
+                rank = (2 if own else 0) + 0.5
+            else:
+                rank = (2 if own else 0) + (1 if code is not None else 0)
             # An untranslated page of the default language.
             is_fallback = (
                 is_page
-                and code is None
+                and (code is None or of_default)
                 and not lang.default
-                and (shares_dir or not own)
+                and (shares_dir or not own or of_default)
             )
             if is_fallback and not lang.fallback:
                 continue

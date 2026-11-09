@@ -57,6 +57,7 @@ without checking every plugin first:
 * mike builds with MkDocs NG when ProperDocs is installed too, as plugins such as `mkdocs-redirects`, `mkdocs-literate-nav` and `mkdocs-gen-files` do. It used to build with ProperDocs, which stopped at settings such as `languages`. #173
 * Images and other files that are relative symlinks, such as `img/logo.png -> ../../assets/logo.png`, are copied to the site again. Since 1.7.2 they were skipped with a "Broken symlink" warning unless the build ran from the link's folder. #174
 * On a multi-language site deployed with mike, canonical URLs, the sitemap and the links between languages put the version before the language, `/1.0/zh/`, instead of `/zh/1.0/`. #173
+* On a multi-language site where the default language's pages are named like `guide.en.md`, as mkdocs-static-i18n allows, other languages now fall back to them when a page isn't translated. They used to be left out. #176
 
 ## Version 1.11.1 (2026-11-05)
 

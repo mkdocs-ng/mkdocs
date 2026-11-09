@@ -272,6 +272,46 @@ class LanguageBuildTests(unittest.TestCase):
         {
             "mkdocs.yml": """
 site_name: My Project
+plugins: []
+languages:
+  en: English
+  ko: 한국어
+""",
+            "docs/index.en.md": "# Home",
+            "docs/index.ko.md": "# 홈",
+            "docs/guide.en.md": "# Guide",
+            "docs/guide.md": "# Old guide",
+            "docs/changes.md": "# Changes",
+        }
+    )
+    def test_suffixed_default_language(self, tdir):
+        # mkdocs-static-i18n sites often name the default language's pages
+        # `page.en.md`; other languages fall back to them.
+        cfg = load_config(os.path.join(tdir, "mkdocs.yml"))
+        build(cfg)
+        site = os.path.join(tdir, "site")
+        self.assertIn("Home</h1>", _read(site, "index.html"))
+        self.assertIn("홈</h1>", _read(site, "ko", "index.html"))
+        self.assertIn(">Guide</h1>", _read(site, "guide", "index.html"))
+        self.assertIn(">Guide</h1>", _read(site, "ko", "guide", "index.html"))
+        self.assertIn("Changes</h1>", _read(site, "ko", "changes", "index.html"))
+        self.assertFalse(os.path.exists(os.path.join(site, "ko", "guide.en")))
+
+        ko = languages.load_language_config(cfg, "ko")
+        sources = {
+            s.src_uri: s
+            for s in languages.select_sources(
+                ko, ko["languages"][1], lambda d: languages._walk_names(d, set())
+            )
+        }
+        self.assertTrue(sources["guide.md"].is_fallback)
+        self.assertTrue(sources["guide.md"].abs_src_path.endswith("guide.en.md"))
+        self.assertFalse(sources["index.md"].is_fallback)
+
+    @tempdir(
+        {
+            "mkdocs.yml": """
+site_name: My Project
 repo_url: https://github.com/example/proj
 edit_uri: edit/main/docs/
 plugins: []
