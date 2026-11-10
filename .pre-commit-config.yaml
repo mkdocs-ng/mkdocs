@@ -37,7 +37,7 @@ repos:
         name: markdownlint
         entry: npm exec --yes -- markdownlint-cli
         language: system
-        files: ^(README\.md|\.github/CONTRIBUTING\.md|docs/.*\.md)$
+        files: ^(README\.md|\.github/(CONTRIBUTING|GOVERNANCE)\.md|docs/.*\.md)$
       - id: jshint
         name: jshint
         entry: npm exec --yes -- jshint
