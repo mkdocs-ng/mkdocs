@@ -379,7 +379,11 @@ def select_sources(
             uri, code = _split_suffix(rel_path, codes)
             # The default language may name its files `page.en.md` too, like
             # mkdocs-static-i18n allows; other languages fall back to them.
-            of_default = code == default.code and not lang.default
+            # Only in the default language's files: a language's own folder
+            # holds its translations, so a `page.en.md` there stays skipped.
+            of_default = (
+                code == default.code and not lang.default and (shares_dir or not own)
+            )
             if code is not None and code != lang.code and not of_default:
                 continue  # Another language's version of a file.
             is_page = utils.is_markdown_file(uri)
@@ -394,7 +398,7 @@ def select_sources(
                 is_page
                 and (code is None or of_default)
                 and not lang.default
-                and (shares_dir or not own or of_default)
+                and (shares_dir or not own)
             )
             if is_fallback and not lang.fallback:
                 continue

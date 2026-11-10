@@ -312,6 +312,36 @@ languages:
         {
             "mkdocs.yml": """
 site_name: My Project
+plugins: []
+languages:
+  en:
+    name: English
+    docs_dir: docs/en
+  zh:
+    name: 简体中文
+    docs_dir: docs/zh
+""",
+            "docs/en/index.md": "# Home",
+            "docs/en/guide.en.md": "# Guide",
+            "docs/en/intro.md": "# Intro",
+            "docs/zh/index.md": "# 首页",
+            "docs/zh/intro.md": "# 介绍",
+            "docs/zh/intro.en.md": "# Stray intro",
+        }
+    )
+    def test_suffixed_default_language_folders(self, tdir):
+        # With a folder per language, the default language's `page.en.md` is
+        # still a fallback, but one in another language's folder is ignored.
+        cfg = load_config(os.path.join(tdir, "mkdocs.yml"))
+        build(cfg)
+        site = os.path.join(tdir, "site")
+        self.assertIn(">Guide</h1>", _read(site, "zh", "guide", "index.html"))
+        self.assertIn("介绍</h1>", _read(site, "zh", "intro", "index.html"))
+
+    @tempdir(
+        {
+            "mkdocs.yml": """
+site_name: My Project
 repo_url: https://github.com/example/proj
 edit_uri: edit/main/docs/
 plugins: []
