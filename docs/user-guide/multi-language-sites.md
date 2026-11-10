@@ -225,3 +225,7 @@ directories. To switch:
     for that language.
 3.  With `docs_structure: folder`, give each language its `docs_dir`, such as
     `docs_dir: docs/zh`, and the default language `docs_dir: docs/en`.
+
+With `docs_structure: suffix`, the files stay as they are, including pages of
+the default language named like `guide.en.md`. Other languages fall back to
+them when a page isn't translated.
