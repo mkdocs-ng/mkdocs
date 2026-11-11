@@ -24,6 +24,7 @@ nav:
     - Fixed Upstream Issues: about/fixed-upstream-issues.md
     - Comparison: about/comparison.md
     - Contributing: about/contributing.md
+    - Governance: about/governance.md
     - License: about/license.md
 
 extra_css:

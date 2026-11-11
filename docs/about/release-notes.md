@@ -34,12 +34,20 @@ without checking every plugin first:
     end of life, and the release notes of the release before announce it.
 *   **Security fixes** go into the latest release. See the
     [security policy](https://github.com/mkdocs-ng/mkdocs/security/policy).
+*   **How long**: MkDocs NG 1.x gets bug, security and compatibility fixes
+    until at least **2028-12-31**. If a new major version comes out, 1.x keeps
+    getting security fixes for at least 12 months after it, and never stops
+    before that date.
+
+Who maintains MkDocs NG and what happens if they step away is described in
+[Governance](governance.md).
 
 ## Version 1.11.2 (unreleased)
 
 ### Added
 
 * A guide to [publishing several versions of your docs](../user-guide/versioned-docs.md) with mike. #173
+* A [Governance](governance.md) page says who maintains MkDocs NG, how decisions are made and what happens if the maintainers step away. The [versioning rules](#versioning-and-support) now say that 1.x is supported until at least 2028-12-31.
 
 ### Changed
 

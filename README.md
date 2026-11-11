@@ -22,6 +22,7 @@
   <a href="https://mkdocs-ng.org/user-guide/migrating/#plugins-and-themes"><img src="https://img.shields.io/github/actions/workflow/status/mkdocs-ng/mkdocs/compat.yml?branch=main&label=plugin%20compatibility" alt="Plugin compatibility"></a>
   <a href="https://codecov.io/github/mkdocs-ng/mkdocs?branch=main"><img src="https://codecov.io/github/mkdocs-ng/mkdocs/coverage.svg?branch=main" alt="Coverage"></a>
   <a href="https://app.codspeed.io/mkdocs-ng/mkdocs?utm_source=badge"><img src="https://img.shields.io/endpoint?url=https://codspeed.io/badge.json" alt="CodSpeed"></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/mkdocs-ng/mkdocs"><img src="https://api.scorecard.dev/projects/github.com/mkdocs-ng/mkdocs/badge" alt="OpenSSF Scorecard"></a>
   <a href="https://github.com/mkdocs-ng/mkdocs/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/mkdocs-ng.svg" alt="License"></a>
 </p>
 
@@ -116,6 +117,7 @@ first, but they are still welcome in [Discussions].
 - [Latest Release Notes][release-notes]
 - [Fixed Upstream Issues][fixed-upstream]
 - [Switching to MkDocs NG][migrating]
+- [Governance and how long 1.x is supported][governance]
 - [Comparison with upstream MkDocs 2.0, ProperDocs and Zensical][comparison]
 - [Catalog of third-party plugins, themes and recipes][catalog]
 - [Sumi][sumi], a local-first documentation theme from the MkDocs NG project
@@ -143,6 +145,7 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [plugins-install]: https://mkdocs-ng.org/user-guide/installation/#plugins-themes-and-the-mkdocs-package
 [migrating]: https://mkdocs-ng.org/user-guide/migrating/
 [comparison]: https://mkdocs-ng.org/about/comparison/
+[governance]: https://mkdocs-ng.org/about/governance/
 [Contributing Guide]: https://mkdocs-ng.org/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
 [catalog]: https://github.com/mkdocs-ng/catalog
