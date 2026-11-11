@@ -13,12 +13,14 @@ concurrency:
 
 permissions:
   contents: read
-  id-token: write  # Required for OpenID Connect authentication with CodSpeed
 
 jobs:
   benchmarks:
     name: Run benchmarks
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # Required for OpenID Connect authentication with CodSpeed
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
