@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from mkdocs.config.defaults import MkDocsConfig
 
 # For acceptable version formats, see https://www.python.org/dev/peps/pep-0440/
-__version__ = "1.11.1"
+__version__ = "1.11.2"
 
 
 def build(
