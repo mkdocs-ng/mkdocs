@@ -12,4 +12,4 @@ jobs:
     permissions:
       pull-requests: write
       contents: read
-    uses: mkdocs-ng/.github/.github/workflows/pr-labeler.yml@main
+    uses: mkdocs-ng/.github/.github/workflows/pr-labeler.yml@7019c35f4c4b84a56be71c3459e54e4f794697f9 # main
