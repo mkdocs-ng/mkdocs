@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="en" data-palette="auto" data-layout="docs" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working."><meta name="author" content="MkDocs NG Team"><link rel="canonical" href="https://mkdocs-ng.org/user-guide/writing-your-docs/"><link rel="prev" href="../material-end-of-life/"><link rel="next" href="../choosing-your-theme/"><link rel="alternate" type="text/markdown" href="../writing-your-docs.md" title="Markdown"><link rel="alternate" type="text/plain" href="../../llms.txt" title="llms.txt">
+  <link rel="icon" href="../../img/favicon.svg">
+  <meta name="generator" content="mkdocs-1.11.2, sumi">
+  <meta name="theme-color" content="#f8f7f4">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Writing Your Docs"><meta property="og:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <meta property="og:site_name" content="MkDocs NG">
+  <meta property="og:locale" content="en_US"><meta property="og:url" content="https://mkdocs-ng.org/user-guide/writing-your-docs/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Writing Your Docs"><meta name="twitter:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <title>Writing Your Docs · MkDocs NG</title>
+  <script>
+    (function () {
+      var d = document.documentElement, p = d.dataset.palette, s = null;
+      try { s = localStorage.getItem('sumi.palette'); } catch (e) {}
+      var mode = s || p;
+      if (mode === 'auto' || !mode) mode = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.dataset.theme = mode;
+      if (mode === 'dark') document.querySelector('meta[name="theme-color"]').content = '#141413';
+      d.dataset.mdColorScheme = mode === 'dark' ? 'slate' : 'default';
+      d.classList.replace('no-js', 'js');
+      // A page opened inside the bilingual view shows its content only.
+      if (window.name === 'sumi-pane') d.classList.add('sumi-pane');
+    })();
+  </script>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/sumi.css"><style>:root{--sumi-accent:#0061fe}[data-theme="dark"]{--sumi-accent:#0061fe}</style><link rel="stylesheet" href="../../assets/_mkdocstrings.css"><link rel="stylesheet" href="../../css/extra.css">
+</head>
+<body>
+  <a class="sumi-skip" href="#content">Skip to content</a><header class="sumi-header">
+  <div class="sumi-header-inner">
+    <button class="sumi-icon-btn sumi-menu-btn" type="button" aria-label="Menu" aria-expanded="false"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg></button>
+    <a class="sumi-brand" href="../.." aria-label="MkDocs NG">
+      <img class="sumi-logo sumi-when-light" src="../../img/logo.svg" alt="">
+      <img class="sumi-logo sumi-when-dark" src="../../img/logo-dark.svg" alt="">
+      <span class="sumi-brand-name">MkDocs NG</span>
+    </a>
+    <nav class="sumi-tabs-nav" aria-label="Navigation">
+      <a class="sumi-tab-link" href="../../getting-started/">Getting Started</a>
+      <a class="sumi-tab-link is-active" href="../" aria-current="page">User Guide</a>
+      <a class="sumi-tab-link" href="../../dev-guide/">Developer Guide</a>
+      <a class="sumi-tab-link" href="../../about/release-notes/">About</a>
+    </nav>
+    <div class="sumi-header-tools">
+      <button class="sumi-search-btn" type="button" data-sumi-palette aria-label="Search">
+        <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span class="sumi-search-label">Search</span><kbd class="sumi-search-kbd" data-mod>Ctrl K</kbd>
+      </button>
+      <button class="sumi-icon-btn sumi-theme-btn" type="button" data-sumi-theme aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="sumi-icon sumi-when-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="sumi-icon sumi-when-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></button>
+      <a class="sumi-icon-btn sumi-repo" href="https://github.com/mkdocs-ng/mkdocs/" aria-label="Repository" title="GitHub" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+    </div>
+  </div>
+</header>
+  <div class="sumi-version-banner" hidden></div>
+  <div class="sumi-shell">
+    <aside class="sumi-sidebar" id="sumi-sidebar" aria-label="Navigation">
+      <div class="sumi-sidebar-inner">
+        <ul class="sumi-nav-list sumi-sidebar-tabs">
+          <li class="sumi-nav-page"><a href="../../getting-started/">Getting Started</a></li>
+          <li class="sumi-nav-page"><a class="is-active" href="../">User Guide</a></li>
+          <li class="sumi-nav-page"><a href="../../dev-guide/">Developer Guide</a></li>
+          <li class="sumi-nav-page"><a href="../../about/release-notes/">About</a></li>
+        </ul>
+        <a class="sumi-sidebar-title" href="../">User Guide</a>
+        <nav class="sumi-nav"><ul class="sumi-nav-list" data-depth="1">
+    <li class="sumi-nav-page"><a href="../installation/">Installation</a></li>
+    <li class="sumi-nav-page"><a href="../migrating/">Switching to MkDocs NG</a></li>
+    <li class="sumi-nav-page"><a href="../material-end-of-life/">Material for MkDocs End of Life</a></li>
+    <li class="sumi-nav-page"><a href="./" aria-current="page" class="is-current">Writing Your Docs</a></li>
+    <li class="sumi-nav-page"><a href="../choosing-your-theme/">Choosing Your Theme</a></li>
+    <li class="sumi-nav-page"><a href="../customizing-your-theme/">Customizing Your Theme</a></li>
+    <li class="sumi-nav-page"><a href="../localizing-your-theme/">Localizing Your Theme</a></li>
+    <li class="sumi-nav-page"><a href="../multi-language-sites/">Multi-language Sites</a></li>
+    <li class="sumi-nav-page"><a href="../configuration/">Configuration</a></li>
+    <li class="sumi-nav-page"><a href="../cli/">Command Line Interface</a></li>
+    <li class="sumi-nav-page"><a href="../python-api/">Python API</a></li>
+    <li class="sumi-nav-page"><a href="../deploying-your-docs/">Deploying Your Docs</a></li>
+    <li class="sumi-nav-page"><a href="../versioned-docs/">Versioned Docs</a></li>
+</ul></nav>
+      </div>
+    </aside>
+    <main class="sumi-main" id="content">
+      <article class="sumi-article">
+        <div class="sumi-article-top">
+<nav class="sumi-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="../">User Guide</a><svg class="sumi-icon sumi-crumb-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></li>
+    <li aria-current="page"><span>Writing Your Docs</span></li>
+  </ol>
+</nav><div class="sumi-actions">
+  <button class="sumi-chip-btn sumi-copy-page" type="button" data-sumi-copy-page aria-label="Copy as Markdown" title="Copy as Markdown"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span>Copy as Markdown</span></button>
+  <div class="sumi-menu sumi-actions-menu">
+    <button class="sumi-icon-btn sumi-chip-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Page actions" title="Page actions"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <ul class="sumi-menu-list sumi-menu-right" role="menu">
+      <li role="none"><a role="menuitem" href="../writing-your-docs.md" target="_blank"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>View as Markdown</a></li>
+      <li role="none"><a role="menuitem" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/user-guide/writing-your-docs.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a></li>
+      <li role="none"><button role="menuitem" type="button" data-sumi-print><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>Print</button></li>
+      <li role="none"><a role="menuitem" href="../../print/"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg>Printable edition · Whole site</a></li>
+    </ul>
+  </div>
+</div>
+        </div>
+        <details class="sumi-toc-inline">
+          <summary><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg><span>On this page</span><svg class="sumi-icon sumi-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <nav class="sumi-toc"><ul>
+  <li><a href="#file-layout" data-level="2">File layout</a><ul>
+  <li><a href="#index-pages" data-level="3">Index pages</a>
+  </li>
+  <li><a href="#configure-pages-and-navigation" data-level="3">Configure Pages and Navigation</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#writing-with-markdown" data-level="2">Writing with Markdown</a><ul>
+  <li><a href="#internal-links" data-level="3">Internal links</a>
+  </li>
+  <li><a href="#external-links" data-level="3">External links</a>
+  </li>
+  <li><a href="#meta-data" data-level="3">Meta-Data</a>
+  </li>
+  <li><a href="#lists" data-level="3">Lists</a>
+  </li>
+  <li><a href="#tables" data-level="3">Tables</a>
+  </li>
+  <li><a href="#fenced-code-blocks" data-level="3">Fenced code blocks</a>
+  </li>
+  <li><a href="#alerts" data-level="3">Alerts</a>
+  </li>
+</ul>
+  </li>
+</ul></nav>
+        </details>
+        <div class="sumi-content sumi-prose" data-pagefind-body><h1 id="writing-your-docs">Writing your docs<a class="headerlink" href="#writing-your-docs" title="Permanent link"></a></h1>
+<p>How to layout and write your Markdown source files.</p>
+<hr />
+<h2 id="file-layout">File layout<a class="headerlink" href="#file-layout" title="Permanent link"></a></h2>
+<p>Your documentation source should be written as regular Markdown files (see
+<a href="#writing-with-markdown">Writing with Markdown</a> below), and placed in the
+<a href="../configuration/#docs_dir">documentation directory</a>. By default, this directory
+will be named <code>docs</code> and will exist at the top level of your project, alongside
+the <code>mkdocs.yml</code> configuration file.</p>
+<p>The simplest project you can create will look something like this:</p>
+<div class="highlight"><pre><span></span><code>mkdocs.yml
+docs/
+    index.md
+</code></pre></div>
+<p>By convention your project homepage should be named <code>index.md</code> (see <a href="#index-pages">Index
+pages</a> below for details). Any of the following file
+extensions may be used for your Markdown source files: <code>markdown</code>, <code>mdown</code>,
+<code>mkdn</code>, <code>mkd</code>, <code>md</code>. All Markdown files included in your documentation
+directory will be rendered in the built site regardless of any settings.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+Files and directories with names which begin with a dot (for example: <code>.foo.md</code> or <code>.bar/baz.md</code>) are ignored by MkDocs. This can be overridden with the <a href="../configuration/#exclude_docs"><code>exclude_docs</code> config</a>.</p>
+</div>
+<p>You can also create multi-page documentation, by creating several Markdown
+files:</p>
+<div class="highlight"><pre><span></span><code>mkdocs.yml
+docs/
+    index.md
+    about.md
+    license.md
+</code></pre></div>
+<p>The file layout you use determines the URLs that are used for the generated
+pages. Given the above layout, pages would be generated for the following URLs:</p>
+<div class="highlight"><pre><span></span><code>/
+/about/
+/license/
+</code></pre></div>
+<p>You can also include your Markdown files in nested directories if that better
+suits your documentation layout.</p>
+<div class="highlight"><pre><span></span><code>docs/
+    index.md
+    user-guide/getting-started.md
+    user-guide/configuration-options.md
+    license.md
+</code></pre></div>
+<p>Source files inside nested directories will cause pages to be generated with
+nested URLs, like so:</p>
+<div class="highlight"><pre><span></span><code>/
+/user-guide/getting-started/
+/user-guide/configuration-options/
+/license/
+</code></pre></div>
+<p>Any files which are not identified as Markdown files (by their file extension)
+within the <a href="../configuration/#docs_dir">documentation directory</a> are copied by
+MkDocs to the built site unaltered. See
+<a href="#linking-to-images-and-media">how to link to images and media</a> below for details.</p>
+<h3 id="index-pages">Index pages<a class="headerlink" href="#index-pages" title="Permanent link"></a></h3>
+<p>When a directory is requested, by default, most web servers will return an index
+file (usually named <code>index.html</code>) contained within that directory if one exists.
+For that reason, the homepage in all of the examples above has been named
+<code>index.md</code>, which MkDocs will render to <code>index.html</code> when building the site.</p>
+<p>Many repository hosting sites provide special treatment for README files by
+displaying the contents of the README file when browsing the contents of a
+directory. Therefore, MkDocs will allow you to name your index pages as
+<code>README.md</code> instead of <code>index.md</code>. In that way, when users are browsing your
+source code, the repository host can display the index page of that directory as
+it is a README file. However, when MkDocs renders your site, the file will be
+renamed to <code>index.html</code> so that the server will serve it as a proper index file.</p>
+<p>If both an <code>index.md</code> file and a <code>README.md</code> file are found in the same
+directory, then the <code>index.md</code> file is used and the <code>README.md</code> file is
+ignored.</p>
+<h3 id="configure-pages-and-navigation">Configure Pages and Navigation<a class="headerlink" href="#configure-pages-and-navigation" title="Permanent link"></a></h3>
+<p>The <a href="../configuration/#nav">nav</a> configuration setting in your <code>mkdocs.yml</code> file
+defines which pages are included in the global site navigation menu as well as
+the structure of that menu. If not provided, the navigation will be
+automatically created by discovering all the Markdown files in the
+<a href="../configuration/#docs_dir">documentation directory</a>. An automatically created
+navigation configuration will always be sorted alphanumerically by file name
+(except that index files will always be listed first within a sub-section). You
+will need to manually define your navigation configuration if you would like
+your navigation menu sorted differently.</p>
+<p>A minimal navigation configuration could look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">index.md</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">about.md</span>
+</code></pre></div>
+<p>All paths in the navigation configuration must be relative to the <code>docs_dir</code>
+configuration option. If that option is set to the default value, <code>docs</code>, the
+source files for the above configuration would be located at <code>docs/index.md</code> and
+<code>docs/about.md</code>.</p>
+<p>The above example will result in two navigation items being created at the top
+level and with their titles inferred from the contents of the Markdown file or,
+if no title is defined within the file, of the file name. To override the title
+in the <code>nav</code> setting add a title right before the filename.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Home</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">index.md</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">About</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">about.md</span>
+</code></pre></div>
+<p>Note that if a title is defined for a page in the navigation, that title will be
+used throughout the site for that page and will override any title defined
+within the page itself.</p>
+<p>Navigation sub-sections can be created by listing related pages together under a
+section title. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Home</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">index.md</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">User Guide</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Writing your docs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">writing-your-docs.md</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Styling your docs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">styling-your-docs.md</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">About</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">License</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">license.md</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Release Notes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">release-notes.md</span>
+</code></pre></div>
+<p>With the above configuration we have three top level items: "Home", "User Guide"
+and "About." "Home" is a link to the homepage for the site. Under the "User
+Guide" section two pages are listed: "Writing your docs" and "Styling your
+docs." Under the "About" section two more pages are listed: "License" and
+"Release Notes."</p>
+<p>Note that a section cannot have a page assigned to it. Sections are only
+containers for child pages and sub-sections. You may nest sections as deeply as
+you like. However, be careful that you don't make it too difficult for your
+users to navigate through the site navigation by over-complicating the nesting.
+While sections may mirror your directory structure, they do not have to.</p>
+<p>Any pages not listed in your navigation configuration will still be rendered and
+included with the built site, however, they will not be linked from the global
+navigation and will not be included in the <code>previous</code> and <code>next</code> links. Such
+pages will be "hidden" unless linked to directly.</p>
+<h2 id="writing-with-markdown">Writing with Markdown<a class="headerlink" href="#writing-with-markdown" title="Permanent link"></a></h2>
+<p>MkDocs pages must be authored in <a href="https://daringfireball.net/projects/markdown/" rel="external">Markdown</a>, a lightweight markup language
+which results in easy-to-read, easy-to-write plain text documents that can be
+converted to valid HTML documents in a predictable manner.</p>
+<p>MkDocs uses the <a href="https://python-markdown.github.io/" rel="external">Python-Markdown</a> library to render Markdown documents to HTML.
+Python-Markdown is almost completely compliant with the <a href="https://daringfireball.net/projects/markdown/" rel="external">reference
+implementation</a>, although there are a few very minor <a href="https://python-markdown.github.io/#differences" rel="external">differences</a>.</p>
+<p>In addition to the base Markdown <a href="https://daringfireball.net/projects/markdown/syntax" rel="external">syntax</a> which is common across all Markdown
+implementations, MkDocs includes support for extending the Markdown syntax with
+Python-Markdown <a href="https://python-markdown.github.io/extensions/" rel="external">extensions</a>. See the MkDocs' <a href="../configuration/#markdown_extensions">markdown_extensions</a>
+configuration setting for details on how to enable extensions.</p>
+<p>MkDocs includes some extensions by default, which are highlighted below.</p>
+<h3 id="internal-links">Internal links<a class="headerlink" href="#internal-links" title="Permanent link"></a></h3>
+<p>MkDocs allows you to interlink your documentation by using regular Markdown
+<a href="https://daringfireball.net/projects/markdown/syntax#link" rel="external">links</a>. However, there are a few additional benefits to formatting those links
+specifically for MkDocs as outlined below.</p>
+<h4 id="linking-to-pages">Linking to pages<a class="headerlink" href="#linking-to-pages" title="Permanent link"></a></h4>
+<p>When linking between pages in the documentation you can simply use the regular
+Markdown <a href="https://daringfireball.net/projects/markdown/syntax#link" rel="external">linking</a> syntax, including the <em>relative path</em> to the Markdown
+document you wish to link to.</p>
+<div class="highlight"><pre><span></span><code>Please see the [<span class="nt">project license</span>](<span class="na">license.md</span>) for further details.
+</code></pre></div>
+<p>When the MkDocs build runs, these Markdown links will automatically be
+transformed into an HTML hyperlink to the appropriate HTML page.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>
+Using absolute paths with links is not officially supported. Relative paths
+are adjusted by MkDocs to ensure they are always relative to the page. Absolute
+paths are not modified at all. This means that your links using absolute paths
+might work fine in your local environment but they might break once you deploy
+them to your production server.</p>
+</div>
+<p>If the target documentation file is in another directory you'll need to make
+sure to include any relative directory path in the link.</p>
+<div class="highlight"><pre><span></span><code>Please see the [<span class="nt">project license</span>](<span class="na">../about/license.md</span>) for further details.
+</code></pre></div>
+<p>The <a href="https://python-markdown.github.io/extensions/toc/" rel="external">toc</a> extension is used by MkDocs to generate an ID for every header in your
+Markdown documents. You can use that ID to link to a section within a target
+document by using an anchor link. The generated HTML will correctly transform
+the path portion of the link, and leave the anchor portion intact.</p>
+<div class="highlight"><pre><span></span><code>Please see the [<span class="nt">project license</span>](<span class="na">about.md#license</span>) for further details.
+</code></pre></div>
+<p>Note that IDs are created from the text of a header. All text is converted to
+lowercase and any disallowed characters, including white-space, are converted to
+dashes. Consecutive dashes are then reduced to a single dash.</p>
+<p>There are a few configuration settings provided by the toc extension which you
+can set in your <code>mkdocs.yml</code> configuration file to alter the default behavior:</p>
+<ul>
+<li>
+<p><strong><code>permalink</code></strong></p>
+<p>Generate permanent links at the end of each header. Default: <code>False</code>.</p>
+<p>When set to True the paragraph symbol (&para; or <code>&amp;para;</code>) is used as the
+link text. When set to a string, the provided string is used as the link
+text. For example, to use the hash symbol (<code>#</code>) instead, do:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="s">"#"</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong><code>baselevel</code></strong></p>
+<p>Base level for headers. Default: <code>1</code>.</p>
+<p>This setting allows the header levels to be automatically adjusted to fit
+within the hierarchy of your HTML templates. For example, if the Markdown
+text for a page should not contain any headers higher than level 2 (<code>&lt;h2&gt;</code>),
+do:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">baselevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</code></pre></div>
+<p>Then any headers in your document would be increased by 1. For example, the
+header <code># Header</code> would be rendered as a level 2 header (<code>&lt;h2&gt;</code>) in the HTML
+output.</p>
+</li>
+<li>
+<p><strong><code>separator</code></strong></p>
+<p>Word separator. Default: <code>-</code>.</p>
+<p>Character which replaces white-space in generated IDs. If you prefer
+underscores, then do:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">"_"</span>
+</code></pre></div>
+</li>
+</ul>
+<p>Note that if you would like to define multiple of the above settings, you must
+do so under a single <code>toc</code> entry in the <code>markdown_extensions</code> configuration
+option.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">toc</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">permalink</span><span class="p">:</span><span class="w"> </span><span class="s">"#"</span>
+<span class="w">      </span><span class="nt">baselevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">      </span><span class="nt">separator</span><span class="p">:</span><span class="w"> </span><span class="s">"_"</span>
+</code></pre></div>
+<h4 id="linking-to-images-and-media">Linking to images and media<a class="headerlink" href="#linking-to-images-and-media" title="Permanent link"></a></h4>
+<p>As well as the Markdown source files, you can also include other file types in
+your documentation, which will be copied across when generating your
+documentation site. These might include images and other media.</p>
+<p>For example, if your project documentation needed to include a <a href="https://help.github.com/articles/using-a-custom-domain-with-github-pages/" rel="external">GitHub Pages
+CNAME file</a> and a PNG formatted screenshot image then your file layout might
+look as follows:</p>
+<div class="highlight"><pre><span></span><code>mkdocs.yml
+docs/
+    CNAME
+    index.md
+    about.md
+    license.md
+    img/
+        screenshot.png
+</code></pre></div>
+<p>To include images in your documentation source files, simply use any of the
+regular Markdown image syntaxes:</p>
+<div class="highlight"><pre><span></span><code>Cupcake indexer is a snazzy new project for indexing small cakes.
+
+![<span class="nt">Screenshot</span>](<span class="na">img/screenshot.png</span>)
+
+<span class="ge">*Above: Cupcake indexer in progress*</span>
+</code></pre></div>
+<p>Your image will now be embedded when you build the documentation, and should
+also be previewed if you're working on the documentation with a Markdown editor.</p>
+<h4 id="linking-from-raw-html">Linking from raw HTML<a class="headerlink" href="#linking-from-raw-html" title="Permanent link"></a></h4>
+<p>Markdown allows document authors to fall back to raw HTML when the Markdown
+syntax does not meets the author's needs. MkDocs does not limit Markdown in this
+regard.</p>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.11.2</p>
+</div>
+<p>Relative <code>href</code> and <code>src</code> URLs in raw HTML are adjusted like Markdown links
+when they point to a file in the <code>docs_dir</code>, relative to the Markdown file. So
+this works in <code>about/team.md</code>, also with <a href="../configuration/#use_directory_urls">use_directory_urls</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">figure</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">"img/team.png"</span> <span class="na">alt</span><span class="o">=</span><span class="s">"Our team"</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">figcaption</span><span class="p">&gt;</span>Our team<span class="p">&lt;/</span><span class="nt">figcaption</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">figure</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>This applies to standard elements such as <code>a</code>, <code>img</code>, <code>video</code>, <code>source</code> and
+<code>iframe</code>. A URL that already works from the built page is left as it is, so
+HTML written for the rendered site keeps working, and custom elements that a
+plugin handles, such as <code>&lt;swagger-ui&gt;</code>, are left to the plugin. Links in raw
+HTML are not validated.</p>
+<h3 id="external-links">External links<a class="headerlink" href="#external-links" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.11</p>
+</div>
+<p>Markdown links to another site (<code>https://…</code>, <code>http://…</code> or <code>//…</code>) get
+<code>rel="external"</code> in the HTML, so themes and your own CSS can style them, for
+example with an icon:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">a</span><span class="o">[</span><span class="nt">rel</span><span class="o">~=</span><span class="s2">"external"</span><span class="o">]</span><span class="p">::</span><span class="nd">after</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">content</span><span class="p">:</span><span class="w"> </span><span class="s2">" ↗"</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>A <code>rel</code> value you set yourself, for example with the <code>attr_list</code> extension
+(<code>[text](https://example.com){rel="nofollow"}</code>), is kept and <code>external</code> is
+added to it. Links in raw HTML don't get <code>rel="external"</code>.</p>
+<h3 id="meta-data">Meta-Data<a class="headerlink" href="#meta-data" title="Permanent link"></a></h3>
+<p>MkDocs includes support for both YAML and MultiMarkdown style meta-data (often
+called front-matter). Meta-data consists of a series of keywords and values
+defined at the beginning of a Markdown document, which are stripped from the
+document prior to it being processing by Python-Markdown. The key/value pairs
+are passed by MkDocs to the page template. Therefore, if a theme includes
+support, the values of any keys can be displayed on the page or used to control
+the page rendering. See your theme's documentation for information about which
+keys may be supported, if any.</p>
+<p>In addition to displaying information in a template, MkDocs includes support for
+a few predefined meta-data keys which can alter the behavior of MkDocs for that
+specific page. The following keys are supported:</p>
+<ul>
+<li>
+<p><strong><code>template</code></strong></p>
+<p>The template to use with the current page.</p>
+<p>By default, MkDocs uses the <code>main.html</code> template of a theme to render
+Markdown pages. You can use the <code>template</code> meta-data key to define a
+different template file for that specific page. The template file must be
+available on the path(s) defined in the theme's environment.</p>
+</li>
+<li>
+<p><strong><code>title</code></strong></p>
+<p>The "title" to use for the document.</p>
+<p>MkDocs will attempt to determine the title of a document in the following
+ways, in order:</p>
+<ol>
+<li>
+<p>A title defined in the <a href="../configuration/#nav">nav</a> configuration setting for a document.</p>
+</li>
+<li>
+<p>A title defined in the <code>title</code> meta-data key of a document.</p>
+</li>
+<li>
+<p>A level 1 Markdown header on the first line of the document body.
+    (<a href="https://daringfireball.net/projects/markdown/syntax#header" rel="external">Setext-style</a> headers are supported <em>only since MkDocs 1.5</em>.)</p>
+</li>
+<li>
+<p>The filename of a document.</p>
+</li>
+</ol>
+<p>Upon finding a title for a page, MkDoc does not continue checking any
+additional sources in the above list.</p>
+</li>
+</ul>
+<h4 id="yaml-style-meta-data">YAML Style Meta-Data<a class="headerlink" href="#yaml-style-meta-data" title="Permanent link"></a></h4>
+<p>YAML style meta-data consists of <a href="https://yaml.org" rel="external">YAML</a> key/value pairs wrapped in YAML style
+delimiters to mark the start and/or end of the meta-data. The first line of
+a document must be <code>---</code>. The meta-data ends at the first line containing an
+end deliminator (either <code>---</code> or <code>...</code>). The content between the delimiters is
+parsed as <a href="https://yaml.org" rel="external">YAML</a>.</p>
+<div class="highlight"><pre><span></span><code>---
+title: My Document
+summary: A brief description of my document.
+authors:
+    - Waylan Limberg
+    - Tom Christie
+date: 2018-07-10
+some_url: https://example.com
+---
+This is the first paragraph of the document.
+</code></pre></div>
+<p>YAML is able to detect data types. Therefore, in the above example, the values
+of <code>title</code>, <code>summary</code> and <code>some_url</code> are strings, the value of <code>authors</code> is a
+list of strings and the value of <code>date</code> is a <code>datetime.date</code> object. Note that
+the YAML keys are case sensitive and MkDocs expects keys to be all lowercase.
+The top level of the YAML must be a collection of key/value pairs, which results
+in a Python <code>dict</code> being returned. If any other type is returned or the YAML
+parser encounters an error, then MkDocs does not recognize the section as
+meta-data, the page's <code>meta</code> attribute will be empty, and the section is not
+removed from the document.</p>
+<h4 id="multimarkdown-style-meta-data">MultiMarkdown Style Meta-Data<a class="headerlink" href="#multimarkdown-style-meta-data" title="Permanent link"></a></h4>
+<p>MultiMarkdown style meta-data uses a format first introduced by the
+<a href="https://fletcherpenney.net/MultiMarkdown_Syntax_Guide#metadata" rel="external">MultiMarkdown</a> project. The data consists of a series of keywords and values
+defined at the beginning of a Markdown document, like this:</p>
+<div class="highlight"><pre><span></span><code>Title:   My Document
+Summary: A brief description of my document.
+Authors: Waylan Limberg
+         Tom Christie
+Date:    January 23, 2018
+blank-value:
+some_url: https://example.com
+
+This is the first paragraph of the document.
+</code></pre></div>
+<p>The keywords are case-insensitive and may consist of letters, numbers,
+underscores and dashes and must end with a colon. The values consist of anything
+following the colon on the line and may even be blank.</p>
+<p>If a line is indented by 4 or more spaces, that line is assumed to be an
+additional line of the value for the previous keyword. A keyword may have as
+many lines as desired. All lines are joined into a single string.</p>
+<p>The first blank line ends all meta-data for the document. Therefore, the first
+line of a document must not be blank.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
+MkDocs does not support YAML style delimiters (<code>---</code> or <code>...</code>) for
+MultiMarkdown style meta-data. In fact, MkDocs relies on the the presence or
+absence of the delimiters to determine whether YAML style meta-data or
+MultiMarkdown style meta-data is being used. If the delimiters are
+detected, but the content between the delimiters is not valid YAML
+meta-data, MkDocs does not attempt to parse the content as MultiMarkdown
+style meta-data.</p>
+</div>
+<h3 id="lists">Lists<a class="headerlink" href="#lists" title="Permanent link"></a></h3>
+<p>Anything that belongs to a list item, such as a second paragraph, a code block
+or a nested list, must be indented by 4 spaces (one tab), not 2. This is how
+<a href="https://python-markdown.github.io/" rel="external">Python-Markdown</a> reads lists, and it differs from GitHub and other CommonMark
+renderers, which follow the width of the list marker.</p>
+<div class="highlight"><pre><span></span><code><span class="k">-</span><span class="w"> </span>First item.
+
+    A second paragraph of the first item.
+
+<span class="w">    </span><span class="k">-</span><span class="w"> </span>A nested item.
+
+        A second paragraph of the nested item.
+
+<span class="k">-</span><span class="w"> </span>Second item.
+</code></pre></div>
+<p>With only 2 spaces, the second paragraph ends the list and becomes a normal
+paragraph, and a nested list may be joined to the line above it.</p>
+<p>If your Markdown files already use 2 spaces, the third-party
+<a href="https://github.com/radude/mdx_truly_sane_lists" rel="external">mdx_truly_sane_lists</a> extension can read them with <code>nested_indent: 2</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mdx_truly_sane_lists</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">nested_indent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</code></pre></div>
+<h3 id="tables">Tables<a class="headerlink" href="#tables" title="Permanent link"></a></h3>
+<p>The <a href="https://python-markdown.github.io/extensions/tables/" rel="external">tables</a> extension adds a basic table syntax to Markdown which is popular
+across multiple implementations. The syntax is rather simple and is generally
+only useful for simple tabular data.</p>
+<p>A simple table looks like this:</p>
+<div class="highlight"><pre><span></span><code>First Header | Second Header | Third Header
+------------ | ------------- | ------------
+Content Cell | Content Cell  | Content Cell
+Content Cell | Content Cell  | Content Cell
+</code></pre></div>
+<p>If you wish, you can add a leading and tailing pipe to each line of the table:</p>
+<div class="highlight"><pre><span></span><code>| First Header | Second Header | Third Header |
+| ------------ | ------------- | ------------ |
+| Content Cell | Content Cell  | Content Cell |
+| Content Cell | Content Cell  | Content Cell |
+</code></pre></div>
+<p>Specify alignment for each column by adding colons to separator lines:</p>
+<div class="highlight"><pre><span></span><code>First Header | Second Header | Third Header
+:----------- |:-------------:| -----------:
+Left         | Center        | Right
+Left         | Center        | Right
+</code></pre></div>
+<p>Note that table cells cannot contain any block level elements and cannot contain
+multiple lines of text. They can, however, include inline Markdown as defined in
+Markdown's <a href="https://daringfireball.net/projects/markdown/syntax" rel="external">syntax</a> rules.</p>
+<p>Additionally, a table must be surrounded by blank lines. There must be a blank
+line before and after the table.</p>
+<h3 id="fenced-code-blocks">Fenced code blocks<a class="headerlink" href="#fenced-code-blocks" title="Permanent link"></a></h3>
+<p>The <a href="https://python-markdown.github.io/extensions/fenced_code_blocks/" rel="external">fenced code blocks</a> extension adds an alternate method of defining code
+blocks without indentation.</p>
+<p>The first line should contain 3 or more backtick (<code>`</code>) characters, and the
+last line should contain the same number of backtick characters (<code>`</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="sb">```</span>
+<span class="sb">Fenced code blocks are like Standard</span>
+<span class="sb">Markdown’s regular code blocks, except that</span>
+<span class="sb">they’re not indented and instead rely on</span>
+<span class="sb">start and end fence lines to delimit the</span>
+<span class="sb">code block.</span>
+<span class="sb">```</span>
+</code></pre></div>
+<p>With this approach, the language can optionally be specified on the first line
+after the backticks which informs any syntax highlighters of the language used:</p>
+<div class="highlight"><pre><span></span><code><span class="sb">```python</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">():</span>
+    <span class="k">pass</span>
+<span class="sb">```</span>
+</code></pre></div>
+<p>Note that fenced code blocks can not be indented. Therefore, they cannot be
+nested inside list items, blockquotes, etc.</p>
+<h3 id="alerts">Alerts<a class="headerlink" href="#alerts" title="Permanent link"></a></h3>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.11</p>
+</div>
+<p>MkDocs understands the <a href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts" rel="external">alerts</a> that GitHub renders, so a callout written for
+GitHub looks right on your site too. Start a blockquote with one of
+<code>[!NOTE]</code>, <code>[!TIP]</code>, <code>[!IMPORTANT]</code>, <code>[!WARNING]</code> or <code>[!CAUTION]</code>, alone on its
+first line:</p>
+<div class="highlight"><pre><span></span><code><span class="k">&gt; </span><span class="ge">[!TIP]</span>
+<span class="k">&gt; </span><span class="ge">Run `mkdocs serve` while you write to see your changes right away.</span>
+</code></pre></div>
+<p>The alert becomes the same HTML as an admonition (<code>&lt;div class="admonition tip"&gt;</code>
+with a <code>Tip</code> title), so the built-in themes and most third-party themes style it
+without any setup. To show a literal <code>[!NOTE]</code> at the start of a quote, escape
+it: <code>&gt; \[!NOTE]</code>.</p>
+        </div>
+<footer class="sumi-article-footer">
+  <div class="sumi-meta-row"><a class="sumi-meta sumi-edit" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/user-guide/writing-your-docs.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a>
+  </div>
+  <nav class="sumi-pager" aria-label="Previous / Next">
+    <a class="sumi-pager-prev" href="../material-end-of-life/" rel="prev"><span class="sumi-pager-label"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Previous</span><span class="sumi-pager-title">Material for MkDocs End of Life</span></a>
+    <a class="sumi-pager-next" href="../choosing-your-theme/" rel="next"><span class="sumi-pager-label">Next<svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span><span class="sumi-pager-title">Choosing Your Theme</span></a>
+  </nav>
+</footer>
+      </article>
+    </main>
+    <aside class="sumi-rail" aria-label="On this page">
+      <div class="sumi-rail-inner">
+        <div class="sumi-rail-title">On this page</div>
+        <nav class="sumi-toc"><ul>
+  <li><a href="#file-layout" data-level="2">File layout</a><ul>
+  <li><a href="#index-pages" data-level="3">Index pages</a>
+  </li>
+  <li><a href="#configure-pages-and-navigation" data-level="3">Configure Pages and Navigation</a>
+  </li>
+</ul>
+  </li>
+  <li><a href="#writing-with-markdown" data-level="2">Writing with Markdown</a><ul>
+  <li><a href="#internal-links" data-level="3">Internal links</a>
+  </li>
+  <li><a href="#external-links" data-level="3">External links</a>
+  </li>
+  <li><a href="#meta-data" data-level="3">Meta-Data</a>
+  </li>
+  <li><a href="#lists" data-level="3">Lists</a>
+  </li>
+  <li><a href="#tables" data-level="3">Tables</a>
+  </li>
+  <li><a href="#fenced-code-blocks" data-level="3">Fenced code blocks</a>
+  </li>
+  <li><a href="#alerts" data-level="3">Alerts</a>
+  </li>
+</ul>
+  </li>
+</ul></nav>
+        <a class="sumi-rail-top" href="#"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>Back to top</a>
+      </div>
+    </aside>
+  </div><footer class="sumi-footer">
+  <div class="sumi-footer-inner">
+    <div class="sumi-footer-left"><div class="sumi-copyright">Copyright &copy; 2014 <a href="https://twitter.com/starletdreaming">Tom Christie</a>, Maintained by the <a href="https://github.com/mkdocs-ng">MkDocs NG Team</a>.</div>
+      <div class="sumi-credit">Built with <a href="https://github.com/mkdocs-ng/mkdocs" rel="noopener">MkDocs NG</a> and <a href="https://github.com/mkdocs-ng/mkdocs-sumi" rel="noopener">Sumi</a></div>
+    </div>
+    <div class="sumi-footer-right">
+      <button class="sumi-icon-btn" type="button" data-sumi-help aria-label="Keyboard shortcuts" title="Keyboard shortcuts"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></button>
+    </div>
+  </div>
+</footer>
+  <dialog class="sumi-palette" aria-label="Search">
+  <div class="sumi-palette-box">
+    <div class="sumi-palette-input">
+      <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+      <input type="search" autocomplete="off" spellcheck="false" placeholder="Search docs or run a command…" aria-label="Search" aria-controls="sumi-palette-results">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="sumi-palette-results" id="sumi-palette-results" role="listbox"></div>
+    <div class="sumi-palette-foot">
+      <span><kbd>↵</kbd> to open</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd> to move</span>
+      <span><kbd>Esc</kbd> to close</span>
+    </div>
+  </div>
+</dialog>
+<dialog class="sumi-help" aria-label="Keyboard shortcuts">
+  <div class="sumi-help-box">
+    <div class="sumi-help-head"><strong>Keyboard shortcuts</strong><button class="sumi-icon-btn" type="button" data-close aria-label="Close"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+    <dl>
+      <dt><kbd data-mod>Ctrl K</kbd> <kbd>/</kbd></dt><dd>Open search and commands</dd>
+      <dt><kbd>t</kbd></dt><dd>Toggle dark mode</dd>
+      <dt><kbd>[</kbd> <kbd>]</kbd></dt><dd>Previous / next page</dd>
+      <dt><kbd>j</kbd> <kbd>k</kbd></dt><dd>Previous / next heading</dd>
+      <dt><kbd>?</kbd></dt><dd>Show this help</dd>
+    </dl>
+  </div>
+</dialog>
+<dialog class="sumi-zoom" aria-label="Zoom image"></dialog>
+<div class="sumi-toast" role="status" aria-live="polite"></div>
+  <script>
+    window.sumi = {
+      base: "../..",
+      page: "user-guide/writing-your-docs/",
+      features: [],
+      markdown: "../writing-your-docs.md",
+      search: "../../search/search_index.json",
+      keyboard: true,
+      versions: null,
+      prev: "../material-end-of-life/",
+      next: "../choosing-your-theme/",
+      edit: "https://github.com/mkdocs-ng/mkdocs/blob/main/docs/user-guide/writing-your-docs.md",
+      nav: [{"t":"Home","u":"","s":""},{"t":"Getting Started","u":"getting-started/","s":""},{"t":"User Guide","u":"user-guide/","s":"User Guide"},{"t":"Installation","u":"user-guide/installation/","s":"User Guide"},{"t":"Switching to MkDocs NG","u":"user-guide/migrating/","s":"User Guide"},{"t":"Material for MkDocs End of Life","u":"user-guide/material-end-of-life/","s":"User Guide"},{"t":"Writing Your Docs","u":"user-guide/writing-your-docs/","s":"User Guide"},{"t":"Choosing Your Theme","u":"user-guide/choosing-your-theme/","s":"User Guide"},{"t":"Customizing Your Theme","u":"user-guide/customizing-your-theme/","s":"User Guide"},{"t":"Localizing Your Theme","u":"user-guide/localizing-your-theme/","s":"User Guide"},{"t":"Multi-language Sites","u":"user-guide/multi-language-sites/","s":"User Guide"},{"t":"Configuration","u":"user-guide/configuration/","s":"User Guide"},{"t":"Command Line Interface","u":"user-guide/cli/","s":"User Guide"},{"t":"Python API","u":"user-guide/python-api/","s":"User Guide"},{"t":"Deploying Your Docs","u":"user-guide/deploying-your-docs/","s":"User Guide"},{"t":"Versioned Docs","u":"user-guide/versioned-docs/","s":"User Guide"},{"t":"Developer Guide","u":"dev-guide/","s":"Developer Guide"},{"t":"Themes","u":"dev-guide/themes/","s":"Developer Guide"},{"t":"Translations","u":"dev-guide/translations/","s":"Developer Guide"},{"t":"Plugins","u":"dev-guide/plugins/","s":"Developer Guide"},{"t":"API Reference","u":"dev-guide/api/","s":"Developer Guide"},{"t":"Release Notes","u":"about/release-notes/","s":"About"},{"t":"Fixed Upstream Issues","u":"about/fixed-upstream-issues/","s":"About"},{"t":"Comparison","u":"about/comparison/","s":"About"},{"t":"Contributing","u":"about/contributing/","s":"About"},{"t":"Governance","u":"about/governance/","s":"About"},{"t":"License","u":"about/license/","s":"About"}],
+      alternate: [],
+      translations: [],
+      t: {"search":"Search","search_placeholder":"Search docs or run a command…","search_no_results":"No results for","search_loading":"Loading index…","search_hint_open":"to open","search_hint_move":"to move","search_hint_close":"to close","pages":"Pages","commands":"Commands","on_this_page":"On this page","back_to_top":"Back to top","previous":"Previous","next":"Next","edit_page":"Edit this page","view_source":"View source","copy_markdown":"Copy as Markdown","copied":"Copied","view_markdown":"View as Markdown","open_in":"Open in {name}","print":"Print","page_actions":"Page actions","copy":"Copy","copy_code":"Copy code","toggle_theme":"Toggle dark mode","theme_light":"Light","theme_dark":"Dark","theme_auto":"System","menu":"Menu","close":"Close","navigation":"Navigation","skip_to_content":"Skip to content","last_updated":"Last updated","reading_time":"{n} min read","language":"Language","untranslated":"This page has not been translated yet, so it is shown in {language}.","version":"Version","repository":"Repository","keyboard_shortcuts":"Keyboard shortcuts","shortcut_search":"Open search and commands","shortcut_theme":"Toggle dark mode","shortcut_prev_next":"Previous / next page","shortcut_toc":"Previous / next heading","shortcut_help":"Show this help","built_with":"Built with {mkdocs} and {sumi}","not_found_title":"Page not found","not_found_text":"The page you are looking for does not exist or has moved.","go_home":"Go to the home page","blog":"Blog","all_posts":"All posts","tags":"Tags","posted_on":"Posted on","older_post":"Older post","newer_post":"Newer post","subscribe_rss":"Subscribe via RSS","releases":"Releases","latest":"Latest","prerelease":"Pre-release","archived":"Archived","download":"Download","asset":"Asset","size":"Size","checksum":"SHA-256","release_notes":"Release notes","old_version":"You are reading the documentation for an older version.","go_latest":"Go to the latest version","expand_all":"Expand all","zoom_image":"Zoom image","diagram_expand":"Expand diagram","blog_view":"Layout","blog_view_list":"List view","blog_view_cards":"Card view","diagram_source":"Copy diagram source","diagram_download":"Download SVG","cmd_toggle_theme":"Toggle light / dark","cmd_copy_markdown":"Copy this page as Markdown","cmd_view_markdown":"Open this page as Markdown","cmd_edit":"Edit this page","cmd_print":"Print this page","cmd_top":"Scroll to top","cmd_home":"Go to the home page","cmd_language":"Switch language: {name}","cmd_version":"Switch version: {name}","cmd_llms":"Open llms.txt","whole_site":"Whole site","print_title":"Printable edition","contents":"Contents","compare":"Bilingual view","compare_open":"Open bilingual view","compare_sync":"Sync scrolling","compare_failed":"This translation could not be loaded.","compare_approx":"Sections differ between the two pages, so they line up approximately.","feedback_title":"Was this page helpful?","feedback_yes":"Yes","feedback_no":"No","feedback_thanks":"Thanks for your feedback!","comments":"Comments","table_expand":"Expand table","zoom_in":"Zoom in","zoom_out":"Zoom out","zoom_reset":"Fit to window"}
+    };
+  </script>
+  <script src="../../assets/js/sumi.js" defer></script>
+</body>
+</html>

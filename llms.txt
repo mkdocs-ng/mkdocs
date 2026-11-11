@@ -1,0 +1,42 @@
+# MkDocs NG
+
+> Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.
+
+## Pages
+
+- [Home](https://mkdocs-ng.org/index.md): Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.
+- [Getting Started](https://mkdocs-ng.org/getting-started.md)
+
+## User Guide
+
+- [User Guide](https://mkdocs-ng.org/user-guide/README.md)
+- [Installation](https://mkdocs-ng.org/user-guide/installation.md)
+- [Switching to MkDocs NG](https://mkdocs-ng.org/user-guide/migrating.md)
+- [Material for MkDocs End of Life](https://mkdocs-ng.org/user-guide/material-end-of-life.md)
+- [Writing Your Docs](https://mkdocs-ng.org/user-guide/writing-your-docs.md)
+- [Choosing Your Theme](https://mkdocs-ng.org/user-guide/choosing-your-theme.md)
+- [Customizing Your Theme](https://mkdocs-ng.org/user-guide/customizing-your-theme.md)
+- [Localizing Your Theme](https://mkdocs-ng.org/user-guide/localizing-your-theme.md)
+- [Multi-language Sites](https://mkdocs-ng.org/user-guide/multi-language-sites.md)
+- [Configuration](https://mkdocs-ng.org/user-guide/configuration.md)
+- [Command Line Interface](https://mkdocs-ng.org/user-guide/cli.md)
+- [Python API](https://mkdocs-ng.org/user-guide/python-api.md)
+- [Deploying Your Docs](https://mkdocs-ng.org/user-guide/deploying-your-docs.md)
+- [Versioned Docs](https://mkdocs-ng.org/user-guide/versioned-docs.md)
+
+## Developer Guide
+
+- [Developer Guide](https://mkdocs-ng.org/dev-guide/README.md)
+- [Themes](https://mkdocs-ng.org/dev-guide/themes.md)
+- [Translations](https://mkdocs-ng.org/dev-guide/translations.md)
+- [Plugins](https://mkdocs-ng.org/dev-guide/plugins.md)
+- [API Reference](https://mkdocs-ng.org/dev-guide/api.md)
+
+## About
+
+- [Release Notes](https://mkdocs-ng.org/about/release-notes.md)
+- [Fixed Upstream Issues](https://mkdocs-ng.org/about/fixed-upstream-issues.md)
+- [Comparison](https://mkdocs-ng.org/about/comparison.md)
+- [Contributing](https://mkdocs-ng.org/about/contributing.md)
+- [Governance](https://mkdocs-ng.org/about/governance.md)
+- [License](https://mkdocs-ng.org/about/license.md)

@@ -1,0 +1,26 @@
+# User Guide
+
+Building Documentation with MkDocs
+
+---
+
+The MkDocs User Guide provides documentation for users of MkDocs. See
+[Getting Started] for an introductory tutorial. You can jump directly to a
+page listed below, or use the *next* and *previous* buttons in the navigation
+bar at the top of the page to move through the documentation in order.
+
+- [Installation](installation.md)
+- [Switching to MkDocs NG](migrating.md)
+- [Material for MkDocs End of Life](material-end-of-life.md)
+- [Writing Your Docs](writing-your-docs.md)
+- [Choosing Your Theme](choosing-your-theme.md)
+- [Customizing Your Theme](customizing-your-theme.md)
+- [Localizing Your Theme](localizing-your-theme.md)
+- [Multi-language Sites](multi-language-sites.md)
+- [Configuration](configuration.md)
+- [Command Line Interface](cli.md)
+- [Python API](python-api.md)
+- [Deploying Your Docs](deploying-your-docs.md)
+- [Versioned Docs](versioned-docs.md)
+
+[Getting Started]: ../getting-started.md

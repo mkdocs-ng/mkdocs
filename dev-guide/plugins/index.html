@@ -1,0 +1,2610 @@
+<!doctype html>
+<html lang="en" data-palette="auto" data-layout="docs" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working."><meta name="author" content="MkDocs NG Team"><link rel="canonical" href="https://mkdocs-ng.org/dev-guide/plugins/"><link rel="prev" href="../translations/"><link rel="next" href="../api/"><link rel="alternate" type="text/markdown" href="../plugins.md" title="Markdown"><link rel="alternate" type="text/plain" href="../../llms.txt" title="llms.txt">
+  <link rel="icon" href="../../img/favicon.svg">
+  <meta name="generator" content="mkdocs-1.11.2, sumi">
+  <meta name="theme-color" content="#f8f7f4">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Plugins"><meta property="og:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <meta property="og:site_name" content="MkDocs NG">
+  <meta property="og:locale" content="en_US"><meta property="og:url" content="https://mkdocs-ng.org/dev-guide/plugins/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Plugins"><meta name="twitter:description" content="Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
+  <title>Plugins · MkDocs NG</title>
+  <script>
+    (function () {
+      var d = document.documentElement, p = d.dataset.palette, s = null;
+      try { s = localStorage.getItem('sumi.palette'); } catch (e) {}
+      var mode = s || p;
+      if (mode === 'auto' || !mode) mode = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.dataset.theme = mode;
+      if (mode === 'dark') document.querySelector('meta[name="theme-color"]').content = '#141413';
+      d.dataset.mdColorScheme = mode === 'dark' ? 'slate' : 'default';
+      d.classList.replace('no-js', 'js');
+      // A page opened inside the bilingual view shows its content only.
+      if (window.name === 'sumi-pane') d.classList.add('sumi-pane');
+    })();
+  </script>
+  <link rel="preload" href="../../assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/sumi.css"><style>:root{--sumi-accent:#0061fe}[data-theme="dark"]{--sumi-accent:#0061fe}</style><link rel="stylesheet" href="../../assets/_mkdocstrings.css"><link rel="stylesheet" href="../../css/extra.css">
+</head>
+<body>
+  <a class="sumi-skip" href="#content">Skip to content</a><header class="sumi-header">
+  <div class="sumi-header-inner">
+    <button class="sumi-icon-btn sumi-menu-btn" type="button" aria-label="Menu" aria-expanded="false"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg></button>
+    <a class="sumi-brand" href="../.." aria-label="MkDocs NG">
+      <img class="sumi-logo sumi-when-light" src="../../img/logo.svg" alt="">
+      <img class="sumi-logo sumi-when-dark" src="../../img/logo-dark.svg" alt="">
+      <span class="sumi-brand-name">MkDocs NG</span>
+    </a>
+    <nav class="sumi-tabs-nav" aria-label="Navigation">
+      <a class="sumi-tab-link" href="../../getting-started/">Getting Started</a>
+      <a class="sumi-tab-link" href="../../user-guide/">User Guide</a>
+      <a class="sumi-tab-link is-active" href="../" aria-current="page">Developer Guide</a>
+      <a class="sumi-tab-link" href="../../about/release-notes/">About</a>
+    </nav>
+    <div class="sumi-header-tools">
+      <button class="sumi-search-btn" type="button" data-sumi-palette aria-label="Search">
+        <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span class="sumi-search-label">Search</span><kbd class="sumi-search-kbd" data-mod>Ctrl K</kbd>
+      </button>
+      <button class="sumi-icon-btn sumi-theme-btn" type="button" data-sumi-theme aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="sumi-icon sumi-when-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="sumi-icon sumi-when-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></button>
+      <a class="sumi-icon-btn sumi-repo" href="https://github.com/mkdocs-ng/mkdocs/" aria-label="Repository" title="GitHub" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+    </div>
+  </div>
+</header>
+  <div class="sumi-version-banner" hidden></div>
+  <div class="sumi-shell">
+    <aside class="sumi-sidebar" id="sumi-sidebar" aria-label="Navigation">
+      <div class="sumi-sidebar-inner">
+        <ul class="sumi-nav-list sumi-sidebar-tabs">
+          <li class="sumi-nav-page"><a href="../../getting-started/">Getting Started</a></li>
+          <li class="sumi-nav-page"><a href="../../user-guide/">User Guide</a></li>
+          <li class="sumi-nav-page"><a class="is-active" href="../">Developer Guide</a></li>
+          <li class="sumi-nav-page"><a href="../../about/release-notes/">About</a></li>
+        </ul>
+        <a class="sumi-sidebar-title" href="../">Developer Guide</a>
+        <nav class="sumi-nav"><ul class="sumi-nav-list" data-depth="1">
+    <li class="sumi-nav-page"><a href="../themes/">Themes</a></li>
+    <li class="sumi-nav-page"><a href="../translations/">Translations</a></li>
+    <li class="sumi-nav-page"><a href="./" aria-current="page" class="is-current">Plugins</a></li>
+    <li class="sumi-nav-page"><a href="../api/">API Reference</a></li>
+</ul></nav>
+      </div>
+    </aside>
+    <main class="sumi-main" id="content">
+      <article class="sumi-article">
+        <div class="sumi-article-top">
+<nav class="sumi-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="../">Developer Guide</a><svg class="sumi-icon sumi-crumb-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></li>
+    <li aria-current="page"><span>Plugins</span></li>
+  </ol>
+</nav><div class="sumi-actions">
+  <button class="sumi-chip-btn sumi-copy-page" type="button" data-sumi-copy-page aria-label="Copy as Markdown" title="Copy as Markdown"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span>Copy as Markdown</span></button>
+  <div class="sumi-menu sumi-actions-menu">
+    <button class="sumi-icon-btn sumi-chip-icon" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Page actions" title="Page actions"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <ul class="sumi-menu-list sumi-menu-right" role="menu">
+      <li role="none"><a role="menuitem" href="../plugins.md" target="_blank"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>View as Markdown</a></li>
+      <li role="none"><a role="menuitem" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/dev-guide/plugins.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a></li>
+      <li role="none"><button role="menuitem" type="button" data-sumi-print><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>Print</button></li>
+      <li role="none"><a role="menuitem" href="../../print/"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></svg>Printable edition · Whole site</a></li>
+    </ul>
+  </div>
+</div>
+        </div>
+        <details class="sumi-toc-inline">
+          <summary><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg><span>On this page</span><svg class="sumi-icon sumi-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <nav class="sumi-toc"><ul>
+  <li><a href="#installing-plugins" data-level="2">Installing Plugins</a>
+  </li>
+  <li><a href="#using-plugins" data-level="2">Using Plugins</a>
+  </li>
+  <li><a href="#developing-plugins" data-level="2">Developing Plugins</a><ul>
+  <li><a href="#baseplugin" data-level="3">BasePlugin</a>
+  </li>
+  <li><a href="#events" data-level="3">Events</a>
+  </li>
+  <li><a href="#event-priorities" data-level="3">Event Priorities</a>
+  </li>
+  <li><a href="#handling-errors" data-level="3">Handling Errors</a>
+  </li>
+  <li><a href="#logging-in-plugins" data-level="3">Logging in plugins</a>
+  </li>
+  <li><a href="#entry-point" data-level="3">Entry Point</a>
+  </li>
+  <li><a href="#publishing-a-plugin" data-level="3">Publishing a Plugin</a>
+  </li>
+</ul>
+  </li>
+</ul></nav>
+        </details>
+        <div class="sumi-content sumi-prose" data-pagefind-body><h1 id="mkdocs-plugins">MkDocs Plugins<a class="headerlink" href="#mkdocs-plugins" title="Permanent link"></a></h1>
+<p>A Guide to installing, using and creating MkDocs Plugins</p>
+<hr />
+<h2 id="installing-plugins">Installing Plugins<a class="headerlink" href="#installing-plugins" title="Permanent link"></a></h2>
+<p>Before a plugin can be used, it must be installed on the system. If you are
+using a plugin which comes with MkDocs, then it was installed when you installed
+MkDocs. However, to install third party plugins, you need to determine the
+appropriate package name and install it using <code>pip</code>:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>mkdocs-foo-plugin
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Installing an MkDocs plugin means installing a Python package and executing any code that the author has put in there. So, exercise the usual caution; there's no attempt at sandboxing.</p>
+</div>
+<p>Once a plugin has been successfully installed, it is ready to use. It just needs
+to be <a href="#using-plugins">enabled</a> in the configuration file. The <a href="https://github.com/mkdocs-ng/catalog" rel="external">Catalog</a>
+repository has a large ranked list of plugins that you can install and use.</p>
+<h2 id="using-plugins">Using Plugins<a class="headerlink" href="#using-plugins" title="Permanent link"></a></h2>
+<p>The <a href="../../user-guide/configuration/#plugins"><code>plugins</code></a> configuration option should contain a list of plugins to
+use when building the site. Each "plugin" must be a string name assigned to the
+plugin (see the documentation for a given plugin to determine its "name"). A
+plugin listed here must already be <a href="#installing-plugins">installed</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search</span>
+</code></pre></div>
+<p>Some plugins may provide configuration options of their own. If you would like
+to set any configuration options, then you can nest a key/value mapping
+(<code>option_name: option value</code>) of any options that a given plugin supports. Note
+that a colon (<code>:</code>) must follow the plugin name and then on a new line the option
+name and value must be indented and separated by a colon. If you would like to
+define multiple options for a single plugin, each option must be defined on a
+separate line.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">lang</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+<span class="w">      </span><span class="nt">foo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bar</span>
+</code></pre></div>
+<p>For information regarding the configuration options available for a given plugin,
+see that plugin's documentation.</p>
+<p>For a list of default plugins and how to override them, see the
+<a href="../../user-guide/configuration/#plugins">configuration</a> documentation.</p>
+<h2 id="developing-plugins">Developing Plugins<a class="headerlink" href="#developing-plugins" title="Permanent link"></a></h2>
+<p>Like MkDocs, plugins must be written in Python. It is generally expected that
+each plugin would be distributed as a separate Python module, although it is
+possible to define multiple plugins in the same module. At a minimum, a MkDocs
+Plugin must consist of a <a href="#baseplugin">BasePlugin</a> subclass and an <a href="#entry-point">entry point</a> which
+points to it.</p>
+<h3 id="baseplugin">BasePlugin<a class="headerlink" href="#baseplugin" title="Permanent link"></a></h3>
+<p>A subclass of <code>mkdocs.plugins.BasePlugin</code> should define the behavior of the plugin.
+The class generally consists of actions to perform on specific events in the build
+process as well as a configuration scheme for the plugin.</p>
+<p>All <code>BasePlugin</code> subclasses contain the following attributes:</p>
+<h4 id="config_scheme">config_scheme<a class="headerlink" href="#config_scheme" title="Permanent link"></a></h4>
+<p>A tuple of configuration validation instances. Each item must consist of a
+two item tuple in which the first item is the string name of the
+configuration option and the second item is an instance of
+<code>mkdocs.config.config_options.BaseConfigOption</code> or any of its subclasses.</p>
+<p>For example, the following <code>config_scheme</code> defines three configuration options: <code>foo</code>, which accepts a string; <code>bar</code>, which accepts an integer; and <code>baz</code>, which accepts a boolean value.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyPlugin</span><span class="p">(</span><span class="n">mkdocs</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">BasePlugin</span><span class="p">):</span>
+    <span class="n">config_scheme</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">'foo'</span><span class="p">,</span> <span class="n">mkdocs</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config_options</span><span class="o">.</span><span class="n">Type</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'a default value'</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">'bar'</span><span class="p">,</span> <span class="n">mkdocs</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config_options</span><span class="o">.</span><span class="n">Type</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">'baz'</span><span class="p">,</span> <span class="n">mkdocs</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config_options</span><span class="o">.</span><span class="n">Type</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="p">)</span>
+</code></pre></div>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.4</p>
+<h5 id="subclassing-config-to-specify-the-config-schema">Subclassing <code>Config</code> to specify the config schema<a class="headerlink" href="#subclassing-config-to-specify-the-config-schema" title="Permanent link"></a></h5>
+<p>To get type safety benefits, if you're targeting only MkDocs 1.4+, define the config schema as a class instead:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyPluginConfig</span><span class="p">(</span><span class="n">mkdocs</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">foo</span> <span class="o">=</span> <span class="n">mkdocs</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config_options</span><span class="o">.</span><span class="n">Type</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'a default value'</span><span class="p">)</span>
+    <span class="n">bar</span> <span class="o">=</span> <span class="n">mkdocs</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config_options</span><span class="o">.</span><span class="n">Type</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">baz</span> <span class="o">=</span> <span class="n">mkdocs</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">config_options</span><span class="o">.</span><span class="n">Type</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyPlugin</span><span class="p">(</span><span class="n">mkdocs</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">BasePlugin</span><span class="p">[</span><span class="n">MyPluginConfig</span><span class="p">]):</span>
+    <span class="o">...</span>
+</code></pre></div>
+</div>
+<h5 id="examples-of-config-definitions">Examples of config definitions<a class="headerlink" href="#examples-of-config-definitions" title="Permanent link"></a></h5>
+<details class="example" open="open">
+<summary>Example</summary>
+<p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">mkdocs.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">base</span><span class="p">,</span> <span class="n">config_options</span> <span class="k">as</span> <span class="n">c</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_ValidationOptions</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">enabled</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Type</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Type</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">skip_checks</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">ListOfItems</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">Choice</span><span class="p">((</span><span class="s1">'foo'</span><span class="p">,</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'baz'</span><span class="p">)),</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyPluginConfig</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">definition_file</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># required</span>
+    <span class="n">checksum_file</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Optional</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>  <span class="c1"># can be None but must exist if specified</span>
+    <span class="n">validation</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">SubConfig</span><span class="p">(</span><span class="n">_ValidationOptions</span><span class="p">)</span>
+</code></pre></div></p>
+<p>From the user's point of view <code>SubConfig</code> is similar to <code>Type(dict)</code>, it's just that it also retains full ability for validation: you define all valid keys and what each value should adhere to.</p>
+<p>And <code>ListOfItems</code> is similar to <code>Type(list)</code>, but again, we define the constraint that each value must adhere to.</p>
+<p>This accepts a config as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">my_plugin</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">definition_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">configs/test.ini</span><span class="w">  </span><span class="c1"># relative to mkdocs.yml</span>
+<span class="w">  </span><span class="nt">validation</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kt">!ENV</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">CI</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">skip_checks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foo</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">baz</span>
+</code></pre></div>
+</details>
+<!-- -->
+<details class="example">
+<summary>Example</summary>
+<p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numbers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mkdocs.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">base</span><span class="p">,</span> <span class="n">config_options</span> <span class="k">as</span> <span class="n">c</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_Rectangle</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Type</span><span class="p">(</span><span class="n">numbers</span><span class="o">.</span><span class="n">Real</span><span class="p">)</span>  <span class="c1"># required</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">Type</span><span class="p">(</span><span class="n">numbers</span><span class="o">.</span><span class="n">Real</span><span class="p">)</span>  <span class="c1"># required</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyPluginConfig</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">add_rectangles</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">ListOfItems</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">SubConfig</span><span class="p">(</span><span class="n">_Rectangle</span><span class="p">))</span>  <span class="c1"># required</span>
+</code></pre></div></p>
+<p>In this example we define a list of complex items, and that's achieved by passing a concrete <code>SubConfig</code> to <code>ListOfItems</code>.</p>
+<p>This accepts a config as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">my_plugin</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">add_rectangles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">      </span><span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12</span>
+<span class="w">      </span><span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</code></pre></div>
+</details>
+<p>When the user's configuration is loaded, the above scheme will be used to
+validate the configuration and fill in any defaults for settings not
+provided by the user. The validation classes may be any of the classes
+provided in <code>mkdocs.config.config_options</code> or a third party subclass defined
+in the plugin.</p>
+<p>Any settings provided by the user which fail validation or are not defined
+in the <code>config_scheme</code> will raise a <code>mkdocs.config.base.ValidationError</code>.</p>
+<h4 id="config">config<a class="headerlink" href="#config" title="Permanent link"></a></h4>
+<p>A dictionary of configuration options for the plugin, which is populated by
+the <code>load_config</code> method after configuration validation has completed. Use
+this attribute to access options provided by the user.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">on_pre_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'baz'</span><span class="p">]:</span>
+        <span class="c1"># implement "baz" functionality here...</span>
+</code></pre></div>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.4</p>
+<h5 id="safe-attribute-based-access">Safe attribute-based access<a class="headerlink" href="#safe-attribute-based-access" title="Permanent link"></a></h5>
+<p>To get type safety benefits, if you're targeting only MkDocs 1.4+, access options as attributes instead:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">on_pre_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">baz</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">bar</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># OK, `int ** 2` is valid.</span>
+</code></pre></div>
+</div>
+<p>All <code>BasePlugin</code> subclasses contain the following method(s):</p>
+<h4 id="load_configoptions">load_config(options)<a class="headerlink" href="#load_configoptions" title="Permanent link"></a></h4>
+<p>Loads configuration from a dictionary of options. Returns a tuple of
+<code>(errors, warnings)</code>. This method is called by MkDocs during configuration
+validation and should not need to be called by the plugin.</p>
+<h4 id="on_event_name">on_&lt;event_name&gt;()<a class="headerlink" href="#on_event_name" title="Permanent link"></a></h4>
+<p>Optional methods which define the behavior for specific <a href="#events">events</a>. The plugin
+should define its behavior within these methods. Replace <code>&lt;event_name&gt;</code> with
+the actual name of the event. For example, the <code>pre_build</code> event would be
+defined in the <code>on_pre_build</code> method.</p>
+<p>Most events accept one positional argument and various keyword arguments. It
+is generally expected that the positional argument would be modified (or
+replaced) by the plugin and returned. If nothing is returned (the method
+returns <code>None</code>), then the original, unmodified object is used. The keyword
+arguments are simply provided to give context and/or supply data which may
+be used to determine how the positional argument should be modified. It is
+good practice to accept keyword arguments as <code>**kwargs</code>. In the event that
+additional keywords are provided to an event in a future version of MkDocs,
+there will be no need to alter your plugin.</p>
+<p>For example, the following event would add an additional static_template to
+the theme config:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyPlugin</span><span class="p">(</span><span class="n">BasePlugin</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">config</span><span class="p">[</span><span class="s1">'theme'</span><span class="p">]</span><span class="o">.</span><span class="n">static_templates</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">'my_template.html'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span>
+</code></pre></div>
+<div class="admonition new">
+<p class="admonition-title">New in version 1.4</p>
+<p>To get type safety benefits, if you're targeting only MkDocs 1.4+, access config options as attributes instead:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">MkDocsConfig</span><span class="p">):</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">theme</span><span class="o">.</span><span class="n">static_templates</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">'my_template.html'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">config</span>
+</code></pre></div>
+</div>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link"></a></h3>
+<p>There are three kinds of events: <a href="#global-events">Global Events</a>, <a href="#page-events">Page Events</a> and
+<a href="#template-events">Template Events</a>.</p>
+<details>
+  <summary>
+    See a diagram with relations between all the plugin events
+  </summary>
+  <div>
+    <ul>
+      <li>The events themselves are shown in yellow, with their parameters.
+      <li>Arrows show the flow of arguments and outputs of each event.
+          Sometimes they're omitted.
+      <li>The events are chronologically ordered from top to bottom.
+      <li>Dotted lines appear at splits from global events to per-page events.
+      <li>Click the events' titles to jump to their description.
+    </ul>
+<svg width="527pt" height="1786pt"
+ viewBox="0.00 0.00 527.00 1785.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1781.8)">
+<title>MkDocs</title>
+<g id="a_graph0"><a xlink:title=" ">
+</a>
+</g>
+<g id="clust1" class="cluster">
+<title>cluster_on_startup</title>
+<g id="a_clust1"><a xlink:href="#on_startup" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="199,-1693.8 199,-1769.8 341,-1769.8 341,-1693.8 199,-1693.8"/>
+<text text-anchor="middle" x="270" y="-1754.6" font-family="inherit" font-size="14.00">on_startup</text>
+</a>
+</g>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_build</title>
+<g id="a_clust2"><a xlink:title=" ">
+<polygon fill="#dddddd" fill-opacity="0.066667" stroke="#000000" stroke-opacity="0.400000" points="8,-142.6 8,-1685.8 511,-1685.8 511,-142.6 8,-142.6"/>
+<text text-anchor="middle" x="259.5" y="-1670.6" font-family="inherit" font-size="14.00">build</text>
+</a>
+</g>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_on_config</title>
+<g id="a_clust3"><a xlink:href="#on_config" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="230,-1534.8 230,-1610.8 310,-1610.8 310,-1534.8 230,-1534.8"/>
+<text text-anchor="middle" x="270" y="-1595.6" font-family="inherit" font-size="14.00">on_config</text>
+</a>
+</g>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_on_pre_build</title>
+<g id="a_clust4"><a xlink:href="#on_pre_build" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="161,-1450.8 161,-1526.8 261,-1526.8 261,-1450.8 161,-1450.8"/>
+<text text-anchor="middle" x="211" y="-1511.6" font-family="inherit" font-size="14.00">on_pre_build</text>
+</a>
+</g>
+</g>
+<g id="clust5" class="cluster">
+<title>cluster_on_files</title>
+<g id="a_clust5"><a xlink:href="#on_files" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="226,-1366.8 226,-1442.8 342,-1442.8 342,-1366.8 226,-1366.8"/>
+<text text-anchor="middle" x="284" y="-1427.6" font-family="inherit" font-size="14.00">on_files</text>
+</a>
+</g>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_on_nav</title>
+<g id="a_clust6"><a xlink:href="#on_nav" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="181,-1218.8 181,-1294.8 335,-1294.8 335,-1218.8 181,-1218.8"/>
+<text text-anchor="middle" x="258" y="-1279.6" font-family="inherit" font-size="14.00">on_nav</text>
+</a>
+</g>
+</g>
+<g id="clust7" class="cluster">
+<title>cluster_populate_page</title>
+<g id="a_clust7"><a xlink:title=" ">
+<polygon fill="#dddddd" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.400000" points="22,-729.2 22,-1179.2 284,-1179.2 284,-729.2 22,-729.2"/>
+<text text-anchor="middle" x="153" y="-1164" font-family="inherit" font-size="14.00">populate_page</text>
+</a>
+</g>
+</g>
+<g id="clust8" class="cluster">
+<title>cluster_on_pre_page</title>
+<g id="a_clust8"><a xlink:href="#on_pre_page" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="80,-1072.2 80,-1148.2 244,-1148.2 244,-1072.2 80,-1072.2"/>
+<text text-anchor="middle" x="162" y="-1133" font-family="inherit" font-size="14.00">on_pre_page</text>
+</a>
+</g>
+</g>
+<g id="clust9" class="cluster">
+<title>cluster_on_page_read_source</title>
+<g id="a_clust9"><a xlink:href="#on_page_read_source" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="46,-988.2 46,-1064.2 201,-1064.2 201,-988.2 46,-988.2"/>
+<text text-anchor="middle" x="123.5" y="-1049" font-family="inherit" font-size="14.00">on_page_read_source</text>
+</a>
+</g>
+</g>
+<g id="clust10" class="cluster">
+<title>cluster_on_page_markdown</title>
+<g id="a_clust10"><a xlink:href="#on_page_markdown" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="30,-904.2 30,-980.2 276,-980.2 276,-904.2 30,-904.2"/>
+<text text-anchor="middle" x="153" y="-965" font-family="inherit" font-size="14.00">on_page_markdown</text>
+</a>
+</g>
+</g>
+<g id="clust11" class="cluster">
+<title>cluster_on_page_content</title>
+<g id="a_clust11"><a xlink:href="#on_page_content" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="66,-737.2 66,-813.2 276,-813.2 276,-737.2 66,-737.2"/>
+<text text-anchor="middle" x="171" y="-798" font-family="inherit" font-size="14.00">on_page_content</text>
+</a>
+</g>
+</g>
+<g id="clust14" class="cluster">
+<title>cluster_on_env</title>
+<g id="a_clust14"><a xlink:href="#on_env" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="202,-621.6 202,-697.6 356,-697.6 356,-621.6 202,-621.6"/>
+<text text-anchor="middle" x="279" y="-682.4" font-family="inherit" font-size="14.00">on_env</text>
+</a>
+</g>
+</g>
+<g id="clust12" class="cluster">
+<title>cluster_populate_page_2</title>
+<g id="a_clust12"><a xlink:title=" ">
+<polygon fill="#dddddd" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.400000" points="292,-821.2 292,-896.2 404,-896.2 404,-821.2 292,-821.2"/>
+<text text-anchor="middle" x="348" y="-881" font-family="inherit" font-size="14.00">populate_page</text>
+</a>
+</g>
+</g>
+<g id="clust13" class="cluster">
+<title>cluster_populate_page_3</title>
+<g id="a_clust13"><a xlink:title=" ">
+<polygon fill="#dddddd" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.400000" points="312,-737.7 312,-812.7 424,-812.7 424,-737.7 312,-737.7"/>
+<text text-anchor="middle" x="368" y="-797.5" font-family="inherit" font-size="14.00">populate_page</text>
+</a>
+</g>
+</g>
+<g id="clust15" class="cluster">
+<title>cluster_build_page</title>
+<g id="a_clust15"><a xlink:title=" ">
+<polygon fill="#dddddd" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.400000" points="16,-234.6 16,-613.6 398,-613.6 398,-234.6 16,-234.6"/>
+<text text-anchor="middle" x="207" y="-598.4" font-family="inherit" font-size="14.00">build_page</text>
+</a>
+</g>
+</g>
+<g id="clust16" class="cluster">
+<title>cluster_on_page_context</title>
+<g id="a_clust16"><a xlink:href="#on_page_context" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="166,-454.6 166,-530.6 390,-530.6 390,-454.6 166,-454.6"/>
+<text text-anchor="middle" x="278" y="-515.4" font-family="inherit" font-size="14.00">on_page_context</text>
+</a>
+</g>
+</g>
+<g id="clust17" class="cluster">
+<title>cluster_on_post_page</title>
+<g id="a_clust17"><a xlink:href="#on_post_page" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="109,-306.6 109,-382.6 291,-382.6 291,-306.6 109,-306.6"/>
+<text text-anchor="middle" x="200" y="-367.4" font-family="inherit" font-size="14.00">on_post_page</text>
+</a>
+</g>
+</g>
+<g id="clust18" class="cluster">
+<title>cluster_build_page_2</title>
+<g id="a_clust18"><a xlink:title=" ">
+<polygon fill="#dddddd" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.400000" points="406,-538.6 406,-613.6 493,-613.6 493,-538.6 406,-538.6"/>
+<text text-anchor="middle" x="449.5" y="-598.4" font-family="inherit" font-size="14.00">build_page</text>
+</a>
+</g>
+</g>
+<g id="clust19" class="cluster">
+<title>cluster_build_page_3</title>
+<g id="a_clust19"><a xlink:title=" ">
+<polygon fill="#dddddd" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.400000" points="411,-455.1 411,-530.1 498,-530.1 498,-455.1 411,-455.1"/>
+<text text-anchor="middle" x="454.5" y="-514.9" font-family="inherit" font-size="14.00">build_page</text>
+</a>
+</g>
+</g>
+<g id="clust20" class="cluster">
+<title>cluster_on_post_build</title>
+<g id="a_clust20"><a xlink:href="#on_post_build" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="95,-150.6 95,-226.6 202,-226.6 202,-150.6 95,-150.6"/>
+<text text-anchor="middle" x="148.5" y="-211.4" font-family="inherit" font-size="14.00">on_post_build</text>
+</a>
+</g>
+</g>
+<g id="clust21" class="cluster">
+<title>cluster_on_serve</title>
+<g id="a_clust21"><a xlink:href="#on_serve" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="84,-58.6 84,-134.6 212,-134.6 212,-58.6 84,-58.6"/>
+<text text-anchor="middle" x="148" y="-119.4" font-family="inherit" font-size="14.00">on_serve</text>
+</a>
+</g>
+</g>
+<g id="clust22" class="cluster">
+<title>cluster_on_shutdown</title>
+<g id="a_clust22"><a xlink:href="#on_shutdown" xlink:title=" ">
+<polygon fill="#ffff33" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.533333" points="102,-8 102,-50.6 206,-50.6 206,-8 102,-8"/>
+<text text-anchor="middle" x="154" y="-35.4" font-family="inherit" font-size="14.00">on_shutdown</text>
+</a>
+</g>
+</g>
+<!-- on_startup -->
+<g id="node1" class="node">
+<title>on_startup</title>
+<g id="a_node1"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="207,-1702.3 207,-1738.3 333,-1738.3 333,-1702.3 207,-1702.3"/>
+<text text-anchor="middle" x="246.5" y="-1716.6" font-family="inherit" font-size="14.00">command</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="286,-1702.3 286,-1738.3"/>
+<text text-anchor="middle" x="309.5" y="-1716.6" font-family="inherit" font-size="14.00">dirty</text>
+</a>
+</g>
+</g>
+<!-- load_config -->
+<g id="node6" class="node">
+<title>load_config</title>
+<g id="a_node6"><a xlink:title=" ">
+<ellipse fill="#77ff77" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.600000" cx="270" cy="-1636.8" rx="59.29" ry="18"/>
+<text text-anchor="middle" x="270" y="-1633.1" font-family="inherit" font-size="14.00">load_config</text>
+</a>
+</g>
+</g>
+<!-- on_startup&#45;&gt;load_config -->
+<!-- on_config -->
+<g id="node2" class="node">
+<title>on_config</title>
+<g id="a_node2"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="242,-1543.3 242,-1579.3 298,-1579.3 298,-1543.3 242,-1543.3"/>
+<text text-anchor="middle" x="270" y="-1557.6" font-family="inherit" font-size="14.00">config</text>
+</a>
+</g>
+</g>
+<!-- on_pre_build -->
+<g id="node3" class="node">
+<title>on_pre_build</title>
+<g id="a_node3"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="196,-1459.3 196,-1495.3 252,-1495.3 252,-1459.3 196,-1459.3"/>
+<text text-anchor="middle" x="224" y="-1473.6" font-family="inherit" font-size="14.00">config</text>
+</a>
+</g>
+</g>
+<!-- on_config&#45;&gt;on_pre_build -->
+<g id="edge2" class="edge">
+<title>on_config:s&#45;&gt;on_pre_build:n</title>
+<g id="a_edge2"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M270,-1542.3C270,-1536.71 242.48,-1516.57 230.01,-1504.39"/>
+<polygon fill="black" stroke="black" points="232.77,-1502.24 224,-1496.3 227.16,-1506.41 232.77,-1502.24"/>
+</a>
+</g>
+</g>
+<!-- get_files -->
+<g id="node7" class="node">
+<title>get_files</title>
+<g id="a_node7"><a xlink:title=" ">
+<ellipse fill="#77ff77" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.600000" cx="316" cy="-1477.3" rx="46.29" ry="18"/>
+<text text-anchor="middle" x="316" y="-1473.6" font-family="inherit" font-size="14.00">get_files</text>
+</a>
+</g>
+</g>
+<!-- on_config&#45;&gt;get_files -->
+<g id="edge3" class="edge">
+<title>on_config:s&#45;&gt;get_files</title>
+<g id="a_edge3"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M270,-1542.3C270,-1526.62 279.21,-1512.16 289.39,-1500.97"/>
+<polygon fill="black" stroke="black" points="291.96,-1503.34 296.49,-1493.76 286.98,-1498.43 291.96,-1503.34"/>
+</a>
+</g>
+</g>
+<!-- on_files -->
+<g id="node4" class="node">
+<title>on_files</title>
+<g id="a_node4"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="234.5,-1375.3 234.5,-1411.3 333.5,-1411.3 333.5,-1375.3 234.5,-1375.3"/>
+<text text-anchor="middle" x="256" y="-1389.6" font-family="inherit" font-size="14.00">files</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="277.5,-1375.3 277.5,-1411.3"/>
+<text text-anchor="middle" x="305.5" y="-1389.6" font-family="inherit" font-size="14.00">config</text>
+</a>
+</g>
+</g>
+<!-- on_pre_build&#45;&gt;on_files -->
+<!-- on_nav -->
+<g id="node5" class="node">
+<title>on_nav</title>
+<g id="a_node5"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="189.5,-1227.3 189.5,-1263.3 326.5,-1263.3 326.5,-1227.3 189.5,-1227.3"/>
+<text text-anchor="middle" x="208.5" y="-1241.6" font-family="inherit" font-size="14.00">nav</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="227.5,-1227.3 227.5,-1263.3"/>
+<text text-anchor="middle" x="255.5" y="-1241.6" font-family="inherit" font-size="14.00">config</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="283.5,-1227.3 283.5,-1263.3"/>
+<text text-anchor="middle" x="305" y="-1241.6" font-family="inherit" font-size="14.00">files</text>
+</a>
+</g>
+</g>
+<!-- on_files&#45;&gt;on_nav -->
+<g id="edge7" class="edge">
+<title>on_files:s&#45;&gt;on_nav:n</title>
+<g id="a_edge7"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M256,-1374.3C256,-1352.14 280.73,-1358.43 291,-1338.8 304.91,-1312.21 305.15,-1300.61 305.03,-1274.59"/>
+<polygon fill="black" stroke="black" points="308.53,-1274.29 305,-1264.3 301.53,-1274.31 308.53,-1274.29"/>
+</a>
+</g>
+</g>
+<!-- get_nav -->
+<g id="node8" class="node">
+<title>get_nav</title>
+<g id="a_node8"><a xlink:title=" ">
+<ellipse fill="#77ff77" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.600000" cx="216" cy="-1320.8" rx="43.59" ry="18"/>
+<text text-anchor="middle" x="216" y="-1317.1" font-family="inherit" font-size="14.00">get_nav</text>
+</a>
+</g>
+</g>
+<!-- on_files&#45;&gt;get_nav -->
+<g id="edge5" class="edge">
+<title>on_files:s&#45;&gt;get_nav</title>
+<g id="a_edge5"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M256,-1374.3C256,-1363.19 250.26,-1352.96 243.12,-1344.54"/>
+<polygon fill="black" stroke="black" points="245.43,-1341.88 236,-1337.05 240.36,-1346.71 245.43,-1341.88"/>
+</a>
+</g>
+</g>
+<!-- render_p -->
+<g id="node13" class="node">
+<title>render_p</title>
+<g id="a_node13"><a xlink:title=" ">
+<ellipse fill="#77ff77" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.600000" cx="88" cy="-847.2" rx="38.19" ry="18"/>
+<text text-anchor="middle" x="88" y="-843.5" font-family="inherit" font-size="14.00">render</text>
+</a>
+</g>
+</g>
+<!-- on_nav&#45;&gt;render_p -->
+<!-- pages_point_a -->
+<g id="node14" class="node">
+<title>pages_point_a</title>
+<g id="a_node14"><a xlink:title=" ">
+<ellipse fill="black" stroke="black" cx="305" cy="-1189" rx="1.8" ry="1.8"/>
+</a>
+</g>
+</g>
+<!-- on_nav&#45;&gt;pages_point_a -->
+<g id="edge12" class="edge">
+<title>on_nav:s&#45;&gt;pages_point_a</title>
+<g id="a_edge12"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M305,-1226.3C305,-1212.18 305,-1194.98 305,-1190.9"/>
+</a>
+</g>
+</g>
+<!-- get_context -->
+<g id="node22" class="node">
+<title>get_context</title>
+<g id="a_node22"><a xlink:title=" ">
+<ellipse fill="#77ff77" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.600000" cx="229" cy="-564.6" rx="61.19" ry="18"/>
+<text text-anchor="middle" x="229" y="-560.9" font-family="inherit" font-size="14.00">get_context</text>
+</a>
+</g>
+</g>
+<!-- on_nav&#45;&gt;get_context -->
+<g id="edge28" class="edge">
+<title>on_nav:s&#45;&gt;get_context</title>
+<g id="a_edge28"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M208,-1226.3C208,-1176.78 394.87,-1227.61 428,-1190.8 455.13,-1160.66 433,-1140.25 433,-1099.7 433,-1099.7 433,-1099.7 433,-706.4 433,-656.67 403.87,-645.02 360,-621.6 337.19,-609.42 324.79,-620.79 303.65,-616.51"/>
+<polygon fill="black" stroke="black" points="304.58,-613.13 294,-613.6 302.57,-619.84 304.58,-613.13"/>
+</a>
+</g>
+</g>
+<!-- load_config&#45;&gt;on_config -->
+<g id="edge1" class="edge">
+<title>load_config&#45;&gt;on_config:n</title>
+<g id="a_edge1"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M270,-1618.8C270,-1610.64 270,-1600.5 270,-1590.53"/>
+<polygon fill="black" stroke="black" points="273.5,-1590.3 270,-1580.3 266.5,-1590.3 273.5,-1590.3"/>
+</a>
+</g>
+</g>
+<!-- get_files&#45;&gt;on_files -->
+<g id="edge4" class="edge">
+<title>get_files&#45;&gt;on_files:n</title>
+<g id="a_edge4"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M290.55,-1462.16C276.88,-1452.84 261.92,-1439.27 257.38,-1422.52"/>
+<polygon fill="black" stroke="black" points="260.81,-1421.74 256,-1412.3 253.87,-1422.68 260.81,-1421.74"/>
+</a>
+</g>
+</g>
+<!-- get_nav&#45;&gt;on_nav -->
+<g id="edge6" class="edge">
+<title>get_nav&#45;&gt;on_nav:n</title>
+<g id="a_edge6"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M212.19,-1302.4C210.66,-1294.31 209.09,-1284.32 208.39,-1274.45"/>
+<polygon fill="black" stroke="black" points="211.88,-1274.16 208,-1264.3 204.88,-1274.43 211.88,-1274.16"/>
+</a>
+</g>
+</g>
+<!-- on_pre_page -->
+<g id="node9" class="node">
+<title>on_pre_page</title>
+<g id="a_node9"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="88.5,-1080.7 88.5,-1116.7 235.5,-1116.7 235.5,-1080.7 88.5,-1080.7"/>
+<text text-anchor="middle" x="112.5" y="-1095" font-family="inherit" font-size="14.00">page</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="136.5,-1080.7 136.5,-1116.7"/>
+<text text-anchor="middle" x="164.5" y="-1095" font-family="inherit" font-size="14.00">config</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="192.5,-1080.7 192.5,-1116.7"/>
+<text text-anchor="middle" x="214" y="-1095" font-family="inherit" font-size="14.00">files</text>
+</a>
+</g>
+</g>
+<!-- on_page_read_source -->
+<g id="node10" class="node">
+<title>on_page_read_source</title>
+<g id="a_node10"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="72,-996.7 72,-1032.7 176,-1032.7 176,-996.7 72,-996.7"/>
+<text text-anchor="middle" x="96" y="-1011" font-family="inherit" font-size="14.00">page</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="120,-996.7 120,-1032.7"/>
+<text text-anchor="middle" x="148" y="-1011" font-family="inherit" font-size="14.00">config</text>
+</a>
+</g>
+</g>
+<!-- on_pre_page&#45;&gt;on_page_read_source -->
+<g id="edge8" class="edge">
+<title>on_pre_page:s&#45;&gt;on_page_read_source:n</title>
+<g id="a_edge8"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M112,-1079.7C112,-1061.94 101.23,-1056.93 97.36,-1043.75"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="100.81,-1043.14 96,-1033.7 93.88,-1044.08 100.81,-1043.14"/>
+</a>
+</g>
+</g>
+<!-- on_page_markdown -->
+<g id="node11" class="node">
+<title>on_page_markdown</title>
+<g id="a_node11"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="37.5,-912.7 37.5,-948.7 268.5,-948.7 268.5,-912.7 37.5,-912.7"/>
+<text text-anchor="middle" x="79.5" y="-927" font-family="inherit" font-size="14.00">markdown</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="121.5,-912.7 121.5,-948.7"/>
+<text text-anchor="middle" x="145.5" y="-927" font-family="inherit" font-size="14.00">page</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="169.5,-912.7 169.5,-948.7"/>
+<text text-anchor="middle" x="197.5" y="-927" font-family="inherit" font-size="14.00">config</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="225.5,-912.7 225.5,-948.7"/>
+<text text-anchor="middle" x="247" y="-927" font-family="inherit" font-size="14.00">files</text>
+</a>
+</g>
+</g>
+<!-- on_page_read_source&#45;&gt;on_page_markdown -->
+<g id="edge9" class="edge">
+<title>on_page_read_source:s&#45;&gt;on_page_markdown:n</title>
+<g id="a_edge9"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M122.73,-988.2C116.55,-971.96 89.67,-974.03 81.42,-959.63"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="84.77,-958.59 79,-949.7 77.97,-960.24 84.77,-958.59"/>
+</a>
+</g>
+</g>
+<!-- on_page_markdown&#45;&gt;render_p -->
+<g id="edge10" class="edge">
+<title>on_page_markdown:s&#45;&gt;render_p</title>
+<g id="a_edge10"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M79,-911.7C79,-899.72 80.59,-886.59 82.43,-875.4"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="85.91,-875.82 84.24,-865.36 79.02,-874.58 85.91,-875.82"/>
+</a>
+</g>
+</g>
+<!-- on_page_content -->
+<g id="node12" class="node">
+<title>on_page_content</title>
+<g id="a_node12"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="74,-745.7 74,-781.7 268,-781.7 268,-745.7 74,-745.7"/>
+<text text-anchor="middle" x="97.5" y="-760" font-family="inherit" font-size="14.00">html</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="121,-745.7 121,-781.7"/>
+<text text-anchor="middle" x="145" y="-760" font-family="inherit" font-size="14.00">page</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="169,-745.7 169,-781.7"/>
+<text text-anchor="middle" x="197" y="-760" font-family="inherit" font-size="14.00">config</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="225,-745.7 225,-781.7"/>
+<text text-anchor="middle" x="246.5" y="-760" font-family="inherit" font-size="14.00">files</text>
+</a>
+</g>
+</g>
+<!-- pages_point_b -->
+<g id="node16" class="node">
+<title>pages_point_b</title>
+<g id="a_node16"><a xlink:title=" ">
+<ellipse fill="black" stroke="black" cx="326" cy="-707.4" rx="1.8" ry="1.8"/>
+</a>
+</g>
+</g>
+<!-- on_page_content&#45;&gt;pages_point_b -->
+<g id="edge19" class="edge">
+<title>on_page_content:s&#45;&gt;pages_point_b</title>
+<g id="a_edge19"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M97,-744.7C97,-722.45 267.86,-711.55 314.41,-709"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="314.73,-712.49 324.54,-708.47 314.37,-705.5 314.73,-712.49"/>
+</a>
+</g>
+</g>
+<!-- on_env -->
+<g id="node18" class="node">
+<title>on_env</title>
+<g id="a_node18"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="210.5,-630.1 210.5,-666.1 347.5,-666.1 347.5,-630.1 210.5,-630.1"/>
+<text text-anchor="middle" x="229.5" y="-644.4" font-family="inherit" font-size="14.00">env</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="248.5,-630.1 248.5,-666.1"/>
+<text text-anchor="middle" x="276.5" y="-644.4" font-family="inherit" font-size="14.00">config</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="304.5,-630.1 304.5,-666.1"/>
+<text text-anchor="middle" x="326" y="-644.4" font-family="inherit" font-size="14.00">files</text>
+</a>
+</g>
+</g>
+<!-- on_page_content&#45;&gt;on_env -->
+<!-- render_p&#45;&gt;on_page_content -->
+<g id="edge11" class="edge">
+<title>render_p&#45;&gt;on_page_content:n</title>
+<g id="a_edge11"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M91.76,-829.04C93.71,-819 95.85,-805.8 96.66,-792.91"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="100.16,-792.81 97,-782.7 93.17,-792.58 100.16,-792.81"/>
+</a>
+</g>
+</g>
+<!-- pages_point_a&#45;&gt;on_pre_page -->
+<g id="edge13" class="edge">
+<title>pages_point_a&#45;&gt;on_pre_page:n</title>
+<g id="a_edge13"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M303.35,-1187.97C295.87,-1187.77 264.43,-1186.52 240,-1179.2 183.09,-1162.14 119.89,-1178.63 112.68,-1127.97"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="116.15,-1127.45 112,-1117.7 109.17,-1127.91 116.15,-1127.45"/>
+</a>
+</g>
+</g>
+<!-- pages_point_a&#45;&gt;render_p -->
+<g id="edge14" class="edge">
+<title>pages_point_a&#45;&gt;render_p</title>
+<g id="a_edge14"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M304.65,-1187.19C304,-1185.67 302.63,-1182.23 302,-1179.2 290.63,-1124.31 314.02,-979.63 288.52,-918.91"/>
+<polygon fill="black" stroke="black" points="291.62,-917.28 284,-909.91 285.36,-920.42 291.62,-917.28"/>
+</a>
+</g>
+</g>
+<!-- placeholder_cluster_populate_page_2 -->
+<g id="node15" class="node">
+<title>placeholder_cluster_populate_page_2</title>
+<g id="a_node15"><a xlink:title=" ">
+<ellipse fill="none" stroke="none" cx="327" cy="-847.2" rx="27" ry="18"/>
+<text text-anchor="middle" x="327" y="-843.5" font-family="inherit" font-size="14.00">...</text>
+</a>
+</g>
+</g>
+<!-- pages_point_a&#45;&gt;placeholder_cluster_populate_page_2 -->
+<g id="edge15" class="edge">
+<title>pages_point_a&#45;&gt;placeholder_cluster_populate_page_2:n</title>
+<g id="a_edge15"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M305.1,-1187.2C306.53,-1175.36 323.3,-1034.9 326.48,-906.23"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="329.98,-906.27 326.7,-896.2 322.98,-906.12 329.98,-906.27"/>
+</a>
+</g>
+</g>
+<!-- placeholder_cluster_populate_page_3 -->
+<g id="node17" class="node">
+<title>placeholder_cluster_populate_page_3</title>
+<g id="a_node17"><a xlink:title=" ">
+<ellipse fill="none" stroke="none" cx="349" cy="-763.7" rx="27" ry="18"/>
+<text text-anchor="middle" x="349" y="-760" font-family="inherit" font-size="14.00">...</text>
+</a>
+</g>
+</g>
+<!-- pages_point_a&#45;&gt;placeholder_cluster_populate_page_3 -->
+<g id="edge17" class="edge">
+<title>pages_point_a&#45;&gt;placeholder_cluster_populate_page_3:n</title>
+<g id="a_edge17"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M306.14,-1187.29C308.27,-1185.92 312.92,-1182.74 316,-1179.2 371.44,-1115.44 413,-1100.19 413,-1015.7 413,-1015.7 413,-1015.7 413,-929.7 413,-881.43 431.96,-863.11 408,-821.2 407.81,-820.86 407.61,-820.54 407.41,-820.22"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="409.89,-817.74 400.58,-812.7 404.71,-822.45 409.89,-817.74"/>
+</a>
+</g>
+</g>
+<!-- placeholder_cluster_populate_page_2&#45;&gt;pages_point_b -->
+<g id="edge16" class="edge">
+<title>placeholder_cluster_populate_page_2:s&#45;&gt;pages_point_b</title>
+<g id="a_edge16"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M322.03,-821.2C317.43,-819.39 310.89,-819.17 308,-813.2 291.72,-779.6 294.96,-764.18 308,-729.2 309.91,-724.06 313.73,-719.35 317.36,-715.72"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="319.79,-718.24 325.08,-709.06 315.22,-712.94 319.79,-718.24"/>
+</a>
+</g>
+</g>
+<!-- placeholder_cluster_populate_page_2&#45;&gt;placeholder_cluster_populate_page_3 -->
+<!-- pages_point_b&#45;&gt;on_env -->
+<g id="edge20" class="edge">
+<title>pages_point_b&#45;&gt;on_env:n</title>
+<g id="a_edge20"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M326,-705.43C326,-701.98 326,-689.85 326,-677.43"/>
+<polygon fill="black" stroke="black" points="329.5,-677.1 326,-667.1 322.5,-677.1 329.5,-677.1"/>
+</a>
+</g>
+</g>
+<!-- pages_point_c -->
+<g id="node19" class="node">
+<title>pages_point_c</title>
+<g id="a_node19"><a xlink:title=" ">
+<ellipse fill="black" stroke="black" cx="454" cy="-648.1" rx="1.8" ry="1.8"/>
+</a>
+</g>
+</g>
+<!-- pages_point_b&#45;&gt;pages_point_c -->
+<g id="edge21" class="edge">
+<title>pages_point_b&#45;&gt;pages_point_c</title>
+<g id="a_edge21"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M327.33,-706.17C331.95,-705.33 347.7,-702.3 360,-697.6 399.8,-682.4 444.66,-654.92 452.73,-649.9"/>
+</a>
+</g>
+</g>
+<!-- placeholder_cluster_populate_page_3&#45;&gt;pages_point_b -->
+<g id="edge18" class="edge">
+<title>placeholder_cluster_populate_page_3:s&#45;&gt;pages_point_b</title>
+<g id="a_edge18"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M348.02,-737.7C345.7,-729.17 339.67,-721.46 334.5,-716.09"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="336.72,-713.38 326.99,-709.18 331.97,-718.53 336.72,-713.38"/>
+</a>
+</g>
+</g>
+<!-- on_env&#45;&gt;get_context -->
+<g id="edge29" class="edge">
+<title>on_env:s&#45;&gt;get_context</title>
+<g id="a_edge29"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M229,-629.1C229,-627.37 229,-625.62 229,-623.85"/>
+<polygon fill="black" stroke="black" points="232.5,-623.6 229,-613.6 225.5,-623.6 232.5,-623.6"/>
+</a>
+</g>
+</g>
+<!-- on_page_context -->
+<g id="node20" class="node">
+<title>on_page_context</title>
+<g id="a_node20"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="174.5,-463.1 174.5,-499.1 381.5,-499.1 381.5,-463.1 174.5,-463.1"/>
+<text text-anchor="middle" x="207" y="-477.4" font-family="inherit" font-size="14.00">context</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="239.5,-463.1 239.5,-499.1"/>
+<text text-anchor="middle" x="263.5" y="-477.4" font-family="inherit" font-size="14.00">page</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="287.5,-463.1 287.5,-499.1"/>
+<text text-anchor="middle" x="315.5" y="-477.4" font-family="inherit" font-size="14.00">config</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="343.5,-463.1 343.5,-499.1"/>
+<text text-anchor="middle" x="362.5" y="-477.4" font-family="inherit" font-size="14.00">nav</text>
+</a>
+</g>
+</g>
+<!-- pages_point_c&#45;&gt;on_page_context -->
+<g id="edge22" class="edge">
+<title>pages_point_c&#45;&gt;on_page_context:n</title>
+<g id="a_edge22"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M453.63,-645.9C452.27,-641.79 447.22,-628.11 438,-621.6 424.61,-612.15 415.2,-623.31 402,-613.6 371.05,-590.83 387.99,-563.81 359,-538.6 327.29,-511.03 273.34,-540.1 264.3,-510.2"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="267.75,-509.57 263,-500.1 260.81,-510.47 267.75,-509.57"/>
+</a>
+</g>
+</g>
+<!-- pages_point_c&#45;&gt;get_context -->
+<!-- placeholder_cluster_build_page_2 -->
+<g id="node26" class="node">
+<title>placeholder_cluster_build_page_2</title>
+<g id="a_node26"><a xlink:title=" ">
+<ellipse fill="none" stroke="none" cx="455" cy="-564.6" rx="27" ry="18"/>
+<text text-anchor="middle" x="455" y="-560.9" font-family="inherit" font-size="14.00">...</text>
+</a>
+</g>
+</g>
+<!-- pages_point_c&#45;&gt;placeholder_cluster_build_page_2 -->
+<g id="edge30" class="edge">
+<title>pages_point_c&#45;&gt;placeholder_cluster_build_page_2:n</title>
+<g id="a_edge30"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M454.02,-646.2C454.1,-643.5 454.33,-634.89 454.54,-623.84"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="458.05,-623.66 454.72,-613.6 451.05,-623.53 458.05,-623.66"/>
+</a>
+</g>
+</g>
+<!-- placeholder_cluster_build_page_3 -->
+<g id="node27" class="node">
+<title>placeholder_cluster_build_page_3</title>
+<g id="a_node27"><a xlink:title=" ">
+<ellipse fill="none" stroke="none" cx="459" cy="-481.1" rx="27" ry="18"/>
+<text text-anchor="middle" x="459" y="-477.4" font-family="inherit" font-size="14.00">...</text>
+</a>
+</g>
+</g>
+<!-- pages_point_c&#45;&gt;placeholder_cluster_build_page_3 -->
+<g id="edge31" class="edge">
+<title>pages_point_c&#45;&gt;placeholder_cluster_build_page_3:n</title>
+<g id="a_edge31"><a xlink:title=" ">
+<path fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="5,2" d="M455.41,-646.55C461.75,-644.01 487.69,-632.65 497,-613.6 511.63,-583.65 509.66,-569.44 497,-538.6 496.96,-538.49 496.91,-538.38 496.86,-538.27"/>
+<polygon fill="black" stroke="black" stroke-width="1.5" points="499.88,-536.48 491.42,-530.1 494.05,-540.36 499.88,-536.48"/>
+</a>
+</g>
+</g>
+<!-- render -->
+<g id="node23" class="node">
+<title>render</title>
+<g id="a_node23"><a xlink:title=" ">
+<ellipse fill="#77ff77" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.600000" cx="148" cy="-408.6" rx="38.19" ry="18"/>
+<text text-anchor="middle" x="148" y="-404.9" font-family="inherit" font-size="14.00">render</text>
+</a>
+</g>
+</g>
+<!-- on_page_context&#45;&gt;render -->
+<g id="edge24" class="edge">
+<title>on_page_context:s&#45;&gt;render</title>
+<g id="a_edge24"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M207,-462.1C207,-447.17 196.33,-435.45 184.06,-426.9"/>
+<polygon fill="black" stroke="black" points="185.76,-423.83 175.43,-421.49 182.04,-429.76 185.76,-423.83"/>
+</a>
+</g>
+</g>
+<!-- on_post_page -->
+<g id="node21" class="node">
+<title>on_post_page</title>
+<g id="a_node21"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="117,-315.1 117,-351.1 283,-351.1 283,-315.1 117,-315.1"/>
+<text text-anchor="middle" x="148" y="-329.4" font-family="inherit" font-size="14.00">output</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="179,-315.1 179,-351.1"/>
+<text text-anchor="middle" x="203" y="-329.4" font-family="inherit" font-size="14.00">page</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="227,-315.1 227,-351.1"/>
+<text text-anchor="middle" x="255" y="-329.4" font-family="inherit" font-size="14.00">config</text>
+</a>
+</g>
+</g>
+<!-- write_file -->
+<g id="node25" class="node">
+<title>write_file</title>
+<g id="a_node25"><a xlink:title=" ">
+<ellipse fill="#77ff77" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.600000" cx="148" cy="-260.6" rx="50.09" ry="18"/>
+<text text-anchor="middle" x="148" y="-256.9" font-family="inherit" font-size="14.00">write_file</text>
+</a>
+</g>
+</g>
+<!-- on_post_page&#45;&gt;write_file -->
+<g id="edge27" class="edge">
+<title>on_post_page:s&#45;&gt;write_file</title>
+<g id="a_edge27"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M148,-314.1C148,-305.86 148,-296.9 148,-288.74"/>
+<polygon fill="black" stroke="black" points="151.5,-288.62 148,-278.62 144.5,-288.62 151.5,-288.62"/>
+</a>
+</g>
+</g>
+<!-- get_context&#45;&gt;on_page_context -->
+<g id="edge23" class="edge">
+<title>get_context&#45;&gt;on_page_context:n</title>
+<g id="a_edge23"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M219.67,-546.63C214.89,-536.68 209.68,-523.49 207.76,-510.21"/>
+<polygon fill="black" stroke="black" points="211.24,-509.81 207,-500.1 204.26,-510.34 211.24,-509.81"/>
+</a>
+</g>
+</g>
+<!-- render&#45;&gt;on_post_page -->
+<g id="edge26" class="edge">
+<title>render&#45;&gt;on_post_page:n</title>
+<g id="a_edge26"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M148,-390.6C148,-382.44 148,-372.3 148,-362.33"/>
+<polygon fill="black" stroke="black" points="151.5,-362.1 148,-352.1 144.5,-362.1 151.5,-362.1"/>
+</a>
+</g>
+</g>
+<!-- get_template -->
+<g id="node24" class="node">
+<title>get_template</title>
+<g id="a_node24"><a xlink:title=" ">
+<ellipse fill="#77ff77" fill-opacity="0.533333" stroke="#000000" stroke-opacity="0.600000" cx="90" cy="-481.1" rx="66.09" ry="18"/>
+<text text-anchor="middle" x="90" y="-477.4" font-family="inherit" font-size="14.00">get_template</text>
+</a>
+</g>
+</g>
+<!-- get_template&#45;&gt;render -->
+<g id="edge25" class="edge">
+<title>get_template&#45;&gt;render</title>
+<g id="a_edge25"><a xlink:title=" ">
+<path fill="none" stroke="black" d="M103.75,-463.39C111.07,-454.49 120.22,-443.37 128.29,-433.56"/>
+<polygon fill="black" stroke="black" points="131.1,-435.65 134.75,-425.7 125.7,-431.2 131.1,-435.65"/>
+</a>
+</g>
+</g>
+<!-- on_post_build -->
+<g id="node28" class="node">
+<title>on_post_build</title>
+<g id="a_node28"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="120,-159.1 120,-195.1 176,-195.1 176,-159.1 120,-159.1"/>
+<text text-anchor="middle" x="148" y="-173.4" font-family="inherit" font-size="14.00">config</text>
+</a>
+</g>
+</g>
+<!-- write_file&#45;&gt;on_post_build -->
+<!-- placeholder_cluster_build_page_2&#45;&gt;placeholder_cluster_build_page_3 -->
+<!-- on_serve -->
+<g id="node29" class="node">
+<title>on_serve</title>
+<g id="a_node29"><a xlink:title=" ">
+<polygon fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" points="92,-67.1 92,-103.1 204,-103.1 204,-67.1 92,-67.1"/>
+<text text-anchor="middle" x="120" y="-81.4" font-family="inherit" font-size="14.00">server</text>
+<polyline fill="none" stroke="#000000" stroke-opacity="0.600000" points="148,-67.1 148,-103.1"/>
+<text text-anchor="middle" x="176" y="-81.4" font-family="inherit" font-size="14.00">config</text>
+</a>
+</g>
+</g>
+<!-- on_post_build&#45;&gt;on_serve -->
+<!-- on_shutdown -->
+<g id="node30" class="node">
+<title>on_shutdown</title>
+<g id="a_node30"><a xlink:title=" ">
+<ellipse fill="#ffffff" fill-opacity="0.333333" stroke="#000000" stroke-opacity="0.600000" cx="148" cy="-17.8" rx="1.8" ry="1.8"/>
+</a>
+</g>
+</g>
+<!-- on_serve&#45;&gt;on_shutdown -->
+</g>
+</svg>
+
+  </div>
+</details>
+
+<h4 id="one-time-events">One-time Events<a class="headerlink" href="#one-time-events" title="Permanent link"></a></h4>
+<p>One-time events run once per <code>mkdocs</code> invocation. The only case where these tangibly differ from <a href="#global-events">global events</a> is for <code>mkdocs serve</code>: global events, unlike these, will run multiple times -- once per <em>build</em>.</p>
+<h5 id="on_startup">on_startup<a class="headerlink" href="#on_startup" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>startup</code> event runs once at the very beginning of an <code>mkdocs</code> invocation.</p>
+<p>New in MkDocs 1.4.</p>
+<p>The presence of an <code>on_startup</code> method (even if empty) migrates the plugin to the new
+system where the plugin object is kept across builds within one <code>mkdocs serve</code>.</p>
+<p>Note that for initializing variables, the <code>__init__</code> method is still preferred.
+For initializing per-build variables (and whenever in doubt), use the <code>on_config</code> event.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>command</code></b>
+              (<code><span title="typing.Literal">Literal</span>[&#39;build&#39;, &#39;gh-deploy&#39;, &#39;serve&#39;]</code>)
+          –
+          <div class="doc-md-description">
+            <p>the command that MkDocs was invoked with, e.g. "serve" for <code>mkdocs serve</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>dirty</code></b>
+              (<code><span title="bool">bool</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>whether <code>--dirty</code> flag was passed.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_shutdown">on_shutdown<a class="headerlink" href="#on_shutdown" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>shutdown</code> event runs once at the very end of an <code>mkdocs</code> invocation, before exiting.</p>
+<p>This event is relevant only for support of <code>mkdocs serve</code>, otherwise within a
+single build it's undistinguishable from <code>on_post_build</code>.</p>
+<p>New in MkDocs 1.4.</p>
+<p>The presence of an <code>on_shutdown</code> method (even if empty) migrates the plugin to the new
+system where the plugin object is kept across builds within one <code>mkdocs serve</code>.</p>
+<p>Note the <code>on_post_build</code> method is still preferred for cleanups, when possible, as it has
+a much higher chance of actually triggering. <code>on_shutdown</code> is "best effort" because it
+relies on detecting a graceful shutdown of MkDocs.</p>
+
+
+    </div>
+
+</div><h5 id="on_serve">on_serve<a class="headerlink" href="#on_serve" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>serve</code> event is only called when the <code>serve</code> command is used during
+development. It runs only once, after the first build finishes.
+It is passed the <code>Server</code> instance which can be modified before
+it is activated. For example, additional files or directories could be added
+to the list of "watched" files for auto-reloading.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>server</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.livereload.LiveReloadServer" href="../api/#mkdocs.livereload.LiveReloadServer">LiveReloadServer</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><code>livereload.Server</code> instance</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>builder</code></b>
+              (<code><span title="collections.abc.Callable">Callable</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>a callable which gets passed to each call to <code>server.watch</code></p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="mkdocs.livereload.LiveReloadServer" href="../api/#mkdocs.livereload.LiveReloadServer">LiveReloadServer</a> | None</code>
+          –
+          <div class="doc-md-description">
+            <p><code>livereload.Server</code> instance</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h4 id="global-events">Global Events<a class="headerlink" href="#global-events" title="Permanent link"></a></h4>
+<p>Global events are called once per build at either the beginning or end of the
+build process. Any changes made in these events will have a global effect on the
+entire site.</p>
+<h5 id="on_config">on_config<a class="headerlink" href="#on_config" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>config</code> event is the first event called on build and is run immediately
+after the user configuration is loaded and validated. Any alterations to the
+config should be made here.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_pre_build">on_pre_build<a class="headerlink" href="#on_pre_build" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>pre_build</code> event does not alter any variables. Use this event to call
+pre-build scripts.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_files">on_files<a class="headerlink" href="#on_files" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>files</code> event is called after the files collection is populated from the
+<code>docs_dir</code>. Use this event to add, remove, or alter files in the
+collection. Note that Page objects have not yet been associated with the
+file objects in the collection. Use <a href="./#page-events">Page Events</a> to manipulate page
+specific data.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>files</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.files.Files" href="../api/#mkdocs.structure.files.Files">Files</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>global files collection</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="mkdocs.structure.files.Files" href="../api/#mkdocs.structure.files.Files">Files</a> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>global files collection</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_nav">on_nav<a class="headerlink" href="#on_nav" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>nav</code> event is called after the site navigation is created and can
+be used to alter the site navigation.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>nav</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.nav.Navigation" href="../themes/#mkdocs.structure.nav.Navigation">Navigation</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>global navigation object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>files</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.files.Files" href="../api/#mkdocs.structure.files.Files">Files</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>global files collection</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="mkdocs.structure.nav.Navigation" href="../themes/#mkdocs.structure.nav.Navigation">Navigation</a> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>global navigation object</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_env">on_env<a class="headerlink" href="#on_env" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>env</code> event is called after the Jinja template environment is created
+and can be used to alter the
+<a href="https://jinja.palletsprojects.com/en/latest/api/#jinja2.Environment" rel="external">Jinja environment</a>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>env</code></b>
+              (<code><span title="jinja2.Environment">Environment</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global Jinja environment</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>files</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.files.Files" href="../api/#mkdocs.structure.files.Files">Files</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>global files collection</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="jinja2.Environment">Environment</span> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>global Jinja Environment</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_post_build">on_post_build<a class="headerlink" href="#on_post_build" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>post_build</code> event does not alter any variables. Use this event to call
+post-build scripts.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_build_error">on_build_error<a class="headerlink" href="#on_build_error" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>build_error</code> event is called after an exception of any kind
+is caught by MkDocs during the build process.
+Use this event to clean things up before MkDocs terminates. Note that any other
+events which were scheduled to run after the error will have been skipped. See
+<a href="./#handling-errors">Handling Errors</a> for more details.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>error</code></b>
+              (<code><span title="Exception">Exception</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>exception raised</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h4 id="template-events">Template Events<a class="headerlink" href="#template-events" title="Permanent link"></a></h4>
+<p>Template events are called once for each non-page template. Each template event
+will be called for each template defined in the <a href="../../user-guide/configuration/#extra_templates">extra_templates</a> config setting
+as well as any <a href="../../user-guide/configuration/#static_templates">static_templates</a> defined in the theme. All template events are
+called after the <a href="#on_env">env</a> event and before any <a href="#page-events">page events</a>.</p>
+<h5 id="on_pre_template">on_pre_template<a class="headerlink" href="#on_pre_template" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>pre_template</code> event is called immediately after the subject template is
+loaded and can be used to alter the template.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>template</code></b>
+              (<code><span title="jinja2.Template">Template</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>a Jinja2 <a href="https://jinja.palletsprojects.com/en/latest/api/#jinja2.Template" rel="external">Template</a> object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>template_name</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>string filename of template</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="jinja2.Template">Template</span> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>a Jinja2 <a href="https://jinja.palletsprojects.com/en/latest/api/#jinja2.Template" rel="external">Template</a> object</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_template_context">on_template_context<a class="headerlink" href="#on_template_context" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>template_context</code> event is called immediately after the context is created
+for the subject template and can be used to alter the context for that specific
+template only.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>context</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.utils.templates.TemplateContext" href="../api/#mkdocs.utils.templates.TemplateContext">TemplateContext</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>dict of template context variables</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>template_name</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>string filename of template</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="mkdocs.utils.templates.TemplateContext" href="../api/#mkdocs.utils.templates.TemplateContext">TemplateContext</a> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>dict of template context variables</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_post_template">on_post_template<a class="headerlink" href="#on_post_template" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>post_template</code> event is called after the template is rendered, but before
+it is written to disc and can be used to alter the output of the template.
+If an empty string is returned, the template is skipped and nothing is is
+written to disc.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>output_content</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>output of rendered template as string</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>template_name</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>string filename of template</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="str">str</span> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>output of rendered template as string</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h4 id="page-events">Page Events<a class="headerlink" href="#page-events" title="Permanent link"></a></h4>
+<p>Page events are called once for each Markdown page included in the site. All
+page events are called after the <a href="#on_post_template">post_template</a> event and before the
+<a href="#on_post_build">post_build</a> event.</p>
+<div class="admonition note">
+<p class="admonition-title">New in version 1.11:</p>
+<p> during <code>mkdocs serve</code>, a rebuild may reuse the
+HTML of a page whose Markdown (after <code>on_page_markdown</code>), extensions and URL
+are unchanged, and whose links still point to the same files, instead of
+converting it again. Every page event
+still runs, with the same values. This only happens when every Markdown
+extension is known to depend on nothing else: it is on MkDocs' own list (the
+extensions of Python-Markdown and most of PyMdown Extensions), or it says so
+itself. An extension that a plugin adds to <code>config.markdown_extensions</code> turns
+the reuse off, unless it says so too.</p>
+</div>
+<p>An extension says so with <code>mkdocs_cacheable = True</code>, on its Extension class
+or, when it is loaded by module name, on its module. Only set it when the HTML
+depends on nothing but the page's Markdown and the extension's config: no other
+files, no state kept from one page to the next, and nothing a plugin reads from
+the extension after the conversion.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyExtension</span><span class="p">(</span><span class="n">markdown</span><span class="o">.</span><span class="n">Extension</span><span class="p">):</span>
+    <span class="n">mkdocs_cacheable</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">New in version 1.11:</p>
+<p> during <code>mkdocs serve</code>, a rebuild may also reuse
+the theme's HTML of a page whose template context didn't change, instead of
+rendering the template again (see
+<a href="../themes/#rendering-pages-during-mkdocs-serve">Rendering pages during <code>mkdocs serve</code></a>).
+The <code>page_context</code> and <code>post_page</code> events still run for every page. A plugin
+that passes something to the template through an object MkDocs can't compare,
+such as an instance of its own class, turns the reuse off for that page. When
+no plugin has a <code>post_page</code> event and the file already holds the HTML, it isn't
+written again.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">New in version 1.11:</p>
+<p> during <code>mkdocs serve</code>, the site directory isn't
+emptied before a rebuild. Files written with <code>mkdocs.utils.write_file</code> or copied
+as a <code>File</code> are left alone when their content didn't change, and the ones that
+the rebuild doesn't produce any more are removed after the <code>post_build</code> event.
+Files that a plugin writes another way are never removed, so a plugin that
+writes files with a name that changes from one build to the next should use
+<code>mkdocs.utils.write_file</code>.</p>
+</div>
+<h5 id="on_pre_page">on_pre_page<a class="headerlink" href="#on_pre_page" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>pre_page</code> event is called before any actions are taken on the subject
+page and can be used to alter the <code>Page</code> instance.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>page</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.pages.Page" href="../themes/#mkdocs.structure.pages.Page">Page</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><code>mkdocs.structure.pages.Page</code> instance</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>files</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.files.Files" href="../api/#mkdocs.structure.files.Files">Files</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>global files collection</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="mkdocs.structure.pages.Page" href="../themes/#mkdocs.structure.pages.Page">Page</a> | None</code>
+          –
+          <div class="doc-md-description">
+            <p><code>mkdocs.structure.pages.Page</code> instance</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_page_read_source">on_page_read_source<a class="headerlink" href="#on_page_read_source" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <div class="admonition deprecated">
+<p class="admonition-title">Deprecated</p>
+<p>Instead of this event, prefer one of these alternatives:</p>
+<ul>
+<li>Since MkDocs 1.6, instead set <code>content_bytes</code>/<code>content_string</code> of a <code>File</code> inside <a class="autorefs autorefs-internal" href="#on_files"><code>on_files</code></a>.</li>
+<li>Usually (although it's not an exact alternative), <code>on_page_markdown</code> can serve the same purpose.</li>
+</ul>
+</div>
+<p>The <code>on_page_read_source</code> event can replace the default mechanism to read
+the contents of a page's source from the filesystem.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>page</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.pages.Page" href="../themes/#mkdocs.structure.pages.Page">Page</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><code>mkdocs.structure.pages.Page</code> instance</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="str">str</span> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>The raw source for a page as unicode string. If <code>None</code> is returned, the
+default loading from a file will be performed.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_page_markdown">on_page_markdown<a class="headerlink" href="#on_page_markdown" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>page_markdown</code> event is called after the page's markdown is loaded
+from file and can be used to alter the Markdown source text. The meta-
+data has been stripped off and is available as <code>page.meta</code> at this point.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>markdown</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Markdown source text of page as string</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>page</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.pages.Page" href="../themes/#mkdocs.structure.pages.Page">Page</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><code>mkdocs.structure.pages.Page</code> instance</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>files</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.files.Files" href="../api/#mkdocs.structure.files.Files">Files</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>global files collection</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="str">str</span> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>Markdown source text of page as string</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_page_content">on_page_content<a class="headerlink" href="#on_page_content" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>page_content</code> event is called after the Markdown text is rendered to
+HTML (but before being passed to a template) and can be used to alter the
+HTML body of the page.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>html</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>HTML rendered from Markdown source as string</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>page</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.pages.Page" href="../themes/#mkdocs.structure.pages.Page">Page</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><code>mkdocs.structure.pages.Page</code> instance</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>files</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.files.Files" href="../api/#mkdocs.structure.files.Files">Files</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>global files collection</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="str">str</span> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>HTML rendered from Markdown source as string</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_page_context">on_page_context<a class="headerlink" href="#on_page_context" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>page_context</code> event is called after the context for a page is created
+and can be used to alter the context for that specific page only.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>context</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.utils.templates.TemplateContext" href="../api/#mkdocs.utils.templates.TemplateContext">TemplateContext</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>dict of template context variables</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>page</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.pages.Page" href="../themes/#mkdocs.structure.pages.Page">Page</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><code>mkdocs.structure.pages.Page</code> instance</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>nav</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.nav.Navigation" href="../themes/#mkdocs.structure.nav.Navigation">Navigation</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>global navigation object</p>
+          </div>
+        </li>
+    </ul>
+        <div class="admonition new">
+<p class="admonition-title">New in version 1.11</p>
+<p> To also get the Jinja environment that
+renders the page, add an <code>env: jinja2.Environment</code> keyword parameter. It is
+only passed to event handlers that accept it, so existing ones keep
+working. The environment is shared by all pages: undo per-page changes
+in <code>on_post_page</code>, or set them again for every page.</p>
+</div>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><a class="autorefs autorefs-internal" title="mkdocs.utils.templates.TemplateContext" href="../api/#mkdocs.utils.templates.TemplateContext">TemplateContext</a> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>dict of template context variables</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h5 id="on_post_page">on_post_page<a class="headerlink" href="#on_post_page" title="Permanent link"></a></h5>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>The <code>post_page</code> event is called after the template is rendered, but
+before it is written to disc and can be used to alter the output of the
+page. If an empty string is returned, the page is skipped and nothing is
+written to disc.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>output</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>output of rendered template as string</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>page</code></b>
+              (<code><a class="autorefs autorefs-internal" title="mkdocs.structure.pages.Page" href="../themes/#mkdocs.structure.pages.Page">Page</a></code>)
+          –
+          <div class="doc-md-description">
+            <p><code>mkdocs.structure.pages.Page</code> instance</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><span title="mkdocs.config.defaults.MkDocsConfig">MkDocsConfig</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>global configuration object</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="str">str</span> | None</code>
+          –
+          <div class="doc-md-description">
+            <p>output of rendered template as string</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><h3 id="event-priorities">Event Priorities<a class="headerlink" href="#event-priorities" title="Permanent link"></a></h3>
+<p>For each event type, corresponding methods of plugins are called in the order that the plugins appear in the <code>plugins</code> <a href="../../user-guide/configuration/#plugins">config</a>.</p>
+<p>Since MkDocs 1.4, plugins can choose to set a priority value for their events. Events with higher priority are called first. Events without a chosen priority get a default of 0. Events that have the same priority are ordered as they appear in the config.</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocs.plugins.event_priority" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">mkdocs</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">event_priority</span><span class="p">(</span><span class="n">priority</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">T</span><span class="p">]</span></code>
+
+<a href="#mkdocs.plugins.event_priority" class="headerlink" title="Permanent link"></a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>A decorator to set an event priority for an event handler method.</p>
+<p>Recommended priority values:
+<code>100</code> "first", <code>50</code> "early", <code>0</code> "default", <code>-50</code> "late", <code>-100</code> "last".
+As different plugins discover more precise relations to each other, the values should be further tweaked.</p>
+<p>Usage example:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@plugins</span><span class="o">.</span><span class="n">event_priority</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># Wishing to run this after all other plugins' `on_files` events.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="o">...</span>
+</code></pre></div>
+<p>New in MkDocs 1.4.
+Recommended shim for backwards compatibility:</p>
+<div class="highlight"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">mkdocs.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">event_priority</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">event_priority</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">priority</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span>  <span class="c1"># No-op fallback</span>
+</code></pre></div>
+
+
+    </div>
+
+</div><div class="admonition new">
+<p class="admonition-title">New in version 1.6</p>
+<p>There may also arise a need to register a handler for the same event at multiple different priorities.</p>
+<p><code>CombinedEvent</code> makes this possible.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mkdocs.plugins.CombinedEvent" class="doc doc-heading">
+            <code>mkdocs.plugins.CombinedEvent</code>
+
+
+<a href="#mkdocs.plugins.CombinedEvent" class="headerlink" title="Permanent link"></a></h4>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Generic">Generic</span>[<span title="mkdocs.plugins.P">P</span>, <span title="mkdocs.plugins.T">T</span>]</code></p>
+
+
+
+        <p>A descriptor that allows defining multiple event handlers and declaring them under one event's name.</p>
+<p>Usage example:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@plugins</span><span class="o">.</span><span class="n">event_priority</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_on_page_markdown_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">markdown</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="nd">@plugins</span><span class="o">.</span><span class="n">event_priority</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_on_page_markdown_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">markdown</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="n">on_page_markdown</span> <span class="o">=</span> <span class="n">plugins</span><span class="o">.</span><span class="n">CombinedEvent</span><span class="p">(</span><span class="n">_on_page_markdown_1</span><span class="p">,</span> <span class="n">_on_page_markdown_2</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The names of the sub-methods <strong>can't</strong> start with <code>on_</code>;
+instead they can start with <code>_on_</code> like in the the above example, or anything else.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div></div>
+<h3 id="handling-errors">Handling Errors<a class="headerlink" href="#handling-errors" title="Permanent link"></a></h3>
+<p>MkDocs defines four error types:</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mkdocs.exceptions.MkDocsException" class="doc doc-heading">
+            <code>mkdocs.exceptions.MkDocsException</code>
+
+
+<a href="#mkdocs.exceptions.MkDocsException" class="headerlink" title="Permanent link"></a></h4>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="click.ClickException">ClickException</span></code></p>
+
+
+
+        <p>The base class which all MkDocs exceptions inherit from. This should
+not be raised directly. One of the subclasses should be raised instead.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mkdocs.exceptions.ConfigurationError" class="doc doc-heading">
+            <code>mkdocs.exceptions.ConfigurationError</code>
+
+
+<a href="#mkdocs.exceptions.ConfigurationError" class="headerlink" title="Permanent link"></a></h4>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="mkdocs.exceptions.MkDocsException" href="#mkdocs.exceptions.MkDocsException">MkDocsException</a></code></p>
+
+
+
+        <p>This error is raised by configuration validation when a validation error
+is encountered. This error should be raised by any configuration options
+defined in a plugin's <a class="autorefs autorefs-internal" href="#config_scheme">config_scheme</a>.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mkdocs.exceptions.BuildError" class="doc doc-heading">
+            <code>mkdocs.exceptions.BuildError</code>
+
+
+<a href="#mkdocs.exceptions.BuildError" class="headerlink" title="Permanent link"></a></h4>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="mkdocs.exceptions.MkDocsException" href="#mkdocs.exceptions.MkDocsException">MkDocsException</a></code></p>
+
+
+
+        <p>This error may be raised by MkDocs during the build process. Plugins should
+not raise this error.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="mkdocs.exceptions.PluginError" class="doc doc-heading">
+            <code>mkdocs.exceptions.PluginError</code>
+
+
+<a href="#mkdocs.exceptions.PluginError" class="headerlink" title="Permanent link"></a></h4>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="mkdocs.exceptions.BuildError" href="#mkdocs.exceptions.BuildError">BuildError</a></code></p>
+
+
+
+        <p>A subclass of <a class="autorefs autorefs-internal" href="#mkdocs.exceptions.BuildError"><code>mkdocs.exceptions.BuildError</code></a> which can be raised by plugin
+events.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div><p>Unexpected and uncaught exceptions will interrupt the build process and produce
+typical Python tracebacks, which are useful for debugging your code. However,
+users generally find tracebacks overwhelming and often miss the helpful error
+message. Therefore, MkDocs will catch any of the errors listed above, retrieve
+the error message, and exit immediately with only the helpful message displayed
+to the user.</p>
+<p>Therefore, you might want to catch any exceptions within your plugin and raise a
+<code>PluginError</code>, passing in your own custom-crafted message, so that the build
+process is aborted with a helpful message.</p>
+<p>The <a href="#on_build_error">on_build_error</a> event will be triggered for any exception.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">mkdocs.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">PluginError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mkdocs.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePlugin</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyPlugin</span><span class="p">(</span><span class="n">BasePlugin</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_post_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># some code that could throw a KeyError</span>
+            <span class="o">...</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PluginError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Failed to find the item by key: '</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_build_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># some code to clean things up</span>
+        <span class="o">...</span>
+</code></pre></div>
+<h3 id="logging-in-plugins">Logging in plugins<a class="headerlink" href="#logging-in-plugins" title="Permanent link"></a></h3>
+<p>To ensure that your plugins' log messages adhere with MkDocs' formatting and <code>--verbose</code>/<code>--debug</code> flags, please write the logs to a logger under the <code>mkdocs.plugins.</code> namespace.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="sa">f</span><span class="s2">"mkdocs.plugins.</span><span class="si">{</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"File '</span><span class="si">%s</span><span class="s2">' not found. Breaks the build if --strict is passed"</span><span class="p">,</span> <span class="n">my_file_name</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Shown normally"</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Shown only with `--verbose`"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">log</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Very expensive calculation only for debugging: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">get_my_diagnostics</span><span class="p">())</span>
+</code></pre></div></p>
+</div>
+<p><code>log.error()</code> is another logging level that is differentiated by its look, but in all other ways it functions the same as <code>warning</code>, so it's strange to use it. If your plugin encounters an actual error, it is best to just interrupt the build by raising <a class="autorefs autorefs-internal" href="#mkdocs.exceptions.PluginError"><code>mkdocs.exceptions.PluginError</code></a> (which will also log an ERROR message).</p>
+<!-- -->
+<div class="admonition new">
+<p class="admonition-title">New in version 1.5</p>
+<p>MkDocs now provides a <code>get_plugin_logger()</code> convenience function that returns a logger like the above that is also prefixed with the plugin's name.</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="mkdocs.plugins.get_plugin_logger" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">mkdocs</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">get_plugin_logger</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PrefixedLogger</span></code>
+
+<a href="#mkdocs.plugins.get_plugin_logger" class="headerlink" title="Permanent link"></a></h4>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Return a logger for plugins.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>name</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The name to use with <code>logging.getLogger</code>.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="mkdocs.plugins.PrefixedLogger">PrefixedLogger</span></code>
+          –
+          <div class="doc-md-description">
+            <p>A logger configured to work well in MkDocs,
+prefixing each message with the plugin package name.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">mkdocs.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_plugin_logger</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">get_plugin_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"My plugin message"</span><span class="p">)</span>
+</code></pre></div>
+</details>
+
+    </div>
+
+</div></div>
+<h3 id="entry-point">Entry Point<a class="headerlink" href="#entry-point" title="Permanent link"></a></h3>
+<p>Plugins need to be packaged as Python libraries (distributed on PyPI separate
+from MkDocs) and each must register as a Plugin via a setuptools <code>entry_points</code>.
+Add the following to your <code>setup.py</code> script:</p>
+<div class="highlight"><pre><span></span><code><span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">'mkdocs.plugins'</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">'pluginname = path.to.some_plugin:SomePluginClass'</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>pluginname</code> would be the name used by users (in the config file) and
+<code>path.to.some_plugin:SomePluginClass</code> would be the importable plugin itself
+(<code>from path.to.some_plugin import SomePluginClass</code>) where <code>SomePluginClass</code> is a
+subclass of <a href="#baseplugin">BasePlugin</a> which defines the plugin behavior. Naturally, multiple
+Plugin classes could exist in the same module. Simply define each as a separate
+entry point.</p>
+<div class="highlight"><pre><span></span><code><span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">'mkdocs.plugins'</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">'featureA = path.to.my_plugins:PluginA'</span><span class="p">,</span>
+        <span class="s1">'featureB = path.to.my_plugins:PluginB'</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Note that registering a plugin does not activate it. The user still needs to
+tell MkDocs to use it via the config.</p>
+<h3 id="publishing-a-plugin">Publishing a Plugin<a class="headerlink" href="#publishing-a-plugin" title="Permanent link"></a></h3>
+<p>You should publish a package on <a href="https://pypi.org/" rel="external">PyPI</a>, then add it to the <a href="https://github.com/mkdocs-ng/catalog" rel="external">Catalog</a> for discoverability. Plugins are strongly recommended to have a unique plugin name (entry point name) according to the catalog.</p>
+        </div>
+<footer class="sumi-article-footer">
+  <div class="sumi-meta-row"><a class="sumi-meta sumi-edit" href="https://github.com/mkdocs-ng/mkdocs/blob/main/docs/dev-guide/plugins.md" rel="noopener"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>Edit this page</a>
+  </div>
+  <nav class="sumi-pager" aria-label="Previous / Next">
+    <a class="sumi-pager-prev" href="../translations/" rel="prev"><span class="sumi-pager-label"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Previous</span><span class="sumi-pager-title">Translations</span></a>
+    <a class="sumi-pager-next" href="../api/" rel="next"><span class="sumi-pager-label">Next<svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span><span class="sumi-pager-title">API Reference</span></a>
+  </nav>
+</footer>
+      </article>
+    </main>
+    <aside class="sumi-rail" aria-label="On this page">
+      <div class="sumi-rail-inner">
+        <div class="sumi-rail-title">On this page</div>
+        <nav class="sumi-toc"><ul>
+  <li><a href="#installing-plugins" data-level="2">Installing Plugins</a>
+  </li>
+  <li><a href="#using-plugins" data-level="2">Using Plugins</a>
+  </li>
+  <li><a href="#developing-plugins" data-level="2">Developing Plugins</a><ul>
+  <li><a href="#baseplugin" data-level="3">BasePlugin</a>
+  </li>
+  <li><a href="#events" data-level="3">Events</a>
+  </li>
+  <li><a href="#event-priorities" data-level="3">Event Priorities</a>
+  </li>
+  <li><a href="#handling-errors" data-level="3">Handling Errors</a>
+  </li>
+  <li><a href="#logging-in-plugins" data-level="3">Logging in plugins</a>
+  </li>
+  <li><a href="#entry-point" data-level="3">Entry Point</a>
+  </li>
+  <li><a href="#publishing-a-plugin" data-level="3">Publishing a Plugin</a>
+  </li>
+</ul>
+  </li>
+</ul></nav>
+        <a class="sumi-rail-top" href="#"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>Back to top</a>
+      </div>
+    </aside>
+  </div><footer class="sumi-footer">
+  <div class="sumi-footer-inner">
+    <div class="sumi-footer-left"><div class="sumi-copyright">Copyright &copy; 2014 <a href="https://twitter.com/starletdreaming">Tom Christie</a>, Maintained by the <a href="https://github.com/mkdocs-ng">MkDocs NG Team</a>.</div>
+      <div class="sumi-credit">Built with <a href="https://github.com/mkdocs-ng/mkdocs" rel="noopener">MkDocs NG</a> and <a href="https://github.com/mkdocs-ng/mkdocs-sumi" rel="noopener">Sumi</a></div>
+    </div>
+    <div class="sumi-footer-right">
+      <button class="sumi-icon-btn" type="button" data-sumi-help aria-label="Keyboard shortcuts" title="Keyboard shortcuts"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></button>
+    </div>
+  </div>
+</footer>
+  <dialog class="sumi-palette" aria-label="Search">
+  <div class="sumi-palette-box">
+    <div class="sumi-palette-input">
+      <svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+      <input type="search" autocomplete="off" spellcheck="false" placeholder="Search docs or run a command…" aria-label="Search" aria-controls="sumi-palette-results">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="sumi-palette-results" id="sumi-palette-results" role="listbox"></div>
+    <div class="sumi-palette-foot">
+      <span><kbd>↵</kbd> to open</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd> to move</span>
+      <span><kbd>Esc</kbd> to close</span>
+    </div>
+  </div>
+</dialog>
+<dialog class="sumi-help" aria-label="Keyboard shortcuts">
+  <div class="sumi-help-box">
+    <div class="sumi-help-head"><strong>Keyboard shortcuts</strong><button class="sumi-icon-btn" type="button" data-close aria-label="Close"><svg class="sumi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+    <dl>
+      <dt><kbd data-mod>Ctrl K</kbd> <kbd>/</kbd></dt><dd>Open search and commands</dd>
+      <dt><kbd>t</kbd></dt><dd>Toggle dark mode</dd>
+      <dt><kbd>[</kbd> <kbd>]</kbd></dt><dd>Previous / next page</dd>
+      <dt><kbd>j</kbd> <kbd>k</kbd></dt><dd>Previous / next heading</dd>
+      <dt><kbd>?</kbd></dt><dd>Show this help</dd>
+    </dl>
+  </div>
+</dialog>
+<dialog class="sumi-zoom" aria-label="Zoom image"></dialog>
+<div class="sumi-toast" role="status" aria-live="polite"></div>
+  <script>
+    window.sumi = {
+      base: "../..",
+      page: "dev-guide/plugins/",
+      features: [],
+      markdown: "../plugins.md",
+      search: "../../search/search_index.json",
+      keyboard: true,
+      versions: null,
+      prev: "../translations/",
+      next: "../api/",
+      edit: "https://github.com/mkdocs-ng/mkdocs/blob/main/docs/dev-guide/plugins.md",
+      nav: [{"t":"Home","u":"","s":""},{"t":"Getting Started","u":"getting-started/","s":""},{"t":"User Guide","u":"user-guide/","s":"User Guide"},{"t":"Installation","u":"user-guide/installation/","s":"User Guide"},{"t":"Switching to MkDocs NG","u":"user-guide/migrating/","s":"User Guide"},{"t":"Material for MkDocs End of Life","u":"user-guide/material-end-of-life/","s":"User Guide"},{"t":"Writing Your Docs","u":"user-guide/writing-your-docs/","s":"User Guide"},{"t":"Choosing Your Theme","u":"user-guide/choosing-your-theme/","s":"User Guide"},{"t":"Customizing Your Theme","u":"user-guide/customizing-your-theme/","s":"User Guide"},{"t":"Localizing Your Theme","u":"user-guide/localizing-your-theme/","s":"User Guide"},{"t":"Multi-language Sites","u":"user-guide/multi-language-sites/","s":"User Guide"},{"t":"Configuration","u":"user-guide/configuration/","s":"User Guide"},{"t":"Command Line Interface","u":"user-guide/cli/","s":"User Guide"},{"t":"Python API","u":"user-guide/python-api/","s":"User Guide"},{"t":"Deploying Your Docs","u":"user-guide/deploying-your-docs/","s":"User Guide"},{"t":"Versioned Docs","u":"user-guide/versioned-docs/","s":"User Guide"},{"t":"Developer Guide","u":"dev-guide/","s":"Developer Guide"},{"t":"Themes","u":"dev-guide/themes/","s":"Developer Guide"},{"t":"Translations","u":"dev-guide/translations/","s":"Developer Guide"},{"t":"Plugins","u":"dev-guide/plugins/","s":"Developer Guide"},{"t":"API Reference","u":"dev-guide/api/","s":"Developer Guide"},{"t":"Release Notes","u":"about/release-notes/","s":"About"},{"t":"Fixed Upstream Issues","u":"about/fixed-upstream-issues/","s":"About"},{"t":"Comparison","u":"about/comparison/","s":"About"},{"t":"Contributing","u":"about/contributing/","s":"About"},{"t":"Governance","u":"about/governance/","s":"About"},{"t":"License","u":"about/license/","s":"About"}],
+      alternate: [],
+      translations: [],
+      t: {"search":"Search","search_placeholder":"Search docs or run a command…","search_no_results":"No results for","search_loading":"Loading index…","search_hint_open":"to open","search_hint_move":"to move","search_hint_close":"to close","pages":"Pages","commands":"Commands","on_this_page":"On this page","back_to_top":"Back to top","previous":"Previous","next":"Next","edit_page":"Edit this page","view_source":"View source","copy_markdown":"Copy as Markdown","copied":"Copied","view_markdown":"View as Markdown","open_in":"Open in {name}","print":"Print","page_actions":"Page actions","copy":"Copy","copy_code":"Copy code","toggle_theme":"Toggle dark mode","theme_light":"Light","theme_dark":"Dark","theme_auto":"System","menu":"Menu","close":"Close","navigation":"Navigation","skip_to_content":"Skip to content","last_updated":"Last updated","reading_time":"{n} min read","language":"Language","untranslated":"This page has not been translated yet, so it is shown in {language}.","version":"Version","repository":"Repository","keyboard_shortcuts":"Keyboard shortcuts","shortcut_search":"Open search and commands","shortcut_theme":"Toggle dark mode","shortcut_prev_next":"Previous / next page","shortcut_toc":"Previous / next heading","shortcut_help":"Show this help","built_with":"Built with {mkdocs} and {sumi}","not_found_title":"Page not found","not_found_text":"The page you are looking for does not exist or has moved.","go_home":"Go to the home page","blog":"Blog","all_posts":"All posts","tags":"Tags","posted_on":"Posted on","older_post":"Older post","newer_post":"Newer post","subscribe_rss":"Subscribe via RSS","releases":"Releases","latest":"Latest","prerelease":"Pre-release","archived":"Archived","download":"Download","asset":"Asset","size":"Size","checksum":"SHA-256","release_notes":"Release notes","old_version":"You are reading the documentation for an older version.","go_latest":"Go to the latest version","expand_all":"Expand all","zoom_image":"Zoom image","diagram_expand":"Expand diagram","blog_view":"Layout","blog_view_list":"List view","blog_view_cards":"Card view","diagram_source":"Copy diagram source","diagram_download":"Download SVG","cmd_toggle_theme":"Toggle light / dark","cmd_copy_markdown":"Copy this page as Markdown","cmd_view_markdown":"Open this page as Markdown","cmd_edit":"Edit this page","cmd_print":"Print this page","cmd_top":"Scroll to top","cmd_home":"Go to the home page","cmd_language":"Switch language: {name}","cmd_version":"Switch version: {name}","cmd_llms":"Open llms.txt","whole_site":"Whole site","print_title":"Printable edition","contents":"Contents","compare":"Bilingual view","compare_open":"Open bilingual view","compare_sync":"Sync scrolling","compare_failed":"This translation could not be loaded.","compare_approx":"Sections differ between the two pages, so they line up approximately.","feedback_title":"Was this page helpful?","feedback_yes":"Yes","feedback_no":"No","feedback_thanks":"Thanks for your feedback!","comments":"Comments","table_expand":"Expand table","zoom_in":"Zoom in","zoom_out":"Zoom out","zoom_reset":"Fit to window"}
+    };
+  </script>
+  <script src="../../assets/js/sumi.js" defer></script>
+</body>
+</html>
