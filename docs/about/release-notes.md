@@ -42,7 +42,9 @@ without checking every plugin first:
 Who maintains MkDocs NG and what happens if they step away is described in
 [Governance](governance.md).
 
-## Version 1.11.2 (unreleased)
+## Version 1.11.2 (2026-11-11)
+
+A bug-fix release: links in raw HTML, Chinese and Japanese search, mike when ProperDocs is installed, relative symlinks and multi-language fallbacks.
 
 ### Added
 
