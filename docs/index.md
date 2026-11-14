@@ -1,7 +1,7 @@
 ---
 template: landing.html
 title: MkDocs NG
-description: Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.
+description: "Write Markdown. Ship docs. MkDocs NG is the maintained fork of MkDocs 1.x: same mkdocs command, same mkdocs.yml, and your plugins and themes keep working."
 hero:
   eyebrow: "MkDocs NG"
   title: "Write Markdown.<br>*Ship docs.*"
@@ -77,7 +77,7 @@ sections:
     reverse: true
     eyebrow: Already on MkDocs?
     title: Switching is a package change.
-    text: "MkDocs NG keeps the `mkdocs` command, imports and configuration. Your plugins and themes keep working, and bugs that stayed open upstream are fixed. See [how it compares](about/comparison/) to the alternatives."
+    text: "MkDocs NG keeps the `mkdocs` command, imports and configuration. Your plugins and themes keep working, and bugs that stayed open upstream are fixed. Wondering [whether MkDocs is still maintained](user-guide/is-mkdocs-still-maintained/)? See [how MkDocs NG compares](about/comparison/) to the alternatives."
     actions:
       - {text: Switching to MkDocs NG, link: user-guide/migrating/, primary: true}
       - {text: Fixed upstream issues, link: about/fixed-upstream-issues/}

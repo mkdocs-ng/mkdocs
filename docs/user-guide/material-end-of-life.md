@@ -1,3 +1,7 @@
+---
+description: "Material for MkDocs reaches end of life on 2027-05-05. Your options: MkDocs NG Material, Zensical, MaterialX or Sumi, and who each one suits."
+---
+
 # Material for MkDocs End of Life
 
 Your options when Material for MkDocs stops being maintained.
@@ -127,7 +131,7 @@ Your site needs no changes.
     dependencies).
 *   MkDocs NG Material: [documentation][ng-material] and
     [PyPI page][ng-material-pypi].
-*   [MkDocs NG and its alternatives](../about/comparison.md) compares the
+*   [MkDocs Alternatives Compared](../about/comparison.md) compares the
     build tools.
 
 [open an issue]: https://github.com/mkdocs-ng/mkdocs/issues

@@ -1,16 +1,22 @@
-# MkDocs NG and Its Alternatives
+---
+description: "MkDocs NG, ProperDocs, Zensical, MkDocs 1.6 and MkDocs 2.0 compared: which ones run your plugins and themes, how fast they build, and which one to use."
+---
 
-How MkDocs NG relates to the other tools that build MkDocs sites.
+# MkDocs Alternatives Compared
+
+MkDocs NG, ProperDocs, Zensical and upstream MkDocs, side by side.
 
 ---
 
-Since upstream MkDocs 1.x stopped being developed, several projects have
-offered a way forward for existing MkDocs sites. This page compares them on
-what matters when you already have a site: whether it keeps building
-unchanged, and whether your plugins keep running.
+Since upstream MkDocs 1.x stopped being developed (see
+[Is MkDocs Still Maintained?](../user-guide/is-mkdocs-still-maintained.md)),
+several projects have offered a way forward for existing MkDocs sites. This
+page compares them on what matters when you already have a site: whether it
+keeps building unchanged, and whether your plugins keep running.
 
-Facts on this page were checked on 2026-11-01 against each project's PyPI
-release history, documentation and source code; see [Sources](#sources).
+Facts on this page were checked on 2026-11-01, and release versions on
+2026-11-14, against each project's PyPI release history, documentation and
+source code; see [Sources](#sources).
 Build times were measured on 2026-11-04.
 Projects change quickly, so check their documentation for the current state.
 If something here is wrong or out of date, please
@@ -21,7 +27,7 @@ If something here is wrong or out of date, please
 &nbsp; | MkDocs NG | MkDocs 1.6 | MkDocs 2.0 pre-releases | ProperDocs | Zensical
 --- | --- | --- | --- | --- | ---
 What it is | Maintained fork of MkDocs 1.x | Last upstream 1.x release | Upstream rewrite | Fork of MkDocs 1.6 | New generator by the Material for MkDocs team
-Latest release | 1.11.0 (2026-11-04) | 1.6.1 (2024-08-30) | 2.0.dev6 (2026-09-15) | 1.6.7 (2026-03-20) | 0.0.74 (2026-10-30)
+Latest release | 1.11.2 (2026-11-11) | 1.6.1 (2024-08-30) | 2.0.dev6 (2026-09-15) | 1.6.7 (2026-03-20) | 0.1.1 (2026-11-10)
 PyPI package | `mkdocs-ng` | `mkdocs` | `mkdocs` (`--pre`) | `properdocs` | `zensical`
 Command | `mkdocs` | `mkdocs` | `mkdocs` | `properdocs` | `zensical`
 Configuration | `mkdocs.yml` | `mkdocs.yml` | None; refuses to run when `mkdocs.yml` exists | `properdocs.yml`, falls back to `mkdocs.yml` | `mkdocs.yml` or `zensical.toml`
