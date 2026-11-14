@@ -1,3 +1,7 @@
+---
+description: "Install MkDocs NG, create a site, preview it as you write and build it, in a few minutes."
+---
+
 # Getting Started with MkDocs
 
 An introductory tutorial!

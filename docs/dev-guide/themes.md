@@ -1,3 +1,7 @@
+---
+description: "How to create, package and distribute a custom MkDocs theme, with the template variables themes can use."
+---
+
 # Developing Themes
 
 A guide to creating and distributing custom themes.

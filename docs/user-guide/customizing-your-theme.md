@@ -1,3 +1,7 @@
+---
+description: "Change an existing MkDocs theme with extra CSS and JavaScript, or override its templates, without building a theme from scratch."
+---
+
 # Customizing Your Theme
 
 Altering a theme to suit your needs.

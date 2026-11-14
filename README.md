@@ -30,8 +30,15 @@
   <a href="https://mkdocs-ng.org/">Documentation</a> ·
   <a href="https://mkdocs-ng.org/user-guide/migrating/">Switching from MkDocs</a> ·
   <a href="https://mkdocs-ng.org/about/release-notes/">Release notes</a> ·
-  <a href="https://github.com/mkdocs-ng/catalog">Plugin catalog</a>
+  <a href="https://catalog.mkdocs-ng.org/">Plugin catalog</a>
 </p>
+
+**MkDocs NG** is the maintained fork of [MkDocs][mkdocs/mkdocs] 1.x. Upstream
+MkDocs has had no 1.x release since August 2024, and its 2.0 rewrite can't
+build existing sites. MkDocs NG keeps the `mkdocs` command, `mkdocs.yml`,
+plugins and themes working, with bug, security and compatibility fixes until at
+least 2028-12-31. See [Is MkDocs still maintained?][is-maintained] and
+[MkDocs alternatives compared][comparison].
 
 MkDocs is a **fast**, **simple**, and **downright gorgeous** static site
 generator that's geared towards building project documentation. Documentation
@@ -55,9 +62,8 @@ third-party themes, plugins, and Markdown extensions.
 </p>
 
 > [!NOTE]
-> **MkDocs NG** is a maintained fork of [mkdocs/mkdocs], published on PyPI as
-> `mkdocs-ng` while keeping the `mkdocs` command, imports and configuration
-> unchanged — a drop-in replacement.
+> **MkDocs NG** is published on PyPI as `mkdocs-ng` while keeping the `mkdocs`
+> command, imports and configuration unchanged — a drop-in replacement.
 >
 > Highlights beyond the last upstream release: Python 3.10–3.15 support,
 > built-in `llms.txt` and per-page Markdown output for LLMs and coding agents,
@@ -118,7 +124,8 @@ first, but they are still welcome in [Discussions].
 - [Fixed Upstream Issues][fixed-upstream]
 - [Switching to MkDocs NG][migrating]
 - [Governance and how long 1.x is supported][governance]
-- [Comparison with upstream MkDocs 2.0, ProperDocs and Zensical][comparison]
+- [Is MkDocs still maintained?][is-maintained]
+- [MkDocs alternatives compared: MkDocs NG, MkDocs 2.0, ProperDocs and Zensical][comparison]
 - [Catalog of third-party plugins, themes and recipes][catalog]
 - [Sumi][sumi], a local-first documentation theme from the MkDocs NG project
 - [MkDocs NG Material][ng-material], Material for MkDocs maintained for MkDocs NG
@@ -145,12 +152,13 @@ discussion forums are expected to follow the [PyPA Code of Conduct].
 [plugins-install]: https://mkdocs-ng.org/user-guide/installation/#plugins-themes-and-the-mkdocs-package
 [migrating]: https://mkdocs-ng.org/user-guide/migrating/
 [comparison]: https://mkdocs-ng.org/about/comparison/
+[is-maintained]: https://mkdocs-ng.org/user-guide/is-mkdocs-still-maintained/
 [governance]: https://mkdocs-ng.org/about/governance/
 [Contributing Guide]: https://mkdocs-ng.org/about/contributing/
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
-[catalog]: https://github.com/mkdocs-ng/catalog
-[sumi]: https://github.com/mkdocs-ng/mkdocs-sumi
-[ng-material]: https://github.com/mkdocs-ng/mkdocs-material
+[catalog]: https://catalog.mkdocs-ng.org/
+[sumi]: https://sumi.mkdocs-ng.org/
+[ng-material]: https://material.mkdocs-ng.org/
 
 ## License
 

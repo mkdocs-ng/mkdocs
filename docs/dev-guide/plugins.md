@@ -1,3 +1,7 @@
+---
+description: "How to install, use and write MkDocs plugins, with every plugin event and the order in which they run."
+---
+
 # MkDocs Plugins
 
 A Guide to installing, using and creating MkDocs Plugins

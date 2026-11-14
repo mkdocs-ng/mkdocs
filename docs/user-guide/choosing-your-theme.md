@@ -1,3 +1,7 @@
+---
+description: "The built-in mkdocs and readthedocs themes, the Sumi theme and third-party themes, and how to choose and configure one."
+---
+
 # Choosing your Theme
 
 Selecting and configuring a theme.

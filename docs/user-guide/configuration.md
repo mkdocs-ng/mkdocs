@@ -1,3 +1,7 @@
+---
+description: "Every setting you can use in mkdocs.yml, with defaults and examples."
+---
+
 # Configuration
 
 Guide to all available configuration settings.

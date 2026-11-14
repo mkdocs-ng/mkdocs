@@ -1,3 +1,7 @@
+---
+description: "Long-standing upstream MkDocs bugs that are fixed in MkDocs NG, with the release that fixed each one. Upgrading is a one-line change."
+---
+
 # Upstream Issues Fixed in MkDocs NG
 
 MkDocs NG is a maintained fork of [mkdocs/mkdocs], which is no longer under

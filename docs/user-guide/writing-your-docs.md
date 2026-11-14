@@ -1,3 +1,7 @@
+---
+description: "How to lay out your Markdown files, link between pages, add images and use the Markdown that MkDocs supports."
+---
+
 # Writing your docs
 
 How to layout and write your Markdown source files.

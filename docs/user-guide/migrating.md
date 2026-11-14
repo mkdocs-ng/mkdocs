@@ -1,3 +1,7 @@
+---
+description: "Move an existing MkDocs site to MkDocs NG. It keeps the mkdocs command, mkdocs.yml, plugins and themes, so switching is a package change."
+---
+
 # Switching to MkDocs NG
 
 Move an existing MkDocs site to MkDocs NG.

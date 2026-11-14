@@ -6,6 +6,15 @@ build-backend = "hatchling.build"
 name = "mkdocs-ng"
 description = "Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working."
 readme = "README.md"
+keywords = [
+    "mkdocs",
+    "documentation",
+    "static site generator",
+    "markdown",
+    "docs",
+    "mkdocs fork",
+    "mkdocs alternative",
+]
 license = "BSD-2-Clause"
 authors = [
     {name = "Tom Christie", email = "tom@tomchristie.com"},

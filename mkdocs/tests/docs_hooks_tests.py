@@ -39,6 +39,16 @@ class DocsHooksTests(unittest.TestCase):
         self.assertIn(f"mkdocs, version {mkdocs.__version__} from", result)
         self.assertNotIn("version 0.0.0", result)
 
+    def test_markdown_snippets_are_inlined(self):
+        root = Path(__file__).resolve().parents[2]
+        markdown = (
+            '--8<-- ".github/GOVERNANCE.md"\n\n--8<-- "docs/img/plugin-events.svg"\n'
+        )
+        result = self.hooks._inline_markdown_snippets(markdown, root)
+        self.assertTrue(result.startswith("# Governance\n"))
+        self.assertNotIn('--8<-- ".github/GOVERNANCE.md"', result)
+        self.assertIn('--8<-- "docs/img/plugin-events.svg"', result)
+
     def test_compat_cases_list_links_each_case_to_pypi(self):
         cases = [
             {"name": "mkdocstrings-python", "install": ["mkdocstrings[python]"]},

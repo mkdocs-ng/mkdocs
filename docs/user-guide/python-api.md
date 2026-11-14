@@ -1,3 +1,7 @@
+---
+description: "Build and serve MkDocs sites from Python with mkdocs.build() and mkdocs.serve(), for CI scripts and build tool integrations."
+---
+
 # Python API
 
 MkDocs can be used as a Python library in addition to a command-line tool.

@@ -1,3 +1,7 @@
+---
+description: "Install MkDocs NG with pip or uv, and how it works alongside the upstream mkdocs package that plugins and themes depend on."
+---
+
 # MkDocs Installation
 
 A detailed guide.
