@@ -1,3 +1,7 @@
+---
+description: "The MkDocs NG user guide: installing, writing, theming, configuring and deploying your documentation."
+---
+
 # User Guide
 
 Building Documentation with MkDocs
@@ -10,6 +14,7 @@ page listed below, or use the *next* and *previous* buttons in the navigation
 bar at the top of the page to move through the documentation in order.
 
 - [Installation](installation.md)
+- [Is MkDocs Still Maintained?](is-mkdocs-still-maintained.md)
 - [Switching to MkDocs NG](migrating.md)
 - [Material for MkDocs End of Life](material-end-of-life.md)
 - [Writing Your Docs](writing-your-docs.md)

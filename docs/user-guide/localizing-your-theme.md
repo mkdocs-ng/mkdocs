@@ -1,3 +1,7 @@
+---
+description: "Show the text of your MkDocs theme, such as search and navigation labels, in your site's language."
+---
+
 # Localizing Your Theme
 
 Display your theme in your preferred language.

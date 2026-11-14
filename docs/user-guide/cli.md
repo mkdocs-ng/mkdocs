@@ -1,3 +1,7 @@
+---
+description: "Every mkdocs command and option: new, serve, build, gh-deploy and get-deps."
+---
+
 # Command Line Interface
 
 ::: mkdocs-click

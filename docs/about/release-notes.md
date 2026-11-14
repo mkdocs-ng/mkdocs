@@ -1,3 +1,7 @@
+---
+description: "Release notes for every MkDocs NG version, and the versioning and support rules: MkDocs NG 1.x gets fixes until at least 2028-12-31."
+---
+
 # Release Notes
 
 ---

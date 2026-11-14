@@ -1,3 +1,7 @@
+---
+description: "Deploy an MkDocs site to GitHub Pages, Read the Docs or any host that serves static files."
+---
+
 # Deploying your docs
 
 A basic guide to deploying your docs to various hosting providers

@@ -1,3 +1,7 @@
+---
+description: "MkDocs NG is open source under the BSD 2-Clause license. Licenses of the projects it includes."
+---
+
 # License
 
 The legal stuff.

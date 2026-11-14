@@ -1,3 +1,7 @@
+---
+description: "Documentation for developers of MkDocs themes and plugins."
+---
+
 # Developer Guide
 
 Extending MkDocs

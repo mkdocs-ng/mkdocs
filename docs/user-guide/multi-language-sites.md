@@ -1,3 +1,7 @@
+---
+description: "Publish your documentation in several languages from one mkdocs.yml with MkDocs NG's languages setting."
+---
+
 # Multi-language Sites
 
 Publish your documentation in several languages from one `mkdocs.yml`.

@@ -28,6 +28,7 @@ FENCED_CODE_BLOCK_RE = re.compile(r"(^```.*?^```[ \t]*$)", re.MULTILINE | re.DOT
 ISSUE_REF_RE = re.compile(r"(?<![\w/`\[])#(?P<number>\d+)\b")
 VERSION_EXAMPLE_RE = re.compile(r"mkdocs, version \S+ from")
 COMPAT_CASES_MARKER = "<!-- compat-cases -->"
+MARKDOWN_SNIPPET_RE = re.compile(r'^--8<-- "([^"]+\.md)"[ \t]*$', re.MULTILINE)
 COMPAT_CASES_PATH = Path(__file__).resolve().parents[1] / "compat" / "cases.yaml"
 
 
@@ -149,9 +150,20 @@ def on_config(config: MkDocsConfig) -> None:
     _fix_cli_page_defaults()
 
 
+def _inline_markdown_snippets(markdown: str, root: Path) -> str:
+    # Pages that only include a Markdown file from the repository, such as
+    # .github/GOVERNANCE.md, get its text here instead of through
+    # pymdownx.snippets, so that their Markdown copy for llms.txt has it too.
+    return MARKDOWN_SNIPPET_RE.sub(
+        lambda m: Path(root, m[1]).read_text(encoding="utf-8"), markdown
+    )
+
+
 def on_page_markdown(
     markdown: str, page: Page, config: MkDocsConfig, **kwargs
 ) -> str | None:
+    markdown = _inline_markdown_snippets(markdown, Path(config.config_file_path).parent)
+
     if page.file.src_uri == "about/release-notes.md":
         return _rewrite_release_notes_links(_update_version_example(markdown))
 
@@ -176,3 +188,5 @@ def on_page_markdown(
             markdown,
             flags=re.MULTILINE,
         )
+
+    return markdown

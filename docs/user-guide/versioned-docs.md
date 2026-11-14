@@ -1,3 +1,7 @@
+---
+description: "Keep the docs of older releases online with mike, with a menu to switch between versions."
+---
+
 # Versioned Docs
 
 Keep the docs of older releases online, with a menu to switch between versions.

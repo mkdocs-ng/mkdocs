@@ -11,6 +11,8 @@ theme:
   logo: img/logo.svg
   logo_dark: img/logo-dark.svg
   favicon: img/favicon.svg
+  # Shown when a page is shared on social media.
+  social_image: img/social.png
   # Brand blue; docs/css/extra.css sets a lighter blue for the dark palette.
   accent: "#0061fe"
 
@@ -22,7 +24,7 @@ nav:
   - About:
     - Release Notes: about/release-notes.md
     - Fixed Upstream Issues: about/fixed-upstream-issues.md
-    - Comparison: about/comparison.md
+    - MkDocs Alternatives: about/comparison.md
     - Contributing: about/contributing.md
     - Governance: about/governance.md
     - License: about/license.md

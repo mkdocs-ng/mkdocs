@@ -1,3 +1,7 @@
+---
+description: "How to add or update translations of the built-in MkDocs themes."
+---
+
 # Translations
 
 Theme localization guide.
