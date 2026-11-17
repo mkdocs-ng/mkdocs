@@ -1,0 +1,5 @@
+# Tools the GitHub workflows install, pinned with hashes. Dependabot keeps
+# the compiled .txt files up to date; to regenerate one by hand, run the
+# command at the top of that file in this folder.
+uv
+PyYAML

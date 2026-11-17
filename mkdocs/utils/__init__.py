@@ -235,7 +235,12 @@ def _get_norm_url(path: str) -> tuple[str, int]:
         )
         path = path.replace("\\", "/")
     # Allow links to be fully qualified URLs
-    parsed = urlsplit(path)
+    try:
+        parsed = urlsplit(path)
+    except ValueError:
+        # Only URLs with a malformed host (such as "//[x") get here: leave them
+        # as they are, like any other absolute URL.
+        return path, -1
     if parsed.scheme or parsed.netloc or path.startswith(("/", "#")):
         return path, -1
 

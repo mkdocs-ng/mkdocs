@@ -1,0 +1,7 @@
+# Tools the GitHub workflows install, pinned with hashes. Dependabot keeps
+# the compiled .txt files up to date; to regenerate one by hand, run the
+# command at the top of that file in this folder.
+# mkdocs-ng brings the runtime dependencies; the workflow then installs this
+# checkout over it with `pip install --no-deps -e .`.
+mkdocs-ng
+atheris

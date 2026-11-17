@@ -46,6 +46,16 @@ without checking every plugin first:
 Who maintains MkDocs NG and what happens if they step away is described in
 [Governance](governance.md).
 
+## Version 1.11.3 (unreleased)
+
+### Fixed
+
+* A URL with a malformed host, such as `//[x` in `extra_css`, no longer stops the build with `ValueError: Invalid IPv6 URL`. It is kept as written, like other absolute URLs. Found by the new fuzz tests.
+
+### Maintenance
+
+* Each GitHub release now carries the built packages and their SLSA build provenance. Check a package with `gh attestation verify <file> -R mkdocs-ng/mkdocs`.
+
 ## Version 1.11.2 (2026-11-11)
 
 A bug-fix release: links in raw HTML, Chinese and Japanese search, mike when ProperDocs is installed, relative symlinks and multi-language fallbacks.
