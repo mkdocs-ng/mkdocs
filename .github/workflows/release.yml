@@ -21,8 +21,43 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install -U build
+        run: python -m pip install --require-hashes -r .github/requirements/build.txt
       - name: Build package
         run: python -m build
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+      - name: Keep the packages for the GitHub release
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dist
+          path: dist/
+
+  # Runs after PyPI, so a failure here never holds up a release. Attaches the
+  # packages and their SLSA build provenance to the GitHub release; check a
+  # package with `gh attestation verify <file> -R mkdocs-ng/mkdocs`.
+  github-release:
+    needs: pypi
+    runs-on: ubuntu-latest
+    permissions:
+      attestations: write
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dist
+          path: dist/
+      - name: Generate build provenance
+        id: attest
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: dist/*
+      - name: Attach packages and provenance to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+          BUNDLE: ${{ steps.attest.outputs.bundle-path }}
+        run: |
+          cp "$BUNDLE" "dist/mkdocs_ng-${TAG#v}.intoto.jsonl"
+          gh release upload "$TAG" dist/* --clobber

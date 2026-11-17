@@ -209,6 +209,13 @@ class UtilsTests(unittest.TestCase):
             test(path, "about/", "../local/windows/file/jquery.js")
             test(path, "foo/bar/", "../../local/windows/file/jquery.js")
 
+    def test_normalize_url_malformed_host(self):
+        # urlsplit() raises ValueError on these; they used to crash the build.
+        for path in ("//[x", "https://[::1/style.css"):
+            with self.subTest(path=path):
+                self.assertEqual(utils.normalize_url(path, _Page("foo/")), path)
+                self.assertEqual(utils.normalize_url(path, base="sub"), path)
+
     def test_reduce_list(self):
         self.assertEqual(
             utils.reduce_list([1, 2, 3, 4, 5, 5, 2, 4, 6, 7, 8]),

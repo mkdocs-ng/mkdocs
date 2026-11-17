@@ -14,7 +14,10 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: pip
-    directory: /
+    # The hash-pinned tools the workflows install ride in the same weekly PR.
+    directories:
+      - /
+      - /.github/requirements
     schedule:
       interval: "weekly"
     groups:

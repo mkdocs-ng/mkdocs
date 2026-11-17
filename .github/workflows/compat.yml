@@ -45,7 +45,7 @@ jobs:
         with:
           python-version: '3.13'
       - name: Install dependencies
-        run: python -m pip install --upgrade uv PyYAML
+        run: python -m pip install --require-hashes -r .github/requirements/compat.txt
       - name: Run compatibility matrix
         run: python -m compat --jobs 8 --markdown compat-report.md --json compat-report.json
       - name: Publish report
