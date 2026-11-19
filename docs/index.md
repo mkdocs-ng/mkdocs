@@ -56,6 +56,25 @@ sections:
       - {value: "20", label: Upstream bugs fixed}
       - {value: "3.10+", label: Python up to 3.15}
       - {value: "0", label: Config changes to switch}
+  - type: markdown
+    class: ng-showcase
+    eyebrow: Built with MkDocs NG
+    title: Real sites, written in plain Markdown.
+    text: A theme's docs, a product site, a plugin directory and a Chinese guidebook. Each one is a folder of Markdown files and one `mkdocs.yml`.
+    markdown: |
+      - [![The Sumi home page](img/showcase/sumi.jpg)](https://sumi.mkdocs-ng.org/)
+        Sumi: a theme's landing page
+      - [![The Commit Check website](img/showcase/commit-check.jpg)](https://commit-check.com/)
+        Commit Check: a product site
+      - [![The MkDocs Catalog](img/showcase/catalog.jpg)](https://catalog.mkdocs-ng.org/)
+        MkDocs Catalog: 476 plugins, rebuilt weekly
+      - [![A page of the Sumi documentation](img/showcase/sumi-docs.jpg)](https://sumi.mkdocs-ng.org/docs/write/steps/)
+        Sumi docs: components in plain Markdown
+      - [![The Lithuania living guide](img/showcase/lithuania-guide.jpg)](https://lt.shenxianpeng.dev/)
+        立陶宛生活指南: a Chinese guidebook
+      - [![The AgentBox documentation](img/showcase/agentbox.jpg)](https://shenxianpeng.dev/agentbox/)
+        AgentBox: project docs
+      {.gallery cols="3" style="--ratio: 16 / 10"}
   - type: features
     eyebrow: Why MkDocs NG
     title: Everything a docs site needs, from one YAML file.
