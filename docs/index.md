@@ -9,7 +9,6 @@ hero:
   actions:
     - {text: Getting Started, link: getting-started/, icon: rocket, primary: true}
     - {text: Switch from MkDocs, link: user-guide/migrating/, icon: arrow-right-left}
-    - {text: GitHub, link: "https://github.com/mkdocs-ng/mkdocs", icon: brand-github}
   install: pip install mkdocs-ng
   code:
     title: mkdocs.yml
@@ -26,6 +25,30 @@ hero:
 
       plugins:
         - search
+  # Sumi 0.5+ shows the demo (a Markdown file beside the page built from it);
+  # older Sumi releases fall back to the code card above.
+  demo:
+    title: docs/getting-started.md
+    url: docs.my-project.org/getting-started/
+    brand: My Project
+    nav: [Home, Getting started, Guides, API reference, Changelog]
+    current: Getting started
+    markdown: |
+      # Getting started
+
+      Install the package and build your first site.
+
+      > [!NOTE]
+      > Your `mkdocs.yml`, theme and plugins keep working.
+
+      1. Install
+
+          `pip install mkdocs-ng`
+
+      2. Preview
+
+          Run `mkdocs serve` and edit away.
+      {.steps}
 sections:
   - type: stats
     items:
