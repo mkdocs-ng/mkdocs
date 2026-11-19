@@ -16,6 +16,31 @@ theme:
   social_image: img/social.png
   # Brand blue; docs/css/extra.css sets a lighter blue for the dark palette.
   accent: "#0061fe"
+  footer_links:
+    - title: Docs
+      links:
+        - {text: Getting started, link: getting-started/}
+        - {text: User guide, link: user-guide/}
+        - {text: Writing plugins, link: dev-guide/plugins/}
+        - {text: Release notes, link: about/release-notes/}
+    - title: Switching
+      links:
+        - {text: From MkDocs 1.x, link: user-guide/migrating/}
+        - {text: Material end of life, link: user-guide/material-end-of-life/}
+        - {text: "Is MkDocs still maintained?", link: user-guide/is-mkdocs-still-maintained/}
+        - {text: Alternatives compared, link: about/comparison/}
+    - title: Ecosystem
+      links:
+        - {text: Sumi theme, link: "https://sumi.mkdocs-ng.org/"}
+        - {text: Plugin catalog, link: "https://catalog.mkdocs-ng.org/"}
+        - {text: Material for MkDocs NG, link: "https://material.mkdocs-ng.org/"}
+        - {text: PyPI, link: "https://pypi.org/project/mkdocs-ng/"}
+    - title: Project
+      links:
+        - {text: GitHub, link: "https://github.com/mkdocs-ng/mkdocs"}
+        - {text: Governance, link: about/governance/}
+        - {text: Contributing, link: about/contributing/}
+        - {text: License, link: about/license/}
 
 nav:
   - Home: index.md
