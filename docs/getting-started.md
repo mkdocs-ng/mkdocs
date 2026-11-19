@@ -2,11 +2,9 @@
 description: "Install MkDocs NG, create a site, preview it as you write and build it, in a few minutes."
 ---
 
-# Getting Started with MkDocs
+# Getting Started with MkDocs NG
 
-An introductory tutorial!
-
----
+Install MkDocs NG, create a site, preview it as you write and build it.
 
 ## Installation
 
