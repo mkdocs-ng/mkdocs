@@ -8,8 +8,9 @@ edit_uri: blob/main/docs/
 
 theme:
   name: sumi
-  logo: img/logo.svg
-  logo_dark: img/logo-dark.svg
+  # The letterless book reads at header size; logo.svg (with M | NG) is for large uses.
+  logo: img/logo-mark.svg
+  logo_dark: img/logo-mark-dark.svg
   favicon: img/favicon.svg
   # Shown when a page is shared on social media.
   social_image: img/social.png

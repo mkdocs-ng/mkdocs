@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="48 52 416 392" role="img" aria-label="MkDocs NG">
+<path d="M264 180C292 104 344 76 388 66Q396 65 396 73V300H264Z" fill="#27497F"/>
+<path d="M264 176C296 128 352 100 404 90Q412 89 412 97V300H264Z" fill="#3A6FCF"/>
+<path d="M64 164V350Q64 372 86 373C158 377 216 394 250 426" fill="none" stroke="#3D6CC6" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M448 164V350Q448 372 426 373C354 377 296 394 262 426" fill="none" stroke="#2F7BFF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M96 110C160 116 220 138 248 172V410C214 372 160 352 96 346Q88 345 88 337V118Q88 110 96 110Z" fill="#3D6CC6"/>
+<path d="M416 110C352 116 292 138 264 172V410C298 372 352 352 416 346Q424 345 424 337V118Q424 110 416 110Z" fill="#2F7BFF"/>
+</svg>
