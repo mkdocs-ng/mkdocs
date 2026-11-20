@@ -1,29 +1,15 @@
 <p align="center">
   <a href="https://mkdocs-ng.org/">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/logo-dark.svg">
-      <img src="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/logo.svg" width="160" alt="MkDocs NG">
-    </picture>
+    <img src="https://raw.githubusercontent.com/mkdocs-ng/mkdocs/main/docs/img/social.png" width="100%" alt="MkDocs NG. Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.">
   </a>
 </p>
 
-<h1 align="center">MkDocs NG</h1>
-
 <p align="center">
-  <strong>Write Markdown. Ship docs.</strong>
-  <br>
-  The maintained MkDocs that keeps your plugins working.
-</p>
-
-<p align="center">
-  <a href="https://pypi.org/project/mkdocs-ng/"><img src="https://img.shields.io/pypi/v/mkdocs-ng.svg" alt="PyPI version"></a>
-  <a href="https://pypi.org/project/mkdocs-ng/"><img src="https://img.shields.io/pypi/pyversions/mkdocs-ng.svg" alt="Python versions"></a>
-  <a href="https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml"><img src="https://github.com/mkdocs-ng/mkdocs/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://mkdocs-ng.org/user-guide/migrating/#plugins-and-themes"><img src="https://img.shields.io/github/actions/workflow/status/mkdocs-ng/mkdocs/compat.yml?branch=main&label=plugin%20compatibility" alt="Plugin compatibility"></a>
-  <a href="https://codecov.io/github/mkdocs-ng/mkdocs?branch=main"><img src="https://codecov.io/github/mkdocs-ng/mkdocs/coverage.svg?branch=main" alt="Coverage"></a>
-  <a href="https://app.codspeed.io/mkdocs-ng/mkdocs?utm_source=badge"><img src="https://img.shields.io/endpoint?url=https://codspeed.io/badge.json" alt="CodSpeed"></a>
-  <a href="https://scorecard.dev/viewer/?uri=github.com/mkdocs-ng/mkdocs"><img src="https://api.scorecard.dev/projects/github.com/mkdocs-ng/mkdocs/badge" alt="OpenSSF Scorecard"></a>
-  <a href="https://github.com/mkdocs-ng/mkdocs/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/mkdocs-ng.svg" alt="License"></a>
+  <a href="https://pypi.org/project/mkdocs-ng/"><img src="https://img.shields.io/pypi/v/mkdocs-ng.svg?style=flat-square&label=pypi&labelColor=011c46&color=0061fe" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/mkdocs-ng/"><img src="https://img.shields.io/pypi/pyversions/mkdocs-ng.svg?style=flat-square&labelColor=011c46&color=0061fe" alt="Python versions"></a>
+  <a href="https://mkdocs-ng.org/user-guide/migrating/#plugins-and-themes"><img src="https://img.shields.io/github/actions/workflow/status/mkdocs-ng/mkdocs/compat.yml?branch=main&style=flat-square&labelColor=011c46&label=plugin%20compatibility" alt="Plugin compatibility"></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/mkdocs-ng/mkdocs"><img src="https://img.shields.io/ossf-scorecard/github.com/mkdocs-ng/mkdocs?style=flat-square&labelColor=011c46&label=openssf%20scorecard" alt="OpenSSF Scorecard"></a>
+  <a href="https://github.com/mkdocs-ng/mkdocs/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/mkdocs-ng.svg?style=flat-square&labelColor=011c46&color=0061fe" alt="License"></a>
 </p>
 
 <p align="center">
@@ -40,11 +26,11 @@ plugins and themes working, with bug, security and compatibility fixes until at
 least 2028-12-31. See [Is MkDocs still maintained?][is-maintained] and
 [MkDocs alternatives compared][comparison].
 
-MkDocs is a **fast**, **simple**, and **downright gorgeous** static site
-generator that's geared towards building project documentation. Documentation
-source files are written in Markdown and configured with a single YAML
-configuration file. It is designed to be easy to use and can be extended with
-third-party themes, plugins, and Markdown extensions.
+One `mkdocs.yml` turns a folder of Markdown files into a fast, static
+documentation site you can host anywhere. Pick a built-in theme,
+[Sumi](https://sumi.mkdocs-ng.org/) or any of the hundreds of third-party
+themes, plugins and Markdown extensions in the
+[catalog](https://catalog.mkdocs-ng.org/).
 
 <p align="center">
   <a href="https://mkdocs-ng.org/about/comparison/#build-speed">
