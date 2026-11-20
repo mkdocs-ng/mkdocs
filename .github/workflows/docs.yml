@@ -14,6 +14,8 @@ on:
       'main'
   schedule:
     - cron: '0 6 * * 6'
+  # Redeploy by hand, e.g. right after a Sumi release.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -93,7 +95,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
     needs: build
     permissions:
       contents: write

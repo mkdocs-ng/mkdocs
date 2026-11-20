@@ -211,9 +211,9 @@ path = "mkdocs.yml"
 [tool.hatch.envs.docs]
 detached = false
 # The docs site uses the Sumi theme, which the collector above can't look up.
-# 0.1.1 adds `logo_dark` and styles the API reference; 0.1.0 builds it too.
+# 0.4.2 adds the home page's `hero.demo`; older versions show the `code` card.
 dependencies = [
-    "mkdocs-sumi >=0.1.0",
+    "mkdocs-sumi >=0.4.2",
 ]
 [tool.hatch.envs.docs.scripts]
 build = "mkdocs build"
