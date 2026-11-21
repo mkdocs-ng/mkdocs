@@ -1,0 +1,53 @@
+/* MkDocs NG brand blue. mkdocs.yml sets the light value; this one keeps
+   links and highlights readable on the dark palette. */
+[data-theme="dark"] {
+    --sumi-accent: #6ea8ff;
+}
+
+/* "NEW:" callouts mark features added in a release. */
+.sumi-prose :is(.admonition, details).new {
+    --c: var(--c-tip);
+}
+
+/* mkdocstrings: every attribute is either a class or an instance attribute. */
+.doc-label-class-attribute,
+.doc-label-instance-attribute {
+    display: none;
+}
+
+/* Home page: the gallery of sites built with MkDocs NG uses the full width. */
+.ng-showcase .sumi-land-md {
+    max-width: none;
+}
+.ng-showcase .sumi-gallery > li {
+    gap: 12px;
+    color: var(--sumi-fg-2);
+    font-size: 14px;
+    text-align: start;
+}
+.ng-showcase .sumi-gallery img {
+    box-shadow: var(--sumi-shadow-md);
+    transition: transform .2s, box-shadow .2s;
+}
+.ng-showcase .sumi-gallery a:hover img {
+    transform: translateY(-3px);
+    box-shadow: var(--sumi-shadow-lg);
+}
+.ng-showcase .sumi-prose ul.sumi-gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px 24px;
+}
+@media (max-width: 920px) {
+    .ng-showcase .sumi-prose ul.sumi-gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 600px) {
+    .ng-showcase .sumi-prose ul.sumi-gallery {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    /* Four are enough on a phone. */
+    .ng-showcase .sumi-gallery > li:nth-child(n+5) {
+        display: none;
+    }
+}
