@@ -191,10 +191,11 @@ def get_relative_url(url: str, other: str) -> str:
 
     other_parts = _norm_parts(other)
     dest_parts = _norm_parts(url)
+    # This runs for every URL on every page, so it avoids `zip`: an index loop is
+    # faster for the few parts a URL has.
     common = 0
-    for a, b in zip(other_parts, dest_parts, strict=False):
-        if a != b:
-            break
+    shortest = min(len(other_parts), len(dest_parts))
+    while common < shortest and other_parts[common] == dest_parts[common]:
         common += 1
 
     rel_parts = [".."] * (len(other_parts) - common) + dest_parts[common:]

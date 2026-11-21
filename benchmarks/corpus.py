@@ -153,3 +153,23 @@ def write_site(
     with open(config_file, "w", encoding="utf-8") as f:
         f.write(MKDOCS_YML)
     return config_file
+
+
+def write_flat_site(root: str, *, pages: int) -> str:
+    """
+    Write a MkDocs project whose pages all sit at the top level of the nav.
+
+    Nothing in such a nav is a section, so every page renders a link to every
+    other page itself. Returns the path of the generated `mkdocs.yml`.
+    """
+    docs_dir = os.path.join(root, "docs")
+    os.makedirs(docs_dir, exist_ok=True)
+    page_names = ["index.md"] + [f"page-{p:03d}.md" for p in range(1, pages)]
+    for p, page_name in enumerate(page_names):
+        with open(os.path.join(docs_dir, page_name), "w", encoding="utf-8") as f:
+            f.write(make_markdown(2000 + p, headings=4, links=("index.md",)))
+
+    config_file = os.path.join(root, "mkdocs.yml")
+    with open(config_file, "w", encoding="utf-8") as f:
+        f.write(MKDOCS_YML)
+    return config_file
