@@ -50,7 +50,7 @@ Who maintains MkDocs NG and what happens if they step away is described in
 
 ### Performance
 
-* Pages render as fast as in MkDocs 1.6.1 again when the nav lists many pages outside sections. Each page links to every page of the nav, and since 1.9.0 each of these links did a little extra work: with 500 top-level pages, rendering the pages took 0.53 s instead of 0.48 s.
+* Pages render as fast as in MkDocs 1.6.1 again when the nav lists many pages outside sections. Each page links to every page of the nav, and since 1.9.0 each of these links did a little extra work: with 500 top-level pages, rendering the pages took 0.53 s instead of 0.48 s. #191
 
 ## Version 1.11.2 (2026-11-11)
 
