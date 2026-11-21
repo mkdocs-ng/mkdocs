@@ -16,7 +16,7 @@ import os
 
 import pytest
 
-from benchmarks.corpus import PAGES_PER_SECTION, write_site
+from benchmarks.corpus import PAGES_PER_SECTION, write_flat_site, write_site
 from mkdocs.commands.build import _build_page, _populate_page, build
 from mkdocs.config.base import load_config
 from mkdocs.structure.files import get_files
@@ -129,17 +129,8 @@ def test_serve_rebuild(benchmark, sized_site_factory, tmp_path) -> None:
             f.write(original)
 
 
-def test_template_render_large_nav(benchmark, sized_site_factory, tmp_path) -> None:
-    """
-    Render a single page against the largest site's navigation.
-
-    Built-in themes iterate the full navigation for every page, so template
-    rendering costs O(pages) per page — the O(N^2) sitewide term behind
-    upstream issue mkdocs/mkdocs#3695.
-    """
-    config = load_config(
-        sized_site_factory(max(SIZES)), site_dir=str(tmp_path / "large-site")
-    )
+def _bench_render_one(benchmark, config_file: str, site_dir: str) -> None:
+    config = load_config(config_file, site_dir=site_dir)
     config = config.plugins.on_config(config)
     config.plugins.on_pre_build(config=config)
     files = get_files(config)
@@ -156,3 +147,29 @@ def test_template_render_large_nav(benchmark, sized_site_factory, tmp_path) -> N
         _build_page(file.page, config, doc_files, nav, env)
 
     benchmark(render_one)
+
+
+def test_template_render_large_nav(benchmark, sized_site_factory, tmp_path) -> None:
+    """
+    Render a single page against the largest site's navigation.
+
+    Built-in themes iterate the full navigation for every page, so template
+    rendering costs O(pages) per page — the O(N^2) sitewide term behind
+    upstream issue mkdocs/mkdocs#3695.
+    """
+    _bench_render_one(
+        benchmark, sized_site_factory(max(SIZES)), str(tmp_path / "large-site")
+    )
+
+
+def test_template_render_flat_nav(benchmark, tmp_path_factory, tmp_path) -> None:
+    """
+    Same, for a nav of top-level pages only, with no sections.
+
+    Rendered nav sections are reused between pages, but a page at the top level
+    of the nav is rendered on every page, so this measures the cost of each
+    nav link and its `url` filter.
+    """
+    root = tmp_path_factory.mktemp("flat_site")
+    config_file = write_flat_site(str(root), pages=max(SIZES))
+    _bench_render_one(benchmark, config_file, str(tmp_path / "flat-site"))

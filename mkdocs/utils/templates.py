@@ -39,13 +39,20 @@ class TemplateContext(TypedDict):
     i18n: dict[str, Any] | None
 
 
+# How many nav fragments are being recorded right now, in any environment. Most
+# URLs are outside a fragment, and checking this first keeps them as cheap as
+# without the cache: a site with N pages in its nav has N * N of them.
+_recording = 0
+
+
 @contextfilter
 def url_filter(context: TemplateContext, value: str) -> str:
     """A Template filter to normalize URLs."""
-    env = getattr(context, "environment", None)
-    cache = getattr(env, "_mkdocs_nav_fragments", None)
-    if cache is not None and cache.recording:
-        return cache.url_token(str(value))
+    if _recording:
+        env = getattr(context, "environment", None)
+        cache = getattr(env, "_mkdocs_nav_fragments", None)
+        if cache is not None and cache.recording:
+            return cache.url_token(str(value))
     return normalize_url(str(value), page=context["page"], base=context["base_url"])
 
 
@@ -114,6 +121,7 @@ class NavFragmentCache:
 
     @pass_context
     def __call__(self, context, item, *key, caller) -> str:
+        global _recording  # noqa: PLW0603
         nav = context.get("nav")
         if nav is not self._nav:
             # A plugin may hand each page its own nav: start over.
@@ -134,10 +142,12 @@ class NavFragmentCache:
         fragment = self._fragments.get(cache_key)
         if fragment is None or fragment.item is not item:
             self.recording += 1
+            _recording += 1
             try:
                 html = caller()
             finally:
                 self.recording -= 1
+                _recording -= 1
             fragment = self._fragments[cache_key] = _Fragment(item, html, self._urls)
 
         if self.recording:
@@ -194,10 +204,10 @@ class _Fragment:
             if "." in basename:
                 other = dirname
             other_parts = _norm_parts(other)
+            prefix = self._prefix
             common = 0
-            for a, b in zip(other_parts, self._prefix, strict=False):
-                if a != b:
-                    break
+            shortest = min(len(other_parts), len(prefix))
+            while common < shortest and other_parts[common] == prefix[common]:
                 common += 1
             if common < len(self._prefix):
                 return self._for_depth(common).replace(
