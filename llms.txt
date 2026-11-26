@@ -1,0 +1,43 @@
+# MkDocs NG
+
+> Write Markdown. Ship docs. The maintained MkDocs that keeps your plugins working.
+
+## Pages
+
+- [Home](https://mkdocs-ng.org/index.md): Write Markdown. Ship docs. MkDocs NG is the maintained fork of MkDocs 1.x: same mkdocs command, same mkdocs.yml, and your plugins and themes keep working.
+- [Getting Started](https://mkdocs-ng.org/getting-started.md): Install MkDocs NG, create a site, preview it as you write and build it, in a few minutes.
+
+## User Guide
+
+- [User Guide](https://mkdocs-ng.org/user-guide/README.md): The MkDocs NG user guide: installing, writing, theming, configuring and deploying your documentation.
+- [Installation](https://mkdocs-ng.org/user-guide/installation.md): Install MkDocs NG with pip or uv, and how it works alongside the upstream mkdocs package that plugins and themes depend on.
+- [Is MkDocs Still Maintained?](https://mkdocs-ng.org/user-guide/is-mkdocs-still-maintained.md): Upstream MkDocs 1.x has had no release since August 2024, and MkDocs 2.0 is an incompatible rewrite. What that means for your site, and the maintained ways to keep it building.
+- [Switching to MkDocs NG](https://mkdocs-ng.org/user-guide/migrating.md): Move an existing MkDocs site to MkDocs NG. It keeps the mkdocs command, mkdocs.yml, plugins and themes, so switching is a package change.
+- [Material for MkDocs End of Life](https://mkdocs-ng.org/user-guide/material-end-of-life.md): Material for MkDocs reaches end of life on 2027-05-05. Your options: MkDocs NG Material, Zensical, MaterialX or Sumi, and who each one suits.
+- [Writing Your Docs](https://mkdocs-ng.org/user-guide/writing-your-docs.md): How to lay out your Markdown files, link between pages, add images and use the Markdown that MkDocs supports.
+- [Choosing Your Theme](https://mkdocs-ng.org/user-guide/choosing-your-theme.md): The built-in mkdocs and readthedocs themes, the Sumi theme and third-party themes, and how to choose and configure one.
+- [Customizing Your Theme](https://mkdocs-ng.org/user-guide/customizing-your-theme.md): Change an existing MkDocs theme with extra CSS and JavaScript, or override its templates, without building a theme from scratch.
+- [Localizing Your Theme](https://mkdocs-ng.org/user-guide/localizing-your-theme.md): Show the text of your MkDocs theme, such as search and navigation labels, in your site's language.
+- [Multi-language Sites](https://mkdocs-ng.org/user-guide/multi-language-sites.md): Publish your documentation in several languages from one mkdocs.yml with MkDocs NG's languages setting.
+- [Configuration](https://mkdocs-ng.org/user-guide/configuration.md): Every setting you can use in mkdocs.yml, with defaults and examples.
+- [Command Line Interface](https://mkdocs-ng.org/user-guide/cli.md): Every mkdocs command and option: new, serve, build, gh-deploy and get-deps.
+- [Python API](https://mkdocs-ng.org/user-guide/python-api.md): Build and serve MkDocs sites from Python with mkdocs.build() and mkdocs.serve(), for CI scripts and build tool integrations.
+- [Deploying Your Docs](https://mkdocs-ng.org/user-guide/deploying-your-docs.md): Deploy an MkDocs site to GitHub Pages, Read the Docs or any host that serves static files.
+- [Versioned Docs](https://mkdocs-ng.org/user-guide/versioned-docs.md): Keep the docs of older releases online with mike, with a menu to switch between versions.
+
+## Developer Guide
+
+- [Developer Guide](https://mkdocs-ng.org/dev-guide/README.md): Documentation for developers of MkDocs themes and plugins.
+- [Themes](https://mkdocs-ng.org/dev-guide/themes.md): How to create, package and distribute a custom MkDocs theme, with the template variables themes can use.
+- [Translations](https://mkdocs-ng.org/dev-guide/translations.md): How to add or update translations of the built-in MkDocs themes.
+- [Plugins](https://mkdocs-ng.org/dev-guide/plugins.md): How to install, use and write MkDocs plugins, with every plugin event and the order in which they run.
+- [API Reference](https://mkdocs-ng.org/dev-guide/api.md): Reference for the MkDocs Python API used by plugins, themes and scripts: configuration, files, pages, navigation and build functions.
+
+## About
+
+- [Release Notes](https://mkdocs-ng.org/about/release-notes.md): Release notes for every MkDocs NG version, and the versioning and support rules: MkDocs NG 1.x gets fixes until at least 2028-12-31.
+- [Fixed Upstream Issues](https://mkdocs-ng.org/about/fixed-upstream-issues.md): Long-standing upstream MkDocs bugs that are fixed in MkDocs NG, with the release that fixed each one. Upgrading is a one-line change.
+- [MkDocs Alternatives](https://mkdocs-ng.org/about/comparison.md): MkDocs NG, ProperDocs, Zensical, MkDocs 1.6 and MkDocs 2.0 compared: which ones run your plugins and themes, how fast they build, and which one to use.
+- [Contributing](https://mkdocs-ng.org/about/contributing.md): How to report bugs, propose changes and send pull requests to MkDocs NG, the maintained fork of MkDocs 1.x.
+- [Governance](https://mkdocs-ng.org/about/governance.md): Who maintains MkDocs NG, how decisions are made, how releases are published and what happens if a maintainer steps away.
+- [License](https://mkdocs-ng.org/about/license.md): MkDocs NG is open source under the BSD 2-Clause license. Licenses of the projects it includes.

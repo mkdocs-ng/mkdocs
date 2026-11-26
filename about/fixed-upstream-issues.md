@@ -1,0 +1,165 @@
+# Upstream Issues Fixed in MkDocs NG
+
+MkDocs NG is a maintained fork of [mkdocs/mkdocs], which is no longer under
+active development. Beyond keeping up with new Python releases and
+dependencies, the fork resolves long-standing issues that were reported
+upstream but never fixed there.
+
+This page tracks notable upstream issues that are already resolved in MkDocs
+NG. If you are affected by one of them, upgrading is a one-line change — the
+package name on PyPI is `mkdocs-ng`, while the `mkdocs` command and all
+configuration stay the same:
+
+```bash
+pip install -U mkdocs-ng
+```
+
+## Configuration
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#2624] | `INHERIT` accepted a single parent file, so splitting a configuration into several files required chaining them one after another. It now accepts a list of files. | 1.9.0 (#107)
+
+## Build
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3939] | A malformed link such as `[click](http://[::1)` crashed the whole build with a Python traceback that didn't name the page. The build now warns, names the page and the URL, and leaves the link as it is. | 1.7.2 (#45)
+[#4001] | Edge-case markup such as `<<>>` crashed the build with `AssertionError` from Python's `html.parser` (seen on Python 3.13.5+). | 1.7.3 (#51)
+[#4048], [#3785] | A broken (dangling) symlink in the `docs_dir` crashed the build. It is now skipped with a warning. | 1.7.2 (#43, #46)
+
+## Development server
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#4032], [#4014], [#4055], [#4081] | With `click>=8.2`, `mkdocs serve` stopped watching for file changes, live reload only worked when `--livereload` was passed explicitly (often misdiagnosed as a WSL problem), and `use_directory_urls` was overridden. | 1.7.0 (#4), 1.7.3 (#60)
+[#2519] | Editor temporary files (vim swap files, `~` backups, Emacs auto-save) triggered pointless rebuilds. | 1.7.3 (#55)
+[#3496] | `mkdocs serve` failed when port 8000 was already in use, for example by another `mkdocs serve`. It now serves on the next free port (up to 8010) and says so. | 1.11.0
+[#3905] | `mkdocs serve` left its temporary site directory behind when stopped with `SIGTERM`, as in containers and process managers. It now cleans up on `SIGTERM` too. | 1.7.1 (#36)
+[#4066] | `mkdocs serve` on a public address such as `0.0.0.0` put its own address in canonical links instead of `site_url`, which looked like `site_url` was ignored. This is how previews work, so it stays, but `serve` now says so and the docs explain that `mkdocs build` is the way to publish. | 1.11.2 (#169)
+
+## Built-in themes
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#2171] | Built-in themes loaded resources from CDNs, sharing visitor data with third parties and breaking offline use. highlight.js is now bundled locally and the themes contain no CDN references. | 1.8.0 (#75)
+[#3630] | The long-dead Universal Analytics (`analytics.js`) snippet was hardcoded into the themes. It is removed; use `analytics.gtag` (GA4) or override the `analytics` template block. | 1.8.0 (#84)
+[#3909] | The arrow that marks a submenu in the navigation dropdown of the mkdocs theme was invisible (a regression in upstream 1.6.1). | 1.7.2 (#44)
+[#4045] | Disabling `highlightjs` broke switching between light and dark mode in the mkdocs theme. | 1.7.1 (#39)
+
+## Markdown
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3618] | Relative URLs in raw HTML, such as an `<img>` inside a `<figure>`, broke with `use_directory_urls` because they weren't adjusted like Markdown links. They now are, when they point to a file in the `docs_dir`. | 1.11.2 (#170)
+[#3772] | Loading your own Markdown extension from the project needed `PYTHONPATH` set by hand or a package to install. The new [`markdown_extensions_path`](../user-guide/configuration.md#markdown_extensions_path) setting names directories to load them from. | 1.11.0
+[#3908] | An HTML comment above the first heading, such as an SPDX license header, stopped the heading from becoming the page title. | 1.11.2 (#170)
+[#3914] | Links to other sites couldn't be told apart from internal links in the HTML, so themes couldn't mark them. They now get `rel="external"`. | 1.11.0
+[#3997] | GitHub-style alerts (`> [!NOTE]`, `> [!WARNING]` and so on) showed up as a quote starting with `[!NOTE]`. They now render as admonitions. | 1.11.0
+[#4079] | A first line like `Foo: Bar` underlined with `===` was read as metadata, so the heading disappeared. | 1.11.2 (#170)
+[#4149] | YAML front matter was ignored when the file ended right after the closing `---` without a newline. | 1.11.2 (#170)
+
+## Search
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3213] | Titles with `&`, such as `Tom & Jerry`, showed up as `Tom &amp; Jerry` in the built-in search results. | 1.11.2 (#172)
+[#3560] | Page and section titles with inline HTML, such as `# Hello <b>world</b>`, showed raw tags in search results. Tags are now stripped from search titles. | 1.7.3 (#53)
+[#3761] | With `lang: zh` the built-in search stopped with an error, because its Chinese word splitter only exists in Node.js; Japanese only found whole sentences. Chinese and Japanese text is now split into words with the browser's `Intl.Segmenter`. | 1.11.2 (#172)
+[#4106] | In browsers without Web Worker support, search replaced the page's global `window.postMessage` function, breaking other scripts that rely on it. The fallback now leaves it alone (and no longer depends on jQuery or on the site being served from the domain root). | 1.9.0 (#106)
+[#4167] | Searching for words that happen to be English stop words — `while`, `if`, `for`, `from` and many more — returned no results, even though they are meaningful keywords in technical documentation. Stop words are now indexed by default; a `stop_words` plugin option restores the old behavior. | 1.8.0 (#80)
+
+## Navigation
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3450] | The project's root directory couldn't be the `docs_dir`, so a small project couldn't keep its Markdown files next to `mkdocs.yml`. `docs_dir: .` now works; the config file and the `site_dir` are left out of the site. | 1.11.0
+[#3551] | `page.is_homepage` was `False` for the home page when `nav` put it inside a section, so themes didn't treat it as the home page. | 1.11.2 (#170)
+[#3710] | When the same page was listed more than once in `nav` under different titles, every entry showed the title of the first one. Each entry now keeps its own title. | 1.9.0 (#103)
+[#4026] | A `nav` entry that links to a section of a page (`page.md#anchor` or `page/#anchor`) was reported as "not found in the documentation files", failing `strict` builds; the `page.md#anchor` form also produced a broken link. Both forms now work without a warning. | 1.9.0 (#104)
+
+## Validation
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3690] | Anchor validation reported false positives for anchors generated late by Markdown extensions, e.g. `pymdownx.tabbed` with `combine_header_slug`. | 1.7.1 (#34)
+[#3696] | Using a deprecated configuration option — including deprecated options of plugins — emitted a WARNING, so `strict` builds failed although the option still worked or was harmless. Deprecation notices are now logged at INFO level. | 1.9.0 (#102)
+[#3703] | The "does not contain an anchor" warning gave no hint when the only problem was letter case; it now suggests the correct anchor (`did you mean '#conflicts'?`). | 1.8.0 (#83)
+[#3900] | `validation.links.not_found` had no effect for links to excluded pages: they were always reported as INFO, so `strict` builds didn't catch them. The setting now applies; only links to drafts stay at INFO. | 1.7.1 (#32)
+[#3952] | Links with a text fragment (`page.md#:~:text=some%20words`) were reported as pointing to a missing anchor. The text fragment is now ignored; only an anchor before it is checked. | 1.11.0
+[#3991], [#3927] | `mkdocs build -v --strict` passed even when anchor links were broken, because verbose logging turned anchor validation off. Anchors are now checked with `-v` too. | 1.7.1 (#30)
+[#4126] | `mkdocs build --quiet --strict` exited successfully even when there were warnings, because `--quiet` stopped warnings from being counted. Warnings are now still counted in `strict` mode; only their output is silenced. | 1.9.0 (#101)
+
+## Plugins
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3533] | Plugins had no way to get the text of the page's first heading: `page.title` may come from `nav` or metadata instead. The new `page.content_title` gives the heading text with tags stripped. | 1.7.3 (#52)
+[#3709] | `on_page_context` got no access to the Jinja environment that renders the page, so plugins couldn't add filters or globals for one page. Handlers that take an `env` keyword now receive it; others are called as before. | 1.11.0
+
+## Python API
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#1240] | No stable programmatic API — running MkDocs from Python code required subprocess calls or private imports. MkDocs NG provides `mkdocs.build()` and `mkdocs.serve()`. | 1.8.0 (#76)
+
+## Output for LLMs
+
+Upstream issue | Symptom | Fixed in
+-------------- | ------- | --------
+[#3973] | No way to publish the documentation's Markdown for LLMs and coding agents; converting the HTML back to Markdown loses precision. The built-in `llms_txt` plugin publishes each page's Markdown and an `llms.txt` index. | 1.9.0 (#105)
+
+## Also worth knowing
+
+*   Python 3.13, 3.14, and 3.15 are fully supported and tested, while
+  upstream's last release predates them.
+*   Found another upstream issue you'd like to see fixed here? Please
+  [open an issue].
+
+[mkdocs/mkdocs]: https://github.com/mkdocs/mkdocs
+[#1240]: https://github.com/mkdocs/mkdocs/issues/1240
+[#2171]: https://github.com/mkdocs/mkdocs/issues/2171
+[#2519]: https://github.com/mkdocs/mkdocs/issues/2519
+[#2624]: https://github.com/mkdocs/mkdocs/issues/2624
+[#3213]: https://github.com/mkdocs/mkdocs/issues/3213
+[#3450]: https://github.com/mkdocs/mkdocs/issues/3450
+[#3496]: https://github.com/mkdocs/mkdocs/issues/3496
+[#3533]: https://github.com/mkdocs/mkdocs/pull/3533
+[#3551]: https://github.com/mkdocs/mkdocs/issues/3551
+[#3560]: https://github.com/mkdocs/mkdocs/pull/3560
+[#3618]: https://github.com/mkdocs/mkdocs/issues/3618
+[#3630]: https://github.com/mkdocs/mkdocs/issues/3630
+[#3690]: https://github.com/mkdocs/mkdocs/issues/3690
+[#3696]: https://github.com/mkdocs/mkdocs/issues/3696
+[#3703]: https://github.com/mkdocs/mkdocs/issues/3703
+[#3709]: https://github.com/mkdocs/mkdocs/issues/3709
+[#3710]: https://github.com/mkdocs/mkdocs/issues/3710
+[#3761]: https://github.com/mkdocs/mkdocs/pull/3761
+[#3772]: https://github.com/mkdocs/mkdocs/issues/3772
+[#3785]: https://github.com/mkdocs/mkdocs/pull/3785
+[#3900]: https://github.com/mkdocs/mkdocs/issues/3900
+[#3905]: https://github.com/mkdocs/mkdocs/issues/3905
+[#3908]: https://github.com/mkdocs/mkdocs/issues/3908
+[#3909]: https://github.com/mkdocs/mkdocs/issues/3909
+[#3914]: https://github.com/mkdocs/mkdocs/issues/3914
+[#3927]: https://github.com/mkdocs/mkdocs/issues/3927
+[#3939]: https://github.com/mkdocs/mkdocs/issues/3939
+[#3952]: https://github.com/mkdocs/mkdocs/issues/3952
+[#3973]: https://github.com/mkdocs/mkdocs/issues/3973
+[#3991]: https://github.com/mkdocs/mkdocs/issues/3991
+[#3997]: https://github.com/mkdocs/mkdocs/issues/3997
+[#4001]: https://github.com/mkdocs/mkdocs/issues/4001
+[#4014]: https://github.com/mkdocs/mkdocs/issues/4014
+[#4026]: https://github.com/mkdocs/mkdocs/issues/4026
+[#4032]: https://github.com/mkdocs/mkdocs/issues/4032
+[#4045]: https://github.com/mkdocs/mkdocs/issues/4045
+[#4048]: https://github.com/mkdocs/mkdocs/issues/4048
+[#4055]: https://github.com/mkdocs/mkdocs/issues/4055
+[#4066]: https://github.com/mkdocs/mkdocs/issues/4066
+[#4079]: https://github.com/mkdocs/mkdocs/issues/4079
+[#4081]: https://github.com/mkdocs/mkdocs/issues/4081
+[#4106]: https://github.com/mkdocs/mkdocs/issues/4106
+[#4126]: https://github.com/mkdocs/mkdocs/issues/4126
+[#4149]: https://github.com/mkdocs/mkdocs/pull/4149
+[#4167]: https://github.com/mkdocs/mkdocs/issues/4167
+[open an issue]: https://github.com/mkdocs-ng/mkdocs/issues

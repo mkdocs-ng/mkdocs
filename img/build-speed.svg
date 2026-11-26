@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="388" viewBox="0 0 720 388" role="img" aria-label="Clean build of a 1,000-page site (lower is better)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14">
+<text x="190" y="18.0" dy="0.35em" font-size="16" font-weight="600" fill="#1f2328">Clean build of a 1,000-page site (lower is better)</text>
+<text x="178" y="57.0" dy="0.35em" text-anchor="end" fill="#1f2328" font-weight="600">MkDocs NG + Material</text>
+<rect x="190" y="47.0" width="46.9" height="20" rx="3" fill="#0061fe"/>
+<text x="244.9" y="57.0" dy="0.35em" fill="#1f2328" font-weight="600">11.1 s</text>
+<text x="178" y="91.0" dy="0.35em" text-anchor="end" fill="#1f2328">Zensical</text>
+<rect x="190" y="81.0" width="67.1" height="20" rx="3" fill="#d1d9e0"/>
+<text x="265.1" y="91.0" dy="0.35em" fill="#59636e">15.9 s</text>
+<text x="178" y="125.0" dy="0.35em" text-anchor="end" fill="#1f2328">Sphinx, 4 processes</text>
+<rect x="190" y="115.0" width="99.2" height="20" rx="3" fill="#d1d9e0"/>
+<text x="297.2" y="125.0" dy="0.35em" fill="#59636e">23.5 s</text>
+<text x="178" y="159.0" dy="0.35em" text-anchor="end" fill="#1f2328">ProperDocs + Material</text>
+<rect x="190" y="149.0" width="135.5" height="20" rx="3" fill="#d1d9e0"/>
+<text x="333.5" y="159.0" dy="0.35em" fill="#59636e">32.1 s</text>
+<text x="178" y="193.0" dy="0.35em" text-anchor="end" fill="#1f2328">Starlight</text>
+<rect x="190" y="183.0" width="138.9" height="20" rx="3" fill="#d1d9e0"/>
+<text x="336.9" y="193.0" dy="0.35em" fill="#59636e">32.9 s</text>
+<text x="178" y="227.0" dy="0.35em" text-anchor="end" fill="#1f2328">MkDocs 1.6.1 + Material</text>
+<rect x="190" y="217.0" width="144.4" height="20" rx="3" fill="#d1d9e0"/>
+<text x="342.4" y="227.0" dy="0.35em" fill="#59636e">34.2 s</text>
+<text x="178" y="261.0" dy="0.35em" text-anchor="end" fill="#1f2328">VitePress</text>
+<rect x="190" y="251.0" width="360.5" height="20" rx="3" fill="#d1d9e0"/>
+<text x="558.5" y="261.0" dy="0.35em" fill="#59636e">85.4 s</text>
+<text x="178" y="295.0" dy="0.35em" text-anchor="end" fill="#1f2328">Docusaurus</text>
+<rect x="190" y="285.0" width="450.0" height="20" rx="3" fill="#d1d9e0"/>
+<text x="648.0" y="295.0" dy="0.35em" fill="#59636e">106.6 s</text>
+<text x="190" y="338.0" dy="0.35em" font-size="12.5" fill="#59636e">Same Markdown for every tool. 4-core Linux, median of 3 to 5 runs, no caches.</text>
+<text x="190" y="358.0" dy="0.35em" font-size="12.5" fill="#59636e">Zensical with its cache kept: 5.7 s. MkDocs NG with its default theme: 8.8 s.</text>
+<text x="190" y="378.0" dy="0.35em" font-size="12.5" fill="#59636e">Details and script: mkdocs-ng.org/about/comparison</text>
+</svg>
