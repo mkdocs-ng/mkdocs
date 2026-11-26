@@ -46,11 +46,13 @@ without checking every plugin first:
 Who maintains MkDocs NG and what happens if they step away is described in
 [Governance](governance.md).
 
-## Version 1.11.3 (unreleased)
+## Version 1.11.3 (2026-11-26)
+
+A performance fix: sites with many top-level pages render as fast as with MkDocs 1.6.1 again.
 
 ### Performance
 
-* Pages render as fast as in MkDocs 1.6.1 again when the nav lists many pages outside sections. Each page links to every page of the nav, and since 1.9.0 each of these links did a little extra work: with 500 top-level pages, rendering the pages took 0.53 s instead of 0.48 s. #191
+* Pages render as fast as in MkDocs 1.6.1 again when the nav lists many pages outside sections. Since 1.9.0 each nav link did a little extra work: with 500 top-level pages, rendering took 0.53 s instead of 0.48 s. #191
 
 ## Version 1.11.2 (2026-11-11)
 
